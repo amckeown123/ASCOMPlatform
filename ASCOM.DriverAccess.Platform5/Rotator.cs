@@ -5,7 +5,8 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
-using ASCOM.Interface;
+using System.Collections;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -18,7 +19,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to Rotator drivers
     /// </summary>
-    public class Rotator : IRotator, IDisposable
+    public class Rotator : IRotatorV4, IDisposable
     {
         private TraceLogger TL;
         #region IRotator constructors
@@ -154,6 +155,46 @@ namespace ASCOM.DriverAccess
             _memberFactory.CallMember(3, "SetupDialog", new Type[] {}, new object[] {});
         }
 
+        public string Action(string ActionName, string ActionParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CommandBlind(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CommandBool(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string CommandString(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Sync(float Position)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void MoveMechanical(float Position)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Connect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Disconnect()
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         /// The minimum StepSize, in degrees.
         /// </summary>
@@ -169,6 +210,24 @@ namespace ASCOM.DriverAccess
         {
             get { return (float) _memberFactory.CallMember(1, "TargetPosition", new Type[] {}, new object[] {}); }
         }
+
+        public string Description => throw new System.NotImplementedException();
+
+        public string DriverInfo => throw new System.NotImplementedException();
+
+        public string DriverVersion => throw new System.NotImplementedException();
+
+        public short InterfaceVersion => throw new System.NotImplementedException();
+
+        public string Name => throw new System.NotImplementedException();
+
+        public ArrayList SupportedActions => throw new System.NotImplementedException();
+
+        public float MechanicalPosition => throw new System.NotImplementedException();
+
+        public bool Connecting => throw new System.NotImplementedException();
+
+        public IStateValueCollection DeviceState => throw new System.NotImplementedException();
 
         #endregion
     }

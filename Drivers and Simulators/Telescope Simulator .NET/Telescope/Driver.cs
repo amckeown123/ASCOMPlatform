@@ -1511,11 +1511,6 @@ namespace ASCOM.Simulator
             set
             {
                 CheckCapability(TelescopeHardware.CanSetTracking, "Tracking", true);
-
-                // Throw a ParkedException when Tracking is set True and the telescope is parked
-                if (value & TelescopeHardware.AtPark == true)
-                    CheckParked("Tracking");
-
                 SharedResources.TrafficLine(SharedResources.MessageType.Polls, "Tracking:-> " + value.ToString());
                 TelescopeHardware.Tracking = value;
             }

@@ -1,12 +1,14 @@
-﻿using System;
+﻿
+
+using ASCOM.Utilities;
+using Microsoft.Win32.TaskScheduler;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.ServiceProcess;
 using System.Windows.Forms;
-using ASCOM.Utilities;
-using Microsoft.Win32.TaskScheduler;
 
 namespace ASCOM.Astrometry
 {

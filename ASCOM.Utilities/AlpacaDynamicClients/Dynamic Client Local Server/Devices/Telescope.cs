@@ -159,21 +159,34 @@ namespace ASCOM.DynamicClients
         /// </summary>
         public void SetupDialog()
         {
-            AlpacaTelescope newclient = Server.SetupDialogue<AlpacaTelescope>(state, TL);
-            if (!(newclient is null))
+            if (connectedState) // Only display Alpaca configuration buttons if already connected
             {
-                // Dispose of the old client
-                try
+                using (SetupConnectedForm connectedForm = new SetupConnectedForm(TL))
                 {
-                    client?.Dispose();
+                    connectedForm.DeviceNumber = state.RemoteDeviceNumber;
+                    connectedForm.DeviceType = state.DeviceType.ToDeviceString();
+                    connectedForm.HostIpAddress = $"{state.ServiceType}://{state.IpAddressString}:{state.PortNumber}";
+                    connectedForm.ShowDialog();
                 }
-                catch (Exception ex)
+            }
+            else // Show dialogue
+            {
+                AlpacaTelescope newclient = Server.SetupDialogue<AlpacaTelescope>(state, TL);
+                if (!(newclient is null))
                 {
-                    LogMessage("SetupDialog", $"Ignoring exception when disposing current client: {ex.Message}.\r\n{ex}");
-                }
+                    // Dispose of the old client
+                    try
+                    {
+                        client?.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogMessage("SetupDialog", $"Ignoring exception when disposing current client: {ex.Message}.\r\n{ex}");
+                    }
 
-                // Replace original client with new client
-                client = newclient;
+                    // Replace original client with new client
+                    client = newclient;
+                }
             }
         }
 
@@ -602,14 +615,14 @@ namespace ASCOM.DynamicClients
         public void AbortSlew()
         {
             client.AbortSlew();
-            LogMessage("AbortSlew", "Slew aborted OK");
+            TL.LogMessage("AbortSlew", "Slew aborted OK");
         }
 
-        public AlignmentModes AlignmentMode
+        public DeviceInterface.AlignmentModes AlignmentMode
         {
             get
             {
-                return (AlignmentModes)client.AlignmentMode;
+                return (DeviceInterface.AlignmentModes)client.AlignmentMode;
             }
         }
 
@@ -653,7 +666,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public IAxisRates AxisRates(TelescopeAxes Axis)
+        public DeviceInterface.IAxisRates AxisRates(DeviceInterface.TelescopeAxes Axis)
         {
             try
             {
@@ -662,7 +675,7 @@ namespace ASCOM.DynamicClients
                 AxisRates returnValue = new AxisRates(Axis);
 
                 // Query the client and iterate over the returned rate collection
-                foreach (Common.DeviceInterfaces.IRate axisRate in client.AxisRates((Common.DeviceInterfaces.TelescopeAxis)Axis))
+                foreach (IRate axisRate in client.AxisRates((Common.DeviceInterfaces.TelescopeAxis)Axis))
                 {
                     returnValue.Add(axisRate.Minimum, axisRate.Maximum, TL);
                 }
@@ -672,7 +685,7 @@ namespace ASCOM.DynamicClients
             }
             catch (Exception ex)
             {
-                LogError("AxisRates", $"Exception: {ex.Message}\r\n{ex}");
+                TL.LogMessage(LogLevel.Error, "AxisRates", $"Exception: {ex.Message}\r\n{ex}");
                 throw;
             }
         }
@@ -693,7 +706,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public bool CanMoveAxis(TelescopeAxes Axis)
+        public bool CanMoveAxis(DeviceInterface.TelescopeAxes Axis)
         {
             return client.CanMoveAxis((Common.DeviceInterfaces.TelescopeAxis)Axis);
         }
@@ -872,9 +885,9 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public PierSide DestinationSideOfPier(double RightAscension, double Declination)
+        public DeviceInterface.PierSide DestinationSideOfPier(double RightAscension, double Declination)
         {
-            return (PierSide)client.DestinationSideOfPier(RightAscension, Declination);
+            return (DeviceInterface.PierSide)client.DestinationSideOfPier(RightAscension, Declination);
         }
 
         public bool DoesRefraction
@@ -889,18 +902,18 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public EquatorialCoordinateType EquatorialSystem
+        public DeviceInterface.EquatorialCoordinateType EquatorialSystem
         {
             get
             {
-                return (EquatorialCoordinateType)client.EquatorialSystem;
+                return (DeviceInterface.EquatorialCoordinateType)client.EquatorialSystem;
             }
         }
 
         public void FindHome()
         {
             client.FindHome();
-            LogMessage("FindHome", "Home found OK");
+            TL.LogMessage("FindHome", "Home found OK");
         }
 
         public double FocalLength
@@ -943,7 +956,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public void MoveAxis(TelescopeAxes Axis, double Rate)
+        public void MoveAxis(DeviceInterface.TelescopeAxes Axis, double Rate)
         {
             client.MoveAxis((Common.DeviceInterfaces.TelescopeAxis)Axis, Rate);
         }
@@ -951,10 +964,10 @@ namespace ASCOM.DynamicClients
         public void Park()
         {
             client.Park();
-            LogMessage("Park", "Parked OK");
+            TL.LogMessage("Park", "Parked OK");
         }
 
-        public void PulseGuide(GuideDirections Direction, int Duration)
+        public void PulseGuide(DeviceInterface.GuideDirections Direction, int Duration)
         {
             client.PulseGuide((Common.DeviceInterfaces.GuideDirection)Direction, Duration);
         }
@@ -982,14 +995,14 @@ namespace ASCOM.DynamicClients
         public void SetPark()
         {
             client.SetPark();
-            LogMessage("SetPark", "Park set OK");
+            TL.LogMessage("SetPark", "Park set OK");
         }
 
-        public PierSide SideOfPier
+        public DeviceInterface.PierSide SideOfPier
         {
             get
             {
-                return (PierSide)client.SideOfPier;
+                return (DeviceInterface.PierSide)client.SideOfPier;
             }
             set
             {
@@ -1083,13 +1096,13 @@ namespace ASCOM.DynamicClients
                 }
             }
 
-            LogMessage("SlewToAltAz", "Slew completed OK");
+            TL.LogMessage("SlewToAltAz", "Slew completed OK");
         }
 
         public void SlewToAltAzAsync(double azimuth, double altitude)
         {
             client.SlewToAltAzAsync(azimuth, altitude);
-            LogMessage("SlewToAltAzAsync", "Call completed OK");
+            TL.LogMessage("SlewToAltAzAsync", "Call completed OK");
         }
 
         public void SlewToCoordinates(double rightAscension, double declination)
@@ -1122,25 +1135,25 @@ namespace ASCOM.DynamicClients
                 }
             }
 
-            LogMessage("SlewToCoordinates", "Slew completed OK");
+            TL.LogMessage("SlewToCoordinates", "Slew completed OK");
         }
 
         public void SlewToCoordinatesAsync(double rightAscension, double declination)
         {
             client.SlewToCoordinatesAsync(rightAscension, declination);
-            LogMessage("SlewToCoordinatesAsync", "Call completed OK");
+            TL.LogMessage("SlewToCoordinatesAsync", "Call completed OK");
         }
 
         public void SlewToTarget()
         {
             client.SlewToTarget();
-            LogMessage("SlewToTarget", "Slew completed OK");
+            TL.LogMessage("SlewToTarget", "Slew completed OK");
         }
 
         public void SlewToTargetAsync()
         {
             client.SlewToTargetAsync();
-            LogMessage("SlewToTargetAsync", "Call completed OK");
+            TL.LogMessage("SlewToTargetAsync", "Call completed OK");
         }
 
         public bool Slewing
@@ -1164,7 +1177,7 @@ namespace ASCOM.DynamicClients
         public void SyncToTarget()
         {
             client.SyncToTarget();
-            LogMessage("SyncToTarget", "Sync completed OK");
+            TL.LogMessage("SyncToTarget", "Sync completed OK");
         }
 
         public double TargetDeclination
@@ -1203,11 +1216,11 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public DriveRates TrackingRate
+        public DeviceInterface.DriveRates TrackingRate
         {
             get
             {
-                return (DriveRates)client.TrackingRate;
+                return (DeviceInterface.DriveRates)client.TrackingRate;
             }
             set
             {
@@ -1215,17 +1228,17 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public ITrackingRates TrackingRates
+        public DeviceInterface.ITrackingRates TrackingRates
         {
             get
             {
                 // Create a intermediate list to hold the drive rates from the client because this works better than an array in the following foreach loop
-                List<DriveRates> ratesList = new List<DriveRates>();
+                List<DeviceInterface.DriveRates> ratesList = new List<DeviceInterface.DriveRates>();
 
                 // Get the tracking rates from the client and copy them to the intermediate list
                 foreach (Common.DeviceInterfaces.DriveRate driveRate in client.TrackingRates)
                 {
-                    ratesList.Add((DriveRates)driveRate);
+                    ratesList.Add((DeviceInterface.DriveRates)driveRate);
                 }
 
                 // Create a new TrackingRates return object
@@ -1248,7 +1261,7 @@ namespace ASCOM.DynamicClients
             set
             {
                 string utcDateString = value.ToString(SharedConstants.ISO8601_DATE_FORMAT_STRING) + "Z";
-                LogMessage("UTCDate", "Sending date string: " + utcDateString);
+                TL.LogMessage("UTCDate", "Sending date string: " + utcDateString);
                 client.UTCDate = value;
             }
         }
@@ -1256,7 +1269,7 @@ namespace ASCOM.DynamicClients
         public void Unpark()
         {
             client.Unpark();
-            LogMessage("Unpark", "Unparked OK");
+            TL.LogMessage("Unpark", "Unparked OK");
         }
 
         #endregion
@@ -1278,7 +1291,7 @@ namespace ASCOM.DynamicClients
         }
 
         /// <summary>
-        /// Log helper function that writes informational messages to the driver log
+        /// Log helper function that writes informational messages to the driver
         /// </summary>
         /// <param name="identifier">Identifier such as method name</param>
         /// <param name="message">Message to be logged.</param>
@@ -1289,14 +1302,14 @@ namespace ASCOM.DynamicClients
         }
 
         /// <summary>
-        /// Log helper function that writes error messages to the driver log
+        /// Log helper function that writes debug messages to the driver
         /// </summary>
         /// <param name="identifier">Identifier such as method name</param>
         /// <param name="message">Message to be logged.</param>
-        private void LogError(string identifier, string message)
+        private void LogDebug(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Error, identifier, message);
+            TL?.LogMessage(LogLevel.Debug, identifier, message);
         }
 
         /// <summary>

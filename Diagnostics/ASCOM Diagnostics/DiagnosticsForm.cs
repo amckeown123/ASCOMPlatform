@@ -32,6 +32,8 @@ using Microsoft.Win32;
 using PlatformUpdateChecker;
 using Semver;
 
+
+
 //using Semver;
 using static ASCOM.Utilities.Global;
 using static ASCOM.Utilities.RegistryAccess;
@@ -9416,10 +9418,6 @@ namespace ASCOM.Utilities
                 {
                     TL.LogMessage("RecurseProgramFiles 1", "PathTooLongException in directory; " + Folder);
                 }
-                catch (DirectoryNotFoundException)
-                {
-                    TL.LogMessage("RecurseProgramFiles 1", "DirectoryNotFoundException in directory; " + Folder);
-                }
                 catch (Exception ex)
                 {
                     LogException("RecurseProgramFiles 1", "Exception: " + ex.ToString());
@@ -9439,10 +9437,6 @@ namespace ASCOM.Utilities
                 {
                     TL.LogMessage("RecurseProgramFiles 2", "PathTooLongException in directory; " + Folder);
                 }
-                catch (DirectoryNotFoundException)
-                {
-                    TL.LogMessage("RecurseProgramFiles 2", "DirectoryNotFoundException in directory; " + Folder);
-                }
                 catch (Exception ex)
                 {
                     LogException("RecurseProgramFiles 2", "Exception: " + ex.ToString());
@@ -9457,10 +9451,6 @@ namespace ASCOM.Utilities
             catch (PathTooLongException)
             {
                 TL.LogMessage("RecurseProgramFiles 3", "PathTooLongException in directory; " + Folder);
-            }
-            catch (DirectoryNotFoundException)
-            {
-                TL.LogMessage("RecurseProgramFiles 3", "DirectoryNotFoundException in directory; " + Folder);
             }
             catch (Exception ex)
             {

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ASCOM.Utilities;
 using System.Net;
-using System.Web.Script.Serialization;
+
 
 
 namespace ASCOM.OpenWeatherMap
@@ -158,7 +158,7 @@ namespace ASCOM.OpenWeatherMap
                 Log.LogMessage("GetResponse", "reply {0}", ret);
 
                 dataGridView.Rows.Clear();
-                var jss = new JavaScriptSerializer();
+                var jss = new Nancy.Json.JavaScriptSerializer();
                 try
                 {
                     var wl = jss.Deserialize<WeatherList>(ret);

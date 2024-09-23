@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using ASCOM.Interface;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -16,7 +16,7 @@ namespace ASCOM.DriverAccess
 	/// <summary>
     /// Implements a telescope class to access any registered ASCOM telescope
     /// </summary>
-    public class Telescope : ITelescope, IDisposable 
+    public class Telescope : ITelescopeV4, IDisposable 
     {
         private TraceLogger TL;
         //object objScopeLateBound;
@@ -43,7 +43,7 @@ namespace ASCOM.DriverAccess
             foreach (Type objInterface in _memberFactory.GetInterfaces)
             {
                 if (objInterface.Equals(typeof(DeviceInterface.ITelescopeV3))) _isPlatform6Telescope = true; //If the type matches the V2 type flag this
-                if (objInterface.Equals(typeof(ITelescope))) _isPlatform5Telescope = true; //If the type matches the PIA type flag this
+                if (objInterface.Equals(typeof(ITelescopeV4))) _isPlatform5Telescope = true; //If the type matches the PIA type flag this
             }
 		}
 
@@ -159,7 +159,7 @@ namespace ASCOM.DriverAccess
                         returnValue.Add(r.Minimum, r.Maximum);
                     }
                 }
-                return returnValue;
+                return (IAxisRates)returnValue;
             }
 
 	        return new _AxisRates(axis, _memberFactory.GetObjType, _memberFactory.GetLateBoundObject);
@@ -1094,6 +1094,12 @@ namespace ASCOM.DriverAccess
             set { _memberFactory.CallMember(2, "UTCDate", new Type[] { }, new object[] { value }); }
         }
 
+        public ArrayList SupportedActions => throw new System.NotImplementedException();
+
+        public bool Connecting => throw new System.NotImplementedException();
+
+        public IStateValueCollection DeviceState => throw new System.NotImplementedException();
+
         /// <summary>
         /// Takes telescope out of the Parked state.
         /// The state of Tracking after unparking is undetermined. 
@@ -1129,8 +1135,23 @@ namespace ASCOM.DriverAccess
             }
         }
 
+        public string Action(string ActionName, string ActionParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Connect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Disconnect()
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
-	}
+    }
 	#endregion
 
 	#region Rate wrapper
@@ -1385,7 +1406,7 @@ namespace ASCOM.DriverAccess
     /// It is possible that the Rate.Maximum and Rate.Minimum properties will be equal. In this case, the Rate object expresses a single discrete rate. 
     /// Both the Rate.Maximum and Rate.Minimum properties are always expressed in units of degrees per second. 
     /// </summary>
-    public class AxisRates : ASCOM.Interface.IAxisRates
+    public class AxisRates : IAxisRates
     {
         //ASCOM.Interface.TelescopeAxes m_Axis;
         List<Rate> m_Rates = new List<Rate>();        //' Empty array, but an array nonetheless

@@ -1,8 +1,6 @@
 Option Strict Off
 Option Explicit On
-Imports System.Collections
 Imports System.Runtime.InteropServices
-Imports ASCOM.Utilities.Interfaces
 
 Friend Class ChooserForm
     Inherits System.Windows.Forms.Form
@@ -282,7 +280,7 @@ Friend Class ChooserForm
         ProfileStore = New RegistryAccess(ERR_SOURCE_CHOOSER) 'Get access to the profile store
         RetVal = SerialTraceFileName.ShowDialog()
         Select Case RetVal
-            Case Windows.Forms.DialogResult.OK
+            Case System.Windows.Forms.DialogResult.OK
                 'Save the reault
                 ProfileStore.WriteProfile("", SERIAL_FILE_NAME_VARNAME, SerialTraceFileName.FileName)
                 'Check and enable the serial trace enabled flag
@@ -328,7 +326,7 @@ Friend Class ChooserForm
         SetName(TRACE_TRANSFORM, MenuTransformTraceEnabled.Checked.ToString)
     End Sub
 
-   
+
     Private Sub MenuIncludeSerialTraceDebugInformation_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MenuIncludeSerialTraceDebugInformation.Click
         MenuIncludeSerialTraceDebugInformation.Checked = Not MenuIncludeSerialTraceDebugInformation.Checked 'Invert selection
         SetName(SERIAL_TRACE_DEBUG, MenuIncludeSerialTraceDebugInformation.Checked.ToString)

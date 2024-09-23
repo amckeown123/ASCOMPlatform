@@ -26,7 +26,7 @@ namespace ASCOM.Simulator
             btnDisable.Text = "Disable Logging";
 
             TraceLogger = new TextBoxTraceListener(this.txtTraffic);
-            Trace.Listeners.Add(TraceLogger);
+            System.Diagnostics.Trace.Listeners.Add(TraceLogger);
 
         }
 

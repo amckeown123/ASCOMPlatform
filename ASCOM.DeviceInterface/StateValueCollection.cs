@@ -5,27 +5,23 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 
-#if NETSTANDARD2_0
-//using ASCOM.Tools;
-#else
-using ASCOM.Utilities;
-#endif
-
 namespace ASCOM.DeviceInterface
 {
     /// <summary>
     /// StateValueCollection is a strongly-typed collection that is enumerable by both COM and .NET. The IStateValueCollection, IEnumerator and IEnumerable interfaces provide this polymorphism. 
     /// </summary>
-    /// <remarks>
-    /// <para>See <conceptualLink target="320982e4-105d-46d8-b5f9-efce3f4dafd4"/> for further information on how to implement DeviceState, which properties to include, and the implementation support provided by the Platform.</para>
-    /// </remarks>
     [Guid("5F55B067-21B3-4D44-A46C-11DC5EBA2931")]
     [ClassInterface(ClassInterfaceType.None)]
     [ComVisible(true)]
     public class StateValueCollection : IStateValueCollection, IEnumerable, IDisposable
     {
-        // Array to hold the state values
         private IStateValue[] stateValues;
+
+//#if NETSTANDARD2_0
+//        TraceLogger logger = new TraceLogger("StateValueCollection", true);
+//#else
+//        TraceLogger logger = new TraceLogger("StateValueCollection");
+//#endif
 
         #region Initialisers
 
@@ -34,41 +30,40 @@ namespace ASCOM.DeviceInterface
         /// </summary>
         public StateValueCollection()
         {
+            //logger.LogMessage("Init", $"No parameters");
+
             stateValues = new IStateValue[0];
+            //logger.LogMessage("Init", $"Count: {stateValues.Length}");
         }
 
         /// <summary>
         /// Create a state value collection populated with values a list of objects that implement IStateValue
         /// </summary>
-        /// <param name="stateValueList">List of objects that implement IStateValue.</param>
-        public StateValueCollection(List<IStateValue> stateValueList)
+        /// <param name="list">List of objects that implement IStateValue.</param>
+        public StateValueCollection(List<IStateValue> list)
         {
-            stateValues = stateValueList.ToArray<IStateValue>();
+            //logger.LogMessage("Init", $"List<IStateValue>");
+            stateValues = list.ToArray<IStateValue>();
+            //logger.LogMessage("Init", $"Count: {stateValues.Length}");
         }
 
         /// <summary>
         /// Create a state value collection populated with values a list of StateValue objects
         /// </summary>
-        /// <param name="stateValueList">List of StateValue objects.</param>
-        public StateValueCollection(List<StateValue> stateValueList)
+        /// <param name="list">List of StateValue objects.</param>
+        public StateValueCollection(List<StateValue> list)
         {
-            stateValues = new StateValue[stateValueList.Count];
+            //logger.LogMessage("Init", $"List<StateValue>");
+            stateValues = new StateValue[list.Count];
 
             int index = -1;
-            foreach (StateValue stateValue in stateValueList)
+            foreach (StateValue stateValue in list)
             {
                 index++;
                 stateValues[index] = stateValue;
             }
-        }
 
-        /// <summary>
-        /// Create a state value collection populated with values from an array of StateValue objects
-        /// </summary>
-        /// <param name="stateValueArray">Array of StateValue objects.</param>
-        public StateValueCollection(StateValue[] stateValueArray)
-        {
-            stateValues = stateValueArray;
+            //logger.LogMessage("Init", $"Count: {stateValues.Length}");
         }
 
         #endregion
@@ -78,44 +73,26 @@ namespace ASCOM.DeviceInterface
         /// <summary>
         /// Add an object that implements IStateValue to the state value collection.
         /// </summary>
-        /// <param name="stateValue">An object that implements the IStateValue interface</param>
+        /// <param name="value">An object that implements the IStateValue interface</param>
         [ComVisible(false)]
-        public void Add(IStateValue stateValue)
+        public void Add(IStateValue value)
         {
             Array.Resize(ref stateValues, stateValues.Length + 1);
-            stateValues[stateValues.Length - 1] = stateValue;
+            stateValues[stateValues.Length - 1] = value;
+            //logger.LogMessage("Add IStateValue", $"Count: {stateValues.Length}");
         }
 
         /// <summary>
         /// Add a new state value with the given name and value
         /// </summary>
-        /// <param name="stateName">The name of the state value</param>
-        /// <param name="stateValue">The state's value</param>
-        public void Add(string stateName, object stateValue)
+        /// <param name="name">The name of the state value</param>
+        /// <param name="value">The state's value</param>
+        public void Add(string name, object value)
         {
-            StateValue value = new StateValue(stateName, stateValue);
+            StateValue stateValue = new StateValue(name, value);
             Array.Resize(ref stateValues, stateValues.Length + 1);
-            stateValues[stateValues.Length - 1] = value;
-        }
-
-        /// <summary>
-        /// Add the local date and time to the state value collection.
-        /// </summary>
-        public void AddLocalDateTime()
-        {
-            StateValue currentDateTime = new StateValue(DateTime.Now);
-            Array.Resize(ref stateValues, stateValues.Length + 1);
-            stateValues[stateValues.Length - 1] = currentDateTime;
-        }
-
-        /// <summary>
-        /// Add the UTC date and time to the state value collection.
-        /// </summary>
-        public void AddUtcDateTime()
-        {
-            StateValue currentDateTime = new StateValue(DateTime.UtcNow);
-            Array.Resize(ref stateValues, stateValues.Length + 1);
-            stateValues[stateValues.Length - 1] = currentDateTime;
+            stateValues[stateValues.Length - 1] = stateValue;
+            //logger.LogMessage("Add Name, Value", $"Count: {stateValues.Length}");
         }
 
         #endregion
@@ -129,6 +106,7 @@ namespace ASCOM.DeviceInterface
         {
             get
             {
+                //logger.LogMessage("Count", $"Returning count: {stateValues.Length}");
                 return stateValues.Length;
             }
         }
@@ -139,6 +117,8 @@ namespace ASCOM.DeviceInterface
         /// <returns>An enumerator object.</returns>
         public IEnumerator GetEnumerator()
         {
+            //logger.LogMessage("GetEnumerator", $"Count: {stateValues.Length}");
+            //return new StateValueCollectionEnumerator(stateValues, logger);
             return new StateValueCollectionEnumerator(stateValues);
         }
 
@@ -152,12 +132,19 @@ namespace ASCOM.DeviceInterface
         {
             get
             {
+                //logger.LogMessage("This", $"Index: {index}, Count: {stateValues.Length}");
+
                 if ((index < 0) || (index >= stateValues.Length))
                     throw new InvalidValueException("StateValueCollection.Index", index.ToString(CultureInfo.CurrentCulture), $"1 to {stateValues.Length.ToString(CultureInfo.CurrentCulture)}");
-
                 try
                 {
+                    //logger.LogMessage("This", $"Returning index: {index}");
+
+                    //logger.LogMessage("This", $"StateValues is null: {stateValues is null}");
+
+                    //logger.LogMessage("This", $"Returning: {stateValues[index].Name}");
                     return stateValues[index];
+
                 }
                 catch (Exception ex)
                 {
@@ -171,7 +158,7 @@ namespace ASCOM.DeviceInterface
         #region IDisposable Members
 
         /// <summary>
-        /// Dispose of the state value collection.
+        /// Disopse of the state value collection.
         /// </summary>
         public void Dispose()
         {
@@ -185,7 +172,10 @@ namespace ASCOM.DeviceInterface
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
-            stateValues= null;
+            if (disposing)
+            {
+                //logger.LogMessage("Collection.Dispose", $"Dispose called - Disposing: {disposing}");
+            }
         }
 
         #endregion

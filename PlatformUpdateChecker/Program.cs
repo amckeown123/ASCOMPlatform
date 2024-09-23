@@ -1,19 +1,17 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
-using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
 using Semver;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
+using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using ASCOM.Utilities;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
-using System.Threading;
+
+
 
 namespace PlatformUpdateChecker
 {
@@ -58,7 +56,7 @@ namespace PlatformUpdateChecker
 
             // Add a listener for activation notifications
             LogMessage("Main", $"Adding OnActivated event handler...");
-            ToastNotificationManagerCompat.OnActivated += toastArgs =>
+            ToastNotificationManagerCompat.OnActivated += static toastArgs =>
             {
                 LogMessage("OnActivated", $"Entered - Arguments: {toastArgs.Argument}");
 

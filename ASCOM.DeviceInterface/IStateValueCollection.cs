@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace ASCOM.DeviceInterface
 {
     /// <summary>
     /// Interface defining collection of IStateValue objects
     /// </summary>
-    /// <remarks>
-    /// <para>See <conceptualLink target="320982e4-105d-46d8-b5f9-efce3f4dafd4"/> for further information on how to implement DeviceState, which properties to include, and the implementation support provided by the Platform.</para>
-    /// </remarks>
     [ComVisible(true)]
     [Guid("E1B91080-6D76-431E-BDBC-A1ECAFB92603")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
@@ -35,5 +35,11 @@ namespace ASCOM.DeviceInterface
         /// <returns>An enumerator</returns>
         /// <remarks></remarks>
         IEnumerator GetEnumerator();
+
+        ///// <summary>
+        ///// Disposes of the object and cleans up
+        ///// </summary>
+        ///// <remarks></remarks>
+        //void Dispose();
     }
 }

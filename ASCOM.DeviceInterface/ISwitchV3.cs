@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace ASCOM.DeviceInterface
 {
+    // -----------------------------------------------------------------------
+    // <summary>Defines the ISwitchV3 Interface</summary>
+    // -----------------------------------------------------------------------
     /// <summary>
     /// Defines the ISwitchV3 Interface
     /// </summary>
@@ -462,7 +465,7 @@ namespace ASCOM.DeviceInterface
         /// Applications must expect that, from time to time, some operational state values may not be present in the device response and must be prepared to handle “missing” values.
         /// </para>
         /// <para><b>Further Information</b></para>
-        /// <para>See <conceptualLink target="320982e4-105d-46d8-b5f9-efce3f4dafd4"/> for further information on how to implement DeviceState, which properties to include, and the implementation support provided by the Platform.</para>
+        /// <para>See <conceptualLink target="320982e4-105d-46d8-b5f9-efce3f4dafd4"/> for further information on implementation support within the ASCOM Platform.</para>
         /// </remarks>
         IStateValueCollection DeviceState { get; }
 

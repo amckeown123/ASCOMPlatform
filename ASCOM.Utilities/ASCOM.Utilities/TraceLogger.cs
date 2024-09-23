@@ -56,7 +56,7 @@ namespace ASCOM.Utilities
         /// <remarks>The LogFileType is used in the file name to allow you to quickly identify which of 
         /// several logs contains the information of interest.
         /// <para>This call enables automatic logging and sets the file type to "Default".</para></remarks>
-        public TraceLogger() : base()
+        public TraceLogger(string v) : base()
         {
 
             g_IdentifierWidth = IDENTIFIER_WIDTH_DEFAULT;
@@ -102,10 +102,14 @@ namespace ASCOM.Utilities
         /// </summary>
         /// <param name="LogFileType">String identifying the type of log e,g, Focuser, LX200, GEMINI, MoonLite, G11</param>
         /// <remarks>The LogFileType is used in the file name to allow you to quickly identify which of several logs contains the information of interest.</remarks>
-        public TraceLogger(string LogFileType) : this()
+        public TraceLogger(string LogFileType, bool v) : this()
         {
             g_LogFileType = LogFileType;
             g_Enabled = true; // Enable the log
+        }
+
+        public TraceLogger()
+        {
         }
 
         // IDisposable

@@ -5,7 +5,8 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
-using ASCOM.Interface;
+using System.Collections;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -17,7 +18,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to Focuser drivers
     /// </summary>
-    public class Focuser : IFocuser, IDisposable
+    public class Focuser : IFocuserV4, IDisposable
     {
         private TraceLogger TL;
         #region IFocuser constructors
@@ -158,6 +159,36 @@ namespace ASCOM.DriverAccess
             _memberFactory.CallMember(3, "SetupDialog", new Type[] {}, new object[] {});
         }
 
+        public string Action(string ActionName, string ActionParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CommandBlind(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CommandBool(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string CommandString(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Connect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Disconnect()
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         /// Step size (microns) for the focuser.
         /// Raises an exception if the focuser does not intrinsically know what the step size is. 
@@ -200,6 +231,24 @@ namespace ASCOM.DriverAccess
         {
             get { return Convert.ToDouble(_memberFactory.CallMember(1, "Temperature", new Type[] {}, new object[] {})); }
         }
+
+        public bool Connected { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        public string Description => throw new System.NotImplementedException();
+
+        public string DriverInfo => throw new System.NotImplementedException();
+
+        public string DriverVersion => throw new System.NotImplementedException();
+
+        public short InterfaceVersion => throw new System.NotImplementedException();
+
+        public string Name => throw new System.NotImplementedException();
+
+        public ArrayList SupportedActions => throw new System.NotImplementedException();
+
+        public bool Connecting => throw new System.NotImplementedException();
+
+        public IStateValueCollection DeviceState => throw new System.NotImplementedException();
 
         #endregion
     }

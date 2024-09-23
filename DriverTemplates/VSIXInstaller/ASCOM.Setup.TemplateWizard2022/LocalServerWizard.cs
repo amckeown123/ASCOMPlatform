@@ -4,10 +4,15 @@ using Microsoft.VisualStudio.TemplateWizard;
 using System.Windows.Forms;
 using EnvDTE;
 using System.IO;
-using ASCOM.Utilities;
+
+
+
 
 namespace ASCOM.Setup
 {
+    using ASCOM.DynamicClients;
+    using ASCOM.Utilities;
+
     public class LocalServerWizard : IWizard
     {
         #region Variables and constants
@@ -94,7 +99,7 @@ namespace ASCOM.Setup
             {
                 // Save user inputs.
                 DeviceId = inputForm.DeviceId;
-                DeviceName = inputForm.DeviceName;
+                DeviceName = inputForm.DeviceId;
                 DeviceClass = inputForm.DeviceClass;
                 DeviceInterface = inputForm.DeviceInterface;
                 InterfaceVersion = inputForm.InterfaceVersion;

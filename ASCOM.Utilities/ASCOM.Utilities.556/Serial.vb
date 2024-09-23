@@ -1,15 +1,16 @@
+
+Option Explicit On
 'Implements the Serial component
 
-Option Strict On
-Option Explicit On
-
 Imports System.IO.Ports
-Imports ASCOM.Utilities.Interfaces
-Imports ASCOM.Utilities.Exceptions
 Imports System.Runtime.InteropServices
 Imports System.Threading
-Imports System.Threading.Thread
-Imports System.Runtime.Remoting.Contexts
+Imports ASCOM.Utilities.Exceptions
+Imports ASCOM.Utilities.Interfaces
+
+
+
+
 
 #Region "Enums"
 'PortSpeed enum
@@ -186,7 +187,7 @@ Public Class Serial
 
     Private CallCountSemaphore As New System.Threading.Semaphore(1, 1)
     Private CallCount As Long ' Counter for calls to this component
-
+    Private CurrentThread As Object
     Private Const TIMEOUT_NUMBER As Integer = vbObjectError + &H402
     Private Const TIMEOUT_MESSAGE As String = "Timed out waiting for received data"
     Private Const SEMAPHORE_TIMEOUT As Integer = 1000
@@ -681,7 +682,7 @@ Public Class Serial
 
         Try
             MyTransactionID = GetNextTransactionID("ClearBuffers")
-            If DebugTrace Then Logger.LogMessage("ClearBuffers", FormatIDs(MyTransactionID) & " " & CurrentThread.ManagedThreadId & "Start")
+            If DebugTrace Then Logger.LogMessage("ClearBuffers", CStr(FormatIDs(MyTransactionID) & " " & CurrentThread.ManagedThreadId & "Start"))
             If GetSemaphore("ClearBuffers", MyTransactionID) Then
                 Try
                     If Not (m_Port Is Nothing) Then 'Ensure that ClearBuffers always succeeds for compatibility with MSCOMM32
@@ -1387,7 +1388,7 @@ Public Class Serial
                 End If
             End If
         Catch ex As Exception 'Log abandoned mutex exception
-            Logger.LogMessage("GetSemaphore", MyCallNumber.ToString & CurrentThread.ManagedThreadId & " " & "Exception: " & ex.ToString & " " & ex.StackTrace)
+            Logger.LogMessage("GetSemaphore", CStr(MyCallNumber.ToString & CurrentThread.ManagedThreadId & " " & "Exception: " & ex.ToString & " " & ex.StackTrace))
         End Try
         'Return False 'Didn't get the semaphore so return false
         Return GotSemaphore
@@ -1395,7 +1396,7 @@ Public Class Serial
 
     Private Sub ReleaseSemaphore(ByVal p_Caller As String, ByVal MyCallNumber As Long) 'Release the semaphore if we have it but don't error if there is a problem
         Try
-            If DebugTrace Then Logger.LogMessage(p_Caller, FormatIDs(MyCallNumber) & "Entered ReleaseSemaphore " & CurrentThread.ManagedThreadId)
+            If DebugTrace Then Logger.LogMessage(p_Caller, CStr(FormatIDs(MyCallNumber) & "Entered ReleaseSemaphore " & CurrentThread.ManagedThreadId))
             SerSemaphore.Release()
             If DebugTrace Then Logger.LogMessage(p_Caller, FormatIDs(MyCallNumber) & "Semaphore released OK")
         Catch ex As System.Threading.SemaphoreFullException
@@ -1450,7 +1451,7 @@ Public Class Serial
                 MyTransactionIDString = Left(Space(8), Len(LastTransactionID.ToString))
             End If
 
-            Return MyTransactionIDString & " " & CurrentThread.ManagedThreadId & " "
+            Return CStr(MyTransactionIDString & " " & CurrentThread.ManagedThreadId & " ")
         Else
             Return ""
         End If

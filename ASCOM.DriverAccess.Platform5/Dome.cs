@@ -5,7 +5,8 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 //
 using System;
-using ASCOM.Interface;
+using System.Collections;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -17,7 +18,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to ASCOM Dome drivers
     /// </summary>
-    public class Dome : IDome, IDisposable
+    public class Dome : IDomeV3, IDisposable
     {
         private TraceLogger TL;
         #region IDome constructors
@@ -414,6 +415,14 @@ namespace ASCOM.DriverAccess
             get { return (bool) (_memberFactory.CallMember(1, "Slewing", new Type[] {}, new object[] {})); }
         }
 
+        public string DriverVersion => throw new System.NotImplementedException();
+
+        public ArrayList SupportedActions => throw new System.NotImplementedException();
+
+        public bool Connecting => throw new System.NotImplementedException();
+
+        public IStateValueCollection DeviceState => throw new System.NotImplementedException();
+
         /// <summary>
         /// Synchronize the current position of the dome to the given azimuth.
         /// Raises an error if not supported or if a communications failure occurs. 
@@ -422,6 +431,21 @@ namespace ASCOM.DriverAccess
         public void SyncToAzimuth(double azimuth)
         {
             _memberFactory.CallMember(3, "SyncToAzimuth", new[] {typeof (double)}, new object[] {azimuth});
+        }
+
+        public string Action(string ActionName, string ActionParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Connect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Disconnect()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

@@ -68,7 +68,7 @@ namespace ASCOM.Simulator
         private const string sCsDriverDescription = "ASCOM Simulator Focuser Driver";
 
         /// <summary>
-        /// Sets up the permanent store for saved settings
+        /// Sets up the permenant store for saved settings
         /// </summary>
         private static readonly Profile Profile = new Profile();
 
@@ -81,10 +81,9 @@ namespace ASCOM.Simulator
         private bool _isConnected;
         private System.Timers.Timer _moveTimer; // drives the position and temperature changers
         internal int _position;
-        internal int _lastPosition;
         internal int Target;
         private double _lastTemp;
-        internal FocuserHandboxForm Handbox;
+        private FocuserHandboxForm Handbox;
         private DateTime lastTempUpdate;
         private Random RandomGenerator;
         internal double stepSize;
@@ -117,7 +116,7 @@ namespace ASCOM.Simulator
                 TL.Enabled = GetBool(SIMULATOR_TRACE, SIMULATOR_TRACE_DEFAULT);
                 LogMessage("New", "Started");
 
-                //check to see if the profile is OK
+                //check to see if the profile is ok
                 if (ValidateProfile())
                 {
                     LogMessage("New", "Validated OK");
@@ -127,19 +126,10 @@ namespace ASCOM.Simulator
                     MouseDownTime = DateTime.MaxValue; //Initialise to "don't accelerate" value
                     RandomGenerator = new Random(); //Temperature fluctuation random generator
                     LoadFocuserKeyValues();
-
-                    // Force the position variable to be zero if this is a relative focuser
-                    if (!Absolute) // This is a relative focuser
-                        _position = 0;
-
                     LogMessage("New", "Loaded Key Values");
                     Handbox = new FocuserHandboxForm(this);
-
-                    // Set the correct labels for the hand-box form
-                    Handbox.SetLabelText();
-
                     Handbox.Hide();
-                    LogMessage("FocusSettingsForm", "Created Hand box");
+                    LogMessage("FocusSettingsForm", "Created Handbox");
 
                     // start a timer that monitors and moves the focuser
                     _moveTimer = new System.Timers.Timer();
@@ -290,7 +280,7 @@ namespace ASCOM.Simulator
                     _moveTimer.Interval = 100;
                     LogMessage("Connected Set", "Enabling move timer.");
                     _moveTimer.Enabled = true;
-                    LogMessage("Connected Set", "Showing hand box.");
+                    LogMessage("Connected Set", "Showing handbox.");
                     Handbox.Show();
                 }
                 else
@@ -300,7 +290,7 @@ namespace ASCOM.Simulator
                     _moveTimer.Enabled = false;
                     LogMessage("Connected Set", "Removing move timer handler.");
                     _moveTimer.Elapsed -= MoveTimer_Tick;
-                    LogMessage("Connected Set", "Hiding hand box.");
+                    LogMessage("Connected Set", "Hiding handbox.");
                     Handbox.Hide();
                 }
                 _isConnected = value;
@@ -471,7 +461,7 @@ namespace ASCOM.Simulator
             var f = new FocuserSettingsForm(this);
             LogMessage("SetupDialog", "Created HandboxForm");
             f.ShowDialog();
-            LogMessage("SetupDialog", "Finished");
+            LogMessage("SetupDialog", "Finshed");
         }
 
         /// <summary>
@@ -619,7 +609,7 @@ namespace ASCOM.Simulator
             if (Target > MaxStep) Target = MaxStep; // Condition target within the acceptable range
             if (Target < 0) Target = 0;
 
-            if (_position != Target) //Actually move the focuser if necessary
+            if (_position != Target) //Actually move the focuse if necessary
             {
                 LogMessage("Moving", "LastOffset, Position, Target RateOfChange " + LastOffset + " " + _position + " " + Target + " " + RateOfChange);
 
@@ -712,10 +702,6 @@ namespace ASCOM.Simulator
             MaxIncrement = Convert.ToInt32(Profile.GetValue(sCsDriverId, "MaxIncrement", string.Empty, "50000"), CultureInfo.InvariantCulture);
             MaxStep = Convert.ToInt32(Profile.GetValue(sCsDriverId, "MaxStep", string.Empty, "50000"), CultureInfo.InvariantCulture);
             _position = Convert.ToInt32(Profile.GetValue(sCsDriverId, "Position", string.Empty, "25000"), CultureInfo.InvariantCulture);
-
-            // Save the last absolute position in case the focuser switches from absolute to relative mode.
-            _lastPosition=_position;
-
             stepSize = Convert.ToDouble(Profile.GetValue(sCsDriverId, "StepSize", string.Empty, "20"), CultureInfo.InvariantCulture);
             tempComp = Convert.ToBoolean(Profile.GetValue(sCsDriverId, "TempComp", string.Empty, "false"), CultureInfo.InvariantCulture);
             TempCompAvailable = Convert.ToBoolean(Profile.GetValue(sCsDriverId, "TempCompAvailable", string.Empty, "true"), CultureInfo.InvariantCulture);
@@ -758,20 +744,16 @@ namespace ASCOM.Simulator
             if (Temperature < TempMin) Temperature = TempMin;
             if (_position > MaxStep) _position = MaxStep;
 
-            // ASCOM items
+            //ascom items
             Profile.WriteValue(sCsDriverId, "Absolute", Absolute.ToString(CultureInfo.InvariantCulture));
             Profile.WriteValue(sCsDriverId, "MaxIncrement", MaxIncrement.ToString(CultureInfo.InvariantCulture));
             Profile.WriteValue(sCsDriverId, "MaxStep", MaxStep.ToString(CultureInfo.InvariantCulture));
+            Profile.WriteValue(sCsDriverId, "Position", _position.ToString(CultureInfo.InvariantCulture));
             Profile.WriteValue(sCsDriverId, "StepSize", stepSize.ToString(CultureInfo.InvariantCulture));
             Profile.WriteValue(sCsDriverId, "TempComp", tempComp.ToString(CultureInfo.InvariantCulture));
             Profile.WriteValue(sCsDriverId, "TempCompAvailable", TempCompAvailable.ToString(CultureInfo.InvariantCulture));
             Profile.WriteValue(sCsDriverId, "Temperature", Temperature.ToString(CultureInfo.InvariantCulture));
-
-            // Only save Position in absolute mode, there is no concept of "Position" in relative mode
-            if (Absolute)
-                Profile.WriteValue(sCsDriverId, "Position", _position.ToString(CultureInfo.InvariantCulture));
-
-            // Extended focuser items
+            //extended focuser items
             Profile.WriteValue(sCsDriverId, "CanHalt", CanHalt.ToString(CultureInfo.InvariantCulture));
             Profile.WriteValue(sCsDriverId, "CanStepSize", CanStepSize.ToString(CultureInfo.InvariantCulture));
             Profile.WriteValue(sCsDriverId, "Synchronous", Synchronous.ToString(CultureInfo.InvariantCulture));
@@ -785,7 +767,7 @@ namespace ASCOM.Simulator
         }
 
         /// <summary>
-        /// Saves specific state setting to the profile
+        /// Saves specific state setting to the profile a switchdevice
         /// </summary>
         public static void SaveProfileSetting(string keyName, string value)
         {
@@ -838,7 +820,7 @@ namespace ASCOM.Simulator
 
         /// <summary>
         /// This function registers the driver with the ASCOM Chooser and
-        /// is called automatically whenever this class is registered for COM Inter-op.
+        /// is called automatically whenever this class is registered for COM Interop.
         /// </summary>
         /// <param name="t">Type of the class being registered, not used.</param>
         /// <remarks>
@@ -849,7 +831,7 @@ namespace ASCOM.Simulator
         /// For this to work correctly, the option <c>Register for COM Interop</c>
         /// must be enabled in the project settings.
         /// </item>
-        /// <item>During setup, when the installer registers the assembly for COM Inter-op.</item>
+        /// <item>During setup, when the installer registers the assembly for COM Interop.</item>
         /// </list>
         /// This technique should mean that it is never necessary to manually register a driver with ASCOM.
         /// </remarks>
@@ -861,7 +843,7 @@ namespace ASCOM.Simulator
 
         /// <summary>
         /// This function unregisters the driver from the ASCOM Chooser and
-        /// is called automatically whenever this class is unregistered from COM Inter-op.
+        /// is called automatically whenever this class is unregistered from COM Interop.
         /// </summary>
         /// <param name="t">Type of the class being registered, not used.</param>
         /// <remarks>
@@ -872,7 +854,7 @@ namespace ASCOM.Simulator
         /// For this to work correctly, the option <c>Register for COM Interop</c>
         /// must be enabled in the project settings.
         /// </item>
-        /// <item>During uninstall, when the installer unregisters the assembly from COM Inter-op.</item>
+        /// <item>During uninstall, when the installer unregisters the assembly from COM Interop.</item>
         /// </list>
         /// This technique should mean that it is never necessary to manually unregister a driver from ASCOM.
         /// </remarks>

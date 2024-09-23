@@ -5,6 +5,8 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
+using System.Collections;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -16,7 +18,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     ///   Provides universal access to Switch drivers
     /// </summary>
-    public class Switch: ASCOM.Interface.ISwitch, IDisposable
+    public class Switch: ISwitchV3, IDisposable
     {
         private TraceLogger TL;
         #region Switch constructors
@@ -151,6 +153,12 @@ namespace ASCOM.DriverAccess
             get { return (short)_memberFactory.CallMember(1, "MaxSwitch", new Type[] { }, new object[] { }); }
         }
 
+        public ArrayList SupportedActions => throw new System.NotImplementedException();
+
+        public bool Connecting => throw new System.NotImplementedException();
+
+        public IStateValueCollection DeviceState => throw new System.NotImplementedException();
+
         /// <summary>
         /// Sets a switch to the specified state
         /// </summary>
@@ -169,6 +177,96 @@ namespace ASCOM.DriverAccess
         public void SetSwitchName(short ID, string State)
         {
             _memberFactory.CallMember(3, "SetSwitchName", new Type[] { typeof(short), typeof(string) }, new object[] { ID, State });
+        }
+
+        public string Action(string ActionName, string ActionParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CommandBlind(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CommandBool(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string CommandString(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string GetSwitchDescription(short id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CanWrite(short id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public double MaxSwitchValue(short id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public double MinSwitchValue(short id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public double SwitchStep(short id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public double GetSwitchValue(short id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetSwitchValue(short id, double value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Connect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Disconnect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetAsync(short id, bool state)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetAsyncValue(short id, double value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CanAsync(short id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool StateChangeComplete(short id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CancelAsync(short id)
+        {
+            throw new System.NotImplementedException();
         }
     }
         #endregion

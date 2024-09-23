@@ -1,5 +1,6 @@
 ﻿namespace ASCOM.Setup
 {
+    using ASCOM.Setup;
 	partial class LocalServerForm
 	{
 		/// <summary>

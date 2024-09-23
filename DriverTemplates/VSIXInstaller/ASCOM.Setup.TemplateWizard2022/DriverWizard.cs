@@ -11,7 +11,7 @@ namespace ASCOM.Setup
     {
         #region Variables and constants
 
-        private DeviceDriverForm inputForm;
+        private ASCOM.Setup.DeviceDriverForm inputForm;
 
         const string INTERFACE_METHODS_INSERTION_POINT = "//INTERFACECODEINSERTIONPOINT"; // Find the insertion point in the Driver.xx item.
         const string START_OF_COMMANDXXX_METHODS = "//STARTOFCOMMANDXXXMETHODS"; // Start of the CommandXXX method definitions.

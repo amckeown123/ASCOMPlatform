@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace ASCOM.DeviceInterface
 {
+
     /// <summary>
     /// Returns a collection of supported DriveRate values that describe the permissible values of the TrackingRate property for this telescope type.
     /// </summary>

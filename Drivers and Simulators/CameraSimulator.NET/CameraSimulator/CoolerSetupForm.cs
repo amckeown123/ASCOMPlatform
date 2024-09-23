@@ -1,11 +1,14 @@
-﻿using System;
+﻿using NPOI.HSSF.Record;
+using System;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
+
+
 
 namespace ASCOM.Simulator
 {
+    using System.Windows.Forms.Layout;
     public partial class CoolerSetupForm : Form
     {
         private const decimal MINIMUM_TEMPERATURE = -273.15m; // Absolute zero as a decimal constant
@@ -24,6 +27,8 @@ namespace ASCOM.Simulator
         private bool coolingConfigurationChanged = false;
 
         private Timer graphRefreshTimer = new Timer();
+        private object SeriesChartType;
+        private object ChartDashStyle;
 
         #region Initialiser and Form Load
 
@@ -676,11 +681,11 @@ namespace ASCOM.Simulator
                 // Set axis titles and tooltips
                 CoolingChart.ChartAreas[0].AxisX.Title = "Time (seconds)";
                 CoolingChart.ChartAreas[0].AxisX.TitleAlignment = StringAlignment.Center;
-                CoolingChart.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Horizontal;
+                CoolingChart.ChartAreas[0].AxisX.TextOrientation = TextOrientation.None;
 
                 CoolingChart.ChartAreas[0].AxisY.Title = "CCD Temperature (C) ";
                 CoolingChart.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Center;
-                CoolingChart.ChartAreas[0].AxisY.TextOrientation = TextOrientation.Rotated270;
+                CoolingChart.ChartAreas[0].AxisY.TextOrientation = TextOrientation.RotLeft;
 
                 CoolingChart.ChartAreas[0].AxisX.ToolTip = "Time through the Cooling cycle";
                 CoolingChart.ChartAreas[0].AxisY.ToolTip = "CCD temperature as the cooling cycle progresses";

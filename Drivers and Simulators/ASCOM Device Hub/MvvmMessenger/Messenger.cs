@@ -17,22 +17,23 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Windows.Threading;
-
 using ASCOM.DeviceHub.MvvmMessenger.Helpers;
+using Microsoft.AspNetCore.Componets;
+using ASCOM.DeviceHub.MvvmMessenger.Helpers;
+using Microsoft.Diagnostics.Tracing.Parsers.MicrosoftWindowsWPF;
 
 namespace ASCOM.DeviceHub.MvvmMessenger
 {
-	/// <summary>
-	/// The Messenger is a class allowing objects to exchange messages.
-	/// </summary>
-	////[ClassInfo(typeof(Messenger),
-	////    VersionString = "5.4.21",
-	////    DateString = "201708281410",
-	////    Description = "A messenger class allowing a class to send a message to multiple recipients",
-	////    UrlContacts = "http://www.galasoft.ch/contact_en.html",
-	////    Email = "laurent@galasoft.ch")]
-	public class Messenger : IMessenger
+    /// <summary>
+    /// The Messenger is a class allowing objects to exchange messages.
+    /// </summary>
+    ////[ClassInfo(typeof(Messenger),
+    ////    VersionString = "5.4.21",
+    ////    DateString = "201708281410",
+    ////    Description = "A messenger class allowing a class to send a message to multiple recipients",
+    ////    UrlContacts = "http://www.galasoft.ch/contact_en.html",
+    ////    Email = "laurent@galasoft.ch")]
+    public class Messenger : IMessenger
 	{
 		private static readonly object CreationLock = new object();
 		private static IMessenger _defaultInstance;
@@ -575,9 +576,9 @@ namespace ASCOM.DeviceHub.MvvmMessenger
 		{
 			if ( !_isCleanupRegistered )
 			{
-				Action cleanupAction = Cleanup;
+                Action cleanupAction = Cleanup;
 
-				Dispatcher.CurrentDispatcher.BeginInvoke( cleanupAction, DispatcherPriority.ApplicationIdle, null );
+                Dispatcher.CurrentDispatcher.BeginInvoke(cleanupAction, DispatcherPriority.ApplicationIdle, null);
 				_isCleanupRegistered = true;
 			}
 		}

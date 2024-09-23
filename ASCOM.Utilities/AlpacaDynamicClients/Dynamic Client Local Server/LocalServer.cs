@@ -17,6 +17,7 @@ using System.Windows.Forms;
 
 namespace ASCOM.DynamicClients
 {
+    
     public static class Server
     {
 
@@ -38,7 +39,7 @@ namespace ASCOM.DynamicClients
         private static List<ClassFactory> classFactories; // Served COM object class factories
         private static readonly string localServerAppId = "{ec90cd67-0083-46ed-a65b-907a85982dfb}"; // Our AppId
         private static readonly object lockObject = new object(); // Counter lock object
-        private static TraceLogger TL; // TraceLogger for the local server (not the served driver, which has its own) - primarily to help debug local server issues
+        private static ASCOM.Utilities.TraceLogger TL; // TraceLogger for the local server (not the served driver, which has its own) - primarily to help debug local server issues
         private static Task GCTask; // The garbage collection task
         private static CancellationTokenSource GCTokenSource; // Token source used to end periodic garbage collection.
 
@@ -57,7 +58,7 @@ namespace ASCOM.DynamicClients
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             // Create a trace logger for the local server.
-            TL = new TraceLogger("AlpacaSim.LocalServer", true)
+            TL = new ASCOM.Utilities.TraceLogger("AlpacaSim.LocalServer", true)
             {
                 Enabled = true // Enable to debug local server operation (not usually required). Drivers have their own independent trace loggers.
             };
@@ -82,7 +83,7 @@ namespace ASCOM.DynamicClients
             TL?.LogMessage("Main", $"Creating host form");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            localServerMainForm = new LocalServerForm();
+            localServerMainForm = new LocalServerForm(TL);
             if (startedByCOM) localServerMainForm.WindowState = FormWindowState.Minimized;
 
             // Register the class factories of the served objects
@@ -959,13 +960,13 @@ namespace ASCOM.DynamicClients
             client.ClientConfiguration.IpAddress = state.IpAddressString;
             client.ClientConfiguration.Logger = TL;
             client.ClientConfiguration.LongDeviceResponseTimeout = state.LongDeviceResponseTimeout;
-            client.ClientConfiguration.UserName = state.UserNameEncrypted.Unencrypt(TL);
-            client.ClientConfiguration.Password = state.PasswordEncrypted.Unencrypt(TL);
+            client.ClientConfiguration.Password = state.Password;
             client.ClientConfiguration.PortNumber = state.PortNumber;
             client.ClientConfiguration.RemoteDeviceNumber = state.RemoteDeviceNumber;
             client.ClientConfiguration.ServiceType = state.ServiceType;
             client.ClientConfiguration.StandardDeviceResponseTimeout = state.StandardDeviceResponseTimeout;
             client.ClientConfiguration.StrictCasing = true;
+            client.ClientConfiguration.UserName = state.UserName;
             client.ClientConfiguration.ImageArrayCompression = state.ImageArrayCompression;
             client.ClientConfiguration.ImageArrayTransferType = state.ImageArrayTransferType;
 
@@ -1003,8 +1004,8 @@ namespace ASCOM.DynamicClients
                     setupForm.EstablishConnectionTimeout = state.EstablishConnectionTimeout;
                     setupForm.StandardTimeout = state.StandardDeviceResponseTimeout;
                     setupForm.LongTimeout = state.LongDeviceResponseTimeout;
-                    setupForm.UserNameEncrypted = state.UserNameEncrypted;
-                    setupForm.PasswordEncrypted = state.PasswordEncrypted;
+                    setupForm.UserName = state.UserName;
+                    setupForm.Password = state.Password;
                     setupForm.ManageConnectLocally = state.ManageConnectLocally;
                     setupForm.ImageArrayTransferType = state.ImageArrayTransferType;
                     setupForm.ImageArrayCompression = state.ImageArrayCompression;
@@ -1032,8 +1033,8 @@ namespace ASCOM.DynamicClients
                         state.EstablishConnectionTimeout = (int)setupForm.EstablishConnectionTimeout;
                         state.StandardDeviceResponseTimeout = (int)setupForm.StandardTimeout;
                         state.LongDeviceResponseTimeout = (int)setupForm.LongTimeout;
-                        state.UserNameEncrypted = setupForm.UserNameEncrypted;
-                        state.PasswordEncrypted = setupForm.PasswordEncrypted;
+                        state.UserName = setupForm.UserName;
+                        state.Password = setupForm.Password;
                         state.ManageConnectLocally = setupForm.ManageConnectLocally;
                         state.ImageArrayTransferType = setupForm.ImageArrayTransferType;
                         state.ImageArrayCompression = setupForm.ImageArrayCompression;

@@ -150,21 +150,34 @@ namespace ASCOM.DynamicClients
         /// </summary>
         public void SetupDialog()
         {
-            AlpacaDome newclient = Server.SetupDialogue<AlpacaDome>(state, TL);
-            if (!(newclient is null))
+            if (connectedState) // Only display Alpaca configuration buttons if already connected
             {
-                // Dispose of the old client
-                try
+                using (SetupConnectedForm connectedForm = new SetupConnectedForm(TL))
                 {
-                    client?.Dispose();
+                    connectedForm.DeviceNumber = state.RemoteDeviceNumber;
+                    connectedForm.DeviceType = state.DeviceType.ToDeviceString();
+                    connectedForm.HostIpAddress = $"{state.ServiceType}://{state.IpAddressString}:{state.PortNumber}";
+                    connectedForm.ShowDialog();
                 }
-                catch (Exception ex)
+            }
+            else // Show dialogue
+            {
+                AlpacaDome newclient = Server.SetupDialogue<AlpacaDome>(state, TL);
+                if (!(newclient is null))
                 {
-                    LogMessage("SetupDialog", $"Ignoring exception when disposing current client: {ex.Message}.\r\n{ex}");
-                }
+                    // Dispose of the old client
+                    try
+                    {
+                        client?.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogMessage("SetupDialog", $"Ignoring exception when disposing current client: {ex.Message}.\r\n{ex}");
+                    }
 
-                // Replace original client with new client
-                client = newclient;
+                    // Replace original client with new client
+                    client = newclient;
+                }
             }
         }
 

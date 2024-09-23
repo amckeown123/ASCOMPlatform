@@ -103,7 +103,6 @@ namespace ASCOM.Simulator
                 chkTempCompEnabled.Checked = false;
                 chkTempCompEnabled.ForeColor = System.Drawing.Color.White;
             }
-
         }
 
         /// <summary>
@@ -202,32 +201,15 @@ namespace ASCOM.Simulator
             {
                 try
                 {
-                    // Make appropriate validation assessment depending on whether the focuser is absolute or relative
-                    if (_focuser.Absolute) // Absolute focuser
+                    if (Convert.ToInt32(txtGoTo.Text) > _focuser.MaxStep)
                     {
-                        if (Convert.ToInt32(txtGoTo.Text) > _focuser.MaxStep)
-                        {
-                            GoToErrorProvider.SetError(this.txtGoTo, "Exceeds maximum value");
-                            Ok = false;
-                        }
-                        else if (Convert.ToInt32(txtGoTo.Text) < 0)
-                        {
-                            GoToErrorProvider.SetError(this.txtGoTo, "Less than minimum value");
-                            Ok = false;
-                        }
+                        GoToErrorProvider.SetError(this.txtGoTo, "Exceeds maximum value");
+                        Ok = false;
                     }
-                    else // Relative focuser
+                    else if (Convert.ToInt32(txtGoTo.Text) < 0)
                     {
-                        if (Convert.ToInt32(txtGoTo.Text) > _focuser.MaxStep)
-                        {
-                            GoToErrorProvider.SetError(this.txtGoTo, "Exceeds maximum value");
-                            Ok = false;
-                        }
-                        else if (Convert.ToInt32(txtGoTo.Text) < -_focuser.MaxStep)
-                        {
-                            GoToErrorProvider.SetError(this.txtGoTo, "Less than minimum value");
-                            Ok = false;
-                        }
+                        GoToErrorProvider.SetError(this.txtGoTo, "Less than minimum value");
+                        Ok = false;
                     }
                 }
                 catch
@@ -240,30 +222,10 @@ namespace ASCOM.Simulator
             }
             else btnGoTo.Enabled = false;
 
+
             return Ok;
+
         }
 
-        internal void SetLabelText()
-        {
-            // Update hand-box labels depending on whether the focuser is in relative or absolute mode.
-            if (_focuser.Absolute)  // Absolute mode
-            {
-                lblPosition.Text = "Position:";
-                lblTarget.Text = "Target:";
-                btnGoTo.Text = "GoTo";
-                lblMode.Text= "Absolute Mode";
-                btnMoveIn.Visible = true;
-                btnMoveOut.Visible = true;
-            }
-            else // Relative mode
-            {
-                lblPosition.Text = "Offset from 0:";
-                lblTarget.Text = "Move By:";
-                btnGoTo.Text = "Move";
-                lblMode.Text = "Relative Mode";
-                btnMoveIn.Visible = false;
-                btnMoveOut.Visible = false;
-            }
-        }
     }
 }

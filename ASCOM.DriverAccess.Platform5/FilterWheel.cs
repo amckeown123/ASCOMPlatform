@@ -5,7 +5,8 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
-using ASCOM.Interface;
+using System.Collections;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -17,7 +18,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to FilterWheel drivers
     /// </summary>
-    public class FilterWheel : IFilterWheel, IDisposable
+    public class FilterWheel : IFilterWheelV3, IDisposable
     {
         TraceLogger TL;
         #region FilterWheel constructors
@@ -129,6 +130,22 @@ namespace ASCOM.DriverAccess
             set { _memberFactory.CallMember(2, "Position", new Type[] {}, new object[] {value}); }
         }
 
+        public string Description => throw new System.NotImplementedException();
+
+        public string DriverInfo => throw new System.NotImplementedException();
+
+        public string DriverVersion => throw new System.NotImplementedException();
+
+        public short InterfaceVersion => throw new System.NotImplementedException();
+
+        public string Name => throw new System.NotImplementedException();
+
+        public ArrayList SupportedActions => throw new System.NotImplementedException();
+
+        public bool Connecting => throw new System.NotImplementedException();
+
+        public IStateValueCollection DeviceState => throw new System.NotImplementedException();
+
         /// <summary>
         /// Launches a configuration dialog box for the driver.  The call will not return
         /// until the user clicks OK or cancel manually.
@@ -137,6 +154,36 @@ namespace ASCOM.DriverAccess
         public void SetupDialog()
         {
             _memberFactory.CallMember(3, "SetupDialog", new Type[] {}, new object[] {});
+        }
+
+        public string Action(string ActionName, string ActionParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CommandBlind(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CommandBool(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string CommandString(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Connect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Disconnect()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion
