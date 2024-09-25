@@ -35,6 +35,9 @@
   <ItemGroup>
     <None Include="..\..\ASCOM.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="8.0.0" />
+  </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)installercopy.cmd" "$(SolutionDir)" "$(TargetDir)$(TargetName).*"
 		</PostBuildEvent>

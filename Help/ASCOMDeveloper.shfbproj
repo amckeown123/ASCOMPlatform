@@ -74,6 +74,7 @@
         <Filter entryType="Interface" fullName="ASCOM.DeviceInterface.ISwitchV2" filterName="ISwitchV2" isExposed="False" />
         <Filter entryType="Interface" fullName="ASCOM.DeviceInterface.ITelescopeV3" filterName="ITelescopeV3" isExposed="False" />
         <Filter entryType="Interface" fullName="ASCOM.DeviceInterface.IVideo" filterName="IVideo" isExposed="False" />
+        <Filter entryType="Enumeration" fullName="ASCOM.DeviceInterface.Operation" filterName="Operation" isExposed="False" />
       </Filter>
       <Filter entryType="Namespace" fullName="ASCOM.Utilities" isExposed="True">
         <Filter entryType="Class" fullName="ASCOM.Utilities.ASCOMProfile" filterName="ASCOMProfile" isExposed="True">
@@ -139,7 +140,7 @@
     <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
     <KeepLogFile>True</KeepLogFile>
     <SyntaxFilters>C#, Visual Basic, Managed C++</SyntaxFilters>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
     <SdkLinkTarget>Blank</SdkLinkTarget>
@@ -237,6 +238,18 @@
       <ImageId>alpaca1</ImageId>
       <AlternateText>alpaca 1</AlternateText>
     </Image>
+    <Image Include="Tools and Features\DiagnosticsLogFileFolder.png">
+      <ImageId>DiagnosticsLogFileFolder</ImageId>
+      <AlternateText>Diagnostics Log File Folder</AlternateText>
+    </Image>
+    <Image Include="Tools and Features\DiagnosticsLogFileLocation.png">
+      <ImageId>DiagnosticsLogFileLocation</ImageId>
+      <AlternateText>Diagnostics Log File Location</AlternateText>
+    </Image>
+    <Image Include="Tools and Features\DiagnosticsSelectSimulators.png">
+      <ImageId>DiagnosticsSelectSimulators</ImageId>
+      <AlternateText>Diagnostics Select Simulators</AlternateText>
+    </Image>
     <Image Include="Tools and Features\OCHSetup.PNG">
       <ImageId>OCHSetup</ImageId>
       <AlternateText>OCHSetup</AlternateText>
@@ -276,6 +289,10 @@
       <CopyToMedia>True</CopyToMedia>
     </Image>
     <Content Include="styles\branding-Help1.css" />
+    <Image Include="Tools and Features\ProfileExplorer.png">
+      <ImageId>ProfileExplorer</ImageId>
+      <AlternateText>Profile Explorer</AlternateText>
+    </Image>
     <None Include="Developer Information\Astronomical Coordinates.aml" />
     <None Include="Developer Information\Developer Links.aml" />
     <None Include="Developer Information\DeviceState.aml" />

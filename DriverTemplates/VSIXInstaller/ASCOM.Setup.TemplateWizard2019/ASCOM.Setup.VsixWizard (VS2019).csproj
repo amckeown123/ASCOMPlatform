@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface">
-      <Version>16.10.31320.204</Version>
+      <Version>17.10.40170</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

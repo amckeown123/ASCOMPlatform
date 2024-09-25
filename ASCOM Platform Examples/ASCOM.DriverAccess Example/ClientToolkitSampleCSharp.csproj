@@ -10,6 +10,15 @@
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
+    <ProjectReference Include="..\..\ASCOM.Utilities\AlpacaDynamicClients\Dynamic Client Local Server\Dynamic Client Local Server.csproj" />
+    <ProjectReference Include="..\..\Drivers and Simulators\ASCOM Device Hub\DeviceHub\DeviceHub.csproj" />
+    <ProjectReference Include="..\..\Drivers and Simulators\CameraHub\CameraHub.csproj" />
+    <ProjectReference Include="..\..\Drivers and Simulators\Dome Simulator .NET\VBDomeSimulator.vbproj" />
+    <ProjectReference Include="..\..\Drivers and Simulators\FilterWheel Simulator .NET\FilterWheelDriver\FilterWheelSimDriver.vbproj" />
+    <ProjectReference Include="..\..\Drivers and Simulators\Rotator Simulator\RotatorDriver\RotatorDriver.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="ASCOM.DeviceInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>

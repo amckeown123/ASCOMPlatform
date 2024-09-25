@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
+
 namespace RemoveOldTemplates
 {
     internal enum EventLogErrors : int

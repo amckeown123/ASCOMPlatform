@@ -78,7 +78,7 @@ namespace ASCOM.DeviceHub
         /// Initializes a new instance of the <see cref="DeviceHub"/> class.
         /// Must be public for COM registration.
         /// </summary>
-        public Telescope()
+        public Telescope(string progID)
         {
             _driverID = Marshal.GenerateProgIdForType(this.GetType());
             _driverDescription = GetDriverDescriptionFromAttribute();

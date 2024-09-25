@@ -34,6 +34,7 @@ namespace ASCOM.DynamicClients
 
         private bool asyncConnectDisconnect; // Flag indicating whether an asynchronous Connect or Disconnect operation is in progress
         private bool newConnectedState; // The state to which connectedState will be set when an asynchronous Connect / Disconnect operation completes
+        private string progID;
 
         #region Initialisation and Dispose
 
@@ -79,6 +80,11 @@ namespace ASCOM.DynamicClients
                 LogMessage(deviceType.ToString(), $"Initialisation exception: {ex}");
                 MessageBox.Show($"{ex.Message}", "Exception creating ASCOM.AlpacaSim.SafetyMonitor", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public Rotator(string progID)
+        {
+            this.progID = progID;
         }
 
         /// <summary>

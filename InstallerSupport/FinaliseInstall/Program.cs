@@ -6,11 +6,12 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using System.Windows.Forms;
-using System.Management;
+
 using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Globalization;
+using System.Management;
 
 namespace FinaliseInstall
 {

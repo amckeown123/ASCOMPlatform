@@ -75,7 +75,7 @@ namespace ASCOM.DeviceHub
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceHub"/> class.
         /// </summary>
-        public Focuser()
+        public Focuser(string progID)
         {
             _driverID = Marshal.GenerateProgIdForType(this.GetType());
             _driverDescription = GetDriverDescriptionFromAttribute();

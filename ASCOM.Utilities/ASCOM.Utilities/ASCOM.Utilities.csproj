@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Nancy" Version="2.0.0" />
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
   </ItemGroup>
   <PropertyGroup>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
