@@ -6,12 +6,12 @@
     <AssemblyName>ASCOM.DeviceHub</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Images\ASCOM.ico</ApplicationIcon>
   </PropertyGroup>
+
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -25,6 +25,9 @@
     <Compile Include="..\ProductAssemblyInfo.cs">
       <Link>ProductAssemblyInfo.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WindowsBase_Core.STW" Version="4.0.30319.1" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icon down arrow.png" />
@@ -42,11 +45,12 @@
     <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
+    <ProjectReference Include="..\..\..\ASCOM.Utilities\AlpacaDynamicClients\Dynamic Client Local Server\Dynamic Client Local Server.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
     <ProjectReference Include="..\MvvmMessenger\MvvmMessenger.csproj" />
   </ItemGroup>
   <PropertyGroup>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 </Project>

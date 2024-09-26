@@ -1162,6 +1162,11 @@ namespace ASCOM.DeviceHub
             return retval;
         }
 
+        internal static void Startup(object args)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion Command Line Arguments
     }
 }

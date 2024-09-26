@@ -1,21 +1,24 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
+using System.Threading;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Threading;
 using System.Windows;
+using System.Reflection;
+using System.Linq;
+
 
 namespace ASCOM.DeviceHub
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
+
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
 	{
-		protected override void OnStartup( StartupEventArgs e )
+        
+        protected override void OnStartup( System.Windows.StartupEventArgs e)
 		{
-			base.OnStartup( e );
+			base.OnStartup( e);
 
 			try
 			{
@@ -24,13 +27,15 @@ namespace ASCOM.DeviceHub
 				string mutexName = "Global\\" + GetProductGuid();
 				bool createdNew;
 
-				MutexAccessRule allowEveryoneRule = new MutexAccessRule( new SecurityIdentifier( WellKnownSidType.WorldSid, null)
-																							   , MutexRights.FullControl
-																							   , AccessControlType.Allow );
-				MutexSecurity securitySettings = new MutexSecurity();
-				securitySettings.AddAccessRule( allowEveryoneRule );
-
-				using ( Mutex mutex = new Mutex( false, mutexName, out createdNew, securitySettings ) )
+                MutexAccessRule allowEveryoneRule =
+                    new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid
+                                                               , null)
+                                       , MutexRights.FullControl
+                                       , AccessControlType.Allow
+                                       );
+                MutexSecurity securitySettings = new MutexSecurity();
+                securitySettings.AddAccessRule(allowEveryoneRule);
+                Mutex mutex = new Mutex(false, mutexName, out createdNew);
 				{
 					bool hasHandle = false;
 
@@ -42,16 +47,16 @@ namespace ASCOM.DeviceHub
 
 							if ( !hasHandle )
 							{
-								MessageBox.Show( "Another instance of the Device Hub is already running...Exiting!", "Second Instance Error" );
+								System.Windows.MessageBox.Show( "Another instance of the Device Hub is already running...Exiting!" );
 								App.Current.Shutdown();
 							}
 						}
 						catch ( AbandonedMutexException )
 						{ }
 
-						// Launch the ASCOM Local Server
+                        // Launch the ASCOM Local Server
 
-						Server.Startup( e.Args );
+                        Server.Startup(e.Args);
 					}
 					finally
 					{
@@ -67,9 +72,9 @@ namespace ASCOM.DeviceHub
 				//string msg = $"DeviceHub caught a fatal exception during startup\r\n{xcp.Message}";
 				//MessageBox.Show( msg, "DeviceHub", MessageBoxButton.OK, MessageBoxImage.Stop );
 
-				if ( Application.Current != null )
+				if ( System.Windows.Application.Current != null )
 				{
-					Application.Current.Shutdown();
+					System.Windows.Application.Current.Shutdown();
 				}
 			}
 		}

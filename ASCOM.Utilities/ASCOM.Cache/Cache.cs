@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Caching;
 using System.Threading;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ASCOM.Utilities.Exceptions;
 using static ASCOM.Utilities.Global;
+using System.Runtime.Caching;
 
 namespace ASCOM.Utilities
 {

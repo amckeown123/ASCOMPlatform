@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <ProjectType>Local</ProjectType>
-    <MyType>Windows</MyType>
+    <MyType>WindowsForms</MyType>
     <OutputType>Library</OutputType>
     <AssemblyMajorVersion>5</AssemblyMajorVersion>
     <AssemblyMinorVersion>0</AssemblyMinorVersion>
@@ -40,7 +40,7 @@
     <RegisterForComInterop>false</RegisterForComInterop>
     <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
@@ -53,7 +53,7 @@
     <RegisterForComInterop>false</RegisterForComInterop>
     <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -164,5 +164,6 @@
   </ItemGroup>
   <PropertyGroup>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <StartupObject>ASCOM.Utilities.My.MyApplication</StartupObject>
   </PropertyGroup>
 </Project>

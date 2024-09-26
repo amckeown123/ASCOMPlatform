@@ -5,6 +5,7 @@ using ASCOM.DeviceInterface;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Threading;
+using ASCOM.DynamicClients;
 
 namespace ASCOM.Simulator
 {

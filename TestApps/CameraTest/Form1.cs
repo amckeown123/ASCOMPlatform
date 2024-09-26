@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -59,11 +59,11 @@ namespace CameraTest
         {
             if (btnConnect.Text == @"Connect")
             {
-                if (! String.IsNullOrEmpty(cameraId))
+                if (!String.IsNullOrEmpty(cameraId))
                 {
                     try
                     {
-                        oCamera = new Camera(cameraId) {Connected = true};
+                        oCamera = new Camera(cameraId) { Connected = true };
                     }
                     catch (Exception ex)
                     {
@@ -170,8 +170,8 @@ namespace CameraTest
             checkBoxDarkFrame.Enabled = oCamera.HasShutter;
 
             // set Camera Version 2 properties, the client should return this correctly, even for an unversioned driver.
-                    //this.bayerOffsetX = oCamera.BayerOffsetX;
-                    //this.bayerOffsetY = oCamera.BayerOffsetY;
+            //this.bayerOffsetX = oCamera.BayerOffsetX;
+            //this.bayerOffsetY = oCamera.BayerOffsetY;
             if (oCamera.InterfaceVersion >= 2)
             {
                 groupBoxV2.Visible = true;
@@ -186,7 +186,7 @@ namespace CameraTest
                 }
                 catch (ASCOM.PropertyNotImplementedException)
                 {
-                    labelBayerOsX.Enabled = 
+                    labelBayerOsX.Enabled =
                         labelBayerOsY.Enabled =
                         labelBayerOffsetX.Enabled =
                         labelBayerOffsetY.Enabled = false;
@@ -249,8 +249,8 @@ namespace CameraTest
             }
             catch
             {
-                 lblCoolerPower.Text = @"N/a";
-           }
+                lblCoolerPower.Text = @"N/a";
+            }
             try
             {
                 tsStatus.Text = oCamera.CameraState.ToString();
@@ -316,7 +316,7 @@ namespace CameraTest
         private void numBinX_ValueChanged(object sender, EventArgs e)
         {
             if (!oCamera.CanAsymmetricBin || checkBoxSameBins.Checked)
-                numBinY.Value=numBinX.Value;
+                numBinY.Value = numBinX.Value;
 
             numNumX.Maximum = numStartX.Maximum = oCamera.CameraXSize / numBinX.Value;
             //numNumX.Increment =numStartX.Increment = numBinX.Value;
@@ -336,7 +336,7 @@ namespace CameraTest
                 oCamera.NumX = (int)numNumX.Value;
                 oCamera.NumY = (int)numNumY.Value;
                 oCamera.BinX = (short)numBinX.Value;
-                oCamera.BinY = (short)(checkBoxSameBins.Checked ? numBinX.Value: numBinY.Value);
+                oCamera.BinY = (short)(checkBoxSameBins.Checked ? numBinX.Value : numBinY.Value);
                 bool light = !(oCamera.HasShutter) || !checkBoxDarkFrame.Checked;
                 if (comboBoxGain.Visible)
                 {
@@ -423,8 +423,8 @@ namespace CameraTest
                             displayProcess = ColourProcess;
                             break;
                     }
-                    width /= (stepX/stepW);
-                    height /= (stepY/stepH);
+                    width /= (stepX / stepW);
+                    height /= (stepY / stepH);
                 }
 
                 img = new Bitmap(width, height, PixelFormat.Format24bppRgb);
@@ -441,10 +441,10 @@ namespace CameraTest
                     stride = data.Stride;
 
                     int yy = 0;
-                    for (int y = 0; y < height; y+= stepH)
+                    for (int y = 0; y < height; y += stepH)
                     {
                         int xx = 0;
-                        for (int x = 0; x < width; x+=stepW)
+                        for (int x = 0; x < width; x += stepW)
                         {
                             displayProcess(xx, yy, imgPtr);
                             xx += stepX;
@@ -526,7 +526,7 @@ namespace CameraTest
             int r = y + m - c;
             int b = c + m - y;
             g += (c + y - m);
-            LoadRgb(r, g/2, b, imgPtr);
+            LoadRgb(r, g / 2, b, imgPtr);
         }
 
         private unsafe void Cmyg2Process(int x, int h, byte* imgPtr)
@@ -540,7 +540,7 @@ namespace CameraTest
             int r = y + m - c;
             int b = c + m - y;
             g += (c + y - m);
-            LoadRgb(r, g/2, b, imgPtr);
+            LoadRgb(r, g / 2, b, imgPtr);
             // and the bottom pixel
             m = Convert.ToInt32(iarr.GetValue(x + x0, h + y2), CultureInfo.InvariantCulture);
             g = Convert.ToInt32(iarr.GetValue(x + x1, h + y2), CultureInfo.InvariantCulture);
@@ -550,7 +550,7 @@ namespace CameraTest
             r = y + m - c;
             b = c + m - y;
             g += (c + y - m);
-            LoadRgb(r, g/2, b, imgPtr + stride);
+            LoadRgb(r, g / 2, b, imgPtr + stride);
         }
 
         private unsafe void LrgbProcess(int x, int y, byte* imgPtr)
@@ -564,11 +564,11 @@ namespace CameraTest
             int g = Convert.ToInt32(iarr.GetValue(x + x0, y + y3), CultureInfo.InvariantCulture);
             g += Convert.ToInt32(iarr.GetValue(x + x2, y + y1), CultureInfo.InvariantCulture);
             int b = l - r - g;
-            LoadRgb(r/2, g/2, b/2, imgPtr);     // top left
+            LoadRgb(r / 2, g / 2, b / 2, imgPtr);     // top left
             l = Convert.ToInt32(iarr.GetValue(x + x2, y + y0), CultureInfo.InvariantCulture);
             l += Convert.ToInt32(iarr.GetValue(x + x3, y + y1), CultureInfo.InvariantCulture);
             b = l - r - g;
-            LoadRgb(r/2, g/2, b/2, imgPtr+3);     // top right
+            LoadRgb(r / 2, g / 2, b / 2, imgPtr + 3);     // top right
             l = Convert.ToInt32(iarr.GetValue(x + x0, y + y2), CultureInfo.InvariantCulture);
             l += Convert.ToInt32(iarr.GetValue(x + x1, y + y3), CultureInfo.InvariantCulture);
             g = Convert.ToInt32(iarr.GetValue(x + x1, y + y2), CultureInfo.InvariantCulture);
@@ -576,11 +576,11 @@ namespace CameraTest
             b = Convert.ToInt32(iarr.GetValue(x + x3, y + y2), CultureInfo.InvariantCulture);
             b += Convert.ToInt32(iarr.GetValue(x + x2, y + y3), CultureInfo.InvariantCulture);
             r = l - g - b;
-            LoadRgb(r/2, g/2, b/2, imgPtr+stride);     // bottom left
+            LoadRgb(r / 2, g / 2, b / 2, imgPtr + stride);     // bottom left
             l = Convert.ToInt32(iarr.GetValue(x + x2, y + y2), CultureInfo.InvariantCulture);
             l += Convert.ToInt32(iarr.GetValue(x + x3, y + y3), CultureInfo.InvariantCulture);
             r = l - b - g;
-            LoadRgb(r/2, g/2, b/2, imgPtr+stride+3);     // bottom right
+            LoadRgb(r / 2, g / 2, b / 2, imgPtr + stride + 3);     // bottom right
         }
 
         private unsafe void ColourProcess(int w, int h, byte* imgPtr)
@@ -592,7 +592,7 @@ namespace CameraTest
             LoadRgb(r, g, b, imgPtr);
         }
 
-        private unsafe void LoadRgb(int r, int g, int b, byte *imgPtr)
+        private unsafe void LoadRgb(int r, int g, int b, byte* imgPtr)
         {
             // convert 16 bit signed to 16 bit unsigned
             if (r < 0) r += 65535;
@@ -607,11 +607,11 @@ namespace CameraTest
             g = (int)(g * 255.0 / scale);
             b = (int)(b * 255.0 / scale);
             // truncate to byte range, apply gamma and put into the image
-            *imgPtr = (byte) gamma[Math.Min(Math.Max(b, 0), 255)];
+            *imgPtr = (byte)gamma[Math.Min(Math.Max(b, 0), 255)];
             imgPtr++;
-            *imgPtr = (byte) gamma[Math.Min(Math.Max(g, 0), 255)];
+            *imgPtr = (byte)gamma[Math.Min(Math.Max(g, 0), 255)];
             imgPtr++;
-            *imgPtr = (byte) gamma[Math.Min(Math.Max(r, 0), 255)];
+            *imgPtr = (byte)gamma[Math.Min(Math.Max(r, 0), 255)];
         }
 
         #endregion
@@ -629,11 +629,11 @@ namespace CameraTest
                     MessageBox.Show(ex.InnerException != null
                                         ? string.Format("Inner {0}", ex.InnerException.Message)
                                         : string.Format("Error {0}", ex.Message));
-                } 
+                }
                 finally
                 {
                     ShowImage();
-                } 
+                }
         }
 
 
@@ -784,12 +784,12 @@ namespace CameraTest
         private void MakeHistogram(int min, int max)
         {
             histogram = new int[256];
-            double s = (double)255/(max-min);
+            double s = (double)255 / (max - min);
             if (max <= min) s = 1;
             unsafe
             {
                 switch (iarr.Rank)
-	            {
+                {
                     case 2:
                         fixed (int* pArr = (int[,])iarr)
                         {
@@ -818,7 +818,7 @@ namespace CameraTest
                             }
                         }
                         break;
-	            } 
+                }
 
             }
         }
@@ -872,7 +872,7 @@ namespace CameraTest
                 oCamera.Connected = false;
             }
             Settings.Default.CameraID = cameraId;
-            Settings.Default.Location=this.Location;
+            Settings.Default.Location = this.Location;
             Settings.Default.Dividerleft = splitContainer1.SplitterDistance;
             Settings.Default.WindowSize = this.Size;
             Settings.Default.SameBins = checkBoxSameBins.Checked;
@@ -917,7 +917,7 @@ namespace CameraTest
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private void trkZoom_Scroll(object sender, EventArgs e)
         {
-            zoom = (float)Math.Pow(10, (trkZoom.Value/100.0));
+            zoom = (float)Math.Pow(10, (trkZoom.Value / 100.0));
 
             ToolTip.SetToolTip(this.trkZoom, "Zoom: " + zoom.ToString("F2", CultureInfo.InvariantCulture));
 
@@ -946,7 +946,7 @@ namespace CameraTest
             //decimal w = ((img.Width - e.X) + splitContainer1.Panel2.AutoScrollPosition.X) / numBinX.Value - numStartX.Value;
             if (w < 0)
             {
-                numStartX.Value = (img.Width-e.X) / numBinX.Value;
+                numStartX.Value = (img.Width - e.X) / numBinX.Value;
                 numNumX.Value = -w;
             }
             else
@@ -987,7 +987,7 @@ namespace CameraTest
                     numExposure.Value = Math.Round(numExposure.Value + 0.4M, 0);
                 }
                 else if (val > 0.1M)
-                { 
+                {
                     numExposure.Increment = Math.Max(resolution, 0.1M);
                     //numExposure.DecimalPlaces = 1;
                     numExposure.Value = Math.Round(numExposure.Value + 0.04M, 1);
@@ -1097,25 +1097,25 @@ namespace CameraTest
             {
                 imageHdu.AddValue("CCD_TEMP", oCamera.CCDTemperature, "sensor temperature in degrees C");  // TODO sate this at the start of exposure . Absent if temperature is not available.
             }
-            catch(Exception)
+            catch (Exception)
             {
                 imageHdu.Info();
             }
             if (oCamera.CanSetCCDTemperature)
                 imageHdu.AddValue("SET-TEMP", oCamera.SetCCDTemperature, "CCD temperature setpoint in degrees C");
-            // OBJECT – name or catalog number of object being imaged
+            // OBJECT Â– name or catalog number of object being imaged
 
             //imageHdu.AddValue("TELESCOP", "", "");        // user-entered information about the telescope used.
-            //imageHdu.AddValue("OBSERVER", "", "");        // user-entered information; the observer’s name.
+            //imageHdu.AddValue("OBSERVER", "", "");        // user-entered information; the observerÂ’s name.
 
-      //DARKTIME – dark current integration time, if recorded. May be longer than exposure time.
+            //DARKTIME Â– dark current integration time, if recorded. May be longer than exposure time.
 
-      //IMAGETYP – type of image: Light Frame, Bias Frame, Dark Frame, Flat Frame, or Tricolor Image.
-            //ISOSPEED – ISO camera setting, if camera uses ISO speeds.
-            //JD_GEO – records the geocentric Julian Day of the start of exposure.
-            //JD_HELIO – records the Heliocentric Julian Date at the exposure midpoint.
-            //NOTES – user-entered information; free-form notes.
-            //READOUTM – records the selected Readout Mode (if any) for the camera.
+            //IMAGETYP Â– type of image: Light Frame, Bias Frame, Dark Frame, Flat Frame, or Tricolor Image.
+            //ISOSPEED Â– ISO camera setting, if camera uses ISO speeds.
+            //JD_GEO Â– records the geocentric Julian Day of the start of exposure.
+            //JD_HELIO Â– records the Heliocentric Julian Date at the exposure midpoint.
+            //NOTES Â– user-entered information; free-form notes.
+            //READOUTM Â– records the selected Readout Mode (if any) for the camera.
 
             imageHdu.AddValue("SBSTDVER", "SBFITSEXT Version 1.0", "version of the SBIG FITS extensions supported");
 

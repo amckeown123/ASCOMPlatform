@@ -418,7 +418,7 @@ Public Class Serial
             Logger.LogStart("Set Connected", TData.Connecting.ToString & " ")
             If TData.Connecting Then ' Trying to connect
                 If Not m_Connected Then
-                    If Not My.Computer.Ports.SerialPortNames.Contains(m_PortName) Then Throw New Exceptions.InvalidValueException("Requested COM Port does not exist: " & m_PortName)
+                    If Not SerialPort.GetPortNames.Contains(m_PortName) Then Throw New Exceptions.InvalidValueException("Requested COM Port does not exist: " & m_PortName)
                     If m_Port Is Nothing Then
                         m_Port = New System.IO.Ports.SerialPort(m_PortName)
                     Else

@@ -15,13 +15,7 @@
 
 using ASCOM.DeviceHub.MvvmMessenger.Helpers;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Diagnostics.Tracing.Parsers.MicrosoftWindowsWPF;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-
-
 
 
 namespace ASCOM.DeviceHub.MvvmMessenger
@@ -580,7 +574,7 @@ namespace ASCOM.DeviceHub.MvvmMessenger
             {
                 Action cleanupAction = Cleanup;
 
-                Dispatcher.CreateDefault().InvokeAsync(cleanupAction), DispatcherPriority.ApplicationIdle.ApplicationIdle(), null);
+                Dispatcher.CreateDefault().InvokeAsync(cleanupAction); 
                 _isCleanupRegistered = true;
             }
         }

@@ -31,6 +31,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using ASCOM.DeviceInterface;
+using ASCOM.DynamicClients;
 using ASCOM.Utilities;
 
 using static System.FormattableString;
