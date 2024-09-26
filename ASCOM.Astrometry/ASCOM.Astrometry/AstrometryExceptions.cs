@@ -1,6 +1,8 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿
+
 using ASCOM.Utilities.Exceptions;
+using System;
+using System.Runtime.InteropServices;
 
 namespace ASCOM.Astrometry.Exceptions
 {

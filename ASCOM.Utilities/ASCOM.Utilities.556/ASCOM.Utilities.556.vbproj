@@ -79,36 +79,24 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Update="System">
+    <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Update="System.Drawing">
+    <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
     <Import Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="My Project\Application.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Application.myapp</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\AssemblyVersionInfo.vb">
-      <Link>My Project\AssemblyVersionInfo.cs</Link>
-    </Compile>
-    <Compile Update="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="My Project\Settings.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -143,24 +131,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Update="My Project\Application.myapp">
-      <Generator>MyApplicationCodeGenerator</Generator>
-      <LastGenOutput>Application.Designer.vb</LastGenOutput>
-    </None>
+    <None Include="app.config" />
+    <None Include="Resources\ASCOM.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="NamespaceDocumentation.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Support\AllUsersFileSystemProvider.vb" />
-    <Compile Remove="Support\CommonConstants.vb" />
-    <Compile Remove="Support\Exceptions.vb" />
-    <Compile Remove="Support\Interfaces.vb" />
-    <Compile Remove="Support\SharedConstantsAndCode.vb" />
-    <Compile Remove="Support\UtilitiesSettings.vb" />
-    <Compile Remove="Support\XMLAccess.vb" />
+    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
+      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
+      <Name>ASCOM.Exceptions</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>

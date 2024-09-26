@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 
 namespace ASCOM
 {
@@ -36,7 +38,7 @@ namespace ASCOM
     ///     </item>
     ///   </list>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly | AttributeTargets.Property, Inherited = true,
+    [AttributeUsage(AttributeTargets.Class | System.AttributeTargets.Assembly | AttributeTargets.Property, Inherited = true,
         AllowMultiple = false)]
     public sealed class DeviceIdAttribute : Attribute
     {

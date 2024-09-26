@@ -1,27 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <ProductVersion>net8.0.50727</ProductVersion>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>DynamicClientServer</AssemblyName>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
-    <OutputType>Library</OutputType>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\ASCOM.snk</AssemblyOriginatorKeyFile>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AssemblyTitle>Alpaca Dynamic Client Manager</AssemblyTitle>
+    <Product>ASCOM.DynamicClientLocalServer</Product>
+    <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
+    <AssemblyVersion>7.0.0.0</AssemblyVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>embedded</DebugType>
@@ -41,19 +31,8 @@
     <PreBuildEvent />
     <PostBuildEvent />
     <RootNamespace>ASCOM.DynamicClients</RootNamespace>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="LocalServerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LocalServerForm.Designer.cs">
-      <DependentUpon>LocalServerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Update="SetupDialogForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <EmbeddedResource Update="LocalServerForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LocalServerForm.cs</DependentUpon>
@@ -75,6 +54,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Security" />
   </ItemGroup>
 </Project>

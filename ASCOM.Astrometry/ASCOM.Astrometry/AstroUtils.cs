@@ -7,6 +7,7 @@ using ASCOM.Utilities;
 
 namespace ASCOM.Astrometry.AstroUtils
 {
+
     /// <summary>
     /// Class providing a suite of tested astronomy support functions to save develpment effort and provide consistant behaviour.
     /// </summary>
@@ -1121,5 +1122,9 @@ namespace ASCOM.Astrometry.AstroUtils
             Parameters.RefreshState();
         }
 
+        ArrayList IAstroUtils.EventTimes(EventType TypeofEvent, int Day, int Month, int Year, double SiteLatitude, double SiteLongitude, double SiteTimeZone)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
