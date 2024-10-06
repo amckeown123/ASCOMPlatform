@@ -84,9 +84,9 @@ namespace ASCOM.DriverAccess
         /// Raises an error only if no altitude control. If actual dome altitude can not be read,
         /// then reports back the last slew position. 
         /// </summary>
-        public double Altitude
+        public float Altitude
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Altitude", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "Altitude", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -112,9 +112,9 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// The dome azimuth (degrees, North zero and increasing clockwise, i.e., 90 East, 180 South, 270 West)
         /// </summary>
-        public double Azimuth
+        public float Azimuth
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Azimuth", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "Azimuth", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -389,7 +389,7 @@ namespace ASCOM.DriverAccess
         /// or if the dome can not reach indicated altitude. 
         /// </summary>
         /// <param name="altitude">Target dome altitude (degrees, horizon zero and increasing positive to 90 zenith)</param>
-        public void SlewToAltitude(double altitude)
+        public void SlewToAltitude(float altitude)
         {
             _memberFactory.CallMember(3, "SlewToAltitude", new Type[] {}, new object[] {});
         }
@@ -400,9 +400,9 @@ namespace ASCOM.DriverAccess
         /// or if the dome can not reach indicated azimuth. 
         /// </summary>
         /// <param name="azimuth">Target azimuth (degrees, North zero and increasing clockwise. i.e., 90 East, 180 South, 270 West)</param>
-        public void SlewToAzimuth(double azimuth)
+        public void SlewToAzimuth(float azimuth)
         {
-            _memberFactory.CallMember(3, "SlewToAzimuth", new[] {typeof (double)}, new object[] {azimuth});
+            _memberFactory.CallMember(3, "SlewToAzimuth", new[] {typeof (float)}, new object[] {azimuth});
         }
 
         /// <summary>
@@ -428,9 +428,9 @@ namespace ASCOM.DriverAccess
         /// Raises an error if not supported or if a communications failure occurs. 
         /// </summary>
         /// <param name="azimuth">Target azimuth (degrees, North zero and increasing clockwise. i.e., 90 East, 180 South, 270 West)</param>
-        public void SyncToAzimuth(double azimuth)
+        public void SyncToAzimuth(float azimuth)
         {
-            _memberFactory.CallMember(3, "SyncToAzimuth", new[] {typeof (double)}, new object[] {azimuth});
+            _memberFactory.CallMember(3, "SyncToAzimuth", new[] {typeof (float)}, new object[] {azimuth});
         }
 
         public string Action(string ActionName, string ActionParameters)

@@ -656,7 +656,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double StepSize
+        public float StepSize
         {
             get
             {
@@ -685,7 +685,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double Temperature
+        public float Temperature
         {
             get
             {

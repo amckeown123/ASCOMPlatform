@@ -238,7 +238,7 @@ namespace ASCOM.Simulator
                 try
                 {
                     Assembly so = Assembly.LoadFrom(aPath);
-                        //[TPL] Potential malicious code injection vector, consider using ReflectionOnlyLoad.
+                        //[TPL] Potential malicious code injection Vector2, consider using ReflectionOnlyLoad.
 
                     //PWGS Get the types in the assembly
                     Type[] types = so.GetTypes();

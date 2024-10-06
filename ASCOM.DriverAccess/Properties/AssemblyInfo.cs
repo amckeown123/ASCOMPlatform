@@ -22,7 +22,6 @@ using System.Runtime.InteropServices;
 [assembly: Guid("703bbc0f-1c29-4e3b-857f-5e7d6082921a")]
 
 // AssemblyFileVersion is set globally (do not add an AssemblyFileVersion here).
-[assembly: AssemblyVersion("6.0.0.0")]
 [assembly: InternalsVisibleTo("Conform, PublicKey=002400000480000094000000060200000024000052534131" +
     "0004000001000100afa2def19e73b72a7cf149888c93ec828db75e4d481b5c652aa43417a77689ce9151853ce1027" +
     "8c44bff4aa559b90a4f534cef9eaa6cb8b0f6a5f0719f9ad18795416367e9f485712075c54aea9b4e9aa990326e2f" +

@@ -5,11 +5,7 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Microsoft Samples WinForms Extras")]
-[assembly: AssemblyDescription("Support file for Inno installer generator")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyCulture("")]
+
 
 //
 // Version information for an assembly consists of the following four values:
@@ -22,5 +18,5 @@ using System.Reflection;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("6.0.0.0")]
+
 

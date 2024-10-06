@@ -266,7 +266,7 @@ Public Class Profile
     ''' <exception cref="Exceptions.DriverNotRegisteredException">Thrown if the driver is not registered,</exception>
     ''' <remarks>
     ''' <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-    ''' <para>Does not provide access to other registry data types such as binary and doubleword. </para>
+    ''' <para>Does not provide access to other registry data types such as binary and floatword. </para>
     ''' <para>If a default value is supplied and the value is not already present in the profile store,
     ''' the default value will be set in the profile store and then returned as the value of the 
     ''' DriverID/SubKey/Name. If the default value is set to null (C#) or Nothing (VB) then no value will
@@ -493,7 +493,7 @@ Public Class Profile
     ''' <exception cref="Exceptions.DriverNotRegisteredException">Thrown if the driver is not registered,</exception>
     ''' <remarks>
     ''' <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-    ''' <para>Does not provide access to other registry data types such as binary and doubleword. </para>
+    ''' <para>Does not provide access to other registry data types such as binary and floatword. </para>
     ''' <para>This overload is not available through COM, please use 
     ''' "GetValue(ByVal DriverID As String, ByVal Name As String, ByVal SubKey As String)"
     ''' with SubKey set to empty string achieve this effect.</para>
@@ -514,7 +514,7 @@ Public Class Profile
     ''' <exception cref="Exceptions.DriverNotRegisteredException">Thrown if the driver is not registered,</exception>
     ''' <remarks>
     ''' <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-    ''' <para>Does not provide access to other registry data types such as binary and doubleword. </para>
+    ''' <para>Does not provide access to other registry data types such as binary and floatword. </para>
     ''' </remarks>
     <ComVisible(False)> _
     Public Overloads Function GetValue(ByVal DriverID As String, ByVal Name As String, ByVal SubKey As String) As String Implements IProfileExtra.GetValue

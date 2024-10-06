@@ -4,12 +4,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ASCOM EarthRotationUpdate")]
-[assembly: AssemblyDescription("Updates earth rotation data including leap seconds and DeltaUT1")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ASCOM")]
-[assembly: AssemblyProduct("EarthRotationUpdate")]
-[assembly: AssemblyCopyright("Copyright © ASCOM Initiative 2024")]
+
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +26,3 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.0.0.0")]
-[assembly: AssemblyFileVersion("6.0.0.0")]

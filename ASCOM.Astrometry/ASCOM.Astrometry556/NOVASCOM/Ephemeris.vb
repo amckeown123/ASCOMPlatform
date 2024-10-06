@@ -14,13 +14,13 @@ Module EphemerisCode
     'function is used (see solarsystem().
     '
     'For more info, see the original NOVAS-C sources.
-    Friend Sub get_earth_nov(ByRef pEphDisp As IEphemeris, ByVal tjd As Double, _
-                      ByRef tdb As Double, ByRef peb() As Double, ByRef veb() As Double, ByRef pes() As Double, _
-                      ByRef ves() As Double)
+    Friend Sub get_earth_nov(ByRef pEphDisp As IEphemeris, ByVal tjd As float, _
+                      ByRef tdb As float, ByRef peb() As float, ByRef veb() As float, ByRef pes() As float, _
+                      ByRef ves() As float)
         Dim i, rc As Short
-        Dim dummy, secdiff As Double
-        Static tjd_last As Double = 0.0
-        Dim ltdb, lpeb(3), lveb(3), lpes(3), lves(3) As Double
+        Dim dummy, secdiff As float
+        Static tjd_last As float = 0.0
+        Dim ltdb, lpeb(3), lveb(3), lpes(3), lves(3) As float
         'Dim TL As New TraceLogger("", "get_earth_nov")
         'TL.Enabled = True
         'TL.LogMessage("get_earth_nov", "Start")
@@ -90,15 +90,15 @@ Module EphemerisCode
     '//  Name:   For Type = 0: n/a
     '//			For Type = 1: n/a for numbered MPs. For unnumbered MPs, this
     '//						  is the MPC PACKED designation.
-    '//  result	A SAFEARRAY of VARIANT, each element VT_R8 (double). Elements
-    '//			0-2 are the position vector of the body, elements 3.5 are the
-    '//			velocity vector of the body. 
+    '//  result	A SAFEARRAY of VARIANT, each element VT_R8 (float). Elements
+    '//			0-2 are the position Vector2 of the body, elements 3.5 are the
+    '//			velocity Vector2 of the body. 
     '//
-    Friend Sub ephemeris_nov(ByRef ephDisp As IEphemeris, ByVal tjd As Double, ByVal btype As BodyType, _
+    Friend Sub ephemeris_nov(ByRef ephDisp As IEphemeris, ByVal tjd As float, ByVal btype As BodyType, _
                              ByVal num As Integer, ByVal name As String, ByVal origin As Origin, _
-                             ByRef pos() As Double, ByRef vel() As Double)
+                             ByRef pos() As float, ByRef vel() As float)
         Dim i As Integer
-        Dim posvel(6), p(2), v(2) As Double
+        Dim posvel(6), p(2), v(2) As float
         'Dim bdy As bodystruct
         'Dim org As NOVAS2Net.Origin
         'Dim rc As Short
@@ -157,7 +157,7 @@ Module EphemerisCode
 
         If (origin = origin.Barycentric) Then
 
-            Dim sun_pos(3), sun_vel(3) As Double
+            Dim sun_pos(3), sun_vel(3) As float
 
             '// CHICKEN AND EGG ALERT!!! WE CANNOT CALL OURSELVES FOR 
             '// BARYCENTER CALCULATION -- AS AN APPROXIMATION, WE USE
@@ -188,7 +188,7 @@ Module EphemerisCode
 
 
     '//
-    '// This is the function used to get the position and velocity vectors
+    '// This is the function used to get the position and velocity Vector2s
     '// for the major solar system bodies and the moon. It is patterned after
     '// the solarsystem() function in the original NOVAS-C package. You can
     '// pass an IDispatch pointer for an ephemeris component, and it will be 
@@ -197,9 +197,9 @@ Module EphemerisCode
     '// This function must set error info... it is designed to work with 
     '// reflected exceptions from the attached ephemeris
     '// 
-    Friend Function solarsystem_nov(ByRef ephDisp As IEphemeris, ByVal tjd As Double, _
-          ByVal tdb As Double, ByVal planet As Body, ByVal origin As Origin, _
-          ByRef pos() As Double, ByRef vel() As Double) As Short
+    Friend Function solarsystem_nov(ByRef ephDisp As IEphemeris, ByVal tjd As float, _
+          ByVal tdb As float, ByVal planet As Body, ByVal origin As Origin, _
+          ByRef pos() As float, ByRef vel() As float) As Short
         'Dim pl As NOVAS2.Body, org As NOVAS2.Origin
         'Dim TL As New TraceLogger("", "solarsystem_nov")
         Dim rc As Short
@@ -258,7 +258,7 @@ Module EphemerisCode
     '// solsys3() - Internal function that gives reasonable ephemerides for 
     '// Sun or Earth, barycentric or heliocentric.
     '//
-    Private Function solsys3_nov(ByVal tjd As Double, ByVal body As Body, ByVal origin As Origin, ByRef pos() As Double, ByRef vel() As Double) As Short
+    Private Function solsys3_nov(ByVal tjd As float, ByVal body As Body, ByVal origin As Origin, ByRef pos() As float, ByRef vel() As float) As Short
 
         Dim i As Integer
 
@@ -268,22 +268,22 @@ Module EphemerisCode
         'These data are used for barycenter computations only.
         '*/
 
-        Dim pm() As Double = {1047.349, 3497.898, 22903.0, 19412.2}
-        Dim pa() As Double = {5.203363, 9.53707, 19.191264, 30.068963}
-        Dim pl() As Double = {0.60047, 0.871693, 5.466933, 5.32116}
-        Dim pn() As Double = {0.001450138, 0.0005841727, 0.0002047497, 0.0001043891}
+        Dim pm() As float = {1047.349, 3497.898, 22903.0, 19412.2}
+        Dim pa() As float = {5.203363, 9.53707, 19.191264, 30.068963}
+        Dim pl() As float = {0.60047, 0.871693, 5.466933, 5.32116}
+        Dim pn() As float = {0.001450138, 0.0005841727, 0.0002047497, 0.0001043891}
 
         '/*
         'obl' is the obliquity of ecliptic at epoch J2000.0 in degrees.
         '*/
 
-        Const obl As Double = 23.43929111
+        Const obl As float = 23.43929111
 
-        Static tlast As Double = 0.0
-        Static sine, cose, tmass, pbary(3), vbary(3) As Double
+        Static tlast As float = 0.0
+        Static sine, cose, tmass, pbary(3), vbary(3) As float
 
         Dim oblr, qjd, ras, decs, diss, pos1(3), p(3, 3), dlon, sinl, _
-            cosl, x, y, z, xdot, ydot, zdot, f As Double
+            cosl, x, y, z, xdot, ydot, zdot, f As float
 
         '//
         '// Check inputs
@@ -323,7 +323,7 @@ Module EphemerisCode
             For i = 0 To 2
                 qjd = tjd + (CDbl(i) - 1.0) * 0.1
                 sun_eph_nov(qjd, ras, decs, diss)
-                RADec2Vector(ras, decs, diss, pos1)
+                RADec2Vector2(ras, decs, diss, pos1)
                 Precession(qjd, pos1, T0, pos)
                 p(i, 0) = -pos(0)
                 p(i, 1) = -pos(1)
@@ -393,11 +393,11 @@ Module EphemerisCode
     End Function
 
     Private Structure sun_con
-        Friend l As Double
-        Friend r As Double
-        Friend alpha As Double
-        Friend nu As Double
-        Friend Sub New(ByVal pl As Double, ByVal pr As Double, ByVal palpha As Double, ByVal pnu As Double)
+        Friend l As float
+        Friend r As float
+        Friend alpha As float
+        Friend nu As float
+        Friend Sub New(ByVal pl As float, ByVal pr As float, ByVal palpha As float, ByVal pnu As float)
             l = pl
             r = pr
             alpha = palpha
@@ -405,13 +405,13 @@ Module EphemerisCode
         End Sub
     End Structure
 
-    Private Sub sun_eph_nov(ByVal jd As Double, ByVal ra As Double, ByVal dec As Double, ByVal dis As Double)
+    Private Sub sun_eph_nov(ByVal jd As float, ByVal ra As float, ByVal dec As float, ByVal dis As float)
         Dim i As Integer
 
-        Dim sum_lon As Double = 0.0
-        Dim sum_r As Double = 0.0
-        Const factor As Double = 0.0000001
-        Dim u, arg, lon, lat, t, t2, emean, sin_lon As Double
+        Dim sum_lon As float = 0.0
+        Dim sum_r As float = 0.0
+        Const factor As float = 0.0000001
+        Dim u, arg, lon, lat, t, t2, emean, sin_lon As float
 
         Dim con() As sun_con = { _
           New sun_con(403406.0, 0.0, 4.721964, 1.621043), _

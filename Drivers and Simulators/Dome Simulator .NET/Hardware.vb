@@ -52,7 +52,7 @@ Module Hardware
     '
     Public ReadOnly Property HW_AtPark()
         Get
-            Dim X As Double
+            Dim X As float
 
             X = AzScale(System.Math.Abs(g_dDomeAz - g_dSetPark))
             If X > 180 Then _
@@ -67,7 +67,7 @@ Module Hardware
     '
     Public ReadOnly Property HW_AtHome()
         Get
-            Dim X As Double
+            Dim X As float
 
             X = AzScale(System.Math.Abs(g_dDomeAz - g_dSetHome))
             If X > 180 Then _
@@ -92,7 +92,7 @@ Module Hardware
 
     End Sub
 
-    'Public Function HW_Fetch() As Double
+    'Public Function HW_Fetch() As float
 
     '    If Not g_show Is Nothing Then
     '        If g_show.chkHW.Checked Then _
@@ -142,7 +142,7 @@ Module Hardware
 
     End Sub
 
-    Public Sub HW_Move(ByVal Az As Double)
+    Public Sub HW_Move(ByVal Az As float)
 
         If Not g_TrafficForm Is Nothing Then
             If g_TrafficForm.chkHW.Checked Then _
@@ -157,7 +157,7 @@ Module Hardware
 
     End Sub
 
-    Public Sub HW_MoveShutter(ByVal Alt As Double)
+    Public Sub HW_MoveShutter(ByVal Alt As float)
 
         If Not g_TrafficForm Is Nothing Then
             If g_TrafficForm.chkHW.Checked Then _
@@ -230,7 +230,7 @@ Module Hardware
 
     End Sub
 
-    Public Sub HW_Sync(ByVal Az As Double)
+    Public Sub HW_Sync(ByVal Az As float)
 
         If Not g_TrafficForm Is Nothing Then
             If g_TrafficForm.chkHW.Checked Then _

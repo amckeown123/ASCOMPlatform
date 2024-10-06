@@ -233,7 +233,7 @@ namespace ASCOM.DeviceInterface
         /// <exception cref="PropertyNotImplementedException">If the property is not implemented</exception>
         /// <exception cref="NotConnectedException">If the device is not connected</exception>
         /// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception> 
-        double Altitude { get; }
+        float Altitude { get; }
 
         /// <summary>
         /// The area of the telescope's aperture, taking into account any obstructions (square meters)
@@ -244,7 +244,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// This is only available for telescope InterfaceVersions 2 and later.
         /// </remarks>
-        double ApertureArea { get; }
+        float ApertureArea { get; }
 
         /// <summary>
         /// The telescope's effective aperture diameter (meters)
@@ -255,7 +255,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// This is only available for telescope InterfaceVersions 2 and later.
         /// </remarks>
-        double ApertureDiameter { get; }
+        float ApertureDiameter { get; }
 
         /// <summary>
         /// True if the telescope is stopped in the Home position. Set only following a <see cref="FindHome"></see> operation,
@@ -311,7 +311,7 @@ namespace ASCOM.DeviceInterface
         /// <exception cref="PropertyNotImplementedException">If the property is not implemented</exception>
         /// <exception cref="NotConnectedException">If the device is not connected</exception>
         /// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception> 
-        double Azimuth { get; }
+        float Azimuth { get; }
 
         /// <summary>
         /// True if this telescope is capable of programmed finding its home position (<see cref="FindHome" /> method).
@@ -529,7 +529,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// <p style="color:red"><b>Must be implemented, must not throw a PropertyNotImplementedException.</b></p>
         /// </remarks>
-        double Declination { get; }
+        float Declination { get; }
 
         /// <summary>
         /// The declination tracking rate (arcseconds per SI second, default = 0.0)
@@ -565,7 +565,7 @@ namespace ASCOM.DeviceInterface
         /// This is not a required feature of this specification, however it is desirable.
         /// </para>
         /// </remarks>
-        double DeclinationRate { get; set; }
+        float DeclinationRate { get; set; }
 
         /// <summary>
         /// Predict side of pier for German equatorial mounts
@@ -582,7 +582,7 @@ namespace ASCOM.DeviceInterface
         /// <para>This is only available for telescope interface version 2 and later.</para>
         /// <para>Please see <see cref="SideOfPier"/> for more information on pointing state and physical side of pier for German equatorial mounts.</para>
         /// </remarks>
-        PierSide DestinationSideOfPier(double RightAscension, double Declination);
+        PierSide DestinationSideOfPier(float RightAscension, float Declination);
 
         /// <summary>
         /// True if the telescope or driver applies atmospheric refraction to coordinates.
@@ -649,7 +649,7 @@ namespace ASCOM.DeviceInterface
         /// This property may be used by clients to calculate telescope field of view and plate scale when combined with detector pixel size and geometry.
         /// <para>This is only available for telescope InterfaceVersions 2 and later.</para>
         /// </remarks>
-        double FocalLength { get; }
+        float FocalLength { get; }
 
         /// <summary>
         /// The current Declination movement rate offset for telescope guiding (degrees/sec)
@@ -673,7 +673,7 @@ namespace ASCOM.DeviceInterface
         /// </list>
         /// </para>
         /// </remarks>
-        double GuideRateDeclination { get; set; }
+        float GuideRateDeclination { get; set; }
 
         /// <summary>
         /// The current Right Ascension movement rate offset for telescope guiding (degrees/sec)
@@ -697,7 +697,7 @@ namespace ASCOM.DeviceInterface
         /// </list>
         /// </para>
         /// </remarks>
-        double GuideRateRightAscension { get; set; }
+        float GuideRateRightAscension { get; set; }
 
         /// <summary>
         /// True if a <see cref="PulseGuide" /> command is in progress, False otherwise
@@ -760,7 +760,7 @@ namespace ASCOM.DeviceInterface
         /// <item><description>It may be possible to implement satellite tracking by using the <see cref="MoveAxis" /> method to move the scope in the required manner to track a satellite.</description></item>
         /// </list>
         /// </remarks>
-        void MoveAxis(TelescopeAxes Axis, double Rate);
+        void MoveAxis(TelescopeAxes Axis, float Rate);
 
         /// <summary>
         /// Move the telescope to its park position, stop all motion (or restrict to a small safe range), and set <see cref="AtPark" /> to True.
@@ -810,7 +810,7 @@ namespace ASCOM.DeviceInterface
         /// <p style="color:red"><b>Must be implemented, must not throw a PropertyNotImplementedException.</b></p>
         /// Reading the property will raise an error if the value is unavailable.
         /// </remarks>
-        double RightAscension { get; }
+        float RightAscension { get; }
 
         /// <summary>
         /// The right ascension tracking rate offset from sidereal (seconds per sidereal second, default = 0.0)
@@ -846,7 +846,7 @@ namespace ASCOM.DeviceInterface
         /// </list>
         /// </para>
         /// </remarks>
-        double RightAscensionRate { get; set; }
+        float RightAscensionRate { get; set; }
 
         /// <summary>
         /// Sets the telescope's park position to be its current position.
@@ -893,7 +893,7 @@ namespace ASCOM.DeviceInterface
         /// time used for pointing telescopes, and thus must be calculated from the Greenwich Mean
         /// Sidereal time, longitude, nutation in longitude and true ecliptic obliquity.
         /// </remarks>
-        double SiderealTime { get; }
+        float SiderealTime { get; }
 
         /// <summary>
         /// The elevation above mean sea level (meters) of the site at which the telescope is located
@@ -908,7 +908,7 @@ namespace ASCOM.DeviceInterface
         /// Reading the property will raise an error if the value has never been set or is otherwise unavailable.
         /// <para>This is only available for telescope InterfaceVersions 2 and later.</para>
         /// </remarks>
-        double SiteElevation { get; set; }
+        float SiteElevation { get; set; }
 
         /// <summary>
         /// The geodetic(map) latitude (degrees, positive North, WGS84) of the site at which the telescope is located.
@@ -923,7 +923,7 @@ namespace ASCOM.DeviceInterface
         /// Reading the property will raise an error if the value has never been set or is otherwise unavailable.
         /// <para>This is only available for telescope InterfaceVersions 2 and later.</para>
         /// </remarks>
-        double SiteLatitude { get; set; }
+        float SiteLatitude { get; set; }
 
         /// <summary>
         /// The longitude (degrees, positive East, WGS84) of the site at which the telescope is located.
@@ -939,7 +939,7 @@ namespace ASCOM.DeviceInterface
         /// Note that West is negative!
         /// <para>This is only available for telescope InterfaceVersions 2 and later.</para>
         /// </remarks>
-        double SiteLongitude { get; set; }
+        float SiteLongitude { get; set; }
 
         /// <summary>
         /// True if telescope is in the process of moving in response to one of the
@@ -981,10 +981,10 @@ namespace ASCOM.DeviceInterface
         /// <param name="Altitude">Target altitude (degrees, positive up)</param>
         /// <remarks>
         /// <p style="color:red"><b>Deprecated for client applications.</b></p>
-        /// <para>This method must not be used by applications, use the asynchronous <see cref="SlewToAltAzAsync(double, double)"/> method instead.</para>
+        /// <para>This method must not be used by applications, use the asynchronous <see cref="SlewToAltAzAsync(float, float)"/> method instead.</para>
         /// <para>Further explanation is available in this link: <a href="https://ascom-standards.org/newdocs/telescope.html#telescope-slewtoaltaz" target="_blank">Master Interface Document</a>.</para>
         /// </remarks>
-        void SlewToAltAz(double Azimuth, double Altitude);
+        void SlewToAltAz(float Azimuth, float Altitude);
 
         /// <summary>
         /// This Method must be implemented if <see cref="CanSlewAltAzAsync" /> returns True.
@@ -999,7 +999,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// <para>Further explanation is available in this link: <a href="https://ascom-standards.org/newdocs/telescope.html#telescope-slewtoaltazasync" target="_blank">Master Interface Document</a>.</para>
         /// </remarks>
-        void SlewToAltAzAsync(double Azimuth, double Altitude);
+        void SlewToAltAzAsync(float Azimuth, float Altitude);
 
         /// <summary>
         /// Move the telescope to the given equatorial coordinates, return when slew is complete
@@ -1013,10 +1013,10 @@ namespace ASCOM.DeviceInterface
         /// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception>
         /// <remarks>
         /// <p style="color:red"><b>Deprecated for client applications.</b></p>
-        /// <para>This method must not be used by applications, use the asynchronous <see cref="SlewToCoordinates(double, double)"/> method instead.</para>
+        /// <para>This method must not be used by applications, use the asynchronous <see cref="SlewToCoordinates(float, float)"/> method instead.</para>
         /// <para>Further explanation is available in this link: <a href="https://ascom-standards.org/newdocs/telescope.html#telescope-slewtocoordinates" target="_blank">Master Interface Document</a>.</para>
         /// </remarks>
-        void SlewToCoordinates(double RightAscension, double Declination);
+        void SlewToCoordinates(float RightAscension, float Declination);
 
         /// <summary>
         /// Move the telescope to the given equatorial coordinates, return immediately after starting the slew.
@@ -1031,7 +1031,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// <para>Further explanation is available in this link: <a href="https://ascom-standards.org/newdocs/telescope.html#telescope-slewtocoordinatesasync" target="_blank">Master Interface Document</a>.</para>
         /// </remarks>
-        void SlewToCoordinatesAsync(double RightAscension, double Declination);
+        void SlewToCoordinatesAsync(float RightAscension, float Declination);
 
         /// <summary>
         /// Move the telescope to the <see cref="TargetRightAscension" /> and <see cref="TargetDeclination" /> coordinates, return when slew complete.
@@ -1072,7 +1072,7 @@ namespace ASCOM.DeviceInterface
                                          /// <para>Raises an error if <see cref="AtPark" /> is True, or if <see cref="Tracking" /> is True.</para>
                                          /// <para>This is only available for telescope InterfaceVersions 2 and later.</para>
                                          /// </remarks>
-        void SyncToAltAz(double Azimuth, double Altitude);
+        void SyncToAltAz(float Azimuth, float Altitude);
 
         /// <summary>
         /// Matches the scope's equatorial coordinates to the given equatorial coordinates.
@@ -1090,7 +1090,7 @@ namespace ASCOM.DeviceInterface
         /// The way that Sync is implemented is mount dependent and it should only be relied on to improve pointing for positions close to
         /// the position at which the sync is done.
         /// </remarks>
-        void SyncToCoordinates(double RightAscension, double Declination);
+        void SyncToCoordinates(float RightAscension, float Declination);
 
         /// <summary>
         /// Matches the scope's equatorial coordinates to the target equatorial coordinates.
@@ -1119,7 +1119,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// Setting this property will raise an error if the given value is outside the range -90 to +90 degrees. Reading the property will raise an error if the value has never been set or is otherwise unavailable.
         /// </remarks>
-        double TargetDeclination { get; set; }
+        float TargetDeclination { get; set; }
 
         /// <summary>
         /// The right ascension (hours) for the target of an equatorial slew or sync operation
@@ -1132,7 +1132,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// Setting this property will raise an error if the given value is outside the range 0 to 24 hours. Reading the property will raise an error if the value has never been set or is otherwise unavailable.
         /// </remarks>
-        double TargetRightAscension { get; set; }
+        float TargetRightAscension { get; set; }
 
         /// <summary>
         /// The state of the telescope's sidereal tracking drive.

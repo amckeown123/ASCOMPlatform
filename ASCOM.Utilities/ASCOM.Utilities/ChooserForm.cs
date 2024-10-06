@@ -51,7 +51,7 @@ namespace ASCOM.Utilities
         private const string ALPACA_NUMBER_OF_BROADCASTS = "Alpaca number of broadcasts";
         private const int ALPACA_NUMBER_OF_BROADCASTS_DEFAULT = 2;
         private const string ALPACA_TIMEOUT = "Alpaca timeout";
-        private const double ALPACA_TIMEOUT_DEFAULT = 1.0d;
+        private const float ALPACA_TIMEOUT_DEFAULT = 1.0f;
         private const string ALPACA_DNS_RESOLUTION = "Alpaca DNS resolution";
         private const bool ALPACA_DNS_RESOLUTION_DEFAULT = false;
         private const string ALPACA_SHOW_DISCOVERED_DEVICES = "Show discovered Alpaca devices";
@@ -158,7 +158,7 @@ namespace ASCOM.Utilities
         internal bool AlpacaEnabled;
         internal int AlpacaDiscoveryPort;
         internal int AlpacaNumberOfBroadcasts;
-        internal double AlpacaTimeout;
+        internal float AlpacaTimeout;
         internal bool AlpacaDnsResolution;
         internal bool AlpacaShowDiscoveredDevices;
         internal bool AlpacaShowDeviceDetails;
@@ -1731,7 +1731,7 @@ namespace ASCOM.Utilities
                     WarningTooltipClear(); // Hide any previous message
 
                     TL.LogMessage("ValidateDriver", "ProgID:" + progId + ", Bitness: " + ApplicationBits().ToString());
-                    driverIsCompatible = DriverCompatibilityMessage(progId, ApplicationBits(), TL); // Get compatibility warning message, if any
+                    driverIsCompatible = DriverCompatibilityMessage(progId, ApplicationBits(), TL,""); // Get compatibility warning message, if any
 
                     if (!string.IsNullOrEmpty(driverIsCompatible)) // This is an incompatible driver so we need to prevent access
                     {
@@ -1890,7 +1890,7 @@ namespace ASCOM.Utilities
             currentPropertiesButtonEnabledState = state;
         }
 
-        #endregion
+         #endregion
 
     }
 }

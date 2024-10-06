@@ -82,11 +82,11 @@ namespace ASCOM.Simulator
         private System.Timers.Timer _moveTimer; // drives the position and temperature changers
         internal int _position;
         internal int Target;
-        private double _lastTemp;
+        private float _lastTemp;
         private FocuserHandboxForm Handbox;
         private DateTime lastTempUpdate;
         private Random RandomGenerator;
-        internal double stepSize;
+        internal float stepSize;
         internal bool tempComp;
 
         private enum MotorState
@@ -189,9 +189,9 @@ namespace ASCOM.Simulator
         internal bool CanStepSize { get; set; }
         internal bool KeepMoving { get; set; }
         internal int LastOffset { get; set; }
-        internal double TempMax { get; set; }
-        internal double TempMin { get; set; }
-        internal double TempPeriod { get; set; }
+        internal float TempMax { get; set; }
+        internal float TempMin { get; set; }
+        internal float TempPeriod { get; set; }
         internal int TempSteps { get; set; }
         internal int RateOfChange { get; set; }
         internal DateTime MouseDownTime { get; set; }
@@ -468,7 +468,7 @@ namespace ASCOM.Simulator
         /// Step size (microns) for the focuser. Raises an exception if the focuser 
         /// does not intrinsically know what the step size is.
         /// </summary>
-        public double StepSize
+        public float StepSize
         {
             get
             {
@@ -484,7 +484,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        //public double StepSize { get; internal set; }
+        //public float StepSize { get; internal set; }
 
         /// <summary>
         /// Gets the supported actions.
@@ -533,7 +533,7 @@ namespace ASCOM.Simulator
         /// available on focusers with a built-in temperature compensation 
         /// mode.
         /// </summary>
-        public double Temperature { get; internal set; }
+        public float Temperature { get; internal set; }
 
         #endregion
 
@@ -590,7 +590,7 @@ namespace ASCOM.Simulator
                 {
                     lastTempUpdate = DateTime.Now;
                     // apply a random change to the temperature
-                    double tempOffset = (RandomGenerator.NextDouble() - 0.5);// / 10.0;
+                    float tempOffset = (RandomGenerator.Nextfloat() - 0.5);// / 10.0;
                     Temperature = Math.Round(Temperature + tempOffset, 2);
 
                     // move the focuser target to track the temperature if required
@@ -632,7 +632,7 @@ namespace ASCOM.Simulator
                 MouseDownTime = DateTime.Now;
                 if (RateOfChange < 100)
                 {
-                    RateOfChange = (int)Math.Ceiling((double)RateOfChange * 1.2);
+                    RateOfChange = (int)Math.Ceiling((float)RateOfChange * 1.2);
                 }
                 LogMessage("KeepMoving", "LastOffset, Position, Target, RateOfChange MouseDownTime " + LastOffset + " " + _position + " " + Target + " " + RateOfChange + " " + MouseDownTime.ToLongTimeString());
             }
@@ -702,17 +702,17 @@ namespace ASCOM.Simulator
             MaxIncrement = Convert.ToInt32(Profile.GetValue(sCsDriverId, "MaxIncrement", string.Empty, "50000"), CultureInfo.InvariantCulture);
             MaxStep = Convert.ToInt32(Profile.GetValue(sCsDriverId, "MaxStep", string.Empty, "50000"), CultureInfo.InvariantCulture);
             _position = Convert.ToInt32(Profile.GetValue(sCsDriverId, "Position", string.Empty, "25000"), CultureInfo.InvariantCulture);
-            stepSize = Convert.ToDouble(Profile.GetValue(sCsDriverId, "StepSize", string.Empty, "20"), CultureInfo.InvariantCulture);
+            stepSize = Convert.Tofloat(Profile.GetValue(sCsDriverId, "StepSize", string.Empty, "20"), CultureInfo.InvariantCulture);
             tempComp = Convert.ToBoolean(Profile.GetValue(sCsDriverId, "TempComp", string.Empty, "false"), CultureInfo.InvariantCulture);
             TempCompAvailable = Convert.ToBoolean(Profile.GetValue(sCsDriverId, "TempCompAvailable", string.Empty, "true"), CultureInfo.InvariantCulture);
-            Temperature = Convert.ToDouble(Profile.GetValue(sCsDriverId, "Temperature", string.Empty, "5"), CultureInfo.InvariantCulture);
+            Temperature = Convert.Tofloat(Profile.GetValue(sCsDriverId, "Temperature", string.Empty, "5"), CultureInfo.InvariantCulture);
             //extended focuser items
             CanHalt = Convert.ToBoolean(Profile.GetValue(sCsDriverId, "CanHalt", string.Empty, "true"), CultureInfo.InvariantCulture);
             CanStepSize = Convert.ToBoolean(Profile.GetValue(sCsDriverId, "CanStepSize", string.Empty, "true"), CultureInfo.InvariantCulture);
             Synchronous = Convert.ToBoolean(Profile.GetValue(sCsDriverId, "Synchronous", string.Empty, "true"), CultureInfo.InvariantCulture);
-            TempMax = Convert.ToDouble(Profile.GetValue(sCsDriverId, "TempMax", string.Empty, "50"), CultureInfo.InvariantCulture);
-            TempMin = Convert.ToDouble(Profile.GetValue(sCsDriverId, "TempMin", string.Empty, "-50"), CultureInfo.InvariantCulture);
-            TempPeriod = Convert.ToDouble(Profile.GetValue(sCsDriverId, "TempPeriod", string.Empty, "3"), CultureInfo.InvariantCulture);
+            TempMax = Convert.Tofloat(Profile.GetValue(sCsDriverId, "TempMax", string.Empty, "50"), CultureInfo.InvariantCulture);
+            TempMin = Convert.Tofloat(Profile.GetValue(sCsDriverId, "TempMin", string.Empty, "-50"), CultureInfo.InvariantCulture);
+            TempPeriod = Convert.Tofloat(Profile.GetValue(sCsDriverId, "TempPeriod", string.Empty, "3"), CultureInfo.InvariantCulture);
             TempProbe = Convert.ToBoolean(Profile.GetValue(sCsDriverId, "TempProbe", string.Empty, "true"), CultureInfo.InvariantCulture);
             TempSteps = Convert.ToInt32(Profile.GetValue(sCsDriverId, "TempSteps", string.Empty, "10"), CultureInfo.InvariantCulture);
             settleTime = Convert.ToInt32(Profile.GetValue(sCsDriverId, "SettleTime", string.Empty, "500"), CultureInfo.InvariantCulture);

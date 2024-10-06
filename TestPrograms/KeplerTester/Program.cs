@@ -30,19 +30,19 @@ namespace KeplerConsoleApp
                 DateTime targetTime = new DateTime(2023, 1, 8, 14, 22, 12);
 
                 // Set test parameters
-                double targetJd = util.DateLocalToJulian(targetTime);
+                float targetJd = util.DateLocalToJulian(targetTime);
                 LogMessage($"Target time is {targetTime}, JD = {targetJd:f5}");
 
-                double deltaT = novas31.DeltaT(targetJd);
+                float deltaT = novas31.DeltaT(targetJd);
                 LogMessage($"DeltaT is {deltaT}");
-                //string text = "    CK19T040  2022 06  9.0116  4.242205  0.995633  351.1811  199.9392   53.6320  20230113   5.0  4.0  C / 2019 T4(ATLAS)                                        MPEC 2023 - A16"; double semiMajorAxis = 971.65; // Distance: 4.91
-                //string text = "    CK17K020  2022 12 19.6877  1.796887  1.000807  236.2008   88.2357   87.5633  20230113   1.5  4.0  C/2017 K2 (PANSTARRS)                                    MPEC 2023-A16"; double semiMajorAxis = -2226.63; // Distance: 2.34
+                //string text = "    CK19T040  2022 06  9.0116  4.242205  0.995633  351.1811  199.9392   53.6320  20230113   5.0  4.0  C / 2019 T4(ATLAS)                                        MPEC 2023 - A16"; float semiMajorAxis = 971.65; // Distance: 4.91
+                //string text = "    CK17K020  2022 12 19.6877  1.796887  1.000807  236.2008   88.2357   87.5633  20230113   1.5  4.0  C/2017 K2 (PANSTARRS)                                    MPEC 2023-A16"; float semiMajorAxis = -2226.63; // Distance: 2.34
 
                 //  C / 2022 U2(ATLAS) data
                 string text = "    CK22U020  2023 01 14.2204  1.328037  0.986161  147.9085  304.4758   48.2504  20230113  16.0  4.0  C / 2022 U2(ATLAS)                                        MPEC 2023 - A16";
-                double semiMajorAxis = 95.96;
-                double earthDistance = 0.62010190095573; // AU
-                double sunDistance = 1.3279845633525; // AU
+                float semiMajorAxis = 95.96;
+                float earthDistance = 0.62010190095573; // AU
+                float sunDistance = 1.3279845633525; // AU
 
                 LogMessage($"Raw source data is {text}\r\n");
 
@@ -94,62 +94,62 @@ namespace KeplerConsoleApp
                 novascomSite.Set(31.5, -110, 1370); // Rick
                 //novascomSite.Set(42, -76, 428);   // Dick
 
-                // Initialize the vector from Earth to the comet.
+                // Initialize the Vector2 from Earth to the comet.
 
-                // ASCOM Comet Vector
-                PositionVector ascomCometVector = ascomComet.GetTopocentricPosition(targetJd, ascomSite, false);
-                LogMessage($"Comet PositionVector returned by ASCOM GetTopocentricPosition (with semi-major axis) is       ({ascomCometVector.x}, {ascomCometVector.y}, {ascomCometVector.z})");
+                // ASCOM Comet Vector2
+                PositionVector2 ascomCometVector2 = ascomComet.GetTopocentricPosition(targetJd, ascomSite, false);
+                LogMessage($"Comet PositionVector2 returned by ASCOM GetTopocentricPosition (with semi-major axis) is       ({ascomCometVector2.x}, {ascomCometVector2.y}, {ascomCometVector2.z})");
 
-                // NOVASCOM Comet Vector
-                dynamic novascomCometVector = novascomComet.GetTopocentricPosition(targetJd, novascomSite, false);
-                LogMessage($"Comet PositionVector returned by NOVASCOM GetTopocentricPosition (without semi-major axis) is ({novascomCometVector.x}, {novascomCometVector.y}, {novascomCometVector.z})");
+                // NOVASCOM Comet Vector2
+                dynamic novascomCometVector2 = novascomComet.GetTopocentricPosition(targetJd, novascomSite, false);
+                LogMessage($"Comet PositionVector2 returned by NOVASCOM GetTopocentricPosition (without semi-major axis) is ({novascomCometVector2.x}, {novascomCometVector2.y}, {novascomCometVector2.z})");
 
-                // Initialize the vector from the Sun to the Earth.
+                // Initialize the Vector2 from the Sun to the Earth.
 
-                // ASCOM Earth Vector
-                PositionVector ascomEarthVector = ascomEarth.HeliocentricPosition;
-                LogMessage($"ASCOM Earth PositionVector is    ({ascomEarthVector.x:N10}, {ascomEarthVector.y:N10}, {ascomEarthVector.z:N10})");
+                // ASCOM Earth Vector2
+                PositionVector2 ascomEarthVector2 = ascomEarth.HeliocentricPosition;
+                LogMessage($"ASCOM Earth PositionVector2 is    ({ascomEarthVector2.x:N10}, {ascomEarthVector2.y:N10}, {ascomEarthVector2.z:N10})");
 
-                // ASCOM Earth Vector
-                dynamic novascomEarthVector = novascomEarth.HeliocentricPosition;
-                LogMessage($"NOVASCOM Earth PositionVector is ({novascomEarthVector.x:N10}, {novascomEarthVector.y:N10}, {novascomEarthVector.z:N10})");
+                // ASCOM Earth Vector2
+                dynamic novascomEarthVector2 = novascomEarth.HeliocentricPosition;
+                LogMessage($"NOVASCOM Earth PositionVector2 is ({novascomEarthVector2.x:N10}, {novascomEarthVector2.y:N10}, {novascomEarthVector2.z:N10})");
 
                 // Calculate the distance from the Earth to the comet.
 
                 // ASCOM earth to comet distance
-                double ascomDelta = ascomCometVector.Distance;
+                float ascomDelta = ascomCometVector2.Distance;
                 LogMessage($"ASCOM Earth to comet distance (with semi-major axis) =                          {ascomDelta:f14} (For reference - Earth distance: {earthDistance:f14}, Sun distance: {sunDistance:f14})");
 
                 // NOVASCOM earth to comet distance
-                double novascomDelta = novascomCometVector.Distance;
+                float novascomDelta = novascomCometVector2.Distance;
                 LogMessage($"NOVASCOM Earth to comet distance (without semi-major axis) =                    {novascomDelta:f14} (For reference - Earth distance: {earthDistance:f14}, Sun distance: {sunDistance:f14})");
 
                 // Calculate the distance from the Sun to the comet.
 
                 // ASCOM distance from sun to comet
-                PositionVector ascomSunCometVector = VectorAddASCOM(ascomEarthVector, ascomCometVector);
-                double ascomR = ascomSunCometVector.Distance;
+                PositionVector2 ascomSunCometVector2 = Vector2AddASCOM(ascomEarthVector2, ascomCometVector2);
+                float ascomR = ascomSunCometVector2.Distance;
                 LogMessage($"ASCOM Sun to comet distance (with semi-major axis):                             {ascomR:f14} (For reference - Earth distance: {earthDistance:f14}, Sun distance: {sunDistance:f14})");
 
                 // NOVASCOM distance from sun to comet
-                dynamic novascomSunCometVector = VectorAddNOVAS(novascomEarthVector, novascomCometVector);
-                double novascomR = novascomSunCometVector.Distance;
+                dynamic novascomSunCometVector2 = Vector2AddNOVAS(novascomEarthVector2, novascomCometVector2);
+                float novascomR = novascomSunCometVector2.Distance;
                 LogMessage($"NOVASCOM Sun to comet distance (without semi-major axis):                       {novascomR:f14} (For reference - Earth distance: {earthDistance:f14}, Sun distance: {sunDistance:f14})");
 
                 // ASCOM Alternative calculation for comet - sun distance without semi-major axis value
                 Ephemeris ascomCometEphemeris = CreateCometEphemerisASCOM(elements, util, 0.0);
-                double[] ascomCometPositionAndVelocity = ascomCometEphemeris.GetPositionAndVelocity(targetJd);
-                ascomCometVector.x = ascomCometPositionAndVelocity[0];
-                ascomCometVector.y = ascomCometPositionAndVelocity[1];
-                ascomCometVector.z = ascomCometPositionAndVelocity[2];
-                LogMessage($"ASCOM Alternative distance calculation (without setting the semi-major axis):   {ascomCometVector.Distance:f14} (For reference - Earth distance: {earthDistance:f14}, Sun distance: {sunDistance:f14})");
+                float[] ascomCometPositionAndVelocity = ascomCometEphemeris.GetPositionAndVelocity(targetJd);
+                ascomCometVector2.x = ascomCometPositionAndVelocity[0];
+                ascomCometVector2.y = ascomCometPositionAndVelocity[1];
+                ascomCometVector2.z = ascomCometPositionAndVelocity[2];
+                LogMessage($"ASCOM Alternative distance calculation (without setting the semi-major axis):   {ascomCometVector2.Distance:f14} (For reference - Earth distance: {earthDistance:f14}, Sun distance: {sunDistance:f14})");
 
                 ascomCometEphemeris = CreateCometEphemerisASCOM(elements, util, semiMajorAxis);
                 ascomCometPositionAndVelocity = ascomCometEphemeris.GetPositionAndVelocity(targetJd);
-                ascomCometVector.x = ascomCometPositionAndVelocity[0];
-                ascomCometVector.y = ascomCometPositionAndVelocity[1];
-                ascomCometVector.z = ascomCometPositionAndVelocity[2];
-                LogMessage($"ASCOM Alternative distance calculation (including setting the semi-major axis): {ascomCometVector.Distance:f14} (For reference - Earth distance: {earthDistance:f14}, Sun distance: {sunDistance:f14})");
+                ascomCometVector2.x = ascomCometPositionAndVelocity[0];
+                ascomCometVector2.y = ascomCometPositionAndVelocity[1];
+                ascomCometVector2.z = ascomCometPositionAndVelocity[2];
+                LogMessage($"ASCOM Alternative distance calculation (including setting the semi-major axis): {ascomCometVector2.Distance:f14} (For reference - Earth distance: {earthDistance:f14}, Sun distance: {sunDistance:f14})");
 
             }
             catch (Exception ex)
@@ -160,9 +160,9 @@ namespace KeplerConsoleApp
             TL.Enabled = false;
         }
 
-        static PositionVector VectorAddASCOM(PositionVector v1, PositionVector v2)
+        static PositionVector2 Vector2AddASCOM(PositionVector2 v1, PositionVector2 v2)
         {
-            PositionVector vecReturn = new PositionVector
+            PositionVector2 vecReturn = new PositionVector2
             {
                 x = v1.x + v2.x,
                 y = v1.y + v2.y,
@@ -172,9 +172,9 @@ namespace KeplerConsoleApp
             return vecReturn;
         }
 
-        static dynamic VectorAddNOVAS(dynamic v1, dynamic v2)
+        static dynamic Vector2AddNOVAS(dynamic v1, dynamic v2)
         {
-            PositionVector vecReturn = new PositionVector
+            PositionVector2 vecReturn = new PositionVector2
             {
                 x = v1.x + v2.x,
                 y = v1.y + v2.y,
@@ -184,7 +184,7 @@ namespace KeplerConsoleApp
             return vecReturn;
         }
 
-        static Ephemeris CreateCometEphemerisASCOM(OrbitalElements elements, Util util, double semiMajorAxis)
+        static Ephemeris CreateCometEphemerisASCOM(OrbitalElements elements, Util util, float semiMajorAxis)
         {
             Ephemeris kt = new Ephemeris
             {

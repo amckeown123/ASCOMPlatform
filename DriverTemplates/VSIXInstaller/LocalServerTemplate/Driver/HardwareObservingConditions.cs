@@ -11,12 +11,12 @@ static class ObservingConditionsHardware
     #region IObservingConditions Implementation
 
     // Time and wind speed values
-    private static Dictionary<DateTime, double> winds = new Dictionary<DateTime, double>();
+    private static Dictionary<DateTime, float> winds = new Dictionary<DateTime, float>();
 
     /// <summary>
     /// Gets and sets the time period over which observations wil be averaged
     /// </summary>
-    internal static double AveragePeriod
+    internal static float AveragePeriod
     {
         get
         {
@@ -34,7 +34,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Amount of sky obscured by cloud
     /// </summary>
-    internal static double CloudCover
+    internal static float CloudCover
     {
         get
         {
@@ -46,7 +46,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Atmospheric dew point at the observatory in deg C
     /// </summary>
-    internal static double DewPoint
+    internal static float DewPoint
     {
         get
         {
@@ -58,7 +58,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Atmospheric relative humidity at the observatory in percent
     /// </summary>
-    internal static double Humidity
+    internal static float Humidity
     {
         get
         {
@@ -70,7 +70,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Atmospheric pressure at the observatory in hectoPascals (mB)
     /// </summary>
-    internal static double Pressure
+    internal static float Pressure
     {
         get
         {
@@ -82,7 +82,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Rain rate at the observatory
     /// </summary>
-    internal static double RainRate
+    internal static float RainRate
     {
         get
         {
@@ -136,7 +136,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Sky brightness at the observatory
     /// </summary>
-    internal static double SkyBrightness
+    internal static float SkyBrightness
     {
         get
         {
@@ -148,7 +148,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Sky quality at the observatory
     /// </summary>
-    internal static double SkyQuality
+    internal static float SkyQuality
     {
         get
         {
@@ -160,7 +160,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Seeing at the observatory
     /// </summary>
-    internal static double StarFWHM
+    internal static float StarFWHM
     {
         get
         {
@@ -172,7 +172,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Sky temperature at the observatory in deg C
     /// </summary>
-    internal static double SkyTemperature
+    internal static float SkyTemperature
     {
         get
         {
@@ -184,7 +184,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Temperature at the observatory in deg C
     /// </summary>
-    internal static double Temperature
+    internal static float Temperature
     {
         get
         {
@@ -198,7 +198,7 @@ static class ObservingConditionsHardware
     /// </summary>
     /// <param name="propertyName">Name of the property whose time since last update Is required</param>
     /// <returns>Time in seconds since the last sensor update for this property</returns>
-    internal static double TimeSinceLastUpdate(string propertyName)
+    internal static float TimeSinceLastUpdate(string propertyName)
     {
         // Test for an empty property name, if found, return the time since the most recent update to any sensor
         if (!string.IsNullOrEmpty(propertyName))
@@ -237,7 +237,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Wind direction at the observatory in degrees
     /// </summary>
-    internal static double WindDirection
+    internal static float WindDirection
     {
         get
         {
@@ -249,7 +249,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Peak 3 second wind gust at the observatory over the last 2 minutes in m/s
     /// </summary>
-    internal static double WindGust
+    internal static float WindGust
     {
         get
         {
@@ -261,7 +261,7 @@ static class ObservingConditionsHardware
     /// <summary>
     /// Wind speed at the observatory in m/s
     /// </summary>
-    internal static double WindSpeed
+    internal static float WindSpeed
     {
         get
         {
@@ -277,9 +277,9 @@ static class ObservingConditionsHardware
     #region Calculate the gust strength as the largest wind recorded over the last two minutes
 
 
-    private static void UpdateGusts(double speed)
+    private static void UpdateGusts(float speed)
     {
-        Dictionary<DateTime, double> newWinds = new Dictionary<DateTime, double>();
+        Dictionary<DateTime, float> newWinds = new Dictionary<DateTime, float>();
         var last = DateTime.Now - TimeSpan.FromMinutes(2);
         winds.Add(DateTime.Now, speed);
         var gust = 0.0;

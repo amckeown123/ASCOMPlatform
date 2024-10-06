@@ -32,12 +32,12 @@ namespace ASCOM.DeviceInterface
         /// The maximum rate (degrees per second)
         /// This must always be a positive number. It indicates the maximum rate in either direction about the axis.
         /// </summary>
-        double Maximum { get; set; }
+        float Maximum { get; set; }
 
         /// <summary>
         /// The minimum rate (degrees per second)
         /// This must always be a positive number. It indicates the maximum rate in either direction about the axis.
         /// </summary>
-        double Minimum { get; set; }
+        float Minimum { get; set; }
     }
 }

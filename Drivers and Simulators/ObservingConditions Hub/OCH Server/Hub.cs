@@ -49,7 +49,7 @@ namespace ASCOM.Simulator
         public const string OBSERVING_CONDITIONS_DEVICE_TYPE = "ObservingConditions";
         public const string NO_DEVICE_PROGID = "";
         public const int MAX_QUERIES_PER_PERIOD = 60; // Maximum number of device queries in 1 average period
-        public const double BAD_VALUE = double.NaN; // This must remain as Double.NaN because Double.IsNaN is used within the code to test for bad values
+        public const float BAD_VALUE = float.NaN; // This must remain as float.NaN because float.IsNaN is used within the code to test for bad values
         public static readonly DateTime BAD_DATETIME = DateTime.MinValue; // Can't be a const because DateTime.MinValue is not a constant, a read only variable is close though!
         public const string NOT_CONNECTED_MESSAGE = DRIVER_DISPLAY_NAME + " is not connected.";
 
@@ -127,7 +127,7 @@ namespace ASCOM.Simulator
         // Setup dialogue configuration variables
         public static bool TraceState;
         public static bool ConnectToDrivers;
-        public static double averagePeriod;
+        public static float averagePeriod;
         public static int numberOfMeasurementsPerAveragePeriod;
         public static bool overrideUISafetyLimits;
 
@@ -154,13 +154,13 @@ namespace ASCOM.Simulator
 
         public struct TimeValue
         {
-            public TimeValue(DateTime obsTime, double sensValue)
+            public TimeValue(DateTime obsTime, float sensValue)
             {
                 ObservationTime = obsTime;
                 SensorValue = sensValue;
             }
             public DateTime ObservationTime;
-            public double SensorValue;
+            public float SensorValue;
         }
 
         #endregion
@@ -611,7 +611,7 @@ namespace ASCOM.Simulator
 
         #region ASCOM ObservingConditions Methods
 
-        public static double AveragePeriodGet(int clientNumber)
+        public static float AveragePeriodGet(int clientNumber)
         {
             CheckConnected("AveragePeriodGet");
 
@@ -619,7 +619,7 @@ namespace ASCOM.Simulator
             return averagePeriod;
         }
 
-        public static void AveragePeriodSet(int clientNumber, double value)
+        public static void AveragePeriodSet(int clientNumber, float value)
         {
             CheckConnected("AveragePeriodSet");
 
@@ -637,47 +637,47 @@ namespace ASCOM.Simulator
             }
         }
 
-        public static double CloudCover(int clientNumber)
+        public static float CloudCover(int clientNumber)
         {
             CheckConnected("CloudCover");
 
-            double cloudCover = GetPropertyValue(PROPERTY_CLOUDCOVER);
+            float cloudCover = GetPropertyValue(PROPERTY_CLOUDCOVER);
             TL.LogMessage(clientNumber, "CloudCover", cloudCover.ToString());
             return cloudCover;
         }
 
-        public static double DewPoint(int clientNumber)
+        public static float DewPoint(int clientNumber)
         {
             CheckConnected("DewPoint");
 
-            double dewPoint = GetPropertyValue(PROPERTY_DEWPOINT); ;
+            float dewPoint = GetPropertyValue(PROPERTY_DEWPOINT); ;
             TL.LogMessage(clientNumber, "DewPoint", dewPoint.ToString());
             return dewPoint;
         }
 
-        public static double Humidity(int clientNumber)
+        public static float Humidity(int clientNumber)
         {
             CheckConnected("Humidity");
 
-            double humidity = GetPropertyValue(PROPERTY_HUMIDITY); ;
+            float humidity = GetPropertyValue(PROPERTY_HUMIDITY); ;
             TL.LogMessage(clientNumber, "Humidity", humidity.ToString());
             return humidity;
         }
 
-        public static double Pressure(int clientNumber)
+        public static float Pressure(int clientNumber)
         {
             CheckConnected("Pressure");
 
-            double pressure = GetPropertyValue(PROPERTY_PRESSURE); ;
+            float pressure = GetPropertyValue(PROPERTY_PRESSURE); ;
             TL.LogMessage(clientNumber, "Pressure", pressure.ToString());
             return pressure;
         }
 
-        public static double RainRate(int clientNumber)
+        public static float RainRate(int clientNumber)
         {
             CheckConnected("RainRate");
 
-            double rainRate = GetPropertyValue(PROPERTY_RAINRATE); ;
+            float rainRate = GetPropertyValue(PROPERTY_RAINRATE); ;
             TL.LogMessage(clientNumber, "RainRate", rainRate.ToString());
             return rainRate;
         }
@@ -742,58 +742,58 @@ namespace ASCOM.Simulator
             UpdateAllSensors("Refresh");
         }
 
-        public static double SkyBrightness(int clientNumber)
+        public static float SkyBrightness(int clientNumber)
         {
             CheckConnected("SkyBrightness");
 
-            double skyBrightness = GetPropertyValue(PROPERTY_SKYBRIGHTNESS); ;
+            float skyBrightness = GetPropertyValue(PROPERTY_SKYBRIGHTNESS); ;
             TL.LogMessage(clientNumber, "SkyBrightness", skyBrightness.ToString());
             return skyBrightness;
         }
 
-        public static double SkyQuality(int clientNumber)
+        public static float SkyQuality(int clientNumber)
         {
             CheckConnected("SkyQuality");
 
-            double skyQuality = GetPropertyValue(PROPERTY_SKYQUALITY); ;
+            float skyQuality = GetPropertyValue(PROPERTY_SKYQUALITY); ;
             TL.LogMessage(clientNumber, "SkyQuality", skyQuality.ToString());
             return skyQuality;
         }
 
-        public static double StarFWHM(int clientNumber)
+        public static float StarFWHM(int clientNumber)
         {
             CheckConnected("StarFWHM");
 
-            double starFWHM = GetPropertyValue(PROPERTY_STARFWHM); ;
+            float starFWHM = GetPropertyValue(PROPERTY_STARFWHM); ;
             TL.LogMessage(clientNumber, "StarFWHM", starFWHM.ToString());
             return starFWHM;
         }
 
-        public static double SkyTemperature(int clientNumber)
+        public static float SkyTemperature(int clientNumber)
         {
             CheckConnected("SkyTemperature");
 
-            double skyTemperature = GetPropertyValue(PROPERTY_SKYTEMPERATURE); ;
+            float skyTemperature = GetPropertyValue(PROPERTY_SKYTEMPERATURE); ;
             TL.LogMessage(clientNumber, "SkyTemperature", skyTemperature.ToString());
             return skyTemperature;
         }
 
-        public static double Temperature(int clientNumber)
+        public static float Temperature(int clientNumber)
         {
             CheckConnected("Temperature");
 
-            double temperature = GetPropertyValue(PROPERTY_TEMPERATURE); ;
+            float temperature = GetPropertyValue(PROPERTY_TEMPERATURE); ;
             TL.LogMessage(clientNumber, "Temperature", temperature.ToString());
             return temperature;
         }
 
-        public static double TimeSinceLastUpdate(int clientNumber, string PropertyName)
+        public static float TimeSinceLastUpdate(int clientNumber, string PropertyName)
         {
             CheckConnected("TimeSinceLastUpdate");
 
             if (PropertyName == "") // Return the most recent update time of any sensor
             {
-                double timeSinceLastUpdate;
+                float timeSinceLastUpdate;
 
                 if (timeOfLastUpdate != BAD_DATETIME) timeSinceLastUpdate = DateTime.Now.Subtract(timeOfLastUpdate).TotalSeconds; // Calculate elapsed time since any sensor's last update time
                 else timeSinceLastUpdate = -1.0; // No sensor has been updated so return -1
@@ -805,7 +805,7 @@ namespace ASCOM.Simulator
             {
                 if (IsValidProperty(PropertyName)) // The property name is valid
                 {
-                    double timeSinceLastUpdate;
+                    float timeSinceLastUpdate;
                     TL.LogMessage(clientNumber, "TimeSinceLastUpdate", $"Found valid property name: {PropertyName}");
 
                     // If the type of device is ObservingConditions then query the device directly, if not then return the value we are managing ourselves
@@ -819,7 +819,7 @@ namespace ASCOM.Simulator
                             // If the device throws an exception the outer exception we get will be "TargetInvocationException" with the actual exception as the inner exception
                             Type type = typeof(ObservingConditions);
                             MethodInfo methodInfo = type.GetMethod("TimeSinceLastUpdate");
-                            timeSinceLastUpdate = (double)methodInfo.Invoke(ObservingConditionsDevices[Sensors[PropertyName].ProgID], new object[] { PropertyName });
+                            timeSinceLastUpdate = (float)methodInfo.Invoke(ObservingConditionsDevices[Sensors[PropertyName].ProgID], new object[] { PropertyName });
                             TL.LogMessage("TimeSinceLastUpdate", "Got value: " + timeSinceLastUpdate + " from device " + Sensors[PropertyName].ProgID + " for property " + PropertyName);
                         }
                         catch (TargetInvocationException ex)
@@ -846,29 +846,29 @@ namespace ASCOM.Simulator
             }
         }
 
-        public static double WindDirection(int clientNumber)
+        public static float WindDirection(int clientNumber)
         {
             CheckConnected("WindDirection");
 
-            double windDirection = GetPropertyValue(PROPERTY_WINDDIRECTION); ;
+            float windDirection = GetPropertyValue(PROPERTY_WINDDIRECTION); ;
             TL.LogMessage(clientNumber, "WindDirection", windDirection.ToString());
             return windDirection;
         }
 
-        public static double WindGust(int clientNumber)
+        public static float WindGust(int clientNumber)
         {
             CheckConnected("WindGust");
 
-            double windGust = GetPropertyValue(PROPERTY_WINDGUST); ;
+            float windGust = GetPropertyValue(PROPERTY_WINDGUST); ;
             TL.LogMessage(clientNumber, "WindGust", windGust.ToString());
             return windGust;
         }
 
-        public static double WindSpeed(int clientNumber)
+        public static float WindSpeed(int clientNumber)
         {
             CheckConnected("WindSpeed");
 
-            double windSpeed = GetPropertyValue(PROPERTY_WINDSPEED); ;
+            float windSpeed = GetPropertyValue(PROPERTY_WINDSPEED); ;
             TL.LogMessage(clientNumber, "WindSpeed", windSpeed.ToString());
             return windSpeed;
         }
@@ -921,18 +921,18 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="PropertyName">Sensor property to return</param>
         /// <returns>The instant or average value of a sensor depending on whether AveragePeriod is zero or greater than zero</returns>
-        private static double GetPropertyValue(string PropertyName)
+        private static float GetPropertyValue(string PropertyName)
         {
-            double returnValue;
+            float returnValue;
             if (averagePeriod == 0.0) // No averaging so return the current sensor value
             {
                 returnValue = GetDeviceSensorValue(PropertyName);
             }
             else // An average period has been set 
             {
-                if (double.IsNaN(Sensors[PropertyName].LastPeriodAverage)) // We have not yet calculated the period average so calculate it now and save the value so that it does not have to be calculated again until the list of values changes
+                if (float.IsNaN(Sensors[PropertyName].LastPeriodAverage)) // We have not yet calculated the period average so calculate it now and save the value so that it does not have to be calculated again until the list of values changes
                 {
-                    double averageValue = 0.0;
+                    float averageValue = 0.0;
                     int numberOfSensorReadings = Sensors[PropertyName].Readings.Count;
 
                     if (numberOfSensorReadings > 0) // There are one or more readings so calculate the average value
@@ -966,11 +966,11 @@ namespace ASCOM.Simulator
         /// Reads a sensor value from a device
         /// </summary>
         /// <param name="PropertyName">Name of the property to read</param>
-        /// <returns>Double value read from device</returns>
-        private static double GetDeviceSensorValue(string PropertyName)
+        /// <returns>float value read from device</returns>
+        private static float GetDeviceSensorValue(string PropertyName)
         {
             if (DebugTraceState) TL.LogMessage("GetDeviceSensorValue", PropertyName + " device mode: " + Sensors[PropertyName].DeviceMode.ToString());
-            double returnValue = BAD_VALUE;
+            float returnValue = BAD_VALUE;
 
             lock (deviceAccessLockObject)
             {
@@ -991,17 +991,17 @@ namespace ASCOM.Simulator
                                     // If the device throws an exception the outer exception we get will be "TargetInvocationException" with the actual exception as the inner exception
                                     Type type = typeof(ObservingConditions);
                                     PropertyInfo propertyInfo = type.GetProperty(PropertyName);
-                                    double observingConditionsValue = (double)propertyInfo.GetValue(ObservingConditionsDevices[Sensors[PropertyName].ProgID], null);
+                                    float observingConditionsValue = (float)propertyInfo.GetValue(ObservingConditionsDevices[Sensors[PropertyName].ProgID], null);
                                     TL.LogMessage("GetDeviceSensorValue", "Got value: " + observingConditionsValue + " from device " + Sensors[PropertyName].ProgID + " method " + PropertyName);
                                     returnValue = observingConditionsValue;
                                     break;
 
                                 case DeviceType.Switch:
-                                    double switchValue;
+                                    float switchValue;
                                     if (SwitchDevices[Sensors[PropertyName].ProgID].InterfaceVersion <= 1) // Switch V1 does not have a switch description so get the switch name instead
                                     {
                                         bool switchBool = SwitchDevices[Sensors[PropertyName].ProgID].GetSwitch((short)Sensors[PropertyName].SwitchNumber);
-                                        switchValue = Convert.ToDouble(switchBool);
+                                        switchValue = Convert.Tofloat(switchBool);
                                         TL.LogMessage("GetDeviceSensorValue", "Got value: " + switchValue + " from Switch V1 device " + Sensors[PropertyName].ProgID + " switch number " + Sensors[PropertyName].SwitchNumber + ", device returned: " + switchBool.ToString());
                                     }
                                     else // Switch V2 does have a switch description
@@ -1110,7 +1110,7 @@ namespace ASCOM.Simulator
         private static void UpdateAllSensors(string caller)
         {
             DateTime now = DateTime.Now;
-            double sensorValue;
+            float sensorValue;
 
             TL.LogMessage("UpdateAllSensors", "Called by {0}", caller);
 
@@ -1215,7 +1215,7 @@ namespace ASCOM.Simulator
                 // Initialise other variables from the Profile
                 DebugTraceState = Convert.ToBoolean(driverProfile.GetValue(DRIVER_PROGID, DEBUG_TRACE_PROFILENAME, string.Empty, DEBUG_TRACE_DEFAULT), CultureInfo.InvariantCulture);
                 ConnectToDrivers = Convert.ToBoolean(driverProfile.GetValue(DRIVER_PROGID, CONNECT_TO_DRIVERS_PROFILENAME, string.Empty, CONNECT_TO_DRIVERS_DEFAULT), CultureInfo.InvariantCulture);
-                averagePeriod = Convert.ToDouble(driverProfile.GetValue(DRIVER_PROGID, AVERAGE_PERIOD_PROFILENAME, string.Empty, AVERAGE_PERIOD_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                averagePeriod = Convert.Tofloat(driverProfile.GetValue(DRIVER_PROGID, AVERAGE_PERIOD_PROFILENAME, string.Empty, AVERAGE_PERIOD_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
                 numberOfMeasurementsPerAveragePeriod = Convert.ToInt32(driverProfile.GetValue(DRIVER_PROGID, NUMBER_OF_READINGS_PROFILENAME, string.Empty, NUMBER_OF_READINGS_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
                 overrideUISafetyLimits = Convert.ToBoolean(driverProfile.GetValue(DRIVER_PROGID, OVERRIDE_UI_SAFETY_LIMITS_PROFILENAME, string.Empty, OVERRIDE_UI_SAFETY_LIMITS_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
 

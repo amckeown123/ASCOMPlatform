@@ -86,88 +86,88 @@ namespace ASCOM.DriverAccess
         #region ObservingConditions Properties
 
         /// <inheritdoc/>
-        public double AveragePeriod
+        public float AveragePeriod
         {
-            get { return (double)_memberFactory.CallMember(1, "AveragePeriod", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "AveragePeriod", new Type[] { }, new object[] { }); }
             set { _memberFactory.CallMember(2, "AveragePeriod", new Type[] { }, new object[] { value }); }
         }
 
         /// <inheritdoc/>
-        public double CloudCover
+        public float CloudCover
         {
-            get { return (double)_memberFactory.CallMember(1, "CloudCover", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "CloudCover", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double DewPoint
+        public float DewPoint
         {
-            get { return (double)_memberFactory.CallMember(1, "DewPoint", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "DewPoint", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double Humidity
+        public float Humidity
         {
-            get { return (double)_memberFactory.CallMember(1, "Humidity", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "Humidity", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double Pressure
+        public float Pressure
         {
-            get { return (double)_memberFactory.CallMember(1, "Pressure", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "Pressure", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double RainRate
+        public float RainRate
         {
-            get { return (double)_memberFactory.CallMember(1, "RainRate", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "RainRate", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double SkyBrightness
+        public float SkyBrightness
         {
-            get { return (double)_memberFactory.CallMember(1, "SkyBrightness", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "SkyBrightness", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double SkyQuality
+        public float SkyQuality
         {
-            get { return (double)_memberFactory.CallMember(1, "SkyQuality", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "SkyQuality", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double StarFWHM
+        public float StarFWHM
         {
-            get { return (double)_memberFactory.CallMember(1, "StarFWHM", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "StarFWHM", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double SkyTemperature
+        public float SkyTemperature
         {
-            get { return (double)_memberFactory.CallMember(1, "SkyTemperature", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "SkyTemperature", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double Temperature
+        public float Temperature
         {
-            get { return (double)_memberFactory.CallMember(1, "Temperature", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "Temperature", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double WindDirection
+        public float WindDirection
         {
-            get { return (double)_memberFactory.CallMember(1, "WindDirection", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "WindDirection", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double WindGust
+        public float WindGust
         {
-            get { return (double)_memberFactory.CallMember(1, "WindGust", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "WindGust", new Type[] { }, new object[] { }); }
         }
 
         /// <inheritdoc/>
-        public double WindSpeed
+        public float WindSpeed
         {
-            get { return (double)_memberFactory.CallMember(1, "WindSpeed", new Type[] { }, new object[] { }); }
+            get { return (float)_memberFactory.CallMember(1, "WindSpeed", new Type[] { }, new object[] { }); }
         }
 
         #endregion
@@ -175,9 +175,9 @@ namespace ASCOM.DriverAccess
         #region ObservingConditions methods
 
         /// <inheritdoc/>
-        public double TimeSinceLastUpdate(string PropertyName)
+        public float TimeSinceLastUpdate(string PropertyName)
         {
-            return (double)_memberFactory.CallMember(3, "TimeSinceLastUpdate", new Type[] { typeof(string) }, new object[] { PropertyName });
+            return (float)_memberFactory.CallMember(3, "TimeSinceLastUpdate", new Type[] { typeof(string) }, new object[] { PropertyName });
         }
 
         /// <inheritdoc/>

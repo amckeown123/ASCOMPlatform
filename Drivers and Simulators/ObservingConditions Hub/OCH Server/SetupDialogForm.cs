@@ -77,7 +77,7 @@ namespace ASCOM.Simulator
                 Hub.TraceState = chkTrace.Checked;
                 Hub.DebugTraceState = chkDebugTrace.Checked;
                 Hub.ConnectToDrivers = chkConnectToDrivers.Checked;
-                Hub.averagePeriod = Convert.ToDouble(numAveragePeriod.Value);
+                Hub.averagePeriod = Convert.Tofloat(numAveragePeriod.Value);
                 Hub.numberOfMeasurementsPerAveragePeriod = Convert.ToInt32(numNumberOfReadingsToAverage.Value);
                 Hub.overrideUISafetyLimits = chkOverrideSafetyLimits.Checked;
 

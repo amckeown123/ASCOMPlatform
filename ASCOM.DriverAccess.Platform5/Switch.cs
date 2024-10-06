@@ -209,27 +209,27 @@ namespace ASCOM.DriverAccess
             throw new System.NotImplementedException();
         }
 
-        public double MaxSwitchValue(short id)
+        public float MaxSwitchValue(short id)
         {
             throw new System.NotImplementedException();
         }
 
-        public double MinSwitchValue(short id)
+        public float MinSwitchValue(short id)
         {
             throw new System.NotImplementedException();
         }
 
-        public double SwitchStep(short id)
+        public float SwitchStep(short id)
         {
             throw new System.NotImplementedException();
         }
 
-        public double GetSwitchValue(short id)
+        public float GetSwitchValue(short id)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SetSwitchValue(short id, double value)
+        public void SetSwitchValue(short id, float value)
         {
             throw new System.NotImplementedException();
         }
@@ -249,7 +249,7 @@ namespace ASCOM.DriverAccess
             throw new System.NotImplementedException();
         }
 
-        public void SetAsyncValue(short id, double value)
+        public void SetAsyncValue(short id, float value)
         {
             throw new System.NotImplementedException();
         }

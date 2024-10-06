@@ -16,14 +16,14 @@ Class DeviceCamera
 
     Private Const ccdWidth As Integer = 1394 ' Constants to define the CCD pixel dimensions
     Private Const ccdHeight As Integer = 1040
-    Private Const pixelSize As Double = 6.45 ' Constant for the pixel physical dimension
+    Private Const pixelSize As float = 6.45 ' Constant for the pixel physical dimension
 
     Private cameraNumX As Integer = ccdWidth ' Initialise variables to hold values required for functionality tested by Conform
     Private cameraNumY As Integer = ccdHeight
     Private cameraStartX As Integer = 0
     Private cameraStartY As Integer = 0
     Private exposureStart As DateTime = DateTime.MinValue
-    Private cameraLastExposureDuration As Double = 0.0
+    Private cameraLastExposureDuration As float = 0.0
     Private cameraImageReady As Boolean = False
     Private cameraImageArray As Integer(,)
     Private cameraImageArrayVariant As Object(,)
@@ -98,7 +98,7 @@ Class DeviceCamera
 	''' Returns the current CCD temperature in degrees Celsius.
 	''' </summary>
 	''' <value>The CCD temperature.</value>
-	Public ReadOnly Property CCDTemperature() As Double Implements ICameraV3.CCDTemperature
+	Public ReadOnly Property CCDTemperature() As float Implements ICameraV3.CCDTemperature
 		Get
 			TL.LogMessage("CCDTemperature Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("CCDTemperature", False)
@@ -244,7 +244,7 @@ Class DeviceCamera
 	''' Returns the present cooler power level, in percent.
 	''' </summary>
 	''' <value>The cooler power.</value>
-	Public ReadOnly Property CoolerPower() As Double Implements ICameraV3.CoolerPower
+	Public ReadOnly Property CoolerPower() As float Implements ICameraV3.CoolerPower
 		Get
 			TL.LogMessage("AbortExposure Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("CoolerPower", False)
@@ -255,7 +255,7 @@ Class DeviceCamera
 	''' Returns the gain of the camera in photoelectrons per A/D unit.
 	''' </summary>
 	''' <value>The electrons per ADU.</value>
-	Public ReadOnly Property ElectronsPerADU() As Double Implements ICameraV3.ElectronsPerADU
+	Public ReadOnly Property ElectronsPerADU() As float Implements ICameraV3.ElectronsPerADU
 		Get
 			TL.LogMessage("ElectronsPerADU Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("ElectronsPerADU", False)
@@ -266,7 +266,7 @@ Class DeviceCamera
 	''' Returns the maximum exposure time supported by <see cref="StartExposure">StartExposure</see>.
 	''' </summary>
 	''' <returns>The maximum exposure time, in seconds, that the camera supports</returns>
-	Public ReadOnly Property ExposureMax() As Double Implements ICameraV3.ExposureMax
+	Public ReadOnly Property ExposureMax() As float Implements ICameraV3.ExposureMax
 		Get
 			TL.LogMessage("ExposureMax Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("ExposureMax", False)
@@ -277,7 +277,7 @@ Class DeviceCamera
 	''' Minimum exposure time
 	''' </summary>
 	''' <returns>The minimum exposure time, in seconds, that the camera supports through <see cref="StartExposure">StartExposure</see></returns>
-	Public ReadOnly Property ExposureMin() As Double Implements ICameraV3.ExposureMin
+	Public ReadOnly Property ExposureMin() As float Implements ICameraV3.ExposureMin
 		Get
 			TL.LogMessage("ExposureMin Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("ExposureMin", False)
@@ -288,7 +288,7 @@ Class DeviceCamera
 	''' Exposure resolution
 	''' </summary>
 	''' <returns>The smallest increment in exposure time supported by <see cref="StartExposure">StartExposure</see>.</returns>
-	Public ReadOnly Property ExposureResolution() As Double Implements ICameraV3.ExposureResolution
+	Public ReadOnly Property ExposureResolution() As float Implements ICameraV3.ExposureResolution
 		Get
 			TL.LogMessage("ExposureResolution Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("ExposureResolution", False)
@@ -314,7 +314,7 @@ Class DeviceCamera
 	''' Reports the full well capacity of the camera in electrons, at the current camera settings (binning, SetupDialog settings, etc.)
 	''' </summary>
 	''' <value>The full well capacity.</value>
-	Public ReadOnly Property FullWellCapacity() As Double Implements ICameraV3.FullWellCapacity
+	Public ReadOnly Property FullWellCapacity() As float Implements ICameraV3.FullWellCapacity
 		Get
 			TL.LogMessage("FullWellCapacity Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("FullWellCapacity", False)
@@ -389,7 +389,7 @@ Class DeviceCamera
 	''' Returns the current heat sink temperature (called "ambient temperature" by some manufacturers) in degrees Celsius.
 	''' </summary>
 	''' <value>The heat sink temperature.</value>
-	Public ReadOnly Property HeatSinkTemperature() As Double Implements ICameraV3.HeatSinkTemperature
+	Public ReadOnly Property HeatSinkTemperature() As float Implements ICameraV3.HeatSinkTemperature
 		Get
 			TL.LogMessage("HeatSinkTemperature Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("HeatSinkTemperature", False)
@@ -462,7 +462,7 @@ Class DeviceCamera
 	''' Reports the actual exposure duration in seconds (i.e. shutter open time).
 	''' </summary>
 	''' <value>The last duration of the exposure.</value>
-	Public ReadOnly Property LastExposureDuration() As Double Implements ICameraV3.LastExposureDuration
+	Public ReadOnly Property LastExposureDuration() As float Implements ICameraV3.LastExposureDuration
 		Get
 			If (Not cameraImageReady) Then
 				TL.LogMessage("LastExposureDuration Get", "Throwing InvalidOperationException because of a call to LastExposureDuration before the first image has been taken!")
@@ -619,7 +619,7 @@ Class DeviceCamera
 	''' Returns the width of the CCD chip pixels in microns.
 	''' </summary>
 	''' <value>The pixel size X.</value>
-	Public ReadOnly Property PixelSizeX() As Double Implements ICameraV3.PixelSizeX
+	Public ReadOnly Property PixelSizeX() As float Implements ICameraV3.PixelSizeX
 		Get
 			TL.LogMessage("PixelSizeX Get", pixelSize.ToString())
 			Return pixelSize
@@ -630,7 +630,7 @@ Class DeviceCamera
 	''' Returns the height of the CCD chip pixels in microns.
 	''' </summary>
 	''' <value>The pixel size Y.</value>
-	Public ReadOnly Property PixelSizeY() As Double Implements ICameraV3.PixelSizeY
+	Public ReadOnly Property PixelSizeY() As float Implements ICameraV3.PixelSizeY
 		Get
 			TL.LogMessage("PixelSizeY Get", pixelSize.ToString())
 			Return pixelSize
@@ -701,12 +701,12 @@ Class DeviceCamera
 	''' Sets the camera cooler setpoint in degrees Celsius, And returns the current setpoint.
 	''' </summary>
 	''' <value>The set CCD temperature.</value>
-	Public Property SetCCDTemperature() As Double Implements ICameraV3.SetCCDTemperature
+	Public Property SetCCDTemperature() As float Implements ICameraV3.SetCCDTemperature
 		Get
 			TL.LogMessage("SetCCDTemperature Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("SetCCDTemperature", False)
 		End Get
-		Set(value As Double)
+		Set(value As float)
 			TL.LogMessage("SetCCDTemperature Set", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("SetCCDTemperature", True)
 		End Set
@@ -717,7 +717,7 @@ Class DeviceCamera
 	''' </summary>
 	''' <param name="Duration">Duration of exposure in seconds, can be zero if <see cref="StartExposure">Light</see> Is <c>False</c></param>
 	''' <param name="Light"><c>True</c> for light frame, <c>False</c> for dark frame (ignored if no shutter)</param>
-	Public Sub StartExposure(Duration As Double, Light As Boolean) Implements ICameraV3.StartExposure
+	Public Sub StartExposure(Duration As float, Light As Boolean) Implements ICameraV3.StartExposure
 		If (Duration < 0.0) Then Throw New InvalidValueException("StartExposure", Duration.ToString(), "0.0 upwards")
 		If (cameraNumX > ccdWidth) Then Throw New InvalidValueException("StartExposure", cameraNumX.ToString(), ccdWidth.ToString())
 		If (cameraNumY > ccdHeight) Then Throw New InvalidValueException("StartExposure", cameraNumY.ToString(), ccdHeight.ToString())
@@ -770,12 +770,12 @@ Class DeviceCamera
 	''' <summary>
 	''' Camera's sub-exposure interval
 	''' </summary>
-	Public Property SubExposureDuration() As Double Implements ICameraV3.SubExposureDuration
+	Public Property SubExposureDuration() As float Implements ICameraV3.SubExposureDuration
 		Get
 			TL.LogMessage("SubExposureDuration Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("SubExposureDuration", False)
 		End Get
-		Set(value As Double)
+		Set(value As float)
 			TL.LogMessage("SubExposureDuration Set", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("SubExposureDuration", True)
 		End Set

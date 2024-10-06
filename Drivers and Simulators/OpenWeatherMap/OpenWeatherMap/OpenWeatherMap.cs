@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text;
 using System.Net;
+using Newtonsoft.Json;
 
 using ASCOM.Utilities;
 using System.Globalization;
-using Nancy.Json;
 
 namespace ASCOM.OpenWeatherMap
 {
@@ -19,15 +19,15 @@ namespace ASCOM.OpenWeatherMap
         /// <summary>
         /// Minimum period between OpenAPI calls (seconds).  Requests to Refresh that occur before this interval has passed will be ignored.
         /// </summary>
-        internal static double MinimumQueryInterval { get; set; }
+        internal static float MinimumQueryInterval { get; set; }
 
         internal static string CityName { get; set; }
 
-        internal static double SiteLongitude { get; set; }
+        internal static float SiteLongitude { get; set; }
 
-        internal static double SiteLatitude { get; set; }
+        internal static float SiteLatitude { get; set; }
 
-        internal static double SiteElevation { get; set; }
+        internal static float SiteElevation { get; set; }
 
         internal static LocationType locationType = LocationType.CityName;
 
@@ -123,7 +123,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double CloudCover
+        internal static float CloudCover
         {
             get
             {
@@ -134,7 +134,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double DewPoint
+        internal static float DewPoint
         {
             get
             {
@@ -159,7 +159,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double Humidity
+        internal static float Humidity
         {
             get
             {
@@ -178,7 +178,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double Pressure
+        internal static float Pressure
         {
             get
             {
@@ -218,7 +218,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double RainRate
+        internal static float RainRate
         {
             get
             {
@@ -246,7 +246,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double Temperature
+        internal static float Temperature
         {
             get
             {
@@ -267,7 +267,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double WindDirection
+        internal static float WindDirection
         {
             get
             {
@@ -280,7 +280,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double WindSpeed
+        internal static float WindSpeed
         {
             get
             {
@@ -291,7 +291,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double WindGust
+        internal static float WindGust
         {
             get
             {
@@ -302,7 +302,7 @@ namespace ASCOM.OpenWeatherMap
             }
         }
 
-        internal static double TimeSinceLastUpdate
+        internal static float TimeSinceLastUpdate
         {
             get
             {
@@ -346,12 +346,12 @@ namespace ASCOM.OpenWeatherMap
                 Log.ReadProfile(profile);
                 locationType = (LocationType)Enum.Parse(typeof(LocationType), profile.GetValue(driverID, "LocationType", string.Empty, LocationType.CityName.ToString()));
                 CityName = profile.GetValue(driverID, "CityName", string.Empty, CityName);
-                SiteElevation = double.Parse(profile.GetValue(driverID, "SiteElevation", string.Empty, "0"), CultureInfo.InvariantCulture);
-                SiteLatitude = double.Parse(profile.GetValue(driverID, "SiteLatitude", string.Empty, "0"), CultureInfo.InvariantCulture);
-                SiteLongitude = double.Parse(profile.GetValue(driverID, "SiteLongitude", string.Empty, "0"), CultureInfo.InvariantCulture);
+                SiteElevation = float.Parse(profile.GetValue(driverID, "SiteElevation", string.Empty, "0"), CultureInfo.InvariantCulture);
+                SiteLatitude = float.Parse(profile.GetValue(driverID, "SiteLatitude", string.Empty, "0"), CultureInfo.InvariantCulture);
+                SiteLongitude = float.Parse(profile.GetValue(driverID, "SiteLongitude", string.Empty, "0"), CultureInfo.InvariantCulture);
                 apiKey = profile.GetValue(driverID, "ApiKey");
                 apiUrl = profile.GetValue(driverID, "ApiUrl", string.Empty, apiUrl);
-                MinimumQueryInterval = double.Parse(profile.GetValue(driverID, "MinimumQueryInterval", string.Empty, "600.0"), CultureInfo.InvariantCulture);
+                MinimumQueryInterval = float.Parse(profile.GetValue(driverID, "MinimumQueryInterval", string.Empty, "600.0"), CultureInfo.InvariantCulture);
             }
         }
 

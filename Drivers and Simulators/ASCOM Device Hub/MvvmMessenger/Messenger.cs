@@ -13,9 +13,12 @@
 // </license>
 // ****************************************************************************
 
+
 using ASCOM.DeviceHub.MvvmMessenger.Helpers;
-using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 
 namespace ASCOM.DeviceHub.MvvmMessenger

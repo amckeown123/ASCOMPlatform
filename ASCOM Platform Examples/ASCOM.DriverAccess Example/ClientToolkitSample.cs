@@ -1,6 +1,8 @@
-using System;
-using ASCOM.Utilities;
+using ASCOM.DeviceInterface;
 using ASCOM.DriverAccess;
+using ASCOM.Utilities;
+using System;
+
 
 namespace ASCOM
 {
@@ -130,7 +132,7 @@ namespace ASCOM
                 if (C.CanPulseGuide)
                     Console.WriteLine("  IsPulseGuiding = " + C.IsPulseGuiding);
 				Console.Write("  Take 15 second image");
-				C.StartExposure(15.0, true);
+				C.StartExposure(15.0f, true);
 				while (!C.ImageReady)
 				{
 					Console.Write(".");
@@ -209,7 +211,7 @@ namespace ASCOM
 				{
 					Console.WriteLine("  This is a rotatable dome");
 					Console.WriteLine("  Current slit azimuth = " + D.Azimuth.ToString("0.0"));
-					double z = D.Azimuth + 60;
+					float z = D.Azimuth + 60;
 					if (z >= 360) z -= 360;
 					D.SlewToAzimuth(z);
 					Console.Write("  Rotating to azimuth " + z.ToString("0"));

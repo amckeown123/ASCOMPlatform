@@ -225,10 +225,10 @@ namespace ASCOM.Simulator
         private void SaveProperties()
         {
             Log.Enabled = checkBoxLogging.Checked;
-            camera.pixelSizeX = double.Parse(textBoxPixelSizeX.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
-            camera.pixelSizeY = double.Parse(textBoxPixelSizeY.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
+            camera.pixelSizeX = float.Parse(textBoxPixelSizeX.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
+            camera.pixelSizeY = float.Parse(textBoxPixelSizeY.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
             camera.maxADU = int.Parse(textBoxMaxADU.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
-            camera.electronsPerADU = double.Parse(textBoxElectronsPerADU.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
+            camera.electronsPerADU = float.Parse(textBoxElectronsPerADU.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
 
             camera.cameraXSize = int.Parse(textBoxCameraXSize.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
             camera.cameraYSize = int.Parse(textBoxCameraYSize.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
@@ -248,8 +248,8 @@ namespace ASCOM.Simulator
 
             camera.canAbortExposure = checkBoxCanAbortExposure.Checked;
             camera.canStopExposure = checkBoxCanStopExposure.Checked;
-            camera.exposureMin = double.Parse(textBoxMinExposure.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
-            camera.exposureMax = double.Parse(textBoxMaxExposure.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
+            camera.exposureMin = float.Parse(textBoxMinExposure.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
+            camera.exposureMax = float.Parse(textBoxMaxExposure.Text, NumberStyles.Number, CultureInfo.CurrentCulture);
             camera.applyNoise = checkBoxApplyNoise.Checked;
 
             camera.canPulseGuide = checkBoxCanPulseGuide.Checked;
@@ -342,7 +342,7 @@ namespace ASCOM.Simulator
 
             // Save sub exposure configuration
             camera.hasSubExposure = ChkHasSubExposure.Checked;
-            if (double.TryParse(TxtSubExposure.Text, NumberStyles.Number, CultureInfo.CurrentCulture, out double subExposureParsed)) // Validate OffsetMin
+            if (float.TryParse(TxtSubExposure.Text, NumberStyles.Number, CultureInfo.CurrentCulture, out float subExposureParsed)) // Validate OffsetMin
             {
                 camera.subExposureInterval = subExposureParsed;
             }

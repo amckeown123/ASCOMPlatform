@@ -16,12 +16,12 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Gets and sets the time period over which observations wil be averaged
 	''' </summary>
-	Public Property AveragePeriod() As Double Implements IObservingConditions.AveragePeriod
+	Public Property AveragePeriod() As float Implements IObservingConditions.AveragePeriod
 		Get
 			TL.LogMessage("AveragePeriod", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("AveragePeriod", False)
 		End Get
-		Set(value As Double)
+		Set(value As float)
 			TL.LogMessage("AveragePeriod", "Set Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("AveragePeriod", True)
 		End Set
@@ -30,7 +30,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Amount of sky obscured by cloud
 	''' </summary>
-	Public ReadOnly Property CloudCover() As Double Implements IObservingConditions.CloudCover
+	Public ReadOnly Property CloudCover() As float Implements IObservingConditions.CloudCover
 		Get
 			TL.LogMessage("CloudCover", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("CloudCover", False)
@@ -40,7 +40,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Atmospheric dew point at the observatory in deg C
 	''' </summary>
-	Public ReadOnly Property DewPoint() As Double Implements IObservingConditions.DewPoint
+	Public ReadOnly Property DewPoint() As float Implements IObservingConditions.DewPoint
 		Get
 			TL.LogMessage("DewPoint", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("DewPoint", False)
@@ -50,7 +50,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Atmospheric relative humidity at the observatory in percent
 	''' </summary>
-	Public ReadOnly Property Humidity() As Double Implements IObservingConditions.Humidity
+	Public ReadOnly Property Humidity() As float Implements IObservingConditions.Humidity
 		Get
 			TL.LogMessage("Humidity", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("Humidity", False)
@@ -60,7 +60,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Atmospheric pressure at the observatory in hectoPascals (hPa)
 	''' </summary>
-	Public ReadOnly Property Pressure() As Double Implements IObservingConditions.Pressure
+	Public ReadOnly Property Pressure() As float Implements IObservingConditions.Pressure
 		Get
 			TL.LogMessage("Pressure", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("Pressure", False)
@@ -70,7 +70,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Rain rate at the observatory, in millimeters per hour
 	''' </summary>
-	Public ReadOnly Property RainRate() As Double Implements IObservingConditions.RainRate
+	Public ReadOnly Property RainRate() As float Implements IObservingConditions.RainRate
 		Get
 			TL.LogMessage("RainRate", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("RainRate", False)
@@ -80,7 +80,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Sky brightness at the observatory, in Lux (lumens per square meter)
 	''' </summary>
-	Public ReadOnly Property SkyBrightness() As Double Implements IObservingConditions.SkyBrightness
+	Public ReadOnly Property SkyBrightness() As float Implements IObservingConditions.SkyBrightness
 		Get
 			TL.LogMessage("SkyBrightness", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("SkyBrightness", False)
@@ -90,7 +90,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Sky quality at the observatory, in magnitudes per square arc-second
 	''' </summary>
-	Public ReadOnly Property SkyQuality() As Double Implements IObservingConditions.SkyQuality
+	Public ReadOnly Property SkyQuality() As float Implements IObservingConditions.SkyQuality
 		Get
 			TL.LogMessage("SkyQuality", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("SkyQuality", False)
@@ -100,7 +100,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Seeing at the observatory, in magnitudes per square arc-second
 	''' </summary>
-	Public ReadOnly Property StarFWHM() As Double Implements IObservingConditions.StarFWHM
+	Public ReadOnly Property StarFWHM() As float Implements IObservingConditions.StarFWHM
 		Get
 			TL.LogMessage("StarFWHM", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("StarFWHM", False)
@@ -110,7 +110,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Sky temperature at the observatory in deg C
 	''' </summary>
-	Public ReadOnly Property SkyTemperature() As Double Implements IObservingConditions.SkyTemperature
+	Public ReadOnly Property SkyTemperature() As float Implements IObservingConditions.SkyTemperature
 		Get
 			TL.LogMessage("SkyTemperature", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("SkyTemperature", False)
@@ -120,7 +120,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Temperature at the observatory in deg C
 	''' </summary>
-	Public ReadOnly Property Temperature() As Double Implements IObservingConditions.Temperature
+	Public ReadOnly Property Temperature() As float Implements IObservingConditions.Temperature
 		Get
 			TL.LogMessage("Temperature", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("Temperature", False)
@@ -130,7 +130,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Wind direction at the observatory in degrees
 	''' </summary>
-	Public ReadOnly Property WindDirection() As Double Implements IObservingConditions.WindDirection
+	Public ReadOnly Property WindDirection() As float Implements IObservingConditions.WindDirection
 		Get
 			TL.LogMessage("WindDirection", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("WindDirection", False)
@@ -140,7 +140,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Peak 3 second wind gust at the observatory over the last 2 minutes in m/s
 	''' </summary>
-	Public ReadOnly Property WindGust() As Double Implements IObservingConditions.WindGust
+	Public ReadOnly Property WindGust() As float Implements IObservingConditions.WindGust
 		Get
 			TL.LogMessage("WindGust", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("WindGust", False)
@@ -150,7 +150,7 @@ Class DeviceObservingConditions
 	''' <summary>
 	''' Wind speed at the observatory in m/s
 	''' </summary>
-	Public ReadOnly Property WindSpeed() As Double Implements IObservingConditions.WindSpeed
+	Public ReadOnly Property WindSpeed() As float Implements IObservingConditions.WindSpeed
 		Get
 			TL.LogMessage("WindSpeed", "Get Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("WindSpeed", False)
@@ -162,8 +162,8 @@ Class DeviceObservingConditions
     ''' </summary>
     ''' <param name="propertyName">Name of the property whose time since last update Is required</param>
     ''' <returns>Time in seconds since the last sensor update for this property</returns>
-    Public Function TimeSinceLastUpdate(PropertyName As String) As Double Implements IObservingConditions.TimeSinceLastUpdate
-        Dim lastUpdateTime As Double = 0.0
+    Public Function TimeSinceLastUpdate(PropertyName As String) As float Implements IObservingConditions.TimeSinceLastUpdate
+        Dim lastUpdateTime As float = 0.0
 
 		' Test for an empty property name, if found, return the time since the most recent update to any sensor
 		If Not String.IsNullOrEmpty(PropertyName) Then

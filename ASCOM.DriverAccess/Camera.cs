@@ -90,9 +90,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double CCDTemperature
+        public float CCDTemperature
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "CCDTemperature", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "CCDTemperature", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -157,21 +157,21 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double CoolerPower
+        public float CoolerPower
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "CoolerPower", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "CoolerPower", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double ElectronsPerADU
+        public float ElectronsPerADU
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ElectronsPerADU", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ElectronsPerADU", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double FullWellCapacity
+        public float FullWellCapacity
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "FullWellCapacity", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "FullWellCapacity", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -181,9 +181,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double HeatSinkTemperature
+        public float HeatSinkTemperature
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "HeatSinkTemperature", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "HeatSinkTemperature", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -211,9 +211,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double LastExposureDuration
+        public float LastExposureDuration
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "LastExposureDuration", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "LastExposureDuration", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -255,15 +255,15 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double PixelSizeX
+        public float PixelSizeX
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "PixelSizeX", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "PixelSizeX", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double PixelSizeY
+        public float PixelSizeY
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "PixelSizeY", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "PixelSizeY", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -273,16 +273,16 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double SetCCDTemperature
+        public float SetCCDTemperature
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "SetCCDTemperature", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "SetCCDTemperature", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "SetCCDTemperature", new Type[] { }, new object[] { value }); }
         }
 
         /// <inheritdoc/>
-        public void StartExposure(double Duration, bool Light)
+        public void StartExposure(float Duration, bool Light)
         {
-            _memberFactory.CallMember(3, "StartExposure", new[] { typeof(double), typeof(bool) }, new object[] { Duration, Light });
+            _memberFactory.CallMember(3, "StartExposure", new[] { typeof(float), typeof(bool) }, new object[] { Duration, Light });
         }
 
         /// <inheritdoc/>
@@ -335,21 +335,21 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double ExposureMax
+        public float ExposureMax
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ExposureMax", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ExposureMax", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double ExposureMin
+        public float ExposureMin
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ExposureMin", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ExposureMin", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double ExposureResolution
+        public float ExposureResolution
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ExposureResolution", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ExposureResolution", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -465,12 +465,12 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double SubExposureDuration
+        public float SubExposureDuration
         {
             get
             {
                 if (DriverInterfaceVersion < 3) throw new PropertyNotImplementedException("SubExposureDuration", "SubExposureDuration Get is not implemented because the driver interface is ICameraV2 or earlier.");
-                return Convert.ToDouble(_memberFactory.CallMember(1, "SubExposureDuration", new Type[] { }, new object[] { }));
+                return Convert.Tofloat(_memberFactory.CallMember(1, "SubExposureDuration", new Type[] { }, new object[] { }));
             }
             set
             {

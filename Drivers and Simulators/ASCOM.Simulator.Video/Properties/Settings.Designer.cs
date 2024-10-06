@@ -62,9 +62,9 @@ namespace ASCOM.Simulator.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("8")]
-        public double ExposureMax {
+        public float ExposureMax {
             get {
-                return ((double)(this["ExposureMax"]));
+                return ((float)(this["ExposureMax"]));
             }
             set {
                 this["ExposureMax"] = value;
@@ -74,9 +74,9 @@ namespace ASCOM.Simulator.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.033")]
-        public double ExposureMin {
+        public float ExposureMin {
             get {
-                return ((double)(this["ExposureMin"]));
+                return ((float)(this["ExposureMin"]));
             }
             set {
                 this["ExposureMin"] = value;
@@ -230,9 +230,9 @@ namespace ASCOM.Simulator.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
-        public double PixelSizeX {
+        public float PixelSizeX {
             get {
-                return ((double)(this["PixelSizeX"]));
+                return ((float)(this["PixelSizeX"]));
             }
             set {
                 this["PixelSizeX"] = value;
@@ -242,9 +242,9 @@ namespace ASCOM.Simulator.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
-        public double PixelSizeY {
+        public float PixelSizeY {
             get {
-                return ((double)(this["PixelSizeY"]));
+                return ((float)(this["PixelSizeY"]));
             }
             set {
                 this["PixelSizeY"] = value;

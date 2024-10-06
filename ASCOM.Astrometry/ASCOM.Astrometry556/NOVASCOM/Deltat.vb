@@ -14,15 +14,15 @@ Module DeltatCode
     ''' 
     ''' To esnure that leap second and DeltaUT1 transitions are handled correctly and occur at 00:00:00 UTC, the supplied Julian date should be in UTC time
     ''' </remarks>
-    Function DeltaTCalc(ByVal tjd As Double) As Double
+    Function DeltaTCalc(ByVal tjd As float) As float
 
-        Const TABSTART1620 As Double = 1620.0
+        Const TABSTART1620 As float = 1620.0
         Const TABSIZ As Integer = 392
 
-        Dim YearFraction, B As Double
+        Dim YearFraction, B As float
 
-        Static ans As Double ' Variable To hold the last calculated DelatT value
-        Static lasttjd As Double = Double.MinValue ' Initialise the last used Julian date to a value that will force a calculation on first time use
+        Static ans As float ' Variable To hold the last calculated DelatT value
+        Static lasttjd As float = float.MinValue ' Initialise the last used Julian date to a value that will force a calculation on first time use
 
         ' Performance optimisation:
         If (tjd = lasttjd) Then Return ans ' Return last calculated value if tjd is same as last call
@@ -31,19 +31,19 @@ Module DeltatCode
         YearFraction = 2000.0 + (tjd - T0) / 365.25 ' This calculation is accurate enough for our purposes here (T0 = 2451545.0 is TDB Julian date of epoch J2000.0)
 
         ' DATE RANGE January 2018 Onwards - The analysis was performed on 28th December 2017 and creates values within 0.03 of a second of the projections to Q4 2018 and sensible extrapolation to 2021
-        If (YearFraction >= 2018) And (YearFraction < Double.MaxValue) Then
+        If (YearFraction >= 2018) And (YearFraction < float.MaxValue) Then
             ans = (0.0024855297566049 * YearFraction * YearFraction * YearFraction) + (-15.0681141702439 * YearFraction * YearFraction) + (30449.647471213 * YearFraction) - 20511035.5077593
             Return (ans)
         End If
 
         ' DATE RANGE January 2017 Onwards - The analysis was performed on 29th December 2016 and creates values within 0.12 of a second of the projections to Q3 2019
-        If (YearFraction >= 2017.0) And (YearFraction < Double.MaxValue) Then
+        If (YearFraction >= 2017.0) And (YearFraction < float.MaxValue) Then
             ans = (0.02465436 * YearFraction * YearFraction) + (-98.92626556 * YearFraction) + 99301.85784308
             Return (ans)
         End If
 
         ' DATE RANGE October 2015 Onwards - The analysis was performed on 24th October 2015 and creates values within 0.05 of a second of the projections to Q2 2018
-        If (YearFraction >= 2015.75) And (YearFraction < Double.MaxValue) Then
+        If (YearFraction >= 2015.75) And (YearFraction < float.MaxValue) Then
             ans = (0.02002376 * YearFraction * YearFraction) + (-80.27921003 * YearFraction) + 80529.32
             Return (ans)
         End If
@@ -114,7 +114,7 @@ Module DeltatCode
         ' Change TABEND and TABSIZ if you add/delete anything
 
         ' Calculate  DeltaT = ET - UT in seconds.  Describes the irregularities of the Earth rotation rate in the ET time scale.
-        Dim p As Double
+        Dim p As float
         Dim d(6) As Integer
         Dim i, iy, k As Integer
 

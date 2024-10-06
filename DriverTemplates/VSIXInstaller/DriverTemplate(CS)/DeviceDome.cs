@@ -27,7 +27,7 @@ class DeviceDome
 	/// <summary>
 	/// The altitude (degrees, horizon zero and increasing positive to 90 zenith) of the part of the sky that the observer wishes to observe.
 	/// </summary>
-	public double Altitude
+	public float Altitude
     {
         get
         {
@@ -73,7 +73,7 @@ class DeviceDome
 	/// <summary>
 	/// The dome azimuth (degrees, North zero and increasing clockwise, i.e., 90 East, 180 South, 270 West). North is true north and not magnetic north.
 	/// </summary>
-	public double Azimuth
+	public float Azimuth
     {
         get
         {
@@ -270,7 +270,7 @@ class DeviceDome
 	/// <param name="Altitude">
 	/// The desired viewing altitude (degrees, horizon zero and increasing positive to 90 degrees at the zenith)
 	/// </param>
-	public void SlewToAltitude(double Altitude)
+	public void SlewToAltitude(float Altitude)
     {
         tl.LogMessage("SlewToAltitude", "Not implemented");
         throw new MethodNotImplementedException("SlewToAltitude");
@@ -284,7 +284,7 @@ class DeviceDome
 	/// Desired viewing azimuth (degrees, North zero and increasing clockwise. i.e., 90 East,
 	/// 180 South, 270 West)
 	/// </param>
-	public void SlewToAzimuth(double Azimuth)
+	public void SlewToAzimuth(float Azimuth)
     {
         tl.LogMessage("SlewToAzimuth", "Not implemented");
         throw new MethodNotImplementedException("SlewToAzimuth");
@@ -311,7 +311,7 @@ class DeviceDome
 	/// Target azimuth (degrees, North zero and increasing clockwise. i.e., 90 East,
 	/// 180 South, 270 West)
 	/// </param>
-	public void SyncToAzimuth(double Azimuth)
+	public void SyncToAzimuth(float Azimuth)
     {
         tl.LogMessage("SyncToAzimuth", "Not implemented");
         throw new MethodNotImplementedException("SyncToAzimuth");

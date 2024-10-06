@@ -1,4 +1,7 @@
 using System;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+
 
 namespace ASCOM
 {
@@ -23,8 +26,8 @@ namespace ASCOM
         /// </summary>
         /// <param name = "message">Descriptive text describing the cause of the exception</param>
         /// <param name = "number">Error code for the exception (80040400 - 80040FFF).</param>
-        public DriverException(string message, int number)
-            : base(message)
+        public DriverException(SerializationInfo message, int number)
+            : base(message.ToString())
         {
             HResult = number;
         }
@@ -49,7 +52,7 @@ namespace ASCOM
         /// Initializes a new instance of the <see cref = "DriverException" /> class that will return the 'unspecified error' number: 0x800404FF.
         /// Sets the COM HResult to <see cref = "ErrorCodes.UnspecifiedError" />.
         /// </summary>
-        public DriverException()
+        public DriverException(string v)
         {
             HResult = ErrorCodes.UnspecifiedError;
         }
@@ -59,7 +62,8 @@ namespace ASCOM
         /// with a human-readable descriptive message.
         /// </summary>
         /// <param name = "message">The human-readable description of the problem.</param>
-        public DriverException(string message)
+        /// <param name="notImplemented"></param>
+        public DriverException( string message, int notImplemented)
             : base(message)
         {
         }
@@ -72,30 +76,6 @@ namespace ASCOM
         public DriverException(string message, Exception innerException)
             : base(message, innerException)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref = "DriverException" /> class.
-        /// </summary>
-        /// <param name = "info">The <see cref = "T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
-        /// <param name = "context">The <see cref = "T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
-        /// <exception cref = "T:System.ArgumentNullException">
-        /// The <paramref name = "info" /> parameter is null.
-        /// </exception>
-        /// <exception cref = "T:System.Runtime.Serialization.SerializationException">
-        ///   The class name is null or <see cref = "P:System.Exception.HResult" /> is zero (0).
-        /// </exception>
-        protected DriverException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
-        /// The COM error code for this exception (hex 80040400 - 800404FF)
-        /// </summary>
-        public int Number
-        {
-            get { return HResult; }
         }
     }
 }

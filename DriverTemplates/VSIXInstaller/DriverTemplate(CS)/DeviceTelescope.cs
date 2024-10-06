@@ -43,7 +43,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The Altitude above the local horizon of the telescope's current position (degrees, positive up)
 	/// </summary>
-	public double Altitude
+	public float Altitude
     {
         get
         {
@@ -55,7 +55,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The area of the telescope's aperture, taking into account any obstructions (square meters)
 	/// </summary>
-	public double ApertureArea
+	public float ApertureArea
     {
         get
         {
@@ -67,7 +67,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The telescope's effective aperture diameter (meters)
 	/// </summary>
-	public double ApertureDiameter
+	public float ApertureDiameter
     {
         get
         {
@@ -115,7 +115,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The azimuth at the local horizon of the telescope's current position (degrees, North-referenced, positive East/clockwise).
 	/// </summary>
-	public double Azimuth
+	public float Azimuth
     {
         get
         {
@@ -335,11 +335,11 @@ class DeviceTelescope
 	/// The declination (degrees) of the telescope's current equatorial coordinates, in the coordinate system given by the <see cref="EquatorialSystem" /> property.
 	/// Reading the property will raise an error if the value is unavailable.
 	/// </summary>
-	public double Declination
+	public float Declination
     {
         get
         {
-            double declination = 0.0;
+            float declination = 0.0;
             tl.LogMessage("Declination", "Get - " + utilities.DegreesToDMS(declination, ":", ":"));
             return declination;
         }
@@ -348,11 +348,11 @@ class DeviceTelescope
 	/// <summary>
 	/// The declination tracking rate (arcseconds per SI second, default = 0.0)
 	/// </summary>
-	public double DeclinationRate
+	public float DeclinationRate
     {
         get
         {
-            double declination = 0.0;
+            float declination = 0.0;
             tl.LogMessage("DeclinationRate", "Get - " + declination.ToString());
             return declination;
         }
@@ -366,7 +366,7 @@ class DeviceTelescope
 	/// <summary>
 	/// Predict side of pier for German equatorial mounts at the provided coordinates
 	/// </summary>
-	public PierSide DestinationSideOfPier(double RightAscension, double Declination)
+	public PierSide DestinationSideOfPier(float RightAscension, float Declination)
     {
         tl.LogMessage("DestinationSideOfPier Get", "Not implemented");
         throw new PropertyNotImplementedException("DestinationSideOfPier", false);
@@ -414,7 +414,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The telescope's focal length, meters
 	/// </summary>
-	public double FocalLength
+	public float FocalLength
     {
         get
         {
@@ -426,7 +426,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The current Declination movement rate offset for telescope guiding (degrees/sec)
 	/// </summary>
-	public double GuideRateDeclination
+	public float GuideRateDeclination
     {
         get
         {
@@ -443,7 +443,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The current Right Ascension movement rate offset for telescope guiding (degrees/sec)
 	/// </summary>
-	public double GuideRateRightAscension
+	public float GuideRateRightAscension
     {
         get
         {
@@ -474,7 +474,7 @@ class DeviceTelescope
 	/// </summary>
 	/// <param name="Axis">The physical axis about which movement is desired</param>
 	/// <param name="Rate">The rate of motion (deg/sec) about the specified axis</param>
-	public void MoveAxis(TelescopeAxes Axis, double Rate)
+	public void MoveAxis(TelescopeAxes Axis, float Rate)
     {
         tl.LogMessage("MoveAxis", "Not implemented");
         throw new MethodNotImplementedException("MoveAxis");
@@ -506,11 +506,11 @@ class DeviceTelescope
 	/// The right ascension (hours) of the telescope's current equatorial coordinates,
 	/// in the coordinate system given by the EquatorialSystem property
 	/// </summary>
-	public double RightAscension
+	public float RightAscension
     {
         get
         {
-            double rightAscension = 0.0;
+            float rightAscension = 0.0;
             tl.LogMessage("RightAscension", "Get - " + utilities.HoursToHMS(rightAscension));
             return rightAscension;
         }
@@ -519,11 +519,11 @@ class DeviceTelescope
 	/// <summary>
 	/// The right ascension tracking rate offset from sidereal (seconds per sidereal second, default = 0.0)
 	/// </summary>
-	public double RightAscensionRate
+	public float RightAscensionRate
     {
         get
         {
-            double rightAscensionRate = 0.0;
+            float rightAscensionRate = 0.0;
             tl.LogMessage("RightAscensionRate", "Get - " + rightAscensionRate.ToString());
             return rightAscensionRate;
         }
@@ -564,16 +564,16 @@ class DeviceTelescope
 	/// <summary>
 	/// The local apparent sidereal time from the telescope's internal clock (hours, sidereal)
 	/// </summary>
-	public double SiderealTime
+	public float SiderealTime
     {
         get
         {
-            double siderealTime = 0.0; // Sidereal time return value
+            float siderealTime = 0.0; // Sidereal time return value
 
             // Use NOVAS 3.1 to calculate the sidereal time
             using (var novas = new NOVAS31())
             {
-                double julianDate = utilities.DateUTCToJulian(DateTime.UtcNow);
+                float julianDate = utilities.DateUTCToJulian(DateTime.UtcNow);
                 novas.SiderealTime(julianDate, 0, novas.DeltaT(julianDate), GstType.GreenwichApparentSiderealTime, Method.EquinoxBased, Accuracy.Full, ref siderealTime);
             }
 
@@ -602,7 +602,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The elevation above mean sea level (meters) of the site at which the telescope is located
 	/// </summary>
-	public double SiteElevation
+	public float SiteElevation
     {
         get
         {
@@ -619,7 +619,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The geodetic(map) latitude (degrees, positive North, WGS84) of the site at which the telescope is located.
 	/// </summary>
-	public double SiteLatitude
+	public float SiteLatitude
     {
         get
         {
@@ -636,7 +636,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The longitude (degrees, positive East, WGS84) of the site at which the telescope is located.
 	/// </summary>
-	public double SiteLongitude
+	public float SiteLongitude
     {
         get
         {
@@ -672,7 +672,7 @@ class DeviceTelescope
 	/// This method must be implemented if <see cref="CanSlewAltAz" /> returns True.
 	/// It does not return until the slew is complete.
 	/// </summary>
-	public void SlewToAltAz(double Azimuth, double Altitude)
+	public void SlewToAltAz(float Azimuth, float Altitude)
     {
         tl.LogMessage("SlewToAltAz", "Not implemented");
         throw new MethodNotImplementedException("SlewToAltAz");
@@ -685,7 +685,7 @@ class DeviceTelescope
 	/// </summary>
 	/// <param name="Azimuth">Azimuth to which to move</param>
 	/// <param name="Altitude">Altitude to which to move to</param>
-	public void SlewToAltAzAsync(double Azimuth, double Altitude)
+	public void SlewToAltAzAsync(float Azimuth, float Altitude)
     {
         tl.LogMessage("SlewToAltAzAsync", "Not implemented");
         throw new MethodNotImplementedException("SlewToAltAzAsync");
@@ -696,7 +696,7 @@ class DeviceTelescope
 	/// This method must be implemented if <see cref="CanSlew" /> returns True.
 	/// It does not return until the slew is complete.
 	/// </summary>
-	public void SlewToCoordinates(double RightAscension, double Declination)
+	public void SlewToCoordinates(float RightAscension, float Declination)
     {
         tl.LogMessage("SlewToCoordinates", "Not implemented");
         throw new MethodNotImplementedException("SlewToCoordinates");
@@ -707,7 +707,7 @@ class DeviceTelescope
 	/// This method must be implemented if <see cref="CanSlewAsync" /> returns True.
 	/// It returns immediately, with <see cref="Slewing" /> set to True
 	/// </summary>
-	public void SlewToCoordinatesAsync(double RightAscension, double Declination)
+	public void SlewToCoordinatesAsync(float RightAscension, float Declination)
     {
         tl.LogMessage("SlewToCoordinatesAsync", "Not implemented");
         throw new MethodNotImplementedException("SlewToCoordinatesAsync");
@@ -751,7 +751,7 @@ class DeviceTelescope
 	/// <summary>
 	/// Matches the scope's local horizontal coordinates to the given local horizontal coordinates.
 	/// </summary>
-	public void SyncToAltAz(double Azimuth, double Altitude)
+	public void SyncToAltAz(float Azimuth, float Altitude)
     {
         tl.LogMessage("SyncToAltAz", "Not implemented");
         throw new MethodNotImplementedException("SyncToAltAz");
@@ -760,7 +760,7 @@ class DeviceTelescope
 	/// <summary>
 	/// Matches the scope's equatorial coordinates to the given equatorial coordinates.
 	/// </summary>
-	public void SyncToCoordinates(double RightAscension, double Declination)
+	public void SyncToCoordinates(float RightAscension, float Declination)
     {
         tl.LogMessage("SyncToCoordinates", "Not implemented");
         throw new MethodNotImplementedException("SyncToCoordinates");
@@ -778,7 +778,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The declination (degrees, positive North) for the target of an equatorial slew or sync operation
 	/// </summary>
-	public double TargetDeclination
+	public float TargetDeclination
     {
         get
         {
@@ -795,7 +795,7 @@ class DeviceTelescope
 	/// <summary>
 	/// The right ascension (hours) for the target of an equatorial slew or sync operation
 	/// </summary>
-	public double TargetRightAscension
+	public float TargetRightAscension
     {
         get
         {

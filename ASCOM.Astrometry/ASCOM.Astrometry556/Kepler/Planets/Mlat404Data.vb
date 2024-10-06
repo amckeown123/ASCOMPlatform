@@ -5,9 +5,9 @@
     'December, 1996
     'See mlr404.c for test summary. */
 
-    Friend tabr() As Double = {-1}
-    Friend tabb() As Double = {-1}
-    Friend tabl() As Double = { _
+    Friend tabr() As float = {-1}
+    Friend tabb() As float = {-1}
+    Friend tabl() As float = { _
     -3, -4, _
     4, -1856, 0, 8043, _
     -9, -1082, _

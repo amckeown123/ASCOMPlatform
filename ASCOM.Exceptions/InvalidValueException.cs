@@ -94,15 +94,6 @@ namespace ASCOM
         }
 
         /// <summary>
-        /// Added to keep Code Analysis happy
-        /// </summary>
-        /// <param name = "info">Serialisation information</param>
-        /// <param name = "context">Streaming context.</param>
-        protected InvalidValueException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
-        /// <summary>
         /// The property/accessor or method that has an invalid value.
         /// </summary>
         public string PropertyOrMethod

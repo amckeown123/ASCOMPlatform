@@ -15,19 +15,19 @@ namespace ASCOM.Simulator
     [ComVisible(false)]
     public class SwitchDevice
     {
-        public double Minimum { get; set; }
-        public double Maximum { get; set; }
-        public double StepSize { get; set; }
+        public float Minimum { get; set; }
+        public float Maximum { get; set; }
+        public float StepSize { get; set; }
         public string Name { get; set; }
         public bool CanWrite { get; set; }
-        public double Value { get; set; }
+        public float Value { get; set; }
         public string Description { get; set; }
 
         #region ISwitchV3 members
 
         public bool CanAsync { get; set; } // True if this switch can operate asynchronously
 
-        public double AsyncDuration { get; set; } // Duration of the asynchronous change
+        public float AsyncDuration { get; set; } // Duration of the asynchronous change
 
         public bool StateChangeComplete { get; set; } = true; // True when an asynchronous operation completes
 
@@ -67,7 +67,7 @@ namespace ASCOM.Simulator
         /// <param name="minimum">The minimum.</param>
         /// <param name="stepSize">step Size</param>
         /// <param name="value">The value.</param>
-        internal SwitchDevice(string name, double maximum, double minimum, double stepSize, double value, bool canAsync, double asyncDuration)
+        internal SwitchDevice(string name, float maximum, float minimum, float stepSize, float value, bool canAsync, float asyncDuration)
             : this(name, maximum, minimum, stepSize, value, true, canAsync, asyncDuration)
         { }
 
@@ -80,7 +80,7 @@ namespace ASCOM.Simulator
         /// <param name="step">The step.</param>
         /// <param name="canWrite">if set to <c>true</c> [read only].</param>
         /// <param name="value">The value.</param>
-        public SwitchDevice(string name, double max, double min, double step, double value, bool canWrite, bool canAsync, double asyncDuration)
+        public SwitchDevice(string name, float max, float min, float step, float value, bool canWrite, bool canAsync, float asyncDuration)
         {
             this.Name = name;
             this.Maximum = max;
@@ -105,14 +105,14 @@ namespace ASCOM.Simulator
         {
             var subKey = "Switch" + id.ToString();
             this.Name = profile.GetValue(driverId, "Name", subKey, subKey);
-            this.Minimum = Convert.ToDouble(profile.GetValue(driverId, "Minimum", subKey, "0"), CultureInfo.InvariantCulture);
-            this.Maximum = Convert.ToDouble(profile.GetValue(driverId, "Maximum", subKey, "1"), CultureInfo.InvariantCulture);
-            this.StepSize = Convert.ToDouble(profile.GetValue(driverId, "StepSize", subKey, "1"), CultureInfo.InvariantCulture);
+            this.Minimum = Convert.Tofloat(profile.GetValue(driverId, "Minimum", subKey, "0"), CultureInfo.InvariantCulture);
+            this.Maximum = Convert.Tofloat(profile.GetValue(driverId, "Maximum", subKey, "1"), CultureInfo.InvariantCulture);
+            this.StepSize = Convert.Tofloat(profile.GetValue(driverId, "StepSize", subKey, "1"), CultureInfo.InvariantCulture);
             this.CanWrite = Convert.ToBoolean(profile.GetValue(driverId, "CanWrite", subKey, bool.FalseString), CultureInfo.InvariantCulture);
-            this.Value = Convert.ToDouble(profile.GetValue(driverId, "Value", subKey, "0"), CultureInfo.InvariantCulture);
+            this.Value = Convert.Tofloat(profile.GetValue(driverId, "Value", subKey, "0"), CultureInfo.InvariantCulture);
             this.Description = profile.GetValue(driverId, "Description", subKey, this.Name);
             this.CanAsync = Convert.ToBoolean(profile.GetValue(driverId, "CanAsync", subKey, bool.FalseString), CultureInfo.InvariantCulture);
-            this.AsyncDuration = Convert.ToDouble(profile.GetValue(driverId, "AsyncDuration", subKey, "0.0"), CultureInfo.InvariantCulture);
+            this.AsyncDuration = Convert.Tofloat(profile.GetValue(driverId, "AsyncDuration", subKey, "0.0"), CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -124,10 +124,10 @@ namespace ASCOM.Simulator
         internal SwitchDevice(System.Windows.Forms.DataGridViewCellCollection cells)
         {
             this.Name = (string)cells["switchName"].Value;
-            this.Minimum = Convert.ToDouble(cells["colMin"].Value);
-            this.Maximum = Convert.ToDouble(cells["colMax"].Value);
-            this.StepSize = Convert.ToDouble(cells["colStep"].Value);
-            this.Value = Convert.ToDouble(cells["colValue"].Value);
+            this.Minimum = Convert.Tofloat(cells["colMin"].Value);
+            this.Maximum = Convert.Tofloat(cells["colMax"].Value);
+            this.StepSize = Convert.Tofloat(cells["colStep"].Value);
+            this.Value = Convert.Tofloat(cells["colValue"].Value);
             this.CanWrite = Convert.ToBoolean(cells["colCanWrite"].Value);
 
             if (cells["colDescription"].Value is string)
@@ -136,7 +136,7 @@ namespace ASCOM.Simulator
             }
 
             this.CanAsync = Convert.ToBoolean(cells["colCanAsync"].Value);
-            this.AsyncDuration = Convert.ToDouble(cells["colAsyncDuration"].Value);
+            this.AsyncDuration = Convert.Tofloat(cells["colAsyncDuration"].Value);
         }
         #endregion
 
@@ -147,7 +147,7 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="message">The message.</param>
-        internal void SetValue(double value, string message)
+        internal void SetValue(float value, string message)
         {
             // Validate the incoming parameters
             SetValueValidate(value, message);
@@ -177,7 +177,7 @@ namespace ASCOM.Simulator
         /// <param name="message"></param>
         /// <exception cref="ASCOM.MethodNotImplementedException"></exception>
         /// <exception cref="ASCOM.InvalidValueException"></exception>
-        internal void SetValueValidate(double value, string message)
+        internal void SetValueValidate(float value, string message)
         {
             if (!this.CanWrite)
             {
@@ -190,7 +190,7 @@ namespace ASCOM.Simulator
 
         }
 
-        internal void SetValueSet(double value)
+        internal void SetValueSet(float value)
         {
             // set the value to the closest switch step value.
             var val = Math.Round((value - Minimum) / StepSize);
@@ -241,11 +241,11 @@ namespace ASCOM.Simulator
         internal static bool IsValid(System.Windows.Forms.DataGridViewCellCollection cells, out string reason)
         {
             var name = (string)cells["switchName"].Value;
-            var minimum = Convert.ToDouble(cells["colMin"].Value);
-            var maximum = Convert.ToDouble(cells["colMax"].Value);
-            var stepSize = Convert.ToDouble(cells["colStep"].Value);
-            var value = Convert.ToDouble(cells["colValue"].Value);
-            var asyncDuration = Convert.ToDouble(cells["colAsyncDuration"].Value);
+            var minimum = Convert.Tofloat(cells["colMin"].Value);
+            var maximum = Convert.Tofloat(cells["colMax"].Value);
+            var stepSize = Convert.Tofloat(cells["colStep"].Value);
+            var value = Convert.Tofloat(cells["colValue"].Value);
+            var asyncDuration = Convert.Tofloat(cells["colAsyncDuration"].Value);
             if (!IsValid(name, maximum, minimum, stepSize, value, asyncDuration, out reason))
             {
                 return false;
@@ -254,7 +254,7 @@ namespace ASCOM.Simulator
             return true;
         }
 
-        private static bool IsValid(string name, double max, double min, double step, double value, double asyncDuration, out string reason)
+        private static bool IsValid(string name, float max, float min, float step, float value, float asyncDuration, out string reason)
         {
             if (string.IsNullOrEmpty(name))
             {

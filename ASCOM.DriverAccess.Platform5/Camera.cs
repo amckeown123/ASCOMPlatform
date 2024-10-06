@@ -107,9 +107,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <value>The CCD temperature.</value>
         /// <exception>Must throw exception if data unavailable.</exception>
-        public double CCDTemperature
+        public float CCDTemperature
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "CCDTemperature", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "CCDTemperature", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -281,9 +281,9 @@ namespace ASCOM.DriverAccess
         /// <value>The cooler power.</value>
         /// <exception cref=" System.Exception">not supported</exception>
         /// <exception cref=" System.Exception">an error condition such as link failure is present</exception>
-        public double CoolerPower
+        public float CoolerPower
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "CoolerPower", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "CoolerPower", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -305,9 +305,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <value>The electrons per ADU.</value>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double ElectronsPerADU
+        public float ElectronsPerADU
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ElectronsPerADU", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ElectronsPerADU", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -316,9 +316,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <value>The full well capacity.</value>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double FullWellCapacity
+        public float FullWellCapacity
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "FullWellCapacity", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "FullWellCapacity", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -340,12 +340,12 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <value>The heat sink temperature.</value>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double HeatSinkTemperature
+        public float HeatSinkTemperature
         {
             get
             {
                 return
-                    Convert.ToDouble(_memberFactory.CallMember(1, "HeatSinkTemperature", new Type[] {}, new object[] {}));
+                    Convert.Tofloat(_memberFactory.CallMember(1, "HeatSinkTemperature", new Type[] {}, new object[] {}));
             }
         }
 
@@ -374,7 +374,7 @@ namespace ASCOM.DriverAccess
         /// StartExposure it will have no effect on the size of this array. This property
         /// should only be used from scripts due to the extremely high memory utilization on
         /// large image arrays (26 bytes per pixel). Pixels values should be in Short, int,
-        /// or Double format.
+        /// or float format.
         /// For color or multispectral cameras, will produce an array of NumX * NumY *
         /// NumPlanes.  If the application cannot handle multispectral images, it should use
         /// just the first plane.
@@ -430,12 +430,12 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <value>The last duration of the exposure.</value>
         /// <exception cref=" System.Exception">Must throw exception if not supported or no exposure has been taken</exception>
-        public double LastExposureDuration
+        public float LastExposureDuration
         {
             get
             {
                 return
-                    Convert.ToDouble(_memberFactory.CallMember(1, "LastExposureDuration", new Type[] {}, new object[] {}));
+                    Convert.Tofloat(_memberFactory.CallMember(1, "LastExposureDuration", new Type[] {}, new object[] {}));
             }
         }
 
@@ -513,9 +513,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <value>The pixel size X.</value>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double PixelSizeX
+        public float PixelSizeX
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "PixelSizeX", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "PixelSizeX", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -524,9 +524,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <value>The pixel size Y.</value>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double PixelSizeY
+        public float PixelSizeY
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "PixelSizeY", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "PixelSizeY", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -561,12 +561,12 @@ namespace ASCOM.DriverAccess
         /// <value>The set CCD temperature.</value>
         /// <exception cref=" System.Exception">Must throw exception if command not successful.</exception>
         /// <exception cref=" System.Exception">Must throw exception if CanSetCCDTemperature is False.</exception>
-        public double SetCCDTemperature
+        public float SetCCDTemperature
         {
             get
             {
                 return
-                    Convert.ToDouble(_memberFactory.CallMember(1, "SetCCDTemperature", new Type[] {}, new object[] {}));
+                    Convert.Tofloat(_memberFactory.CallMember(1, "SetCCDTemperature", new Type[] {}, new object[] {}));
             }
             set { _memberFactory.CallMember(2, "SetCCDTemperature", new Type[] {}, new object[] {value}); }
         }
@@ -589,9 +589,9 @@ namespace ASCOM.DriverAccess
         /// <exception cref=" System.Exception">NumX, NumY, XBin, YBin, StartX, StartY, or Duration parameters are invalid.</exception>
         /// <exception cref=" System.Exception">CanAsymmetricBin is False and BinX != BinY</exception>
         /// <exception cref=" System.Exception">the exposure cannot be started for any reason, such as a hardware or communications error</exception>
-        public void StartExposure(double duration, bool light)
+        public void StartExposure(float duration, bool light)
         {
-            _memberFactory.CallMember(3, "StartExposure", new[] {typeof (double), typeof (bool)},
+            _memberFactory.CallMember(3, "StartExposure", new[] {typeof (float), typeof (bool)},
                                       new object[] {duration, light});
         }
 
@@ -699,30 +699,30 @@ namespace ASCOM.DriverAccess
         /// Returns the maximum exposure time in seconds supported by Camera.StartExposure.
         /// </summary>
         /// <value>The maximum exposure in seconds.</value>
-        public double ExposureMax
+        public float ExposureMax
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ExposureMax", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ExposureMax", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
         /// Returns the minimum exposure time in seconds supported by Camera.StartExposure.
         /// </summary>
         /// <value>The minimum exposure in seconds.</value>
-        public double ExposureMin
+        public float ExposureMin
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ExposureMin", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ExposureMin", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
         /// Returns the smallest increment of exposure time in seconds supported by Camera.StartExposure
         /// </summary>
         /// <value>The exposure resolution in seconds</value>
-        public double ExposureResolution
+        public float ExposureResolution
         {
             get
             {
                 return
-                    Convert.ToDouble(_memberFactory.CallMember(1, "ExposureResolution", new Type[] {}, new object[] {}));
+                    Convert.Tofloat(_memberFactory.CallMember(1, "ExposureResolution", new Type[] {}, new object[] {}));
             }
         }
 
@@ -824,7 +824,7 @@ namespace ASCOM.DriverAccess
         /// (i.e. completion).
         /// </summary>
         /// <value>The percent completed.</value>
-        public double PercentCompleted
+        public float PercentCompleted
         {
             get { return Convert.ToInt16(_memberFactory.CallMember(1, "PercentCompleted", new Type[] {}, new object[] {})); }
         }

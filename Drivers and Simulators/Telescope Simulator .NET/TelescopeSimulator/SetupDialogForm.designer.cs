@@ -277,7 +277,7 @@ namespace ASCOM.Simulator
             this.picASCOM.TabIndex = 3;
             this.picASCOM.TabStop = false;
             this.picASCOM.Click += new System.EventHandler(this.BrowseToAscom);
-            this.picASCOM.DoubleClick += new System.EventHandler(this.BrowseToAscom);
+            this.picASCOM.floatClick += new System.EventHandler(this.BrowseToAscom);
             // 
             // checkBoxAutoTrack
             // 

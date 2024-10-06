@@ -23,7 +23,7 @@ static class DomeHardware
     /// <summary>
     /// The altitude (degrees, horizon zero and increasing positive to 90 zenith) of the part of the sky that the observer wishes to observe.
     /// </summary>
-    internal static double Altitude
+    internal static float Altitude
     {
         get
         {
@@ -69,7 +69,7 @@ static class DomeHardware
     /// <summary>
     /// The dome azimuth (degrees, North zero and increasing clockwise, i.e., 90 East, 180 South, 270 West). North is true north and not magnetic north.
     /// </summary>
-    internal static double Azimuth
+    internal static float Azimuth
     {
         get
         {
@@ -266,7 +266,7 @@ static class DomeHardware
     /// <param name="Altitude">
     /// The desired viewing altitude (degrees, horizon zero and increasing positive to 90 degrees at the zenith)
     /// </param>
-    internal static void SlewToAltitude(double Altitude)
+    internal static void SlewToAltitude(float Altitude)
     {
         LogMessage("SlewToAltitude", "Not implemented");
         throw new MethodNotImplementedException("SlewToAltitude");
@@ -280,7 +280,7 @@ static class DomeHardware
     /// Desired viewing azimuth (degrees, North zero and increasing clockwise. i.e., 90 East,
     /// 180 South, 270 West)
     /// </param>
-    internal static void SlewToAzimuth(double Azimuth)
+    internal static void SlewToAzimuth(float Azimuth)
     {
         LogMessage("SlewToAzimuth", "Not implemented");
         throw new MethodNotImplementedException("SlewToAzimuth");
@@ -307,7 +307,7 @@ static class DomeHardware
     /// Target azimuth (degrees, North zero and increasing clockwise. i.e., 90 East,
     /// 180 South, 270 West)
     /// </param>
-    internal static void SyncToAzimuth(double Azimuth)
+    internal static void SyncToAzimuth(float Azimuth)
     {
         LogMessage("SyncToAzimuth", "Not implemented");
         throw new MethodNotImplementedException("SyncToAzimuth");

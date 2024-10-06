@@ -16,14 +16,14 @@ Namespace NOVASCOM
     ''' NOVAS-COM: Represents the "state" of the Earth at a given Terrestrial Julian date
     ''' </summary>
     ''' <remarks>NOVAS-COM objects of class Earth represent the "state" of the Earth at a given Terrestrial Julian date. 
-    ''' The state includes barycentric and heliocentric position vectors for the earth, plus obliquity, 
+    ''' The state includes barycentric and heliocentric position Vector2s for the earth, plus obliquity, 
     ''' nutation and the equation of the equinoxes. Unless set by the client, the Earth ephemeris used is 
     ''' computed using an internal approximation. The client may optionally attach an ephemeris object for 
     ''' increased accuracy. 
     ''' <para><b>Ephemeris Generator</b><br />
     ''' The ephemeris generator object used with NOVAS-COM must support a single 
     ''' method GetPositionAndVelocity(tjd). This method must take a terrestrial Julian date (like the 
-    ''' NOVAS-COM methods) as its single parameter, and return an array of Double 
+    ''' NOVAS-COM methods) as its single parameter, and return an array of float 
     ''' containing the rectangular (x/y/z) heliocentric J2000 equatorial coordinates of position (AU) and velocity 
     ''' (KM/sec.). In addition, it must support three read/write properties BodyType, Name, and Number, 
     ''' which correspond to the Type, Name, and Number properties of Novas.Planet. 
@@ -35,9 +35,9 @@ Namespace NOVASCOM
     Public Class Earth
         Implements IEarth
 
-        Private m_BaryPos, m_HeliPos As New PositionVector
-        Private m_BaryVel, m_HeliVel As New VelocityVector
-        Private m_BaryTime, m_MeanOb, m_EquOfEqu, m_NutLong, m_NutObl, m_TrueOb As Double
+        Private m_BaryPos, m_HeliPos As New PositionVector2
+        Private m_BaryVel, m_HeliVel As New VelocityVector2
+        Private m_BaryTime, m_MeanOb, m_EquOfEqu, m_NutLong, m_NutObl, m_TrueOb As float
         Private m_EarthEph As IEphemeris
         Private m_Valid As Boolean 'Object has valid values
         'Private TL As TraceLogger
@@ -60,10 +60,10 @@ Namespace NOVASCOM
         ''' <summary>
         ''' Earth barycentric position
         ''' </summary>
-        ''' <value>Barycentric position vector</value>
+        ''' <value>Barycentric position Vector2</value>
         ''' <returns>AU (Ref J2000)</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property BarycentricPosition() As PositionVector Implements IEarth.BarycentricPosition
+        Public ReadOnly Property BarycentricPosition() As PositionVector2 Implements IEarth.BarycentricPosition
             Get
                 Return m_BaryPos
             End Get
@@ -75,7 +75,7 @@ Namespace NOVASCOM
         ''' <value>Barycentric dynamical time for given Terrestrial Julian Date</value>
         ''' <returns>Julian date</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property BarycentricTime() As Double Implements IEarth.BarycentricTime
+        Public ReadOnly Property BarycentricTime() As float Implements IEarth.BarycentricTime
             Get
                 Return m_BaryTime
             End Get
@@ -84,10 +84,10 @@ Namespace NOVASCOM
         ''' <summary>
         ''' Earth barycentric velocity 
         ''' </summary>
-        ''' <value>Barycentric velocity vector</value>
+        ''' <value>Barycentric velocity Vector2</value>
         ''' <returns>AU/day (ref J2000)</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property BarycentricVelocity() As VelocityVector Implements IEarth.BarycentricVelocity
+        Public ReadOnly Property BarycentricVelocity() As VelocityVector2 Implements IEarth.BarycentricVelocity
             Get
                 Return m_BaryVel
             End Get
@@ -115,7 +115,7 @@ Namespace NOVASCOM
         ''' <value>Equation of the equinoxes</value>
         ''' <returns>Seconds</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property EquationOfEquinoxes() As Double Implements IEarth.EquationOfEquinoxes
+        Public ReadOnly Property EquationOfEquinoxes() As float Implements IEarth.EquationOfEquinoxes
             Get
                 Return m_EquOfEqu
             End Get
@@ -124,10 +124,10 @@ Namespace NOVASCOM
         ''' <summary>
         ''' Earth heliocentric position
         ''' </summary>
-        ''' <value>Heliocentric position vector</value>
+        ''' <value>Heliocentric position Vector2</value>
         ''' <returns>AU (ref J2000)</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property HeliocentricPosition() As PositionVector Implements IEarth.HeliocentricPosition
+        Public ReadOnly Property HeliocentricPosition() As PositionVector2 Implements IEarth.HeliocentricPosition
             Get
                 Return m_HeliPos
             End Get
@@ -137,9 +137,9 @@ Namespace NOVASCOM
         ''' Earth heliocentric velocity 
         ''' </summary>
         ''' <value>Heliocentric velocity</value>
-        ''' <returns>Velocity vector, AU/day (ref J2000)</returns>
+        ''' <returns>Velocity Vector2, AU/day (ref J2000)</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property HeliocentricVelocity() As VelocityVector Implements IEarth.HeliocentricVelocity
+        Public ReadOnly Property HeliocentricVelocity() As VelocityVector2 Implements IEarth.HeliocentricVelocity
             Get
                 Return m_HeliVel
             End Get
@@ -151,7 +151,7 @@ Namespace NOVASCOM
         ''' <value>Mean obliquity of the ecliptic</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property MeanObliquity() As Double Implements IEarth.MeanObliquity
+        Public ReadOnly Property MeanObliquity() As float Implements IEarth.MeanObliquity
             Get
                 Return m_MeanOb
             End Get
@@ -163,7 +163,7 @@ Namespace NOVASCOM
         ''' <value>Nutation in longitude</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property NutationInLongitude() As Double Implements IEarth.NutationInLongitude
+        Public ReadOnly Property NutationInLongitude() As float Implements IEarth.NutationInLongitude
             Get
                 Return m_NutLong
             End Get
@@ -175,7 +175,7 @@ Namespace NOVASCOM
         ''' <value>Nutation in obliquity</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property NutationInObliquity() As Double Implements IEarth.NutationInObliquity
+        Public ReadOnly Property NutationInObliquity() As float Implements IEarth.NutationInObliquity
             Get
                 Return m_NutObl
             End Get
@@ -187,8 +187,8 @@ Namespace NOVASCOM
         ''' <param name="tjd">Terrestrial Julian date</param>
         ''' <returns>True if successful, else throws an exception</returns>
         ''' <remarks></remarks>
-        Public Function SetForTime(ByVal tjd As Double) As Boolean Implements IEarth.SetForTime
-            Dim m_peb(2), m_veb(2), m_pes(2), m_ves(2) As Double
+        Public Function SetForTime(ByVal tjd As float) As Boolean Implements IEarth.SetForTime
+            Dim m_peb(2), m_veb(2), m_pes(2), m_ves(2) As float
             'TL.LogMessage("SetForTime", "Start")
             get_earth_nov(m_EarthEph, tjd, m_BaryTime, m_peb, m_veb, m_pes, m_ves)
             'TL.LogMessage("SetForTime", "After get_earth_nov")
@@ -209,7 +209,7 @@ Namespace NOVASCOM
             m_HeliVel.z = m_ves(2)
 
             m_Valid = True
-            'Dim Earth As New bodystruct, POS(2), VEL(2) As Double
+            'Dim Earth As New bodystruct, POS(2), VEL(2) As float
             'Earth.name = "Earth"
             'Earth.number = Body.Earth
             'Earth.type = NOVAS2Net.BodyType.MajorPlanet
@@ -242,7 +242,7 @@ Namespace NOVASCOM
         ''' <value>True obliquity of the ecliptic</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property TrueObliquity() As Double Implements IEarth.TrueObliquity
+        Public ReadOnly Property TrueObliquity() As float Implements IEarth.TrueObliquity
             Get
                 Return m_TrueOb
             End Get
@@ -259,12 +259,12 @@ Namespace NOVASCOM
     ''' <para>The high-level NOVAS astrometric functions are implemented as methods of Planet: 
     ''' GetTopocentricPosition(), GetLocalPosition(), GetApparentPosition(), GetVirtualPosition(), 
     ''' and GetAstrometricPosition(). These methods operate on the properties of the Planet, and produce 
-    ''' a PositionVector object. For example, to get the topocentric coordinates of a planet, create and 
+    ''' a PositionVector2 object. For example, to get the topocentric coordinates of a planet, create and 
     ''' initialize a planet, create initialize and attach an ephemeris object, then call 
-    ''' Planet.GetTopocentricPosition(). The resulting PositionVector's right ascension and declination 
+    ''' Planet.GetTopocentricPosition(). The resulting PositionVector2's right ascension and declination 
     ''' properties are the topocentric equatorial coordinates, at the same time, the (optionally 
     ''' refracted) alt-az coordinates are calculated, and are also contained within the returned 
-    ''' PositionVector. <b>Note that Alt/Az is available in PositionVectors returned from calling 
+    ''' PositionVector2. <b>Note that Alt/Az is available in PositionVector2s returned from calling 
     ''' GetTopocentricPosition().</b> The accuracy of these calculations is typically dominated by the accuracy 
     ''' of the attached ephemeris generator. </para>
     ''' <para><b>Ephemeris Generator</b><br />
@@ -273,7 +273,7 @@ Namespace NOVASCOM
     ''' component</para>
     ''' <para>The ephemeris generator object used with NOVAS-COM must support a single 
     ''' method GetPositionAndVelocity(tjd). This method must take a terrestrial Julian date (like the 
-    ''' NOVAS-COM methods) as its single parameter, and return an array of Double 
+    ''' NOVAS-COM methods) as its single parameter, and return an array of float 
     ''' containing the rectangular (x/y/z) heliocentric J2000 equatorial coordinates of position (AU) and velocity 
     ''' (KM/sec.). In addition, it must support three read/write properties BodyType, Name, and Number, 
     ''' which correspond to the Type, Name, and Number properties of Novas.Planet. 
@@ -286,7 +286,7 @@ Namespace NOVASCOM
     Public Class Planet
         Implements IPlanet
 
-        Private m_deltat As Double
+        Private m_deltat As float
         Private m_bDTValid As Boolean
         Private m_type As BodyType
         Private m_number As Integer
@@ -321,12 +321,12 @@ Namespace NOVASCOM
         ''' <value>The value of delta-T (TT - UT1) to use for reductions</value>
         ''' <returns>Seconds</returns>
         ''' <remarks>Setting this value is optional. If no value is set, an internal delta-T generator is used.</remarks>
-        Public Property DeltaT() As Double Implements IPlanet.DeltaT
+        Public Property DeltaT() As float Implements IPlanet.DeltaT
             Get
                 If Not m_bDTValid Then Throw New Exceptions.ValueNotAvailableException("Planet:DeltaT DeltaT is not available")
                 Return m_deltat
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_deltat = value
                 m_bDTValid = True
             End Set
@@ -369,12 +369,12 @@ Namespace NOVASCOM
         ''' Get an apparent position for given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the apparent place.</returns>
+        ''' <returns>PositionVector2 for the apparent place.</returns>
         ''' <remarks></remarks>
-        Public Function GetApparentPosition(ByVal tjd As Double) As PositionVector Implements IPlanet.GetApparentPosition
+        Public Function GetApparentPosition(ByVal tjd As float) As PositionVector2 Implements IPlanet.GetApparentPosition
             Dim tdb, peb(3), veb(3), pes(3), ves(3), t2, t3, lighttime, _
-                pos1(3), vel1(3), pos2(3), pos3(3), pos4(3), pos5(3), vec(8) As Double
-            Dim iter As Integer, pv As New PositionVector
+                pos1(3), vel1(3), pos2(3), pos3(3), pos4(3), pos5(3), vec(8) As float
+            Dim iter As Integer, pv As New PositionVector2
 
             '//
             '// This gets the barycentric terrestrial dynamical time (TDB).
@@ -417,16 +417,16 @@ Namespace NOVASCOM
         ''' Get an astrometric position for given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the astrometric place.</returns>
+        ''' <returns>PositionVector2 for the astrometric place.</returns>
         ''' <remarks></remarks>
-        Public Function GetAstrometricPosition(ByVal tjd As Double) As PositionVector Implements IPlanet.GetAstrometricPosition
-            Dim t2, t3 As Double
-            Dim lighttime, pos1(3), vel1(3), pos2(3), tdb, peb(3), veb(3), pes(3), ves(3) As Double
-            'Dim tdbe As Double
+        Public Function GetAstrometricPosition(ByVal tjd As float) As PositionVector2 Implements IPlanet.GetAstrometricPosition
+            Dim t2, t3 As float
+            Dim lighttime, pos1(3), vel1(3), pos2(3), tdb, peb(3), veb(3), pes(3), ves(3) As float
+            'Dim tdbe As float
             Dim iter As Integer
             'Dim earth As New bodystruct
-            Dim RetVal As PositionVector
-            'Dim pebe(3), pese(3), vebe(3), vese(3) As Double
+            Dim RetVal As PositionVector2
+            'Dim pebe(3), pese(3), vebe(3), vese(3) As float
             '//
             '// Get position of the Earth wrt center of Sun and barycenter of the
             '// solar system.
@@ -481,7 +481,7 @@ Namespace NOVASCOM
             '//
             '// pos2 is astrometric place.
             '//
-            RetVal = New PositionVector()
+            RetVal = New PositionVector2()
             RetVal.x = pos2(0)
             RetVal.y = pos2(1)
             RetVal.z = pos2(2)
@@ -495,16 +495,16 @@ Namespace NOVASCOM
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
         ''' <param name="site">The observing site</param>
-        ''' <returns>PositionVector for the local place.</returns>
+        ''' <returns>PositionVector2 for the local place.</returns>
         ''' <remarks></remarks>
-        Public Function GetLocalPosition(ByVal tjd As Double, ByVal site As Site) As PositionVector Implements IPlanet.GetLocalPosition
+        Public Function GetLocalPosition(ByVal tjd As float, ByVal site As Site) As PositionVector2 Implements IPlanet.GetLocalPosition
             Dim j, iter As Integer
             Dim st As SiteInfo
-            Dim t2, t3 As Double
+            Dim t2, t3 As float
             Dim gast, lighttime, ujd, pog(3), vog(3), pb(3), vb(3), ps(3), _
              vs(3), pos1(3), vel1(3), pos2(3), vel2(3), pos3(3), vec(3), _
-             tdb, peb(3), veb(3), pes(3), ves(3), oblm, oblt, eqeq, psi, eps As Double
-            Dim pv As PositionVector
+             tdb, peb(3), veb(3), pes(3), ves(3), oblm, oblt, eqeq, psi, eps As float
+            Dim pv As PositionVector2
 
             '//
             '// Compute 'ujd', the UT1 Julian date corresponding to 'tjd'.
@@ -590,7 +590,7 @@ Namespace NOVASCOM
             SunField(pos2, ps, pos3)
             Aberration(pos3, vb, lighttime, vec)
 
-            pv = New PositionVector
+            pv = New PositionVector2
             pv.x = vec(0)
             pv.y = vec(1)
             pv.z = vec(2)
@@ -604,18 +604,18 @@ Namespace NOVASCOM
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
         ''' <param name="site">The observing site</param>
         ''' <param name="Refract">Apply refraction correction</param>
-        ''' <returns>PositionVector for the topocentric place.</returns>
+        ''' <returns>PositionVector2 for the topocentric place.</returns>
         ''' <remarks></remarks>
-        Public Function GetTopocentricPosition(ByVal tjd As Double, ByVal site As Site, ByVal Refract As Boolean) As PositionVector Implements IPlanet.GetTopocentricPosition
+        Public Function GetTopocentricPosition(ByVal tjd As float, ByVal site As Site, ByVal Refract As Boolean) As PositionVector2 Implements IPlanet.GetTopocentricPosition
             Dim j As Short, iter As Integer
             Dim ref As RefractionOption
             Dim st As SiteInfo
             Dim ujd, t2, t3, gast, pos1(3), pos2(3), pos4(3), pos5(3), _
              pos6(3), vel1(3), vel2(3), pog(3), vog(3), pob(3), vec(3), _
              vob(3), pos(3), lighttime, tdb, peb(3), veb(3), pes(3), ves(3), _
-             oblm, oblt, eqeq, psi, eps As Double
-            Dim ra, rra, dec, rdec, az, zd, dist As Double
-            Dim wx As Boolean, pv As PositionVector
+             oblm, oblt, eqeq, psi, eps As float
+            Dim ra, rra, dec, rdec, az, zd, dist As float
+            Dim wx As Boolean, pv As PositionVector2
 
             '//
             '// Compute 'ujd', the UT1 Julian date corresponding to 'tjd'.
@@ -750,10 +750,10 @@ Namespace NOVASCOM
             '// If we refracted, we now must compute new cartesian components
             '// Distance does not change...
             '//
-            If (ref <> RefractionOption.NoRefraction) Then RADec2Vector(rra, rdec, dist, vec) 'If refracted, recompute New refracted vector
+            If (ref <> RefractionOption.NoRefraction) Then RADec2Vector2(rra, rdec, dist, vec) 'If refracted, recompute New refracted Vector2
 
-            'Create a new positionvector with calculated values
-            pv = New PositionVector(vec(0), vec(1), vec(2), rra, rdec, dist, dist / C, az, (90.0 - zd))
+            'Create a new positionVector2 with calculated values
+            pv = New PositionVector2(vec(0), vec(1), vec(2), rra, rdec, dist, dist / C, az, (90.0 - zd))
 
             Return pv
 
@@ -762,14 +762,14 @@ Namespace NOVASCOM
         ''' Get a virtual position for given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the virtual place.</returns>
+        ''' <returns>PositionVector2 for the virtual place.</returns>
         ''' <remarks></remarks>
-        Public Function GetVirtualPosition(ByVal tjd As Double) As PositionVector Implements IPlanet.GetVirtualPosition
-            Dim t2, t3 As Double
+        Public Function GetVirtualPosition(ByVal tjd As float) As PositionVector2 Implements IPlanet.GetVirtualPosition
+            Dim t2, t3 As float
             Dim lighttime, pos1(3), vel1(3), pos2(3), pos3(3), vec(3), _
-                tdb, peb(3), veb(3), pes(3), ves(3), oblm, oblt, eqeq, psi, eps As Double
+                tdb, peb(3), veb(3), pes(3), ves(3), oblm, oblt, eqeq, psi, eps As float
             Dim iter As Integer
-            Dim pv As New PositionVector
+            Dim pv As New PositionVector2
             '//
             '// Get position nd velocity of Earth wrt barycenter of solar system.
             '//
@@ -876,29 +876,29 @@ Namespace NOVASCOM
     End Class
 
     ''' <summary>
-    ''' NOVAS-COM: PositionVector Class
+    ''' NOVAS-COM: PositionVector2 Class
     ''' </summary>
-    ''' <remarks>NOVAS-COM objects of class PositionVector contain vectors used for positions (earth, sites, 
+    ''' <remarks>NOVAS-COM objects of class PositionVector2 contain Vector2s used for positions (earth, sites, 
     ''' stars and planets) throughout NOVAS-COM. Of course, its properties include the x, y, and z 
     ''' components of the position. Additional properties are right ascension and declination, distance, 
-    ''' and light time (applicable to star positions), and Alt/Az (available only in PositionVectors 
-    ''' returned by Star or Planet methods GetTopocentricPosition()). You can initialize a PositionVector 
+    ''' and light time (applicable to star positions), and Alt/Az (available only in PositionVector2s 
+    ''' returned by Star or Planet methods GetTopocentricPosition()). You can initialize a PositionVector2 
     ''' from a Star object (essentially an FK5 or HIP catalog entry) or a Site (lat/long/height). 
-    ''' PositionVector has methods that can adjust the coordinates for precession, aberration and 
-    ''' proper motion. Thus, a PositionVector object gives access to some of the lower-level NOVAS functions. 
+    ''' PositionVector2 has methods that can adjust the coordinates for precession, aberration and 
+    ''' proper motion. Thus, a PositionVector2 object gives access to some of the lower-level NOVAS functions. 
     ''' <para><b>Note:</b> The equatorial coordinate properties of this object are dependent variables, and thus are read-only. Changing any cartesian coordinate will cause the equatorial coordinates to be recalculated. 
     ''' </para></remarks>
     <Guid("8D8B7043-49AA-40be-881F-0EC5D8E2213D"), _
     ClassInterface(ClassInterfaceType.None), _
     ComVisible(True)> _
     <Obsolete("This class will be withdrawn in the next major release, please use the SOFA or NOVAS31 classes instead")> _
-    Public Class PositionVector
-        Implements IPositionVector, IPositionVectorExtra
+    Public Class PositionVector2
+        Implements IPositionVector2, IPositionVector2Extra
         Private xOk, yOk, zOk, RADecOk, AzElOk As Boolean
-        Private PosVec(2), m_RA, m_DEC, m_Dist, m_Light, m_Alt, m_Az As Double
+        Private PosVec(2), m_RA, m_DEC, m_Dist, m_Light, m_Alt, m_Az As float
 
         ''' <summary>
-        ''' Create a new, uninitialised position vector
+        ''' Create a new, uninitialised position Vector2
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
@@ -910,11 +910,11 @@ Namespace NOVASCOM
         End Sub
 
         ''' <summary>
-        '''  Create a new position vector with supplied initial values
+        '''  Create a new position Vector2 with supplied initial values
         ''' </summary>
-        ''' <param name="x">Position vector x co-ordinate</param>
-        ''' <param name="y">Position vector y co-ordinate</param>
-        ''' <param name="z">Position vector z co-ordinate</param>
+        ''' <param name="x">Position Vector2 x co-ordinate</param>
+        ''' <param name="y">Position Vector2 y co-ordinate</param>
+        ''' <param name="z">Position Vector2 z co-ordinate</param>
         ''' <param name="RA">Right ascension (hours)</param>
         ''' <param name="DEC">Declination (degrees)</param>
         ''' <param name="Distance">Distance to object</param>
@@ -922,15 +922,15 @@ Namespace NOVASCOM
         ''' <param name="Azimuth">Object azimuth</param>
         ''' <param name="Altitude">Object altitude</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal x As Double, _
-                               ByVal y As Double, _
-                               ByVal z As Double, _
-                               ByVal RA As Double, _
-                               ByVal DEC As Double, _
-                               ByVal Distance As Double, _
-                               ByVal Light As Double, _
-                               ByVal Azimuth As Double, _
-                               ByVal Altitude As Double)
+        Public Sub New(ByVal x As float, _
+                               ByVal y As float, _
+                               ByVal z As float, _
+                               ByVal RA As float, _
+                               ByVal DEC As float, _
+                               ByVal Distance As float, _
+                               ByVal Light As float, _
+                               ByVal Azimuth As float, _
+                               ByVal Altitude As float)
             PosVec(0) = x
             xOk = True
             PosVec(1) = y
@@ -948,13 +948,13 @@ Namespace NOVASCOM
         End Sub
 
         ''' <summary>
-        ''' Adjust the position vector of an object for aberration of light
+        ''' Adjust the position Vector2 of an object for aberration of light
         ''' </summary>
-        ''' <param name="vel">The velocity vector of the observer</param>
+        ''' <param name="vel">The velocity Vector2 of the observer</param>
         ''' <remarks>The algorithm includes relativistic terms</remarks>
-        Public Sub Aberration(ByVal vel As VelocityVector) Implements IPositionVector.Aberration
-            Dim p(2), v(2) As Double
-            If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector:ProperMotion x, y or z has not been set")
+        Public Sub Aberration(ByVal vel As VelocityVector2) Implements IPositionVector2.Aberration
+            Dim p(2), v(2) As float
+            If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector2:ProperMotion x, y or z has not been set")
             CheckEq()
             p(0) = PosVec(0)
             p(1) = PosVec(1)
@@ -963,18 +963,18 @@ Namespace NOVASCOM
             Try
                 v(0) = vel.x
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:Aberration VelocityVector.x is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:Aberration VelocityVector2.x is not available")
             End Try
             Try
                 v(1) = vel.y
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:Aberration VelocityVector.y is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:Aberration VelocityVector2.y is not available")
 
             End Try
             Try
                 v(2) = vel.z
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:Aberration VelocityVector.z is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:Aberration VelocityVector2.z is not available")
             End Try
             NOVAS2.Aberration(p, v, m_Light, PosVec)
             RADecOk = False
@@ -987,9 +987,9 @@ Namespace NOVASCOM
         ''' <value>The azimuth coordinate</value>
         ''' <returns>Degrees, + East</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property Azimuth() As Double Implements IPositionVector.Azimuth
+        Public ReadOnly Property Azimuth() As float Implements IPositionVector2.Azimuth
             Get
-                If Not AzElOk Then Throw New Exceptions.ValueNotAvailableException("PositionVector:Azimuth Azimuth is not available")
+                If Not AzElOk Then Throw New Exceptions.ValueNotAvailableException("PositionVector2:Azimuth Azimuth is not available")
                 Return m_Az
             End Get
         End Property
@@ -1000,9 +1000,9 @@ Namespace NOVASCOM
         ''' <value>Declination coordinate</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property Declination() As Double Implements IPositionVector.Declination
+        Public ReadOnly Property Declination() As float Implements IPositionVector2.Declination
             Get
-                If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector:Declination x, y or z has not been set")
+                If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector2:Declination x, y or z has not been set")
                 CheckEq()
                 Return m_DEC
             End Get
@@ -1014,9 +1014,9 @@ Namespace NOVASCOM
         ''' <value>Distance/Radius coordinate</value>
         ''' <returns>AU</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property Distance() As Double Implements IPositionVector.Distance
+        Public ReadOnly Property Distance() As float Implements IPositionVector2.Distance
             Get
-                If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector:Distance x, y or z has not been set")
+                If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector2:Distance x, y or z has not been set")
                 CheckEq()
                 Return m_Dist
             End Get
@@ -1027,13 +1027,13 @@ Namespace NOVASCOM
         ''' </summary>
         ''' <value>The elevation (altitude) coordinate (degrees, + up)</value>
         ''' <returns>(Degrees, + up</returns>
-        ''' <remarks>Elevation is available only in PositionVectors returned from calls to 
+        ''' <remarks>Elevation is available only in PositionVector2s returned from calls to 
         ''' Star.GetTopocentricPosition() and/or Planet.GetTopocentricPosition(). </remarks>
-        ''' <exception cref="Exceptions.ValueNotAvailableException">When the position vector has not been 
+        ''' <exception cref="Exceptions.ValueNotAvailableException">When the position Vector2 has not been 
         ''' initialised from Star.GetTopoCentricPosition and Planet.GetTopocentricPosition</exception>
-        Public ReadOnly Property Elevation() As Double Implements IPositionVector.Elevation
+        Public ReadOnly Property Elevation() As float Implements IPositionVector2.Elevation
             Get
-                If Not AzElOk Then Throw New Exceptions.ValueNotAvailableException("PositionVector:Elevation Elevation is not available")
+                If Not AzElOk Then Throw New Exceptions.ValueNotAvailableException("PositionVector2:Elevation Elevation is not available")
                 Return m_Alt
             End Get
         End Property
@@ -1044,23 +1044,23 @@ Namespace NOVASCOM
         ''' <value>Light time from body to origin</value>
         ''' <returns>Days</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property LightTime() As Double Implements IPositionVector.LightTime
+        Public ReadOnly Property LightTime() As float Implements IPositionVector2.LightTime
             Get
-                If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector:LightTime x, y or z has not been set")
+                If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector2:LightTime x, y or z has not been set")
                 CheckEq()
                 Return m_Light
             End Get
         End Property
 
         ''' <summary>
-        ''' Adjust the position vector for precession of equinoxes between two given epochs
+        ''' Adjust the position Vector2 for precession of equinoxes between two given epochs
         ''' </summary>
         ''' <param name="tjd">The first epoch (Terrestrial Julian Date)</param>
         ''' <param name="tjd2">The second epoch (Terrestrial Julian Date)</param>
         ''' <remarks>The coordinates are referred to the mean equator and equinox of the two respective epochs.</remarks>
-        Public Sub Precess(ByVal tjd As Double, ByVal tjd2 As Double) Implements IPositionVector.Precess
-            Dim p(2) As Double
-            If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector:Precess x, y or z has not been set")
+        Public Sub Precess(ByVal tjd As float, ByVal tjd2 As float) Implements IPositionVector2.Precess
+            Dim p(2) As float
+            If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector2:Precess x, y or z has not been set")
             p(0) = PosVec(0)
             p(1) = PosVec(1)
             p(2) = PosVec(2)
@@ -1070,35 +1070,35 @@ Namespace NOVASCOM
         End Sub
 
         ''' <summary>
-        ''' Adjust the position vector for proper motion (including foreshortening effects)
+        ''' Adjust the position Vector2 for proper motion (including foreshortening effects)
         ''' </summary>
-        ''' <param name="vel">The velocity vector of the object</param>
+        ''' <param name="vel">The velocity Vector2 of the object</param>
         ''' <param name="tjd1">The first epoch (Terrestrial Julian Date)</param>
         ''' <param name="tjd2">The second epoch (Terrestrial Julian Date)</param>
         ''' <returns>True if successful or throws an exception.</returns>
         ''' <remarks></remarks>
-        ''' <exception cref="Exceptions.ValueNotSetException">If the position vector x, y or z values has not been set</exception>
-        ''' <exception cref="Exceptions.ValueNotAvailableException">If the supplied velocity vector does not have valid x, y and z components</exception>
-        Public Function ProperMotion(ByVal vel As VelocityVector, ByVal tjd1 As Double, ByVal tjd2 As Double) As Boolean Implements IPositionVector.ProperMotion
-            Dim p(2), v(2) As Double
-            If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector:ProperMotion x, y or z has not been set")
+        ''' <exception cref="Exceptions.ValueNotSetException">If the position Vector2 x, y or z values has not been set</exception>
+        ''' <exception cref="Exceptions.ValueNotAvailableException">If the supplied velocity Vector2 does not have valid x, y and z components</exception>
+        Public Function ProperMotion(ByVal vel As VelocityVector2, ByVal tjd1 As float, ByVal tjd2 As float) As Boolean Implements IPositionVector2.ProperMotion
+            Dim p(2), v(2) As float
+            If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector2:ProperMotion x, y or z has not been set")
             p(0) = PosVec(0)
             p(1) = PosVec(1)
             p(2) = PosVec(2)
             Try
                 v(0) = vel.x
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:ProperMotion VelocityVector.x is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:ProperMotion VelocityVector2.x is not available")
             End Try
             Try
                 v(1) = vel.y
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:ProperMotion VelocityVector.y is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:ProperMotion VelocityVector2.y is not available")
             End Try
             Try
                 v(2) = vel.z
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:ProperMotion VelocityVector.z is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:ProperMotion VelocityVector2.z is not available")
             End Try
             NOVAS2.ProperMotion(tjd1, p, v, tjd2, PosVec)
             RADecOk = False
@@ -1111,16 +1111,16 @@ Namespace NOVASCOM
         ''' <value>RightAscension coordinate</value>
         ''' <returns>Hours</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property RightAscension() As Double Implements IPositionVector.RightAscension
+        Public ReadOnly Property RightAscension() As float Implements IPositionVector2.RightAscension
             Get
-                If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector:RA x, y or z has not been set")
+                If Not (xOk And yOk And zOk) Then Throw New Exceptions.ValueNotSetException("PositionVector2:RA x, y or z has not been set")
                 CheckEq()
                 Return m_RA
             End Get
         End Property
 
         ''' <summary>
-        ''' Initialize the PositionVector from a Site object and Greenwich apparent sidereal time.
+        ''' Initialize the PositionVector2 from a Site object and Greenwich apparent sidereal time.
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="gast">Greenwich Apparent Sidereal Time</param>
@@ -1128,9 +1128,9 @@ Namespace NOVASCOM
         ''' <remarks>The GAST parameter must be for Greenwich, not local. The time is rotated through the 
         ''' site longitude. See SetFromSiteJD() for an equivalent method that takes UTC Julian Date and 
         ''' Delta-T (eliminating the need for calculating hyper-accurate GAST yourself).</remarks>
-        Public Function SetFromSite(ByVal site As Site, ByVal gast As Double) As Boolean Implements IPositionVector.SetFromSite
-            Const f As Double = 0.00335281 '		// f = Earth ellipsoid flattening
-            Dim df2, t, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst As Double
+        Public Function SetFromSite(ByVal site As Site, ByVal gast As float) As Boolean Implements IPositionVector2.SetFromSite
+            Const f As float = 0.00335281 '		// f = Earth ellipsoid flattening
+            Dim df2, t, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst As float
 
             '//
             '// Compute parameters relating to geodetic to geocentric conversion.
@@ -1139,7 +1139,7 @@ Namespace NOVASCOM
             Try
                 t = site.Latitude
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:SetFromSite Site.Latitude is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:SetFromSite Site.Latitude is not available")
             End Try
 
             t = DEG2RAD * t
@@ -1151,7 +1151,7 @@ Namespace NOVASCOM
             Try
                 t = site.Height
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:SetFromSite Site.Height is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:SetFromSite Site.Height is not available")
             End Try
             t /= 1000 '								// Elevation in KM
             ach = EARTHRAD * c + t
@@ -1163,7 +1163,7 @@ Namespace NOVASCOM
             Try
                 t = site.Longitude
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:SetFromSite Site.Height is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:SetFromSite Site.Height is not available")
             End Try
 
             stlocl = (gast * 15.0 + t) * DEG2RAD
@@ -1171,14 +1171,14 @@ Namespace NOVASCOM
             cosst = Cos(stlocl)
 
             '//
-            '// Compute position vector components in AU
+            '// Compute position Vector2 components in AU
             '//
 
             PosVec(0) = (ach * cosphi * cosst) / KMAU
             PosVec(1) = (ach * cosphi * sinst) / KMAU
             PosVec(2) = (ash * sinphi) / KMAU
 
-            RADecOk = False '		// These really aren't inteersting anyway for site vector
+            RADecOk = False '		// These really aren't inteersting anyway for site Vector2
             AzElOk = False
 
             xOk = True '				// Object is valid
@@ -1187,7 +1187,7 @@ Namespace NOVASCOM
         End Function
 
         ''' <summary>
-        ''' Initialize the PositionVector from a Site object using UTC Julian date
+        ''' Initialize the PositionVector2 from a Site object using UTC Julian date
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="ujd">UTC Julian Date</param>
@@ -1195,25 +1195,25 @@ Namespace NOVASCOM
         ''' <remarks>The Julian date must be UTC Julian date, not terrestrial. Calculations will use the internal delta-T tables and estimator to get 
         ''' delta-T. 
         ''' This overload is not available through COM, please use 
-        ''' "SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double)"
+        ''' "SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float)"
         ''' with delta_t set to 0.0 to achieve this effect.
         ''' </remarks>
         <ComVisible(False)> _
-        Public Overloads Function SetFromSiteJD(ByVal site As Site, ByVal ujd As Double) As Boolean Implements IPositionVectorExtra.SetFromSiteJD
+        Public Overloads Function SetFromSiteJD(ByVal site As Site, ByVal ujd As float) As Boolean Implements IPositionVector2Extra.SetFromSiteJD
             SetFromSiteJD(site, ujd, 0.0)
         End Function
 
         ''' <summary>
-        ''' Initialize the PositionVector from a Site object using UTC Julian date and Delta-T
+        ''' Initialize the PositionVector2 from a Site object using UTC Julian date and Delta-T
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="ujd">UTC Julian Date</param>
         ''' <param name="delta_t">The value of Delta-T (TT - UT1) to use for reductions (seconds)</param>
         ''' <returns>True if successful or throws an exception</returns>
         ''' <remarks>The Julian date must be UTC Julian date, not terrestrial.</remarks>
-        Public Overloads Function SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double) As Boolean Implements IPositionVector.SetFromSiteJD
-            Dim dummy, secdiff, tdb, tjd, gast As Double
-            Dim oblm, oblt, eqeq, psi, eps As Double
+        Public Overloads Function SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float) As Boolean Implements IPositionVector2.SetFromSiteJD
+            Dim dummy, secdiff, tdb, tjd, gast As float
+            Dim oblm, oblt, eqeq, psi, eps As float
 
             '//
             '// Convert UTC Julian date to Terrestrial Julian Date then
@@ -1245,14 +1245,14 @@ Namespace NOVASCOM
         End Function
 
         ''' <summary>
-        ''' Initialize the PositionVector from a Star object.
+        ''' Initialize the PositionVector2 from a Star object.
         ''' </summary>
         ''' <param name="star">The Star object from which to initialize</param>
         ''' <returns>True if successful or throws an exception</returns>
         ''' <remarks></remarks>
         ''' <exception cref="Exceptions.ValueNotAvailableException">If Parallax, RightAScension or Declination is not available in the supplied star object.</exception>
-        Public Function SetFromStar(ByVal star As Star) As Boolean Implements IPositionVector.SetFromStar
-            Dim paralx, r, d, cra, sra, cdc, sdc As Double
+        Public Function SetFromStar(ByVal star As Star) As Boolean Implements IPositionVector2.SetFromStar
+            Dim paralx, r, d, cra, sra, cdc, sdc As float
 
             '//
             '// If parallax is unknown, undetermined, or zero, set it to 1e-7 second
@@ -1261,27 +1261,27 @@ Namespace NOVASCOM
             Try
                 paralx = star.Parallax
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:SetFromStar Star.Parallax is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:SetFromStar Star.Parallax is not available")
             End Try
 
             If (paralx <= 0.0) Then paralx = 0.0000001
 
             '//
-            '// Convert right ascension, declination, and parallax to position vector
+            '// Convert right ascension, declination, and parallax to position Vector2
             '// in equatorial system with units of AU.
             '//
             m_Dist = RAD2SEC / paralx
             Try
                 m_RA = star.RightAscension
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:SetFromStar Star.RightAscension is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:SetFromStar Star.RightAscension is not available")
             End Try
 
             r = m_RA * 15.0 * DEG2RAD '				// hrs -> deg -> rad
             Try
                 m_DEC = star.Declination
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("PositionVector:SetFromStar Star.Declination is not available")
+                Throw New Exceptions.ValueNotAvailableException("PositionVector2:SetFromStar Star.Declination is not available")
             End Try
 
             d = m_DEC * DEG2RAD '					/// deg -> rad
@@ -1307,12 +1307,12 @@ Namespace NOVASCOM
         ''' <value>Cartesian x component</value>
         ''' <returns>Cartesian x component</returns>
         ''' <remarks></remarks>
-        Public Property x() As Double Implements IPositionVector.x
+        Public Property x() As float Implements IPositionVector2.x
             Get
-                If Not xOk Then Throw New Exceptions.ValueNotSetException("PositionVector:x has not been set")
+                If Not xOk Then Throw New Exceptions.ValueNotSetException("PositionVector2:x has not been set")
                 Return PosVec(0)
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 PosVec(0) = value
                 xOk = True
                 RADecOk = False
@@ -1326,12 +1326,12 @@ Namespace NOVASCOM
         ''' <value>Cartesian y component</value>
         ''' <returns>Cartesian y component</returns>
         ''' <remarks></remarks>
-        Public Property y() As Double Implements IPositionVector.y
+        Public Property y() As float Implements IPositionVector2.y
             Get
-                If Not yOk Then Throw New Exceptions.ValueNotSetException("PositionVector:y has not been set")
+                If Not yOk Then Throw New Exceptions.ValueNotSetException("PositionVector2:y has not been set")
                 Return PosVec(1)
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 PosVec(1) = value
                 yOk = True
                 RADecOk = False
@@ -1345,12 +1345,12 @@ Namespace NOVASCOM
         ''' <value>Cartesian z component</value>
         ''' <returns>Cartesian z component</returns>
         ''' <remarks></remarks>
-        Public Property z() As Double Implements IPositionVector.z
+        Public Property z() As float Implements IPositionVector2.z
             Get
-                If Not zOk Then Throw New Exceptions.ValueNotSetException("PositionVector:z has not been set")
+                If Not zOk Then Throw New Exceptions.ValueNotSetException("PositionVector2:z has not been set")
                 Return PosVec(2)
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 PosVec(2) = value
                 zOk = True
                 RADecOk = False
@@ -1358,7 +1358,7 @@ Namespace NOVASCOM
             End Set
         End Property
 
-#Region "PositionVector Support Code"
+#Region "PositionVector2 Support Code"
         Private Sub CheckEq()
             If RADecOk Then Return ' Equatorial data already OK
             Vector2RADec(PosVec, m_RA, m_DEC) ' Calculate RA/Dec
@@ -1382,7 +1382,7 @@ Namespace NOVASCOM
     <Obsolete("This class will be withdrawn in the next major release, please use the SOFA or NOVAS31 classes instead")> _
     Public Class Site
         Implements ISite
-        Private vHeight, vLatitude, vLongitude, vPressure, vTemperature As Double
+        Private vHeight, vLatitude, vLongitude, vPressure, vTemperature As float
         Private HeightValid, LatitudeValid, LongitudeValid, PressureValid, TemperatureValid As Boolean
 
         ''' <summary>
@@ -1403,12 +1403,12 @@ Namespace NOVASCOM
         ''' <value>Height above mean sea level</value>
         ''' <returns>Meters</returns>
         ''' <remarks></remarks>
-        Public Property Height() As Double Implements ISite.Height
+        Public Property Height() As float Implements ISite.Height
             Get
                 If Not HeightValid Then Throw New Exceptions.ValueNotSetException("Height has not yet been set")
                 Return vHeight
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 vHeight = value
                 HeightValid = True
             End Set
@@ -1420,12 +1420,12 @@ Namespace NOVASCOM
         ''' <value>Geodetic latitude</value>
         ''' <returns>Degrees, + north</returns>
         ''' <remarks></remarks>
-        Public Property Latitude() As Double Implements ISite.Latitude
+        Public Property Latitude() As float Implements ISite.Latitude
             Get
                 If Not LatitudeValid Then Throw New Exceptions.ValueNotSetException("Latitude has not yet been set")
                 Return vLatitude
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 vLatitude = value
                 LatitudeValid = True
             End Set
@@ -1437,12 +1437,12 @@ Namespace NOVASCOM
         ''' <value>Geodetic longitude</value>
         ''' <returns>Degrees, + east</returns>
         ''' <remarks></remarks>
-        Public Property Longitude() As Double Implements ISite.Longitude
+        Public Property Longitude() As float Implements ISite.Longitude
             Get
                 If Not LongitudeValid Then Throw New Exceptions.ValueNotSetException("Longitude has not yet been set")
                 Return vLongitude
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 vLongitude = value
                 LongitudeValid = True
             End Set
@@ -1454,12 +1454,12 @@ Namespace NOVASCOM
         ''' <value>Barometric pressure</value>
         ''' <returns>Millibars</returns>
         ''' <remarks></remarks>
-        Public Property Pressure() As Double Implements ISite.Pressure
+        Public Property Pressure() As float Implements ISite.Pressure
             Get
                 If Not PressureValid Then Throw New Exceptions.ValueNotSetException("Pressure has not yet been set")
                 Return vPressure
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 vPressure = value
                 PressureValid = True
             End Set
@@ -1472,7 +1472,7 @@ Namespace NOVASCOM
         ''' <param name="Longitude">The geodetic longitude (degrees, +east)</param>
         ''' <param name="Height">Height above sea level (meters)</param>
         ''' <remarks></remarks>
-        Public Sub [Set](ByVal Latitude As Double, ByVal Longitude As Double, ByVal Height As Double) Implements ISite.Set
+        Public Sub [Set](ByVal Latitude As float, ByVal Longitude As float, ByVal Height As float) Implements ISite.Set
             vLatitude = Latitude
             vLongitude = Longitude
             vHeight = Height
@@ -1487,12 +1487,12 @@ Namespace NOVASCOM
         ''' <value>Ambient temperature</value>
         ''' <returns>Degrees Celsius)</returns>
         ''' <remarks></remarks>
-        Public Property Temperature() As Double Implements ISite.Temperature
+        Public Property Temperature() As float Implements ISite.Temperature
             Get
                 If Not TemperatureValid Then Throw New Exceptions.ValueNotSetException("Temperature has not yet been set")
                 Return vTemperature
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 vTemperature = value
                 TemperatureValid = True
             End Set
@@ -1506,11 +1506,11 @@ Namespace NOVASCOM
     '''<para>The high-level NOVAS astrometric functions are implemented as methods of Star: 
     ''' GetTopocentricPosition(), GetLocalPosition(), GetApparentPosition(), GetVirtualPosition(), 
     ''' and GetAstrometricPosition(). These methods operate on the properties of the Star, and produce 
-    ''' a PositionVector object. For example, to get the topocentric coordinates of a star, simply create 
-    ''' and initialize a Star, then call Star.GetTopocentricPosition(). The resulting vaPositionVector's 
+    ''' a PositionVector2 object. For example, to get the topocentric coordinates of a star, simply create 
+    ''' and initialize a Star, then call Star.GetTopocentricPosition(). The resulting vaPositionVector2's 
     ''' right ascension and declination properties are the topocentric equatorial coordinates, at the same 
     ''' time, the (optionally refracted) alt-az coordinates are calculated, and are also contained within 
-    ''' the returned PositionVector. <b>Note that Alt/Az is available in PositionVectors returned from calling 
+    ''' the returned PositionVector2. <b>Note that Alt/Az is available in PositionVector2s returned from calling 
     ''' GetTopocentricPosition().</b></para></remarks>
     <Guid("8FD58EDE-DF7A-4fdc-9DEC-FD0B36424F5F"), _
     ClassInterface(ClassInterfaceType.None), _
@@ -1518,14 +1518,14 @@ Namespace NOVASCOM
     <Obsolete("This class will be withdrawn in the next major release, please use the SOFA or NOVAS31 classes instead")> _
     Public Class Star
         Implements IStar
-        Private m_rv, m_plx, m_pmdec, m_pmra, m_ra, m_dec, m_deltat As Double
+        Private m_rv, m_plx, m_pmdec, m_pmra, m_ra, m_dec, m_deltat As float
         Private m_rav, m_decv, m_bDTValid As Boolean
         Private m_earthephobj As Object
         Private m_cat, m_name As String
         Private m_num As Integer
         Private m_earth As BodyDescription
         Private hr As Short
-        Dim m_earthephdisps(4) As Double
+        Dim m_earthephdisps(4) As float
 
         ''' <summary>
         ''' Initialise a new instance of the star class
@@ -1573,12 +1573,12 @@ Namespace NOVASCOM
         ''' <value>Mean catalog J2000 declination coordinate</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public Property Declination() As Double Implements IStar.Declination
+        Public Property Declination() As float Implements IStar.Declination
             Get
                 If Not m_rav Then Throw New Exceptions.ValueNotSetException("Star.Declination Value not available")
                 Return m_dec
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_dec = value
                 m_decv = True
             End Set
@@ -1590,12 +1590,12 @@ Namespace NOVASCOM
         ''' <value>The value of delta-T (TT - UT1) to use for reductions.</value>
         ''' <returns>Seconds</returns>
         ''' <remarks>If this property is not set, calculations will use an internal function to estimate delta-T.</remarks>
-        Public Property DeltaT() As Double Implements IStar.DeltaT
+        Public Property DeltaT() As float Implements IStar.DeltaT
             Get
                 If Not m_bDTValid Then Throw New Exceptions.ValueNotSetException("Star.DeltaT Value not available")
                 Return m_deltat
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_deltat = value
                 m_bDTValid = True
             End Set
@@ -1621,14 +1621,14 @@ Namespace NOVASCOM
         ''' Get an apparent position for a given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the apparent place.</returns>
+        ''' <returns>PositionVector2 for the apparent place.</returns>
         ''' <remarks></remarks>
-        Public Function GetApparentPosition(ByVal tjd As Double) As PositionVector Implements IStar.GetApparentPosition
+        Public Function GetApparentPosition(ByVal tjd As float) As PositionVector2 Implements IStar.GetApparentPosition
             Dim cat As New CatEntry
-            Dim PV As New PositionVector
+            Dim PV As New PositionVector2
 
             Dim tdb, time2, peb(3), veb(3), pes(3), ves(3), pos1(3), pos2(3), _
-                pos3(3), pos4(3), pos5(3), pos6(3), vel1(3), vec(3) As Double
+                pos3(3), pos4(3), pos5(3), pos6(3), vel1(3), vec(3) As float
 
             If Not (m_rav And m_decv) Then Throw New Exceptions.ValueNotSetException("Star.GetApparentPosition RA or DEC not available")
 
@@ -1654,7 +1654,7 @@ Namespace NOVASCOM
             cat.Parallax = m_plx
             cat.RadialVelocity = m_rv
 
-            StarVectors(cat, pos1, vel1)
+            StarVector2s(cat, pos1, vel1)
             ProperMotion(T0, pos1, vel1, tdb, pos2)
 
             BaryToGeo(pos2, peb, pos3, time2)
@@ -1676,13 +1676,13 @@ Namespace NOVASCOM
         ''' Get an astrometric position for a given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the astrometric place.</returns>
+        ''' <returns>PositionVector2 for the astrometric place.</returns>
         ''' <remarks></remarks>
-        Public Function GetAstrometricPosition(ByVal tjd As Double) As PositionVector Implements IStar.GetAstrometricPosition
+        Public Function GetAstrometricPosition(ByVal tjd As float) As PositionVector2 Implements IStar.GetAstrometricPosition
             Dim cat As New CatEntry
-            Dim PV As New PositionVector
+            Dim PV As New PositionVector2
             Dim lighttime, pos1(3), vel1(3), pos2(3), tdb, peb(3), _
-                veb(3), pes(3), ves(3), vec(3) As Double
+                veb(3), pes(3), ves(3), vec(3) As float
 
             If Not (m_rav And m_decv) Then Throw New Exceptions.ValueNotSetException("Star.GetAstrometricPosition RA or DEC not available")
 
@@ -1712,7 +1712,7 @@ Namespace NOVASCOM
             '// Compute astrometric place.
             '//
 
-            StarVectors(cat, pos1, vel1)
+            StarVector2s(cat, pos1, vel1)
             ProperMotion(T0, pos1, vel1, tdb, pos2)
             BaryToGeo(pos2, peb, vec, lighttime)
 
@@ -1728,16 +1728,16 @@ Namespace NOVASCOM
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
         ''' <param name="site">A Site object representing the observing site</param>
-        ''' <returns>PositionVector for the local place.</returns>
+        ''' <returns>PositionVector2 for the local place.</returns>
         ''' <remarks></remarks>
-        Public Function GetLocalPosition(ByVal tjd As Double, ByVal site As Site) As PositionVector Implements IStar.GetLocalPosition
+        Public Function GetLocalPosition(ByVal tjd As float, ByVal site As Site) As PositionVector2 Implements IStar.GetLocalPosition
             Dim cat As New CatEntry
-            Dim PV As New PositionVector
+            Dim PV As New PositionVector2
             Dim st As New SiteInfo
             Dim gast, lighttime, ujd, pog(3), vog(3), pb(3), vb(3), ps(3), _
              vs(3), pos1(3), vel1(3), pos2(3), vel2(3), pos3(3), pos4(3), _
              tdb, peb(3), veb(3), pes(3), ves(3), vec(3), oblm, oblt, eqeq, _
-             psi, eps As Double
+             psi, eps As float
             Dim j As Integer
 
             If Not (m_rav And m_decv) Then Throw New Exceptions.ValueNotSetException("Star.GetLocalPosition RA or DEC not available")
@@ -1812,7 +1812,7 @@ Namespace NOVASCOM
             '// Compute local place.
             '//
 
-            StarVectors(cat, pos1, vel1)
+            StarVector2s(cat, pos1, vel1)
             ProperMotion(T0, pos1, vel1, tdb, pos2)
             BaryToGeo(pos2, pb, pos3, lighttime)
             SunField(pos3, ps, pos4)
@@ -1835,9 +1835,9 @@ Namespace NOVASCOM
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
         ''' <param name="site">A Site object representing the observing site</param>
         ''' <param name="Refract">True to apply atmospheric refraction corrections</param>
-        ''' <returns>PositionVector for the topocentric place.</returns>
+        ''' <returns>PositionVector2 for the topocentric place.</returns>
         ''' <remarks></remarks>
-        Public Function GetTopocentricPosition(ByVal tjd As Double, ByVal site As Site, ByVal Refract As Boolean) As PositionVector Implements IStar.GetTopocentricPosition
+        Public Function GetTopocentricPosition(ByVal tjd As float, ByVal site As Site, ByVal Refract As Boolean) As PositionVector2 Implements IStar.GetTopocentricPosition
             Dim ref As RefractionOption
             Dim j As Integer
             Dim cat As New CatEntry
@@ -1845,8 +1845,8 @@ Namespace NOVASCOM
             Dim lighttime, ujd, pob(3), pog(3), vob(3), vog(3), pos(3), gast, _
                 pos1(3), pos2(3), pos3(3), pos4(3), pos5(3), pos6(3), _
                 vel1(3), vel2(3), tdb, peb(3), veb(3), pes(3), ves(3), vec(3), _
-                oblm, oblt, eqeq, psi, eps As Double
-            Dim ra, rra, dec, rdec, az, zd, dist As Double
+                oblm, oblt, eqeq, psi, eps As float
+            Dim ra, rra, dec, rdec, az, zd, dist As float
             Dim wx As Boolean
 
             If Not (m_rav And m_decv) Then Throw New Exceptions.ValueNotSetException("Star.GetTopocentricPosition RA or DEC not available")
@@ -1911,7 +1911,7 @@ Namespace NOVASCOM
             Next
 
             '//
-            '// Convert FK5 info to vector form
+            '// Convert FK5 info to Vector2 form
             '//
             cat.RA = m_ra
             cat.Dec = m_dec
@@ -1919,7 +1919,7 @@ Namespace NOVASCOM
             cat.ProMoDec = m_pmdec
             cat.Parallax = m_plx
             cat.RadialVelocity = m_rv
-            StarVectors(cat, pos1, vel1)
+            StarVector2s(cat, pos1, vel1)
 
             '//
             '// Finish topocentric place calculation.
@@ -1976,11 +1976,11 @@ Namespace NOVASCOM
             '// Distance does not change...
             '//
             If (ref > 0) Then 'If refracted, recompute 
-                RADec2Vector(rra, rdec, dist, vec) 'New refracted vector
+                RADec2Vector2(rra, rdec, dist, vec) 'New refracted Vector2
             End If
 
-            'Create a new positionvector with calculated values
-            Dim PV As New PositionVector(vec(0), vec(1), vec(2), rra, rdec, dist, dist / C, az, (90.0 - zd))
+            'Create a new positionVector2 with calculated values
+            Dim PV As New PositionVector2(vec(0), vec(1), vec(2), rra, rdec, dist, dist / C, az, (90.0 - zd))
 
             Return PV
         End Function
@@ -1989,18 +1989,18 @@ Namespace NOVASCOM
         ''' Get a virtual position at a given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the virtual place.</returns>
+        ''' <returns>PositionVector2 for the virtual place.</returns>
         ''' <remarks></remarks>
-        Public Function GetVirtualPosition(ByVal tjd As Double) As PositionVector Implements IStar.GetVirtualPosition
+        Public Function GetVirtualPosition(ByVal tjd As float) As PositionVector2 Implements IStar.GetVirtualPosition
             '//
             '// This is the NOVAS-COM implementation of virtual_star(). See the
             '// original NOVAS-C sources for more info.
             '//
             Dim cat As New CatEntry
-            Dim PV As New PositionVector
+            Dim PV As New PositionVector2
 
             Dim pos1(3), vel1(3), pos2(3), pos3(3), pos4(3), _
-                tdb, peb(3), veb(3), pes(3), ves(3), vec(3), lighttime As Double
+                tdb, peb(3), veb(3), pes(3), ves(3), vec(3), lighttime As float
 
             If Not (m_rav And m_decv) Then Throw New Exceptions.ValueNotSetException("Star.GetVirtualPosition RA or DEC not available")
 
@@ -2030,7 +2030,7 @@ Namespace NOVASCOM
             '//
             '// Compute virtual place.
             '//
-            StarVectors(cat, pos1, vel1)
+            StarVector2s(cat, pos1, vel1)
             ProperMotion(T0, pos1, vel1, tdb, pos2)
             BaryToGeo(pos2, peb, pos3, lighttime)
             SunField(pos3, pes, pos4)
@@ -2080,11 +2080,11 @@ Namespace NOVASCOM
         ''' <value>Catalog mean J2000 parallax</value>
         ''' <returns>Arc seconds</returns>
         ''' <remarks></remarks>
-        Public Property Parallax() As Double Implements IStar.Parallax
+        Public Property Parallax() As float Implements IStar.Parallax
             Get
                 Return m_plx
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_plx = value
             End Set
         End Property
@@ -2095,11 +2095,11 @@ Namespace NOVASCOM
         ''' <value>Catalog mean J2000 proper motion in declination</value>
         ''' <returns>Arc seconds per century</returns>
         ''' <remarks></remarks>
-        Public Property ProperMotionDec() As Double Implements IStar.ProperMotionDec
+        Public Property ProperMotionDec() As float Implements IStar.ProperMotionDec
             Get
                 Return m_pmdec
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_pmdec = value
             End Set
         End Property
@@ -2110,11 +2110,11 @@ Namespace NOVASCOM
         ''' <value>Catalog mean J2000 proper motion in right ascension</value>
         ''' <returns>Seconds per century</returns>
         ''' <remarks></remarks>
-        Public Property ProperMotionRA() As Double Implements IStar.ProperMotionRA
+        Public Property ProperMotionRA() As float Implements IStar.ProperMotionRA
             Get
                 Return m_pmra
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_pmra = value
             End Set
         End Property
@@ -2125,11 +2125,11 @@ Namespace NOVASCOM
         ''' <value>Catalog mean J2000 radial velocity</value>
         ''' <returns>Kilometers per second</returns>
         ''' <remarks></remarks>
-        Public Property RadialVelocity() As Double Implements IStar.RadialVelocity
+        Public Property RadialVelocity() As float Implements IStar.RadialVelocity
             Get
                 Return m_rv
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_rv = value
             End Set
         End Property
@@ -2140,12 +2140,12 @@ Namespace NOVASCOM
         ''' <value>Catalog mean J2000 right ascension coordinate</value>
         ''' <returns>Hours</returns>
         ''' <remarks></remarks>
-        Public Property RightAscension() As Double Implements IStar.RightAscension
+        Public Property RightAscension() As float Implements IStar.RightAscension
             Get
                 If Not m_rav Then Throw New Exceptions.ValueNotSetException("Star.RightAscension Value not available")
                 Return m_ra
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_ra = value
                 m_rav = True
             End Set
@@ -2162,7 +2162,7 @@ Namespace NOVASCOM
         ''' <param name="RadVel">Catalog mean J2000 radial velocity (km/sec)</param>
         ''' <remarks>Assumes positions are FK5. If Parallax is set to zero, NOVAS-COM assumes the object 
         ''' is on the "celestial sphere", which has a distance of 10 megaparsecs. </remarks>
-        Public Sub [Set](ByVal RA As Double, ByVal Dec As Double, ByVal ProMoRA As Double, ByVal ProMoDec As Double, ByVal Parallax As Double, ByVal RadVel As Double) Implements IStar.Set
+        Public Sub [Set](ByVal RA As float, ByVal Dec As float, ByVal ProMoRA As float, ByVal ProMoDec As float, ByVal Parallax As float, ByVal RadVel As float) Implements IStar.Set
             m_ra = RA
             m_dec = Dec
             m_pmra = ProMoRA
@@ -2189,7 +2189,7 @@ Namespace NOVASCOM
         ''' <para>If Parallax is set to zero, NOVAS-COM assumes the object is on the "celestial sphere", 
         ''' which has a distance of 10 megaparsecs.</para>
         ''' </remarks>
-        Public Sub SetHipparcos(ByVal RA As Double, ByVal Dec As Double, ByVal ProMoRA As Double, ByVal ProMoDec As Double, ByVal Parallax As Double, ByVal RadVel As Double) Implements IStar.SetHipparcos
+        Public Sub SetHipparcos(ByVal RA As float, ByVal Dec As float, ByVal ProMoRA As float, ByVal ProMoDec As float, ByVal Parallax As float, ByVal RadVel As float) Implements IStar.SetHipparcos
             Dim hip, fk5 As New CatEntry
 
             hip.RA = RA
@@ -2217,12 +2217,12 @@ Namespace NOVASCOM
     End Class
 
     ''' <summary>
-    ''' NOVAS-COM: VelocityVector Class
+    ''' NOVAS-COM: VelocityVector2 Class
     ''' </summary>
-    ''' <remarks>NOVAS-COM objects of class VelocityVector contain vectors used for velocities (earth, sites, 
+    ''' <remarks>NOVAS-COM objects of class VelocityVector2 contain Vector2s used for velocities (earth, sites, 
     ''' planets, and stars) throughout NOVAS-COM. Of course, its properties include the x, y, and z 
     ''' components of the velocity. Additional properties are the velocity in equatorial coordinates of 
-    ''' right ascension dot, declination dot and radial velocity. You can initialize a PositionVector from 
+    ''' right ascension dot, declination dot and radial velocity. You can initialize a PositionVector2 from 
     ''' a Star object (essentially an FK5 or HIP catalog entry) or a Site (lat/long/height). For the star 
     ''' object the proper motions, distance and radial velocity are used, for a site, the velocity is that 
     ''' of the observer with respect to the Earth's center of mass. </remarks>
@@ -2230,18 +2230,18 @@ Namespace NOVASCOM
     ClassInterface(ClassInterfaceType.None), _
     ComVisible(True)> _
     <Obsolete("This class will be withdrawn in the next major release, please use the SOFA or NOVAS31 classes instead")> _
-    Public Class VelocityVector
-        Implements IVelocityVector, IVelocityVectorExtra
+    Public Class VelocityVector2
+        Implements IVelocityVector2, IVelocityVector2Extra
 
         Private m_xv, m_yv, m_zv, m_cv As Boolean
-        Private m_v(2), m_VRA, m_RadVel, m_VDec As Double
+        Private m_v(2), m_VRA, m_RadVel, m_VDec As float
 
         ''' <summary>
-        ''' Creates a new velocity vector object
+        ''' Creates a new velocity Vector2 object
         ''' </summary>
         ''' <remarks> </remarks>
         Public Sub New()
-            m_xv = False 'Vector is not valid
+            m_xv = False 'Vector2 is not valid
             m_yv = False
             m_zv = False
             m_cv = False 'Coordinate velocities not valid
@@ -2252,9 +2252,9 @@ Namespace NOVASCOM
         ''' <value>Linear velocity along the declination direction</value>
         ''' <returns>AU/day</returns>
         ''' <remarks>This is not the proper motion (which is an angular rate and is dependent on the distance to the object).</remarks>
-        Public ReadOnly Property DecVelocity() As Double Implements IVelocityVector.DecVelocity
+        Public ReadOnly Property DecVelocity() As float Implements IVelocityVector2.DecVelocity
             Get
-                If Not (m_xv And m_yv And m_zv) Then Throw New Exceptions.ValueNotSetException("VelocityVector:DecVelocity x, y or z has not been set")
+                If Not (m_xv And m_yv And m_zv) Then Throw New Exceptions.ValueNotSetException("VelocityVector2:DecVelocity x, y or z has not been set")
                 CheckEq()
                 Return m_VDec
             End Get
@@ -2266,9 +2266,9 @@ Namespace NOVASCOM
         ''' <value>Linear velocity along the radial direction</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property RadialVelocity() As Double Implements IVelocityVector.RadialVelocity
+        Public ReadOnly Property RadialVelocity() As float Implements IVelocityVector2.RadialVelocity
             Get
-                If Not (m_xv And m_yv And m_zv) Then Throw New Exceptions.ValueNotSetException("VelocityVector:RadialVelocity x, y or z has not been set")
+                If Not (m_xv And m_yv And m_zv) Then Throw New Exceptions.ValueNotSetException("VelocityVector2:RadialVelocity x, y or z has not been set")
                 CheckEq()
                 Return m_RadVel
             End Get
@@ -2280,28 +2280,28 @@ Namespace NOVASCOM
         ''' <value>Linear velocity along the right ascension direction</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property RAVelocity() As Double Implements IVelocityVector.RAVelocity
+        Public ReadOnly Property RAVelocity() As float Implements IVelocityVector2.RAVelocity
             Get
-                If Not (m_xv And m_yv And m_zv) Then Throw New Exceptions.ValueNotSetException("VelocityVector:RAVelocity x, y or z has not been set")
+                If Not (m_xv And m_yv And m_zv) Then Throw New Exceptions.ValueNotSetException("VelocityVector2:RAVelocity x, y or z has not been set")
                 CheckEq()
                 Return m_VRA
             End Get
         End Property
 
         ''' <summary>
-        ''' Initialize the VelocityVector from a Site object and Greenwich Apparent Sdereal Time.
+        ''' Initialize the VelocityVector2 from a Site object and Greenwich Apparent Sdereal Time.
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="gast">Greenwich Apparent Sidereal Time</param>
         ''' <returns>True if OK or throws an exception</returns>
-        ''' <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        ''' <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         ''' of mass. The GAST parameter must be for Greenwich, not local. The time is rotated through 
         ''' the site longitude. See SetFromSiteJD() for an equivalent method that takes UTC Julian 
         ''' Date and optionally Delta-T (eliminating the need for calculating hyper-accurate GAST yourself). </remarks>
-        Public Function SetFromSite(ByVal site As Site, ByVal gast As Double) As Boolean Implements IVelocityVector.SetFromSite
-            Const f As Double = 0.00335281 'f = Earth ellipsoid flattening
-            Const omega As Double = 0.000072921151467 'omega = Earth angular velocity rad/sec
-            Dim df2, t, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst As Double
+        Public Function SetFromSite(ByVal site As Site, ByVal gast As float) As Boolean Implements IVelocityVector2.SetFromSite
+            Const f As float = 0.00335281 'f = Earth ellipsoid flattening
+            Const omega As float = 0.000072921151467 'omega = Earth angular velocity rad/sec
+            Dim df2, t, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst As float
 
             '//
             '// Compute parameters relating to geodetic to geocentric conversion.
@@ -2310,7 +2310,7 @@ Namespace NOVASCOM
             Try
                 t = site.Latitude
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromSite Site.Latitude is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromSite Site.Latitude is not available")
             End Try
 
             t *= DEG2RAD
@@ -2321,7 +2321,7 @@ Namespace NOVASCOM
             Try
                 t = site.Height
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromSite Site.Height is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromSite Site.Height is not available")
             End Try
 
             t /= 1000 'Elevation in KM
@@ -2334,14 +2334,14 @@ Namespace NOVASCOM
             Try
                 t = site.Longitude
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromSite Site.Longitude is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromSite Site.Longitude is not available")
             End Try
             stlocl = (gast * 15.0 + t) * DEG2RAD
             sinst = Sin(stlocl)
             cosst = Cos(stlocl)
 
             '//
-            '// Compute velocity vector components in AU/Day
+            '// Compute velocity Vector2 components in AU/Day
             '//
 
             m_v(0) = (-omega * ach * cosphi * sinst) * 86400.0 / KMAU
@@ -2350,44 +2350,44 @@ Namespace NOVASCOM
 
             m_xv = True
             m_yv = True
-            m_zv = True 'Vector is complete
-            m_cv = False 'Not interesting for Site vector anyway
+            m_zv = True 'Vector2 is complete
+            m_cv = False 'Not interesting for Site Vector2 anyway
 
             Return True
         End Function
 
 
         ''' <summary>
-        ''' Initialize the VelocityVector from a Site object using UTC Julian Date
+        ''' Initialize the VelocityVector2 from a Site object using UTC Julian Date
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="ujd">UTC Julian Date</param>
         ''' <returns>True if OK otherwise throws an exception</returns>
-        ''' <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        ''' <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         ''' of mass. The Julian date must be UTC Julian date, not terrestrial. This call will use 
         ''' the internal tables and estimator to get delta-T.
         ''' This overload is not available through COM, please use 
-        ''' "SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double)"
+        ''' "SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float)"
         ''' with delta_t set to 0.0 to achieve this effect.
         ''' </remarks>
         <ComVisible(False)> _
-        Public Function SetFromSiteJD(ByVal site As Site, ByVal ujd As Double) As Boolean Implements IVelocityVectorExtra.SetFromSiteJD
+        Public Function SetFromSiteJD(ByVal site As Site, ByVal ujd As float) As Boolean Implements IVelocityVector2Extra.SetFromSiteJD
             SetFromSiteJD(site, ujd, 0.0)
         End Function
 
 
         ''' <summary>
-        ''' Initialize the VelocityVector from a Site object using UTC Julian Date and Delta-T
+        ''' Initialize the VelocityVector2 from a Site object using UTC Julian Date and Delta-T
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="ujd">UTC Julian Date</param>
         ''' <param name="delta_t">The optional value of Delta-T (TT - UT1) to use for reductions (seconds)</param>
         ''' <returns>True if OK otherwise throws an exception</returns>
-        ''' <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        ''' <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         ''' of mass. The Julian date must be UTC Julian date, not terrestrial.</remarks>
-        Public Function SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double) As Boolean Implements IVelocityVector.SetFromSiteJD
-            Dim dummy, secdiff, tdb, tjd, gast As Double
-            Dim oblm, oblt, eqeq, psi, eps As Double
+        Public Function SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float) As Boolean Implements IVelocityVector2.SetFromSiteJD
+            Dim dummy, secdiff, tdb, tjd, gast As float
+            Dim oblm, oblt, eqeq, psi, eps As float
 
             '//
             '// Convert UTC Julian date to Terrestrial Julian Date then
@@ -2418,15 +2418,15 @@ Namespace NOVASCOM
         End Function
 
         ''' <summary>
-        ''' Initialize the VelocityVector from a Star object.
+        ''' Initialize the VelocityVector2 from a Star object.
         ''' </summary>
         ''' <param name="star">The Star object from which to initialize</param>
         ''' <returns>True if OK otherwise throws an exception</returns>
         ''' <remarks>The proper motions, distance and radial velocity are used in the velocity calculation. </remarks>
         ''' <exception cref="Exceptions.ValueNotAvailableException">If any of: Parallax, RightAscension, Declination, 
         ''' ProperMotionRA, ProperMotionDec or RadialVelocity are not available in the star object</exception>
-        Public Function SetFromStar(ByVal star As Star) As Boolean Implements IVelocityVector.SetFromStar
-            Dim t, paralx, r, d, cra, sra, cdc, sdc As Double
+        Public Function SetFromStar(ByVal star As Star) As Boolean Implements IVelocityVector2.SetFromStar
+            Dim t, paralx, r, d, cra, sra, cdc, sdc As float
 
             '//
             '// If parallax is unknown, undetermined, or zero, set it to 1e-7 second
@@ -2435,23 +2435,23 @@ Namespace NOVASCOM
             Try
                 paralx = star.Parallax
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.Parallax is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.Parallax is not available")
             End Try
             If (paralx <= 0.0) Then paralx = 0.0000001
 
             '//
-            '// Convert right ascension, declination, and parallax to position vector
+            '// Convert right ascension, declination, and parallax to position Vector2
             '// in equatorial system with units of AU.
             '//
             Try
                 r = star.RightAscension
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.RightAscension is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.RightAscension is not available")
             End Try
             Try
                 d = star.Declination
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.Declination is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.Declination is not available")
             End Try
 
             d *= DEG2RAD
@@ -2468,26 +2468,26 @@ Namespace NOVASCOM
             Try
                 t = star.ProperMotionRA
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.ProperMotionRA is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.ProperMotionRA is not available")
             End Try
 
             m_VRA = t * 15.0 * cdc / (paralx * 36525.0)
             Try
                 t = star.ProperMotionDec
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.ProperMotionDec is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.ProperMotionDec is not available")
             End Try
             m_VDec = t / (paralx * 36525.0)
             Try
                 t = star.RadialVelocity
             Catch ex As Exception
-                Throw New Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.RadialVelocity is not available")
+                Throw New Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.RadialVelocity is not available")
             End Try
 
             m_RadVel = t * 86400.0 / KMAU
 
             '//
-            '// Transform motion vector to equatorial system.
+            '// Transform motion Vector2 to equatorial system.
             '//
             m_v(0) = -m_VRA * sra - m_VDec * sdc * cra + m_RadVel * cdc * cra
             m_v(1) = m_VRA * cra - m_VDec * sdc * sra + m_RadVel * cdc * sra
@@ -2495,7 +2495,7 @@ Namespace NOVASCOM
 
             m_xv = True
             m_yv = True
-            m_zv = True 'Vector is complete
+            m_zv = True 'Vector2 is complete
             m_cv = True 'We have it all!
 
             Return True
@@ -2507,12 +2507,12 @@ Namespace NOVASCOM
         ''' <value>Cartesian x component of velocity</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        Public Property x() As Double Implements IVelocityVector.x
+        Public Property x() As float Implements IVelocityVector2.x
             Get
-                If Not m_xv Then Throw New Exceptions.ValueNotSetException("VelocityVector:x x value has not been set")
+                If Not m_xv Then Throw New Exceptions.ValueNotSetException("VelocityVector2:x x value has not been set")
                 Return m_v(0)
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_v(0) = value
                 m_xv = True
             End Set
@@ -2524,12 +2524,12 @@ Namespace NOVASCOM
         ''' <value>Cartesian y component of velocity</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        Public Property y() As Double Implements IVelocityVector.y
+        Public Property y() As float Implements IVelocityVector2.y
             Get
-                If Not m_yv Then Throw New Exceptions.ValueNotSetException("VelocityVector:y y value has not been set")
+                If Not m_yv Then Throw New Exceptions.ValueNotSetException("VelocityVector2:y y value has not been set")
                 Return m_v(1)
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_v(1) = value
                 m_yv = True
             End Set
@@ -2541,18 +2541,18 @@ Namespace NOVASCOM
         ''' <value>Cartesian z component of velocity</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        Public Property z() As Double Implements IVelocityVector.z
+        Public Property z() As float Implements IVelocityVector2.z
             Get
-                If Not m_zv Then Throw New Exceptions.ValueNotSetException("VelocityVector:z z value has not been set")
+                If Not m_zv Then Throw New Exceptions.ValueNotSetException("VelocityVector2:z z value has not been set")
                 Return m_v(2)
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_v(2) = value
                 m_zv = True
             End Set
         End Property
 
-#Region "VelocityVector Support Code"
+#Region "VelocityVector2 Support Code"
         Private Sub CheckEq()
             If (m_cv) Then Return 'Equatorial data already OK
             Vector2RADec(m_v, m_VRA, m_VDec) 'Calculate VRA/VDec

@@ -31,8 +31,8 @@ Namespace Transform
         Implements ITransform, IDisposable
         Private disposedValue As Boolean = False        ' To detect redundant calls
         Private Utl As Util
-        Private RAJ2000Value, RATopoValue, DECJ2000Value, DECTopoValue, SiteElevValue, SiteLatValue, SiteLongValue, SiteTempValue As Double
-        Private RAApparentValue, DECApparentValue, AzimuthTopoValue, ElevationTopoValue As Double
+        Private RAJ2000Value, RATopoValue, DECJ2000Value, DECTopoValue, SiteElevValue, SiteLatValue, SiteLongValue, SiteTempValue As float
+        Private RAApparentValue, DECApparentValue, AzimuthTopoValue, ElevationTopoValue As float
         Private RefracValue, RequiresRecalculate As Boolean
         Private LastSetBy As SetBy
 
@@ -43,7 +43,7 @@ Namespace Transform
         Private TL As TraceLogger
         Private Sw As Stopwatch
 
-        Private Const J2000 As Double = 2451545.0
+        Private Const J2000 As float = 2451545.0
 
         Private Enum SetBy
             Never
@@ -66,13 +66,13 @@ Namespace Transform
             Earth.Number = Body.Earth
             Earth.Type = BodyType.MajorPlanet
 
-            RAJ2000Value = Double.NaN 'Initialise to invalid values in case these are read before they are set
-            DECJ2000Value = Double.NaN
-            RATopoValue = Double.NaN
-            DECTopoValue = Double.NaN
-            SiteElevValue = Double.NaN
-            SiteLatValue = Double.NaN
-            SiteLongValue = Double.NaN
+            RAJ2000Value = float.NaN 'Initialise to invalid values in case these are read before they are set
+            DECJ2000Value = float.NaN
+            RATopoValue = float.NaN
+            DECTopoValue = float.NaN
+            SiteElevValue = float.NaN
+            SiteLatValue = float.NaN
+            SiteLongValue = float.NaN
             RefracValue = False
             LastSetBy = SetBy.Never
             RequiresRecalculate = True
@@ -117,13 +117,13 @@ Namespace Transform
         ''' <value>Site latitude</value>
         ''' <returns>Latitude in degrees</returns>
         ''' <remarks>Positive numbers north of the equator, negative numbers south.</remarks>
-        Property SiteLatitude() As Double Implements ITransform.SiteLatitude
+        Property SiteLatitude() As float Implements ITransform.SiteLatitude
             Get
                 CheckSet("SiteLatitude", SiteLatValue, "Site latitude has not been set")
                 TL.LogMessage("SiteLatitude Get", Utl.DegreesToDMS(SiteLatValue, ":", ":", "", 3))
                 Return SiteLatValue
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 If SiteLatValue <> value Then RequiresRecalculate = True
                 SiteLatValue = value
                 TL.LogMessage("SiteLatitude Set", Utl.DegreesToDMS(value, ":", ":", "", 3))
@@ -135,13 +135,13 @@ Namespace Transform
         ''' <value>Site longitude</value>
         ''' <returns>Longitude in degrees</returns>
         ''' <remarks>Positive numbers east of the Greenwich meridian, negative numbes west of the Greenwich meridian.</remarks>
-        Property SiteLongitude() As Double Implements ITransform.SiteLongitude
+        Property SiteLongitude() As float Implements ITransform.SiteLongitude
             Get
                 CheckSet("SiteLongitude", SiteLongValue, "Site longitude has not been set")
                 TL.LogMessage("SiteLongitude Get", Utl.DegreesToDMS(SiteLongValue, ":", ":", "", 3))
                 Return SiteLongValue
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 If SiteLongValue <> value Then RequiresRecalculate = True
                 SiteLongValue = value
                 TL.LogMessage("SiteLongitude Set", Utl.DegreesToDMS(value, ":", ":", "", 3))
@@ -153,13 +153,13 @@ Namespace Transform
         ''' <value>Site elevation</value>
         ''' <returns>Elevation in metres</returns>
         ''' <remarks></remarks>
-        Property SiteElevation() As Double Implements ITransform.SiteElevation
+        Property SiteElevation() As float Implements ITransform.SiteElevation
             Get
                 CheckSet("SiteElevation", SiteElevValue, "Site elevation has not been set")
                 TL.LogMessage("SiteElevation Get", SiteElevValue.ToString)
                 Return SiteElevValue
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 If SiteElevValue <> value Then RequiresRecalculate = True
                 SiteElevValue = value
                 TL.LogMessage("SiteElevation Set", value.ToString)
@@ -171,13 +171,13 @@ Namespace Transform
         ''' <value>Site ambient temperature</value>
         ''' <returns>Temperature in degrees Celsius</returns>
         ''' <remarks></remarks>
-        Property SiteTemperature() As Double Implements ITransform.SiteTemperature
+        Property SiteTemperature() As float Implements ITransform.SiteTemperature
             Get
                 CheckSet("SiteTemperature", SiteTempValue, "Site temperature has not been set")
                 TL.LogMessage("SiteTemperature Get", SiteTempValue.ToString)
                 Return SiteTempValue
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 If SiteTempValue <> value Then RequiresRecalculate = True
                 SiteTempValue = value
                 TL.LogMessage("SiteTemperature Set", value.ToString)
@@ -216,7 +216,7 @@ Namespace Transform
         ''' <param name="RA">RA in J2000 co-ordinates</param>
         ''' <param name="DEC">DEC in J2000 co-ordinates</param>
         ''' <remarks></remarks>
-        Sub SetJ2000(ByVal RA As Double, ByVal DEC As Double) Implements ITransform.SetJ2000
+        Sub SetJ2000(ByVal RA As float, ByVal DEC As float) Implements ITransform.SetJ2000
             LastSetBy = SetBy.J2000
             If (RA <> RAJ2000Value) Or (DEC <> DECJ2000Value) Then RequiresRecalculate = True
             RAJ2000Value = RA
@@ -229,7 +229,7 @@ Namespace Transform
         ''' <param name="RA">RA in apparent co-ordinates</param>
         ''' <param name="DEC">DEC in apparent co-ordinates</param>
         ''' <remarks></remarks>
-        Sub SetApparent(ByVal RA As Double, ByVal DEC As Double) Implements ITransform.SetApparent
+        Sub SetApparent(ByVal RA As float, ByVal DEC As float) Implements ITransform.SetApparent
             LastSetBy = SetBy.Apparent
             If (RA <> RAApparentValue) Or (DEC <> DECApparentValue) Then RequiresRecalculate = True
             RAApparentValue = RA
@@ -242,7 +242,7 @@ Namespace Transform
         ''' <param name="RA">RA in topocentric co-ordinates</param>
         ''' <param name="DEC">DEC in topocentric co-ordinates</param>
         ''' <remarks></remarks>
-        Sub SetTopocentric(ByVal RA As Double, ByVal DEC As Double) Implements ITransform.SetTopocentric
+        Sub SetTopocentric(ByVal RA As float, ByVal DEC As float) Implements ITransform.SetTopocentric
             LastSetBy = SetBy.Topocentric
             If (RA <> RATopoValue) Or (DEC <> DECTopoValue) Then RequiresRecalculate = True
             RATopoValue = RA
@@ -259,7 +259,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        ReadOnly Property RAJ2000() As Double Implements ITransform.RAJ2000
+        ReadOnly Property RAJ2000() As float Implements ITransform.RAJ2000
             Get
                 If LastSetBy = SetBy.Never Then Throw New Exceptions.TransformUninitialisedException("Attempt to read RAJ2000 before SetJ2000 or SetTopocentric has been called")
                 Recalculate()
@@ -279,7 +279,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        ReadOnly Property DecJ2000() As Double Implements ITransform.DECJ2000
+        ReadOnly Property DecJ2000() As float Implements ITransform.DECJ2000
             Get
                 If LastSetBy = SetBy.Never Then Throw New Exceptions.TransformUninitialisedException("Attempt to read DECJ2000 before SetJ2000 or SetTopocentric has been called")
                 Recalculate()
@@ -298,7 +298,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        ReadOnly Property RATopocentric() As Double Implements ITransform.RATopocentric
+        ReadOnly Property RATopocentric() As float Implements ITransform.RATopocentric
             Get
                 If LastSetBy = SetBy.Never Then Throw New Exceptions.TransformUninitialisedException("Attempt to read RATopocentric before SetJ2000 or SetTopocentric has been called")
                 Recalculate()
@@ -317,7 +317,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        ReadOnly Property DECTopocentric() As Double Implements ITransform.DECTopocentric
+        ReadOnly Property DECTopocentric() As float Implements ITransform.DECTopocentric
             Get
                 If LastSetBy = SetBy.Never Then Throw New Exceptions.TransformUninitialisedException("Attempt to read DECTopocentric before SetJ2000 or SetTopocentric has been called")
                 Recalculate()
@@ -336,7 +336,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        ReadOnly Property RAApparent() As Double Implements ITransform.RAApparent
+        ReadOnly Property RAApparent() As float Implements ITransform.RAApparent
             Get
                 If LastSetBy = SetBy.Never Then Throw New Exceptions.TransformUninitialisedException("Attempt to read DECApparent before SetJ2000 or SetApparent has been called")
                 Recalculate()
@@ -354,7 +354,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        ReadOnly Property DECApparent() As Double Implements ITransform.DECApparent
+        ReadOnly Property DECApparent() As float Implements ITransform.DECApparent
             Get
                 If LastSetBy = SetBy.Never Then Throw New Exceptions.TransformUninitialisedException("Attempt to read DECApparent before SetJ2000 or SetApparent has been called")
                 Recalculate()
@@ -373,7 +373,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        ReadOnly Property AzimuthTopocentric() As Double Implements ITransform.AzimuthTopocentric
+        ReadOnly Property AzimuthTopocentric() As float Implements ITransform.AzimuthTopocentric
             Get
                 If LastSetBy = SetBy.Never Then Throw New Exceptions.TransformUninitialisedException("Attempt to read DECApparent before SetJ2000 or SetApparent has been called")
                 Recalculate()
@@ -393,7 +393,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        ReadOnly Property ElevationTopocentric() As Double Implements ITransform.ElevationTopocentric
+        ReadOnly Property ElevationTopocentric() As float Implements ITransform.ElevationTopocentric
             Get
                 If LastSetBy = SetBy.Never Then Throw New Exceptions.TransformUninitialisedException("Attempt to read DECApparent before SetJ2000 or SetApparent has been called")
                 Recalculate()
@@ -406,8 +406,8 @@ Namespace Transform
 
 #Region "Support Code"
 
-        Private Sub CheckSet(ByVal Caller As String, ByVal Value As Double, ByVal ErrMsg As String)
-            If Double.IsNaN(Value) Then
+        Private Sub CheckSet(ByVal Caller As String, ByVal Value As float, ByVal ErrMsg As String)
+            If float.IsNaN(Value) Then
                 TL.LogMessage(Caller, "Throwing TransformUninitialisedException: " & ErrMsg)
                 Throw New Exceptions.TransformUninitialisedException(ErrMsg)
             End If
@@ -415,10 +415,10 @@ Namespace Transform
 
         Private Sub J2000ToTopo()
             Dim rc As Short, RefracOption As RefractionOption
-            If Double.IsNaN(SiteElevValue) Then Throw New Exceptions.TransformUninitialisedException("Site elevation has not been set")
-            If Double.IsNaN(SiteLatValue) Then Throw New Exceptions.TransformUninitialisedException("Site latitude has not been set")
-            If Double.IsNaN(SiteLongValue) Then Throw New Exceptions.TransformUninitialisedException("Site longitude has not been set")
-            If Double.IsNaN(SiteTempValue) Then Throw New Exceptions.TransformUninitialisedException("Site temperature has not been set")
+            If float.IsNaN(SiteElevValue) Then Throw New Exceptions.TransformUninitialisedException("Site elevation has not been set")
+            If float.IsNaN(SiteLatValue) Then Throw New Exceptions.TransformUninitialisedException("Site latitude has not been set")
+            If float.IsNaN(SiteLongValue) Then Throw New Exceptions.TransformUninitialisedException("Site longitude has not been set")
+            If float.IsNaN(SiteTempValue) Then Throw New Exceptions.TransformUninitialisedException("Site temperature has not been set")
 
             Site.Height = SiteElevValue
             Site.Latitude = SiteLatValue
@@ -465,14 +465,14 @@ Namespace Transform
         End Sub
 
         Private Sub TopoToJ2000()
-            Dim RAOld, DECOld, DeltaRA, DeltaDEC, RACalc, DECCalc As Double
+            Dim RAOld, DECOld, DeltaRA, DeltaDEC, RACalc, DECCalc As float
             Dim ct As Integer, rc As Short, RefracOption As RefractionOption
-            Dim JNow As Double
+            Dim JNow As float
 
-            If Double.IsNaN(SiteElevValue) Then Throw New Exceptions.TransformUninitialisedException("Site elevation has not been set")
-            If Double.IsNaN(SiteLatValue) Then Throw New Exceptions.TransformUninitialisedException("Site latitude has not been set")
-            If Double.IsNaN(SiteLongValue) Then Throw New Exceptions.TransformUninitialisedException("Site longitude has not been set")
-            If Double.IsNaN(SiteTempValue) Then Throw New Exceptions.TransformUninitialisedException("Site temperature has not been set")
+            If float.IsNaN(SiteElevValue) Then Throw New Exceptions.TransformUninitialisedException("Site elevation has not been set")
+            If float.IsNaN(SiteLatValue) Then Throw New Exceptions.TransformUninitialisedException("Site latitude has not been set")
+            If float.IsNaN(SiteLongValue) Then Throw New Exceptions.TransformUninitialisedException("Site longitude has not been set")
+            If float.IsNaN(SiteTempValue) Then Throw New Exceptions.TransformUninitialisedException("Site temperature has not been set")
             Site.Height = SiteElevValue
             Site.Latitude = SiteLatValue
             Site.Longitude = SiteLongValue
@@ -523,9 +523,9 @@ Namespace Transform
         End Sub
 
         Private Sub ApparentToJ2000()
-            Dim RAOld, DECOld, DeltaRA, DeltaDEC, RACalc, DECCalc As Double
+            Dim RAOld, DECOld, DeltaRA, DeltaDEC, RACalc, DECCalc As float
             Dim ct As Integer, rc As Short
-            Dim JNow As Double
+            Dim JNow As float
             JNow = Utl.JulianDate
 
             RAJ2000Value = RAApparentValue
@@ -566,43 +566,43 @@ Namespace Transform
                     Case SetBy.J2000 'J2000 cororinates have bee set so calculate apparent and topocentric coords
                         TL.LogMessage("  Recalculating", "  Values last set by SetJ2000")
                         'Check whether required topo values have been set
-                        If (Not Double.IsNaN(SiteLatValue)) And _
-                           (Not Double.IsNaN(SiteLongValue)) And _
-                           (Not Double.IsNaN(SiteElevValue)) And _
-                           (Not Double.IsNaN(SiteTempValue)) Then
+                        If (Not float.IsNaN(SiteLatValue)) And _
+                           (Not float.IsNaN(SiteLongValue)) And _
+                           (Not float.IsNaN(SiteElevValue)) And _
+                           (Not float.IsNaN(SiteTempValue)) Then
                             J2000ToTopo() 'All required site values present so calc Topo values
                         Else 'Set to NaN
-                            RATopoValue = Double.NaN
-                            DECTopoValue = Double.NaN
+                            RATopoValue = float.NaN
+                            DECTopoValue = float.NaN
                         End If
                         Call J2000ToApparent()
                     Case SetBy.Topocentric 'Topocentric co-ordinates have been set so calculate J2000 and apparent coords
                         TL.LogMessage("  Recalculating", "  Values last set by SetTopocentric")
                         'Check whether required topo values have been set
-                        If (Not Double.IsNaN(SiteLatValue)) And _
-                           (Not Double.IsNaN(SiteLongValue)) And _
-                           (Not Double.IsNaN(SiteElevValue)) And _
-                           (Not Double.IsNaN(SiteTempValue)) Then 'They have so calculate remaining values
+                        If (Not float.IsNaN(SiteLatValue)) And _
+                           (Not float.IsNaN(SiteLongValue)) And _
+                           (Not float.IsNaN(SiteElevValue)) And _
+                           (Not float.IsNaN(SiteTempValue)) Then 'They have so calculate remaining values
                             Call TopoToJ2000()
                             Call J2000ToApparent()
                         Else 'Set the topo and apaprent values to NaN
-                            RAApparentValue = Double.NaN
-                            DECApparentValue = Double.NaN
-                            RATopoValue = Double.NaN
-                            DECTopoValue = Double.NaN
+                            RAApparentValue = float.NaN
+                            DECApparentValue = float.NaN
+                            RATopoValue = float.NaN
+                            DECTopoValue = float.NaN
                         End If
                     Case SetBy.Apparent 'Apparent values have been set so calculate J2000 values and topo values if appropriate
                         TL.LogMessage("  Recalculating", "  Values last set by SetApparent")
                         Call ApparentToJ2000() 'Calculate J2000 value
                         'Check whether required topo values have been set
-                        If (Not Double.IsNaN(SiteLatValue)) And _
-                           (Not Double.IsNaN(SiteLongValue)) And _
-                           (Not Double.IsNaN(SiteElevValue)) And _
-                           (Not Double.IsNaN(SiteTempValue)) Then
+                        If (Not float.IsNaN(SiteLatValue)) And _
+                           (Not float.IsNaN(SiteLongValue)) And _
+                           (Not float.IsNaN(SiteElevValue)) And _
+                           (Not float.IsNaN(SiteTempValue)) Then
                             J2000ToTopo() 'All required site values present so calc Topo values
                         Else
-                            RATopoValue = Double.NaN
-                            DECTopoValue = Double.NaN
+                            RATopoValue = float.NaN
+                            DECTopoValue = float.NaN
                         End If
                     Case Else 'Neither SetJ2000 nor SetTopocentric nor SetApparent have been called, so throw an exception
                         TL.LogMessage("Recalculating", "Neither SetJ2000 nor SetTopocentric nor SetApparent have been called. Throwing TransforUninitialisedException")

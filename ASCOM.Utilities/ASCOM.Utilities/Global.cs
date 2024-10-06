@@ -1,4 +1,10 @@
-﻿using System;
+﻿// These items are shared between the ASCOM.Utilities and ASCOM.Astrometry assemblies
+
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Win32;
+using Microsoft.Win32.SafeHandles;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -6,13 +12,8 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using static ASCOM.Utilities.Serial;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
-// These items are shared between the ASCOM.Utilities and ASCOM.Astrometry assemblies
 
-using Microsoft.Win32;
-using System.Windows.Forms;
 
 namespace ASCOM.Utilities
 {
@@ -135,11 +136,14 @@ namespace ASCOM.Utilities
         internal const bool CHECK_FOR_RELEASE_CANDIDATES_DEFAULT = false;
 
         // Other constants
-        internal const double ABSOLUTE_ZERO_CELSIUS = -273.15d;
+        internal const float ABSOLUTE_ZERO_CELSIUS = -273.15f;
         internal const string TRACE_LOGGER_PATH = @"\ASCOM"; // Path to TraceLogger directory from My Documents
         internal const string TRACE_LOGGER_FILENAME_BASE = @"\Logs "; // Fixed part of TraceLogger file name.  Note: The trailing space must be retained!
         internal const string TRACE_LOGGER_FILE_NAME_DATE_FORMAT = "yyyy-MM-dd";
         internal const string TRACE_LOGGER_SYSTEM_PATH = @"\ASCOM\SystemLogs"; // Location where "System" user logs will be placed
+
+
+        public static object RKInprocServer32 { get; private set; }
 
         internal enum EventLogErrors : int
         {
@@ -445,21 +449,21 @@ namespace ASCOM.Utilities
             return l_Value;
         }
 
-        internal static double GetDouble(RegistryKey p_Key, string p_Name, double p_DefaultValue)
+        internal static float Getfloat(RegistryKey p_Key, string p_Name, float p_DefaultValue)
         {
-            var l_Value = default(double);
+            var l_Value = default(float);
             RegistryKey m_HKCU, m_SettingsKey;
 
             m_HKCU = Registry.CurrentUser;
             m_HKCU.CreateSubKey(REGISTRY_UTILITIES_FOLDER);
             m_SettingsKey = m_HKCU.OpenSubKey(REGISTRY_UTILITIES_FOLDER, true);
 
-            // LogMsg("GetDouble", GlobalVarsAndCode.MessageLevel.msgDebug, p_Name.ToString & " " & p_DefaultValue.ToString)
+            // LogMsg("Getfloat", GlobalVarsAndCode.MessageLevel.msgDebug, p_Name.ToString & " " & p_DefaultValue.ToString)
             try
             {
                 if (p_Key.GetValueKind(p_Name) == RegistryValueKind.String) // Value does exist
                 {
-                    l_Value = Conversions.ToDouble(p_Key.GetValue(p_Name));
+                    l_Value = (float)Conversions.ToDouble(p_Key.GetValue(p_Name));
                 }
             }
             catch (IOException) // Value doesn't exist so create it
@@ -921,7 +925,7 @@ namespace ASCOM.Utilities
 
                 try
                 {
-                    TL.LogMessage("Versions", AssName + " CodeBase: " + Ass.GetName().CodeBase);
+                    TL.LogMessage("Versions", AssName + " CodeBase: " + Ass.FullName);
                 }
                 catch (Exception ex)
                 {
@@ -945,14 +949,6 @@ namespace ASCOM.Utilities
                     TL.LogMessage("AssemblyInfo", "Exception EX5: " + ex.ToString());
                 }
 
-                try
-                {
-                    TL.LogMessage("Versions", AssName + " From GAC: " + Ass.GlobalAssemblyCache.ToString());
-                }
-                catch (Exception ex)
-                {
-                    TL.LogMessage("AssemblyInfo", "Exception EX6: " + ex.ToString());
-                }
             }
             else
             {
@@ -1003,15 +999,15 @@ namespace ASCOM.Utilities
         /// <param name="TL">Trace logger for debugging</param>
         /// <returns>String compatibility message or empty string if driver is fully compatible</returns>
         /// <remarks></remarks>
-        internal static string DriverCompatibilityMessage(string ProgID, Bitness RequiredBitness, TraceLogger TL)
+        internal static string DriverCompatibilityMessage(string ProgID, Bitness RequiredBitness, TraceLogger TL, string assemblyFullName)
         {
             PEReader InProcServer = null;
             bool Registered64Bit;
             Bitness InprocServerBitness;
-            RegistryKey RK, RKInprocServer32;
+            RegistryKey RK;
             string CLSID, InprocFilePath, CodeBase;
-            RegistryKey RK32 = null;
-            RegistryKey RK64 = null;
+      //      RegistryKey RK32 = null;
+      //      RegistryKey RK64 = null;
             string AssemblyFullName;
             Assembly LoadedAssembly;
             PortableExecutableKinds peKind;
@@ -1021,424 +1017,248 @@ namespace ASCOM.Utilities
             string CompatibilityMessage = ""; // Set default return value as OK
 
             // Validate incoming required bitness parameter
-            if (RequiredBitness == Bitness.Bits64 & OSBits() == Bitness.Bits32)
-            {
-                throw new InvalidOperationException($"Cannot validate a driver for 64bit operation on a 32bit OS! Required bitness: {RequiredBitness}, OS bitness: {OSBits()}");
-            }
+      //      if (RequiredBitness == Bitness.Bits64 & OSBits() == Bitness.Bits32)
+      //      {
+      //          throw new InvalidOperationException($"Cannot validate a driver for 64bit operation on a 32bit OS! Required bitness: {RequiredBitness}, OS bitness: {OSBits()}");
+      //      }
 
             TL.LogMessage("DriverCompatibility", "     ProgID: " + ProgID + ", Bitness: " + RequiredBitness.ToString());
-            // Parse the COM registry section to determine whether this ProgID is an in-process DLL server.
-            // If it is then parse the executable to determine whether it is a 32bit only driver and give a suitable message if it is
-            // Picks up some COM registration issues as well as a by-product.
-            if (RequiredBitness == Bitness.Bits64) // We have a 64bit application so check to see whether this is a 32bit only driver
+
+            RK = null;
+            //
+            // try as 32 bit
+            //
+            try
             {
-                RK = CreateClsidKey(ProgID + @"\CLSID", Bitness.Bits64); // Look in the 64bit section first
-                if (RK is not null) // ProgID is registered and has a CLSID!
+                RK = OpenSubKey(Registry.ClassesRoot, ProgID + @"\CLSID", false,
+                    eRegWow64Options.KEY_WOW64_32KEY);
+                TL.LogMessage("DriverCompatibility", "     Found entry in the 32bit registry");
+                Registered64Bit = false;
+            }
+           catch 
+            {
+                // Parent key not open, exception found at opening (probably related to
+                // security permissions requested)
+            }
+
+            //
+            // try as 64 bit
+            //
+
+            if (RK is null)
+            {
+                try
                 {
-                    CLSID = RK.GetValue("").ToString(); // Get the CLSID for this ProgID
+                    RK = OpenSubKey(Registry.ClassesRoot, ProgID + @"\CLSID", false, eRegWow64Options.KEY_WOW64_64KEY);
+                    TL.LogMessage("DriverCompatibility", "     Found entry in the 64bit registry");
+                    Registered64Bit = true;
+                }
+                catch
+                {
+                    // Parent key not open, exception found at opening (probably related to
+                    // security permissions requested)
+                }
+
+            }
+
+                    
+            if (RK is not null) // ProgID is registered and has a CLSID!
+            {
+                CLSID = RK.GetValue("").ToString(); // Get the CLSID for this ProgID
+                RK.Close();
+
+                RK = CreateClsidKey(@"CLSID\" + CLSID, Bitness.Bits64); // Check the 64bit registry section for this CLSID
+                if (RK is null) // We don't have an entry in the 64bit CLSID registry section so try the 32bit section
+                {
+                    TL.LogMessage("DriverCompatibility", "     No entry in the 64bit registry, checking the 32bit registry");
+                    RK = CreateClsidKey(@"\CLSID\" + CLSID, Bitness.Bits32); // Check the 32bit registry section
+                    Registered64Bit = false;
+                }
+                else // Found entry in the 64bit section
+                {
+                    TL.LogMessage("DriverCompatibility", "     Found entry in the 64bit registry");
+                    Registered64Bit = true;
+                }
+
+                if (RK is not null) // We have a CLSID entry so process it
+                {
+                    using var RKInprocServer32 = RK.OpenSubKey("InprocServer32");
                     RK.Close();
+                    if (RKInprocServer32 is not null) // This is an in process server so test for compatibility
+                    {
+                        InprocFilePath = RKInprocServer32.GetValue(string.Empty).ToString(); // Get the file location from the default position
+                        CodeBase = RKInprocServer32.GetValue("CodeBase", "").ToString(); // Get the codebase if present to override the default value
+                        if (!string.IsNullOrEmpty(CodeBase))
+                            InprocFilePath = CodeBase;
 
-                    RK = CreateClsidKey(@"CLSID\" + CLSID, Bitness.Bits64); // Check the 64bit registry section for this CLSID
-                    if (RK is null) // We don't have an entry in the 64bit CLSID registry section so try the 32bit section
-                    {
-                        TL.LogMessage("DriverCompatibility", "     No entry in the 64bit registry, checking the 32bit registry");
-                        RK = CreateClsidKey(@"\CLSID\" + CLSID, Bitness.Bits32); // Check the 32bit registry section
-                        Registered64Bit = false;
-                    }
-                    else // Found entry in the 64bit section
-                    {
-                        TL.LogMessage("DriverCompatibility", "     Found entry in the 64bit registry");
-                        Registered64Bit = true;
-                    }
-
-                    if (RK is not null) // We have a CLSID entry so process it
-                    {
-                        RKInprocServer32 = RK.OpenSubKey("InprocServer32");
-                        RK.Close();
-                        if (RKInprocServer32 is not null) // This is an in process server so test for compatibility
+                        if (Strings.Trim(InprocFilePath).ToUpperInvariant() == "MSCOREE.DLL") // We have an assembly, most likely in the GAC so get the actual file location of the assembly
                         {
-                            InprocFilePath = RKInprocServer32.GetValue("", "").ToString(); // Get the file location from the default position
-                            CodeBase = RKInprocServer32.GetValue("CodeBase", "").ToString(); // Get the codebase if present to override the default value
-                            if (!string.IsNullOrEmpty(CodeBase))
-                                InprocFilePath = CodeBase;
+                            // If this assembly is in the GAC, we should have an "Assembly" registry entry with the full assembly name, 
+                            TL.LogMessage("DriverCompatibility", "     Found MSCOREE.DLL");
 
-                            if (Strings.Trim(InprocFilePath).ToUpperInvariant() == "MSCOREE.DLL") // We have an assembly, most likely in the GAC so get the actual file location of the assembly
+                            AssemblyFullName = RKInprocServer32.GetValue("Assembly", "").ToString(); // Get the full name
+                            TL.LogMessage("DriverCompatibility", "     Found full name: " + AssemblyFullName);
+                            if (!string.IsNullOrEmpty(AssemblyFullName)) // We did get an assembly full name so now try and load it to the reflection only context
                             {
-                                // If this assembly is in the GAC, we should have an "Assembly" registry entry with the full assembly name, 
-                                TL.LogMessage("DriverCompatibility", "     Found MSCOREE.DLL");
-
-                                AssemblyFullName = RKInprocServer32.GetValue("Assembly", "").ToString(); // Get the full name
-                                TL.LogMessage("DriverCompatibility", "     Found full name: " + AssemblyFullName);
-                                if (!string.IsNullOrEmpty(AssemblyFullName)) // We did get an assembly full name so now try and load it to the reflection only context
+                                try
                                 {
+                                    LoadedAssembly = Assembly.LoadFrom(AssemblyFullName);
+                           
+                                    // OK that went well so we have an MSIL version!
+                                    InprocFilePath = LoadedAssembly.FullName; // Get the codebase for testing below
+                                    TL.LogMessage("DriverCompatibilityMSIL", "     Found file path: " + InprocFilePath);
+                                    //     TL.LogMessage("DriverCompatibilityMSIL", "     Found full name: " + v.FullName + " ");
+                                    Modules = Assembly.GetExecutingAssembly().GetModules();
+                                    Modules[0].GetPEKind(out peKind, out machine);
+                                    if ((peKind & PortableExecutableKinds.Required32Bit) != 0)
+                                        TL.LogMessage("DriverCompatibilityMSIL", "     Kind Required32bit");
+                                    if ((peKind & PortableExecutableKinds.PE32Plus) != 0)
+                                        TL.LogMessage("DriverCompatibilityMSIL", "     Kind PE32Plus");
+                                    if ((peKind & PortableExecutableKinds.ILOnly) != 0)
+                                        TL.LogMessage("DriverCompatibilityMSIL", "     Kind ILOnly");
+                                    if ((peKind & PortableExecutableKinds.NotAPortableExecutableImage) != 0)
+                                        TL.LogMessage("DriverCompatibilityMSIL", "     Kind Not PE Executable");
+                                }
+
+                                catch (IOException ex)
+                                {
+                                    // That failed so try to load an x86 version
+                                    TL.LogMessageCrLf("DriverCompatibility", "Could not find file, trying x86 version - " + ex.Message);
+
                                     try
                                     {
-                                        LoadedAssembly = Assembly.ReflectionOnlyLoad(AssemblyFullName);
-                                        // OK that went well so we have an MSIL version!
-                                        InprocFilePath = LoadedAssembly.CodeBase; // Get the codebase for testing below
-                                        TL.LogMessage("DriverCompatibilityMSIL", "     Found file path: " + InprocFilePath);
-                                        TL.LogMessage("DriverCompatibilityMSIL", "     Found full name: " + LoadedAssembly.FullName + " ");
+                                        
+                                        LoadedAssembly = Assembly.LoadFrom(assemblyFullName + ", processorArchitecture=x86");
+                                        // OK that went well so we have an x86 only version!
+                                        InprocFilePath = LoadedAssembly.FullName; // Get the codebase for testing below
+                                        TL.LogMessage("DriverCompatibilityX86", "     Found file path: " + InprocFilePath);
                                         Modules = LoadedAssembly.GetLoadedModules();
                                         Modules[0].GetPEKind(out peKind, out machine);
                                         if ((peKind & PortableExecutableKinds.Required32Bit) != 0)
-                                            TL.LogMessage("DriverCompatibilityMSIL", "     Kind Required32bit");
+                                            TL.LogMessage("DriverCompatibilityX86", "     Kind Required32bit");
                                         if ((peKind & PortableExecutableKinds.PE32Plus) != 0)
-                                            TL.LogMessage("DriverCompatibilityMSIL", "     Kind PE32Plus");
+                                            TL.LogMessage("DriverCompatibilityX86", "     Kind PE32Plus");
                                         if ((peKind & PortableExecutableKinds.ILOnly) != 0)
-                                            TL.LogMessage("DriverCompatibilityMSIL", "     Kind ILOnly");
+                                            TL.LogMessage("DriverCompatibilityX86", "     Kind ILOnly");
                                         if ((peKind & PortableExecutableKinds.NotAPortableExecutableImage) != 0)
-                                            TL.LogMessage("DriverCompatibilityMSIL", "     Kind Not PE Executable");
+                                            TL.LogMessage("DriverCompatibilityX86", "     Kind Not PE Executable");
                                     }
 
-                                    catch (IOException ex)
+                                    catch (IOException ex1)
                                     {
-                                        // That failed so try to load an x86 version
-                                        TL.LogMessageCrLf("DriverCompatibility", "Could not find file, trying x86 version - " + ex.Message);
+                                        // That failed so try to load an x64 version
+                                        TL.LogMessageCrLf("DriverCompatibilityX64", "Could not find file, trying x64 version - " + ex.Message);
 
                                         try
                                         {
-                                            LoadedAssembly = Assembly.ReflectionOnlyLoad(AssemblyFullName + ", processorArchitecture=x86");
-                                            // OK that went well so we have an x86 only version!
-                                            InprocFilePath = LoadedAssembly.CodeBase; // Get the codebase for testing below
-                                            TL.LogMessage("DriverCompatibilityX86", "     Found file path: " + InprocFilePath);
+                                            LoadedAssembly = Assembly.LoadFrom(AssemblyFullName + ", processorArchitecture=x64");
+                                            // OK that went well so we have an x64 only version!
+                                            InprocFilePath = LoadedAssembly.FullName; // Get the codebase for testing below
+                                            TL.LogMessage("DriverCompatibilityX64", "     Found file path: " + InprocFilePath);
                                             Modules = LoadedAssembly.GetLoadedModules();
                                             Modules[0].GetPEKind(out peKind, out machine);
                                             if ((peKind & PortableExecutableKinds.Required32Bit) != 0)
-                                                TL.LogMessage("DriverCompatibilityX86", "     Kind Required32bit");
+                                                TL.LogMessage("DriverCompatibilityX64", "     Kind Required32bit");
                                             if ((peKind & PortableExecutableKinds.PE32Plus) != 0)
-                                                TL.LogMessage("DriverCompatibilityX86", "     Kind PE32Plus");
+                                                TL.LogMessage("DriverCompatibilityX64", "     Kind PE32Plus");
                                             if ((peKind & PortableExecutableKinds.ILOnly) != 0)
-                                                TL.LogMessage("DriverCompatibilityX86", "     Kind ILOnly");
+                                                TL.LogMessage("DriverCompatibilityX64", "     Kind ILOnly");
                                             if ((peKind & PortableExecutableKinds.NotAPortableExecutableImage) != 0)
-                                                TL.LogMessage("DriverCompatibilityX86", "     Kind Not PE Executable");
+                                                TL.LogMessage("DriverCompatibilityX64", "     Kind Not PE Executable");
                                         }
 
-                                        catch (IOException ex1)
-                                        {
-                                            // That failed so try to load an x64 version
-                                            TL.LogMessageCrLf("DriverCompatibilityX64", "Could not find file, trying x64 version - " + ex.Message);
-
-                                            try
-                                            {
-                                                LoadedAssembly = Assembly.ReflectionOnlyLoad(AssemblyFullName + ", processorArchitecture=x64");
-                                                // OK that went well so we have an x64 only version!
-                                                InprocFilePath = LoadedAssembly.CodeBase; // Get the codebase for testing below
-                                                TL.LogMessage("DriverCompatibilityX64", "     Found file path: " + InprocFilePath);
-                                                Modules = LoadedAssembly.GetLoadedModules();
-                                                Modules[0].GetPEKind(out peKind, out machine);
-                                                if ((peKind & PortableExecutableKinds.Required32Bit) != 0)
-                                                    TL.LogMessage("DriverCompatibilityX64", "     Kind Required32bit");
-                                                if ((peKind & PortableExecutableKinds.PE32Plus) != 0)
-                                                    TL.LogMessage("DriverCompatibilityX64", "     Kind PE32Plus");
-                                                if ((peKind & PortableExecutableKinds.ILOnly) != 0)
-                                                    TL.LogMessage("DriverCompatibilityX64", "     Kind ILOnly");
-                                                if ((peKind & PortableExecutableKinds.NotAPortableExecutableImage) != 0)
-                                                    TL.LogMessage("DriverCompatibilityX64", "     Kind Not PE Executable");
-                                            }
-
-                                            catch (Exception)
-                                            {
-                                                // Ignore exceptions here and leave MSCOREE.DLL as the InprocFilePath, this will fail below and generate an "incompatible driver" message
-                                                TL.LogMessageCrLf("DriverCompatibilityX64", ex1.ToString());
-                                            }
-                                        }
-
-                                        catch (Exception ex1)
+                                        catch (Exception)
                                         {
                                             // Ignore exceptions here and leave MSCOREE.DLL as the InprocFilePath, this will fail below and generate an "incompatible driver" message
-                                            TL.LogMessageCrLf("DriverCompatibilityX32", ex1.ToString());
+                                            TL.LogMessageCrLf("DriverCompatibilityX64", ex1.ToString());
                                         }
                                     }
 
-                                    catch (Exception ex)
+                                    catch (Exception ex1)
                                     {
                                         // Ignore exceptions here and leave MSCOREE.DLL as the InprocFilePath, this will fail below and generate an "incompatible driver" message
-                                        TL.LogMessageCrLf("DriverCompatibility", ex.ToString());
+                                        TL.LogMessageCrLf("DriverCompatibilityX32", ex1.ToString());
                                     }
-                                }
-                                else
-                                {
-                                    // No Assembly entry so we can't load the assembly, we'll just have to take a chance!
-                                    TL.LogMessage("DriverCompatibility", "'AssemblyFullName is null so we can't load the assembly, we'll just have to take a chance!");
-                                    InprocFilePath = ""; // Set to null to bypass tests
-                                    TL.LogMessage("DriverCompatibility", "     Set InprocFilePath to null string");
-                                }
-                            }
-
-                            if (Strings.Right(Strings.Trim(InprocFilePath), 4).ToUpperInvariant() == ".DLL") // We have a path to the server and it is a dll
-                            {
-                                // We have an assembly or other technology DLL, outside the GAC, in the file system
-                                try
-                                {
-                                    InProcServer = new PEReader(InprocFilePath, TL); // Get hold of the executable so we can determine its characteristics
-                                    InprocServerBitness = InProcServer.BitNess;
-                                    if (InprocServerBitness == Bitness.Bits32) // 32bit driver executable
-                                    {
-                                        if (Registered64Bit) // 32bit driver executable registered in 64bit COM
-                                        {
-                                            CompatibilityMessage = "This 32bit only driver won't work in a 64bit application even though it is registered as a 64bit COM driver." + Microsoft.VisualBasic.Constants.vbCrLf + DRIVER_AUTHOR_MESSAGE_DRIVER;
-                                        }
-                                        else // 32bit driver executable registered in 32bit COM
-                                        {
-                                            CompatibilityMessage = "This 32bit only driver won't work in a 64bit application even though it is correctly registered as a 32bit COM driver." + Microsoft.VisualBasic.Constants.vbCrLf + DRIVER_AUTHOR_MESSAGE_DRIVER;
-                                        }
-                                    }
-                                    else if (Registered64Bit) // 64bit driver
-                                                              // 64bit driver executable registered in 64bit COM section
-                                    {
-                                    }
-                                    // This is the only OK combination, no message for this!
-                                    else // 64bit driver executable registered in 32bit COM
-                                    {
-                                        CompatibilityMessage = "This 64bit capable driver is only registered as a 32bit COM driver." + Microsoft.VisualBasic.Constants.vbCrLf + DRIVER_AUTHOR_MESSAGE_INSTALLER;
-                                    }
-                                }
-                                catch (FileNotFoundException) // Cannot open the file
-                                {
-                                    CompatibilityMessage = "Cannot find the driver executable: " + Microsoft.VisualBasic.Constants.vbCrLf + "\"" + InprocFilePath + "\"";
-                                }
-                                catch (Exception ex) // Some other exception so log it
-                                {
-                                    LogEvent("CompatibilityMessage", "Exception parsing " + ProgID + ", \"" + InprocFilePath + "\"", EventLogEntryType.Error, EventLogErrors.DriverCompatibilityException, ex.ToString());
-                                    CompatibilityMessage = "PEReader Exception, please check ASCOM application Event Log for details";
                                 }
 
-                                if (InProcServer is not null) // Clean up the PEReader class
+                                catch (Exception ex)
                                 {
-                                    InProcServer.Dispose();
+                                    // Ignore exceptions here and leave MSCOREE.DLL as the InprocFilePath, this will fail below and generate an "incompatible driver" message
+                                    TL.LogMessageCrLf("DriverCompatibility", ex.ToString());
                                 }
                             }
                             else
                             {
-                                // No codebase so can't test this driver, don't give an error message, just have to take a chance!
-                                TL.LogMessage("DriverCompatibility", "No codebase so can't test this driver, don't give an error message, just have to take a chance!");
+                                // No Assembly entry so we can't load the assembly, we'll just have to take a chance!
+                                TL.LogMessage("DriverCompatibility", "'AssemblyFullName is null so we can't load the assembly, we'll just have to take a chance!");
+                                InprocFilePath = ""; // Set to null to bypass tests
+                                TL.LogMessage("DriverCompatibility", "     Set InprocFilePath to null string");
                             }
-                            RKInprocServer32.Close(); // Clean up the InProcServer registry key
+                        }
+
+                        if (Strings.Right(Strings.Trim(InprocFilePath), 4).ToUpperInvariant() == ".DLL") // We have a path to the server and it is a dll
+                        {
+                            // We have an assembly or other technology DLL, outside the GAC, in the file system
+                            try
+                            {
+                                InProcServer = new PEReader(InprocFilePath, TL); // Get hold of the executable so we can determine its characteristics
+                                InprocServerBitness = InProcServer.BitNess;
+                                if (InprocServerBitness == Bitness.Bits32) // 32bit driver executable
+                                {
+                                    if (Registered64Bit) // 32bit driver executable registered in 64bit COM
+                                    {
+                                        CompatibilityMessage = "This 32bit only driver won't work in a 64bit application even though it is registered as a 64bit COM driver." + Microsoft.VisualBasic.Constants.vbCrLf + DRIVER_AUTHOR_MESSAGE_DRIVER;
+                                    }
+                                    else // 32bit driver executable registered in 32bit COM
+                                    {
+                                        CompatibilityMessage = "This 32bit only driver won't work in a 64bit application even though it is correctly registered as a 32bit COM driver." + Microsoft.VisualBasic.Constants.vbCrLf + DRIVER_AUTHOR_MESSAGE_DRIVER;
+                                    }
+                                }
+                                else if (Registered64Bit) // 64bit driver
+                                                          // 64bit driver executable registered in 64bit COM section
+                                {
+                                }
+                                // This is the only OK combination, no message for this!
+                                else // 64bit driver executable registered in 32bit COM
+                                {
+                                    CompatibilityMessage = "This 64bit capable driver is only registered as a 32bit COM driver." + Microsoft.VisualBasic.Constants.vbCrLf + DRIVER_AUTHOR_MESSAGE_INSTALLER;
+                                }
+                            }
+                            catch (FileNotFoundException) // Cannot open the file
+                            {
+                                CompatibilityMessage = "Cannot find the driver executable: " + Microsoft.VisualBasic.Constants.vbCrLf + "\"" + InprocFilePath + "\"";
+                            }
+                            catch (Exception ex) // Some other exception so log it
+                            {
+                                LogEvent("CompatibilityMessage", "Exception parsing " + ProgID + ", \"" + InprocFilePath + "\"", EventLogEntryType.Error, EventLogErrors.DriverCompatibilityException, ex.ToString());
+                                CompatibilityMessage = "PEReader Exception, please check ASCOM application Event Log for details";
+                            }
+
+                            if (InProcServer is not null) // Clean up the PEReader class
+                            {
+                                InProcServer.Dispose();
+                            }
                         }
                         else
                         {
-                            // Please leave this empty clause here so the logic is clear!
-                        } // This is not an in-process DLL so no need to test further and no error message to return
+                            // No codebase so can't test this driver, don't give an error message, just have to take a chance!
+                            TL.LogMessage("DriverCompatibility", "No codebase so can't test this driver, don't give an error message, just have to take a chance!");
+                        }
+                        RKInprocServer32.Close(); // Clean up the InProcServer registry key
                     }
-                    else // Cannot find a CLSID entry
+                    else
                     {
-                        CompatibilityMessage = "Unable to find a CLSID entry for this driver, please re-install.";
-                    }
+                        // Please leave this empty clause here so the logic is clear!
+                    } // This is not an in-process DLL so no need to test further and no error message to return
                 }
-                else // No COM ProgID registry entry
+                else // Cannot find a CLSID entry
                 {
-                    CompatibilityMessage = "This driver is not registered for COM (can't find ProgID), please re-install.";
+                    CompatibilityMessage = "Unable to find a CLSID entry for this driver, please re-install.";
                 }
             }
-            else // We are running a 32bit application test so make sure the executable is not 64bit only
+            else // No COM ProgID registry entry
             {
-                RK = CreateClsidKey(ProgID + @"\CLSID", Bitness.Bits32); // Look in the 32bit registry
-
-                if (RK is not null) // ProgID is registered and has a CLSID!
-                {
-                    TL.LogMessage("DriverCompatibility", "     Found 32bit ProgID registration");
-                    CLSID = RK.GetValue("").ToString(); // Get the CLSID for this ProgID
-                    RK.Close();
-                    if (OSBits() == Bitness.Bits64) // We want to test as if we are a 32bit app on a 64bit OS
-                    {
-                        try
-                        {
-                            RK32 = CreateClsidKey($@"CLSID\{CLSID}", Bitness.Bits32);
-                        }
-                        catch (Exception) // Ignore any exceptions, they just mean the operation wasn't successful
-                        {
-                        }
-
-                        try
-                        {
-                            RK64 = CreateClsidKey($@"CLSID\{CLSID}", Bitness.Bits64);
-                        }
-                        catch (Exception) // Ignore any exceptions, they just mean the operation wasn't successful
-                        {
-                        }
-
-                        TL.LogMessage("DriverCompatibility", "     Running on a 64bit OS, 32bit Registered: " + (RK32 is not null) + ", 64Bit Registered: " + (RK64 is not null));
-                        if (RK32 is not null) // We are testing as a 32bit app so, if there is a 32bit key, return this
-                        {
-                            RK = RK32;
-                        }
-                        else // Otherwise return the 64bit key
-                        {
-                            RK = RK64;
-                        }
-                    }
-                    else // We are running on a 32bit OS
-                    {
-                        RK = CreateClsidKey(@"CLSID\" + CLSID, Bitness.Bits32); // Check the 32bit registry section for this CLSID
-                        TL.LogMessage("DriverCompatibility", "     Running on a 32bit OS, 32Bit Registered: " + (RK is not null));
-                    }
-
-                    if (RK is not null) // We have a CLSID entry so process it
-                    {
-                        TL.LogMessage("DriverCompatibility", "     Found CLSID entry");
-                        RKInprocServer32 = RK.OpenSubKey("InprocServer32");
-                        RK.Close();
-
-                        if (RKInprocServer32 is not null) // This is an in process server so test for compatibility
-                        {
-                            InprocFilePath = RKInprocServer32.GetValue("", "").ToString(); // Get the file location from the default position
-                            CodeBase = RKInprocServer32.GetValue("CodeBase", "").ToString(); // Get the codebase if present to override the default value
-                            if (!string.IsNullOrEmpty(CodeBase))
-                                InprocFilePath = CodeBase;
-
-                            if (Strings.Trim(InprocFilePath).ToUpperInvariant() == "MSCOREE.DLL") // We have an assembly, most likely in the GAC so get the actual file location of the assembly
-                            {
-                                // If this assembly is in the GAC, we should have an "Assembly" registry entry with the full assembly name, 
-                                TL.LogMessage("DriverCompatibility", "     Found MSCOREE.DLL");
-
-                                AssemblyFullName = RKInprocServer32.GetValue("Assembly", "").ToString(); // Get the full name
-                                TL.LogMessage("DriverCompatibility", "     Found full name: " + AssemblyFullName);
-                                if (!string.IsNullOrEmpty(AssemblyFullName)) // We did get an assembly full name so now try and load it to the reflection only context
-                                {
-                                    try
-                                    {
-                                        LoadedAssembly = Assembly.ReflectionOnlyLoad(AssemblyFullName);
-                                        // OK that went well so we have an MSIL version!
-                                        InprocFilePath = LoadedAssembly.CodeBase; // Get the codebase for testing below
-                                        TL.LogMessage("DriverCompatibilityMSIL", "     Found file path: " + InprocFilePath);
-                                        TL.LogMessage("DriverCompatibilityMSIL", "     Found full name: " + LoadedAssembly.FullName + " ");
-                                        Modules = LoadedAssembly.GetLoadedModules();
-                                        Modules[0].GetPEKind(out peKind, out machine);
-                                        if ((peKind & PortableExecutableKinds.Required32Bit) != 0)
-                                            TL.LogMessage("DriverCompatibilityMSIL", "     Kind Required32bit");
-                                        if ((peKind & PortableExecutableKinds.PE32Plus) != 0)
-                                            TL.LogMessage("DriverCompatibilityMSIL", "     Kind PE32Plus");
-                                        if ((peKind & PortableExecutableKinds.ILOnly) != 0)
-                                            TL.LogMessage("DriverCompatibilityMSIL", "     Kind ILOnly");
-                                        if ((peKind & PortableExecutableKinds.NotAPortableExecutableImage) != 0)
-                                            TL.LogMessage("DriverCompatibilityMSIL", "     Kind Not PE Executable");
-                                    }
-
-                                    catch (IOException ex)
-                                    {
-                                        // That failed so try to load an x86 version
-                                        TL.LogMessageCrLf("DriverCompatibility", "Could not find file, trying x86 version - " + ex.Message);
-
-                                        try
-                                        {
-                                            LoadedAssembly = Assembly.ReflectionOnlyLoad(AssemblyFullName + ", processorArchitecture=x86");
-                                            // OK that went well so we have an x86 only version!
-                                            InprocFilePath = LoadedAssembly.CodeBase; // Get the codebase for testing below
-                                            TL.LogMessage("DriverCompatibilityX86", "     Found file path: " + InprocFilePath);
-                                            Modules = LoadedAssembly.GetLoadedModules();
-                                            Modules[0].GetPEKind(out peKind, out machine);
-                                            if ((peKind & PortableExecutableKinds.Required32Bit) != 0)
-                                                TL.LogMessage("DriverCompatibilityX86", "     Kind Required32bit");
-                                            if ((peKind & PortableExecutableKinds.PE32Plus) != 0)
-                                                TL.LogMessage("DriverCompatibilityX86", "     Kind PE32Plus");
-                                            if ((peKind & PortableExecutableKinds.ILOnly) != 0)
-                                                TL.LogMessage("DriverCompatibilityX86", "     Kind ILOnly");
-                                            if ((peKind & PortableExecutableKinds.NotAPortableExecutableImage) != 0)
-                                                TL.LogMessage("DriverCompatibilityX86", "     Kind Not PE Executable");
-                                        }
-
-                                        catch (IOException ex1)
-                                        {
-                                            // That failed so try to load an x64 version
-                                            TL.LogMessageCrLf("DriverCompatibilityX64", "Could not find file, trying x64 version - " + ex.Message);
-
-                                            try
-                                            {
-                                                LoadedAssembly = Assembly.ReflectionOnlyLoad(AssemblyFullName + ", processorArchitecture=x64");
-                                                // OK that went well so we have an x64 only version!
-                                                InprocFilePath = LoadedAssembly.CodeBase; // Get the codebase for testing below
-                                                TL.LogMessage("DriverCompatibilityX64", "     Found file path: " + InprocFilePath);
-                                                Modules = LoadedAssembly.GetLoadedModules();
-                                                Modules[0].GetPEKind(out peKind, out machine);
-                                                if ((peKind & PortableExecutableKinds.Required32Bit) != 0)
-                                                    TL.LogMessage("DriverCompatibilityX64", "     Kind Required32bit");
-                                                if ((peKind & PortableExecutableKinds.PE32Plus) != 0)
-                                                    TL.LogMessage("DriverCompatibilityX64", "     Kind PE32Plus");
-                                                if ((peKind & PortableExecutableKinds.ILOnly) != 0)
-                                                    TL.LogMessage("DriverCompatibilityX64", "     Kind ILOnly");
-                                                if ((peKind & PortableExecutableKinds.NotAPortableExecutableImage) != 0)
-                                                    TL.LogMessage("DriverCompatibilityX64", "     Kind Not PE Executable");
-                                            }
-
-                                            catch (Exception)
-                                            {
-                                                // Ignore exceptions here and leave MSCOREE.DLL as the InprocFilePath, this will fail below and generate an "incompatible driver" message
-                                                TL.LogMessageCrLf("DriverCompatibilityX64", ex1.ToString());
-                                            }
-                                        }
-
-                                        catch (Exception ex1)
-                                        {
-                                            // Ignore exceptions here and leave MSCOREE.DLL as the InprocFilePath, this will fail below and generate an "incompatible driver" message
-                                            TL.LogMessageCrLf("DriverCompatibilityX32", ex1.ToString());
-                                        }
-                                    }
-
-                                    catch (Exception ex)
-                                    {
-                                        // Ignore exceptions here and leave MSCOREE.DLL as the InprocFilePath, this will fail below and generate an "incompatible driver" message
-                                        TL.LogMessageCrLf("DriverCompatibility", ex.ToString());
-                                    }
-                                }
-                                else
-                                {
-                                    // No Assembly entry so we can't load the assembly, we'll just have to take a chance!
-                                    TL.LogMessage("DriverCompatibility", "'AssemblyFullName is null so we can't load the assembly, we'll just have to take a chance!");
-                                    InprocFilePath = ""; // Set to null to bypass tests
-                                    TL.LogMessage("DriverCompatibility", "     Set InprocFilePath to null string");
-                                }
-                            }
-
-                            if (Strings.Right(Strings.Trim(InprocFilePath), 4).ToUpperInvariant() == ".DLL") // We do have a path to the server and it is a dll
-                            {
-                                // We have an assembly or other technology DLL, outside the GAC, in the file system
-                                try
-                                {
-                                    InProcServer = new PEReader(InprocFilePath, TL); // Get hold of the executable so we can determine its characteristics
-                                    if (InProcServer.BitNess == Bitness.Bits64) // 64bit only driver executable
-                                    {
-                                        CompatibilityMessage = "This is a 64bit only driver and is not compatible with this 32bit application." + Microsoft.VisualBasic.Constants.vbCrLf + DRIVER_AUTHOR_MESSAGE_DRIVER;
-                                    }
-                                }
-                                catch (FileNotFoundException) // Cannot open the file
-                                {
-                                    CompatibilityMessage = "Cannot find the driver executable: " + Microsoft.VisualBasic.Constants.vbCrLf + "\"" + InprocFilePath + "\"";
-                                }
-                                catch (Exception ex) // Some other exception so log it
-                                {
-                                    LogEvent("CompatibilityMessage", "Exception parsing " + ProgID + ", \"" + InprocFilePath + "\"", EventLogEntryType.Error, EventLogErrors.DriverCompatibilityException, ex.ToString());
-                                    CompatibilityMessage = "PEReader Exception, please check ASCOM application Event Log for details";
-                                }
-
-                                if (InProcServer is not null) // Clean up the PEReader class
-                                {
-                                    InProcServer.Dispose();
-                                }
-                            }
-                            else
-                            {
-                                // No codebase or not a DLL so can't test this driver, don't give an error message, just have to take a chance!
-                                TL.LogMessage("DriverCompatibility", "No codebase or not a DLL so can't test this driver, don't give an error message, just have to take a chance!");
-                            } // Process as a native executable
-                            RKInprocServer32.Close(); // Clean up the InProcServer registry key
-                        }
-                        else // This is not an in-process DLL so no need to test further and no error message to return
-                        {
-                            // Please leave this empty clause here so the logic is clear!
-                            TL.LogMessage("DriverCompatibility", "This is not an in-process DLL so no need to test further and no error message to return");
-                        }
-                    }
-                    else // Cannot find a CLSID entry
-                    {
-                        CompatibilityMessage = "Unable to find a CLSID entry for this driver, please re-install.";
-                        TL.LogMessage("DriverCompatibility", "     Could not find CLSID entry!");
-                    }
-                }
-                else // No COM ProgID registry entry
-                {
-                    CompatibilityMessage = "This driver is not registered for COM (can't find ProgID), please re-install.";
-                }
-
+                CompatibilityMessage = "This driver is not registered for COM (can't find ProgID), please re-install.";
             }
 
             TL.LogMessage("DriverCompatibility", "     Returning: \"" + CompatibilityMessage + "\"");
@@ -1576,7 +1396,95 @@ namespace ASCOM.Utilities
             return ConditionPlatformVersionRet;
         }
 
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, EntryPoint = "RegOpenKeyEx")]
+        static extern int RegOpenKeyEx(IntPtr hKey, string subKey, uint options, int sam,
+    out IntPtr phkResult);
+
+        [Flags]
+        public enum eRegWow64Options : int
+        {
+            None = 0x0000,
+            KEY_WOW64_64KEY = 0x0100,
+            KEY_WOW64_32KEY = 0x0200,
+            // Add here any others needed, from the table of the previous chapter
+        }
+
+        [Flags]
+        public enum eRegistryRights : int
+        {
+            ReadKey = 131097,
+            WriteKey = 131078,
+        }
+
+        public static RegistryKey OpenSubKey(RegistryKey pParentKey, string pSubKeyName,
+                                             bool pWriteable,
+                                             eRegWow64Options pOptions)
+        {
+            if (pParentKey == null || GetRegistryKeyHandle(pParentKey).Equals(System.IntPtr.Zero))
+                throw new System.Exception("OpenSubKey: Parent key is not open");
+
+            eRegistryRights Rights = eRegistryRights.ReadKey;
+            if (pWriteable)
+                Rights = eRegistryRights.WriteKey;
+
+            System.IntPtr SubKeyHandle;
+            System.Int32 Result = RegOpenKeyEx(GetRegistryKeyHandle(pParentKey), pSubKeyName, 0,
+                                              (int)Rights | (int)pOptions, out SubKeyHandle);
+            if (Result != 0)
+            {
+                System.ComponentModel.Win32Exception W32ex =
+                    new System.ComponentModel.Win32Exception();
+                throw new System.Exception("OpenSubKey: Exception encountered opening key",
+                    W32ex);
+            }
+
+            return PointerToRegistryKey(SubKeyHandle, pWriteable, false);
+        }
+
+        private static System.IntPtr GetRegistryKeyHandle(RegistryKey pRegisteryKey)
+        {
+            Type Type = Type.GetType("Microsoft.Win32.RegistryKey");
+            FieldInfo Info = Type.GetField("hkey", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            SafeHandle Handle = (SafeHandle)Info.GetValue(pRegisteryKey);
+            IntPtr RealHandle = Handle.DangerousGetHandle();
+
+            return Handle.DangerousGetHandle();
+        }
+
+        private static RegistryKey PointerToRegistryKey(IntPtr hKey, bool pWritable,
+            bool pOwnsHandle)
+        {
+            // Create a SafeHandles.SafeRegistryHandle from this pointer - this is a private class
+            BindingFlags privateConstructors = BindingFlags.Instance | BindingFlags.NonPublic;
+            Type safeRegistryHandleType = typeof(
+                SafeHandleZeroOrMinusOneIsInvalid).Assembly.GetType(
+                "Microsoft.Win32.SafeHandles.SafeRegistryHandle");
+
+            Type[] safeRegistryHandleConstructorTypes = new Type[] { typeof(System.IntPtr),
+        typeof(System.Boolean) };
+            ConstructorInfo safeRegistryHandleConstructor =
+                safeRegistryHandleType.GetConstructor(privateConstructors,
+                null, safeRegistryHandleConstructorTypes, null);
+            Object safeHandle = safeRegistryHandleConstructor.Invoke(new Object[] { hKey,
+        pOwnsHandle });
+
+            // Create a new Registry key using the private constructor using the
+            // safeHandle - this should then behave like 
+            // a .NET natively opened handle and disposed of correctly
+            Type registryKeyType = typeof(Microsoft.Win32.RegistryKey);
+            Type[] registryKeyConstructorTypes = new Type[] { safeRegistryHandleType,
+        typeof(Boolean) };
+            ConstructorInfo registryKeyConstructor =
+                registryKeyType.GetConstructor(privateConstructors, null,
+                registryKeyConstructorTypes, null);
+            RegistryKey result = (RegistryKey)registryKeyConstructor.Invoke(new Object[] {
+        safeHandle, pWritable });
+            return result;
+        }
+
     }
+
 
     #endregion
 

@@ -17,12 +17,12 @@ namespace ASCOM.Simulator
         /// </summary>
         public string SensorName { get; set; }
 
-        public double NotReadyDelay
+        public float NotReadyDelay
         {
             get
             {
                 if (DesignMode) return 0.0;
-                else return Convert.ToDouble(numDelay.Value);
+                else return Convert.Tofloat(numDelay.Value);
             }
             set { numDelay.Value = Convert.ToDecimal(value); }
         }
@@ -37,32 +37,32 @@ namespace ASCOM.Simulator
             set { chkEnabled.Checked = value; }
         }
 
-        public double MinValue
+        public float MinValue
         {
             get
             {
                 if (DesignMode) return 0.0;
-                else return Convert.ToDouble(txtMinValue.Text);
+                else return Convert.Tofloat(txtMinValue.Text);
             }
             set { txtMinValue.Text = value.ToString(); }
         }
 
-        public double ValueCycleTime
+        public float ValueCycleTime
         {
             get
             {
                 if (DesignMode) return 0.0;
-                else return Convert.ToDouble(numValueCycleTime.Value);
+                else return Convert.Tofloat(numValueCycleTime.Value);
             }
             set { numValueCycleTime.Value = Convert.ToDecimal(value); }
         }
 
-        public double MaxValue
+        public float MaxValue
         {
             get
             {
                 if (DesignMode) return 0.0;
-                else return Convert.ToDouble(txtMaxValue.Text);
+                else return Convert.Tofloat(txtMaxValue.Text);
             }
             set { txtMaxValue.Text = value.ToString(); }
         }

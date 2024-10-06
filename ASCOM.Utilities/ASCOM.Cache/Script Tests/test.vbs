@@ -1,4 +1,4 @@
-Dim util, TL, returndouble
+Dim util, TL, returnfloat
 Set TL= CreateObject("ASCOM.Utilities.TraceLogger")
 TL.SetLogFile "", "ScriptTest"
 TL.Enabled = True
@@ -12,19 +12,19 @@ TL.LogMessage "Script", "Creating cache", False
 Set cache = CreateObject("ASCOM.Utilities.Cache")
 TL.LogMessage "Script", "Cache created OK.", False
 
-cache.SetDouble "Script1", 123.456, 1.0
+cache.Setfloat "Script1", 123.456, 1.0
 TL.LogMessage "Script", "Set cache value OK", False
 
 Dim retval
 TL.LogMessage "Script", "Getting value from cache", False
-retval= cache.GetDouble("Script1",0.0)
+retval= cache.Getfloat("Script1",0.0)
 TL.LogMessage "Script", "Returned value from cache: " & retval, False
 
 TL.LogMessage "Script", "Getting missing value from cache", False
 On Error Resume Next
 Err.Clear      ' Clear any possible Error that previous code raised
 
-retval= cache.GetDouble("ScriptXXX", 0.0)
+retval= cache.Getfloat("ScriptXXX", 0.0)
 
 If Err.Number <> 0 Then
 TL.LogMessage "Script", "Exception generated!", False
@@ -38,12 +38,12 @@ on Error GoTo 0
 
 TL.LogMessage "Script", "Returned missing value from cache: " & retval, False
 
-TL.LogMessage "Script", "Setting double object in cache", False
-cache.Set "ObjectDouble", 123.456, 1.0
+TL.LogMessage "Script", "Setting float object in cache", False
+cache.Set "Objectfloat", 123.456, 1.0
 
-TL.LogMessage "Script", "Retrieving double object from cache", False
-returndouble = cache.Get("ObjectDouble", 0.0)
-TL.LogMessage "Script", "Returned double value from cache: " & returndouble, False
+TL.LogMessage "Script", "Retrieving float object from cache", False
+returnfloat = cache.Get("Objectfloat", 0.0)
+TL.LogMessage "Script", "Returned float value from cache: " & returnfloat, False
 
 
 TL.LogMessage "Script", "Finished script", False

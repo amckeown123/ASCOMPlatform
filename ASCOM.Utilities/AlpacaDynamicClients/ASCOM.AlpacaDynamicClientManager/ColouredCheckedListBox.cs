@@ -14,7 +14,7 @@ namespace ASCOM.DynamicRemoteClients
         /// </summary>
         public ColouredCheckedListBox()
         {
-            DoubleBuffered = true;
+            floatBuffered = true;
         }
 
         /// <summary>

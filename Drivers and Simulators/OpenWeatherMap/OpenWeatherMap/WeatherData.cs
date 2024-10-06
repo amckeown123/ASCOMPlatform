@@ -70,9 +70,9 @@ namespace ASCOM.OpenWeatherMap
     public class Coord
     {
         // "lon":-0.78,
-        public double lon { get; set; }
+        public float lon { get; set; }
         // "lat":51.49},
-        public double lat { get; set; }
+        public float lat { get; set; }
     }    //{"coord":{
 
     public class Weather
@@ -90,40 +90,40 @@ namespace ASCOM.OpenWeatherMap
     public class Main
     {
         // "temp":282.53,
-        public double? temp { get; set; }
+        public float? temp { get; set; }
         // "pressure":996,
-        public double? pressure { get; set; }
+        public float? pressure { get; set; }
         // "humidity":93,
         public int? humidity { get; set; }
         // "temp_min":281.15,
-        public double? temp_min { get; set; }
+        public float? temp_min { get; set; }
         // "temp_max":284.26
-        public double? temp_max { get; set; }
-        public double? sea_level { get; set; }
-        public double? grnd_level { get; set; }
+        public float? temp_max { get; set; }
+        public float? sea_level { get; set; }
+        public float? grnd_level { get; set; }
     }    // "main":{
 
     public class Wind    // "wind":{
     {
-        public double? speed { get; set; }        // "speed":4.1,
+        public float? speed { get; set; }        // "speed":4.1,
 
-        public double? deg { get; set; }        // "deg":270,
+        public float? deg { get; set; }        // "deg":270,
 
-        public double? gust { get; set; }       // "gust": 3.58}
+        public float? gust { get; set; }       // "gust": 3.58}
     }
 
     public class Rain
     {
         // "1h":0.25},  change 1h to rate1h and 3h to rate3h
-        public double? rate1h { get; set; }
-        public double? rate3h { get; set; }
+        public float? rate1h { get; set; }
+        public float? rate3h { get; set; }
     }    // "rain":{
 
     public class Snow
     {
         // "1h":0.25},  change 1h to rate1h and 3h to rate3h
-        public double? rate1h { get; set; }
-        public double? rate3h { get; set; }
+        public float? rate1h { get; set; }
+        public float? rate3h { get; set; }
     }
 
     public class Clouds
@@ -139,7 +139,7 @@ namespace ASCOM.OpenWeatherMap
         // "id":5093,
         public int id { get; set; }
         // "message":0.0046,
-        public double message { get; set; }
+        public float message { get; set; }
         // "country":"GB",
         public string country { get; set; }
         // "sunrise":1442468462,

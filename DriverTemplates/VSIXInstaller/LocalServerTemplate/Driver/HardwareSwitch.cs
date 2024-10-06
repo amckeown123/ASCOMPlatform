@@ -120,7 +120,7 @@ static class SwitchHardware
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <returns>The maximum value to which this device can be set or which a read only sensor will return.</returns>
-    internal static double MaxSwitchValue(short id)
+    internal static float MaxSwitchValue(short id)
     {
         Validate("MaxSwitchValue", id);
         LogMessage("MaxSwitchValue", $"MaxSwitchValue({id}) - not implemented");
@@ -132,7 +132,7 @@ static class SwitchHardware
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <returns>The minimum value to which this device can be set or which a read only sensor will return.</returns>
-    internal static double MinSwitchValue(short id)
+    internal static float MinSwitchValue(short id)
     {
         Validate("MinSwitchValue", id);
         LogMessage("MinSwitchValue", $"MinSwitchValue({id}) - not implemented");
@@ -144,7 +144,7 @@ static class SwitchHardware
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <returns>The step size for this device.</returns>
-    internal static double SwitchStep(short id)
+    internal static float SwitchStep(short id)
     {
         Validate("SwitchStep", id);
         LogMessage("SwitchStep", $"SwitchStep({id}) - not implemented");
@@ -152,12 +152,12 @@ static class SwitchHardware
     }
 
     /// <summary>
-    /// Returns the value for switch device id as a double
+    /// Returns the value for switch device id as a float
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <returns>The value for this switch, this is expected to be between <see cref="MinSwitchValue"/> and
     /// <see cref="MaxSwitchValue"/>.</returns>
-    internal static double GetSwitchValue(short id)
+    internal static float GetSwitchValue(short id)
     {
         Validate("GetSwitchValue", id);
         LogMessage("GetSwitchValue", $"GetSwitchValue({id}) - not implemented");
@@ -165,11 +165,11 @@ static class SwitchHardware
     }
 
     /// <summary>
-    /// Set the value for this device as a double.
+    /// Set the value for this device as a float.
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <param name="value">The value to be set, between <see cref="MinSwitchValue"/> and <see cref="MaxSwitchValue"/></param>
-    internal static void SetSwitchValue(short id, double value)
+    internal static void SetSwitchValue(short id, float value)
     {
         Validate("SetSwitchValue", id, value);
         if (!CanWrite(id))
@@ -213,13 +213,13 @@ static class SwitchHardware
     /// Set a switch's value asynchronously
     /// </summary>
     /// <param name="id">Switch number.</param>
-    /// <param name="value">New double value.</param>
+    /// <param name="value">New float value.</param>
     /// <p style="color:red"><b>This is an optional method and can throw a <see cref="MethodNotImplementedException"/> when <see cref="CanAsync(short)"/> is <see langword="false"/>.</b></p>
     /// <exception cref="MethodNotImplementedException">When CanAsync(id) is false.</exception>
     /// <remarks>
     /// <p style="color:red"><b>This is an optional method and can throw a <see cref="MethodNotImplementedException"/> when <see cref="CanAsync(short)"/> is <see langword="false"/>.</b></p>
     /// </remarks>
-    public static void SetAsyncValue(short id, double value)
+    public static void SetAsyncValue(short id, float value)
     {
         Validate("SetSwitchValue", id, value);
         if (!CanWrite(id))
@@ -314,7 +314,7 @@ static class SwitchHardware
     /// <param name="message">The message.</param>
     /// <param name="id">The id.</param>
     /// <param name="value">The value.</param>
-    private static void Validate(string message, short id, double value)
+    private static void Validate(string message, short id, float value)
     {
         Validate(message, id);
         var min = MinSwitchValue(id);

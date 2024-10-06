@@ -128,21 +128,21 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double Altitude
+        public float Altitude
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "Altitude", new Type[] { }, new object[] { })); }
+            get { return (float)Convert.ToDouble(memberFactory.CallMember(1, "Altitude", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double ApertureArea
+        public float ApertureArea
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "ApertureArea", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "ApertureArea", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double ApertureDiameter
+        public float ApertureDiameter
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "ApertureDiameter", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "ApertureDiameter", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -250,9 +250,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double Azimuth
+        public float Azimuth
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "Azimuth", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "Azimuth", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -358,22 +358,22 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double Declination
+        public float Declination
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "Declination", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "Declination", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double DeclinationRate
+        public float DeclinationRate
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "DeclinationRate", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "DeclinationRate", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "DeclinationRate", new Type[] { }, new object[] { value }); }
         }
 
         /// <inheritdoc/>
-        public PierSide DestinationSideOfPier(double RightAscension, double Declination)
+        public PierSide DestinationSideOfPier(float RightAscension, float Declination)
         {
-            return (PierSide)memberFactory.CallMember(3, "DestinationSideOfPier", new Type[] { typeof(double), typeof(double) }, new object[] { RightAscension, Declination });
+            return (PierSide)memberFactory.CallMember(3, "DestinationSideOfPier", new Type[] { typeof(float), typeof(float) }, new object[] { RightAscension, Declination });
         }
 
         /// <inheritdoc/>
@@ -396,22 +396,22 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double FocalLength
+        public float FocalLength
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "FocalLength", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "FocalLength", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double GuideRateDeclination
+        public float GuideRateDeclination
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "GuideRateDeclination", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "GuideRateDeclination", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "GuideRateDeclination", new Type[] { }, new object[] { value }); }
         }
 
         /// <inheritdoc/>
-        public double GuideRateRightAscension
+        public float GuideRateRightAscension
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "GuideRateRightAscension", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "GuideRateRightAscension", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "GuideRateRightAscension", new Type[] { }, new object[] { value }); }
         }
 
@@ -422,9 +422,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public void MoveAxis(TelescopeAxes Axis, double Rate)
+        public void MoveAxis(TelescopeAxes Axis, float Rate)
         {
-            memberFactory.CallMember(3, "MoveAxis", new Type[] { typeof(TelescopeAxes), typeof(double) }, new object[] { Axis, Rate });
+            memberFactory.CallMember(3, "MoveAxis", new Type[] { typeof(TelescopeAxes), typeof(float) }, new object[] { Axis, Rate });
         }
 
         /// <inheritdoc/>
@@ -440,15 +440,15 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double RightAscension
+        public float RightAscension
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "RightAscension", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "RightAscension", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double RightAscensionRate
+        public float RightAscensionRate
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "RightAscensionRate", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "RightAscensionRate", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "RightAscensionRate", new Type[] { }, new object[] { value }); }
         }
 
@@ -466,29 +466,29 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double SiderealTime
+        public float SiderealTime
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "SiderealTime", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "SiderealTime", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
-        public double SiteElevation
+        public float SiteElevation
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "SiteElevation", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "SiteElevation", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "SiteElevation", new Type[] { }, new object[] { value }); }
         }
 
         /// <inheritdoc/>
-        public double SiteLatitude
+        public float SiteLatitude
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "SiteLatitude", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "SiteLatitude", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "SiteLatitude", new Type[] { }, new object[] { value }); }
         }
 
         /// <inheritdoc/>
-        public double SiteLongitude
+        public float SiteLongitude
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "SiteLongitude", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "SiteLongitude", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "SiteLongitude", new Type[] { }, new object[] { value }); }
         }
 
@@ -511,27 +511,27 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public void SlewToAltAz(double Azimuth, double Altitude)
+        public void SlewToAltAz(float Azimuth, float Altitude)
         {
-            memberFactory.CallMember(3, "SlewToAltAz", new Type[] { typeof(double), typeof(double) }, new object[] { Azimuth, Altitude });
+            memberFactory.CallMember(3, "SlewToAltAz", new Type[] { typeof(float), typeof(float) }, new object[] { Azimuth, Altitude });
         }
 
         /// <inheritdoc/>
-        public void SlewToAltAzAsync(double Azimuth, double Altitude)
+        public void SlewToAltAzAsync(float Azimuth, float Altitude)
         {
-            memberFactory.CallMember(3, "SlewToAltAzAsync", new Type[] { typeof(double), typeof(double) }, new object[] { Azimuth, Altitude });
+            memberFactory.CallMember(3, "SlewToAltAzAsync", new Type[] { typeof(float), typeof(float) }, new object[] { Azimuth, Altitude });
         }
 
         /// <inheritdoc/>
-        public void SlewToCoordinates(double RightAscension, double Declination)
+        public void SlewToCoordinates(float RightAscension, float Declination)
         {
-            memberFactory.CallMember(3, "SlewToCoordinates", new Type[] { typeof(double), typeof(double) }, new object[] { RightAscension, Declination });
+            memberFactory.CallMember(3, "SlewToCoordinates", new Type[] { typeof(float), typeof(float) }, new object[] { RightAscension, Declination });
         }
 
         /// <inheritdoc/>
-        public void SlewToCoordinatesAsync(double RightAscension, double Declination)
+        public void SlewToCoordinatesAsync(float RightAscension, float Declination)
         {
-            memberFactory.CallMember(3, "SlewToCoordinatesAsync", new Type[] { typeof(double), typeof(double) }, new object[] { RightAscension, Declination });
+            memberFactory.CallMember(3, "SlewToCoordinatesAsync", new Type[] { typeof(float), typeof(float) }, new object[] { RightAscension, Declination });
         }
 
         /// <inheritdoc/>
@@ -553,15 +553,15 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public void SyncToAltAz(double Azimuth, double Altitude)
+        public void SyncToAltAz(float Azimuth, float Altitude)
         {
-            memberFactory.CallMember(3, "SyncToAltAz", new Type[] { typeof(double), typeof(double) }, new object[] { Azimuth, Altitude });
+            memberFactory.CallMember(3, "SyncToAltAz", new Type[] { typeof(float), typeof(float) }, new object[] { Azimuth, Altitude });
         }
 
         /// <inheritdoc/>
-        public void SyncToCoordinates(double RightAscension, double Declination)
+        public void SyncToCoordinates(float RightAscension, float Declination)
         {
-            memberFactory.CallMember(3, "SyncToCoordinates", new Type[] { typeof(double), typeof(double) }, new object[] { RightAscension, Declination });
+            memberFactory.CallMember(3, "SyncToCoordinates", new Type[] { typeof(float), typeof(float) }, new object[] { RightAscension, Declination });
         }
 
         /// <inheritdoc/>
@@ -571,16 +571,16 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double TargetDeclination
+        public float TargetDeclination
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "TargetDeclination", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "TargetDeclination", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "TargetDeclination", new Type[] { }, new object[] { value }); }
         }
 
         /// <inheritdoc/>
-        public double TargetRightAscension
+        public float TargetRightAscension
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "TargetRightAscension", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "TargetRightAscension", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "TargetRightAscension", new Type[] { }, new object[] { value }); }
         }
 
@@ -673,11 +673,11 @@ namespace ASCOM.DriverAccess
         /// The maximum rate (degrees per second)
         /// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
         /// </summary>
-        public double Maximum
+        public float Maximum
         {
             get
             {
-                return (double)objTypeRate.InvokeMember("Maximum",
+                return (float)objTypeRate.InvokeMember("Maximum",
                             BindingFlags.Default | BindingFlags.GetProperty,
                             null, objRateLateBound, new object[] { },
                             CultureInfo.InvariantCulture);
@@ -695,11 +695,11 @@ namespace ASCOM.DriverAccess
         /// The minimum rate (degrees per second)
         /// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
         /// </summary>
-        public double Minimum
+        public float Minimum
         {
             get
             {
-                return (double)objTypeRate.InvokeMember("Minimum",
+                return (float)objTypeRate.InvokeMember("Minimum",
                             BindingFlags.Default | BindingFlags.GetProperty,
                             null, objRateLateBound, new object[] { },
                             CultureInfo.InvariantCulture);
@@ -998,7 +998,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="Minimum">The minimum value of this rate range</param>
         /// <param name="Maximum">The maximum value of this rate range</param>
-        public void Add(double Minimum, double Maximum)
+        public void Add(float Minimum, float Maximum)
         {
             //m_Rates.Add(new Rate(Minimum, Maximum));
         }
@@ -1121,14 +1121,14 @@ namespace ASCOM.DriverAccess
     public class Rate : IRate
     {
 
-        double m_dMaximumR = 0;
-        double m_dMinimumR = 0;
+        float m_dMaximumR = 0;
+        float m_dMinimumR = 0;
 
         //'
         //' Default constructor - Internal prevents public creation
         //' of instances. These are values for AxisRates.
 
-        internal Rate(double Minimum, double Maximum)
+        internal Rate(float Minimum, float Maximum)
         {
             m_dMaximumR = Maximum;
             m_dMinimumR = Minimum;
@@ -1140,7 +1140,7 @@ namespace ASCOM.DriverAccess
         /// The maximum rate (degrees per second)
         /// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
         /// </summary>
-        public double Maximum
+        public float Maximum
         {
             get { return m_dMaximumR; }
             set { m_dMaximumR = value; }
@@ -1150,7 +1150,7 @@ namespace ASCOM.DriverAccess
         /// The minimum rate (degrees per second)
         /// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
         /// </summary>
-        public double Minimum
+        public float Minimum
         {
             get { return m_dMinimumR; }
             set { m_dMinimumR = value; }

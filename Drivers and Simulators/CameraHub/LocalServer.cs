@@ -12,6 +12,7 @@
 // Modified by Chris Rowland and Peter Simpson to allow use with multiple devices of the same type March 2011
 //
 //
+
 using ASCOM.Utilities;
 using Microsoft.Win32;
 using System;

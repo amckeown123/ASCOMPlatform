@@ -79,7 +79,7 @@ Module GlobalVariables
     Public Const INSTRUMENT_NAME As String = "Simulator"
     Public Const INSTRUMENT_DESCRIPTION As String = "ASCOM Dome Simulator .NET"
 
-    Public Const INVALID_COORDINATE As Double = -100000.0#
+    Public Const INVALID_COORDINATE As float = -100000.0#
 
     Public Const TIMER_INTERVAL = 0.25        ' seconds per tick
     Public Const PARK_HOME_TOL = 1.0#           ' Tolerance (deg) for Park/Home position
@@ -90,13 +90,13 @@ Module GlobalVariables
     Private Const RegVer As String = "1.0"
 
     ' State Variables
-    Public g_dAltRate As Double                 ' degrees per sec
-    Public g_dAzRate As Double                  ' degrees per sec
-    Public g_dStepSize As Double                ' degrees per GUI step
-    Public g_dDomeAlt As Double                 ' Current Alt for Dome
-    Public g_dDomeAz As Double                  ' Current Az for Dome
-    Public g_dMinAlt As Double                  ' degrees altitude limit
-    Public g_dMaxAlt As Double                  ' degrees altitude limit
+    Public g_dAltRate As float                 ' degrees per sec
+    Public g_dAzRate As float                  ' degrees per sec
+    Public g_dStepSize As float                ' degrees per GUI step
+    Public g_dDomeAlt As float                 ' Current Alt for Dome
+    Public g_dDomeAz As float                  ' Current Az for Dome
+    Public g_dMinAlt As float                  ' degrees altitude limit
+    Public g_dMaxAlt As float                  ' degrees altitude limit
 
     ' Non-standard behaviors
     Public g_bStartShutterError As Boolean      ' Start up in "shutter error" condition
@@ -104,12 +104,12 @@ Module GlobalVariables
     Public g_bStandardAtPark As Boolean         ' False (non-std) means AtPark true whenever az = home
     Public g_bSlewingOpenClose As Boolean       ' Slewing true when shutter opening/closing
 
-    Public g_dSetPark As Double                 ' Park position
-    Public g_dSetHome As Double                 ' Home position
-    Public g_dTargetAlt As Double               ' Target Alt
-    Public g_dTargetAz As Double                ' Target Az
-    Public g_dOCDelay As Double                 ' Target Az
-    Public g_dOCProgress As Double              ' Target Az
+    Public g_dSetPark As float                 ' Park position
+    Public g_dSetHome As float                 ' Home position
+    Public g_dTargetAlt As float               ' Target Alt
+    Public g_dTargetAz As float                ' Target Az
+    Public g_dOCDelay As float                 ' Target Az
+    Public g_dOCProgress As float              ' Target Az
 
     Public g_bConnected As Boolean              ' Whether dome is connected
     Public g_bAtHome As Boolean                 ' Home state
@@ -150,7 +150,7 @@ Module GlobalVariables
     ' ---------
 
     ' range the azimuth parameter, full floating point (cannot use Mod)
-    Public Function AzScale(ByVal Az As Double) As Double
+    Public Function AzScale(ByVal Az As float) As float
 
         AzScale = Az
         Do While AzScale < 0.0#
@@ -164,8 +164,8 @@ Module GlobalVariables
 
     'Private Sub Timer_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
-    '    Dim slew As Double
-    '    Dim distance As Double
+    '    Dim slew As float
+    '    Dim distance As float
 
     '    ' Handle hand-box state first
     '    If g_handBox.ButtonState <> 0 Then

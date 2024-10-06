@@ -324,12 +324,12 @@ namespace ASCOM.Simulator
 
         #region IVideoV1 members
 
-        public double ExposureMax
+        public float ExposureMax
         {
             get { return camera.ExposureMax; }
         }
 
-        public double ExposureMin
+        public float ExposureMin
         {
             get { return camera.ExposureMin; }
         }
@@ -350,7 +350,7 @@ namespace ASCOM.Simulator
                 try
                 {
                     var rv = new ArrayList();
-                    camera.SupportedIntegrationRates.ForEach(x => rv.Add(double.Parse(x)));
+                    camera.SupportedIntegrationRates.ForEach(x => rv.Add(float.Parse(x)));
 
                     return rv;
                 }
@@ -460,7 +460,7 @@ namespace ASCOM.Simulator
         }
 
         ///	<exception cref="T:ASCOM.NotConnectedException">Must throw exception if data unavailable.</exception>
-        public double PixelSizeX
+        public float PixelSizeX
         {
             get
             {
@@ -493,7 +493,7 @@ namespace ASCOM.Simulator
         }
 
         ///	<exception cref="T:ASCOM.NotConnectedException">Must throw exception if data unavailable.</exception>
-        public double PixelSizeY
+        public float PixelSizeY
         {
             get
             {

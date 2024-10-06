@@ -123,9 +123,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-		public double Altitude
+		public float Altitude
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "Altitude", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "Altitude", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -141,9 +141,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-		public double Azimuth
+		public float Azimuth
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "Azimuth", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "Azimuth", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -244,21 +244,21 @@ namespace ASCOM.DriverAccess
 		}
 
         /// <inheritdoc/>
-		public void SlewToAltitude(double Altitude)
+		public void SlewToAltitude(float Altitude)
         {
-            memberFactory.CallMember(3, "SlewToAltitude", new Type[] { typeof(double) }, new object[] { Altitude });
+            memberFactory.CallMember(3, "SlewToAltitude", new Type[] { typeof(float) }, new object[] { Altitude });
         }
 
         /// <inheritdoc/>
-		public void SlewToAzimuth(double Azimuth)
+		public void SlewToAzimuth(float Azimuth)
         {
-            memberFactory.CallMember(3, "SlewToAzimuth", new Type[] { typeof(double) }, new object[] { Azimuth });
+            memberFactory.CallMember(3, "SlewToAzimuth", new Type[] { typeof(float) }, new object[] { Azimuth });
         }
 
         /// <inheritdoc/>
-		public void SyncToAzimuth(double Azimuth)
+		public void SyncToAzimuth(float Azimuth)
         {
-            memberFactory.CallMember(3, "SyncToAzimuth", new Type[] { typeof(double) }, new object[] { Azimuth });
+            memberFactory.CallMember(3, "SyncToAzimuth", new Type[] { typeof(float) }, new object[] { Azimuth });
         }
 
         #endregion

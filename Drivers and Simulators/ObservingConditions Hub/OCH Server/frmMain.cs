@@ -54,7 +54,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        private void WaitFor(double duration)
+        private void WaitFor(float duration)
         {
             DateTime startTime = DateTime.Now; // Save the wait's start time
             do

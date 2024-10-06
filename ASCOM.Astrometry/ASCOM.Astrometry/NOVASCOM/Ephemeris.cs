@@ -17,12 +17,12 @@ namespace ASCOM.Astrometry
         // function is used (see solarsystem().
         // 
         // For more info, see the original NOVAS-C sources.
-        internal static void get_earth_nov(ref IEphemeris pEphDisp, double tjd, ref double tdb, ref double[] peb, ref double[] veb, ref double[] pes, ref double[] ves)
+        internal static void get_earth_nov(ref IEphemeris pEphDisp, float tjd, ref float tdb, ref float[] peb, ref float[] veb, ref float[] pes, ref float[] ves)
         {
             short i, rc;
-            double dummy = default, secdiff = default;
-            double ltdb;
-            double[] lpeb = new double[4], lveb = new double[4], lpes = new double[4], lves = new double[4];
+            float dummy = default, secdiff = default;
+            float ltdb;
+            float[] lpeb = new float[4], lveb = new float[4], lpes = new float[4], lves = new float[4];
             // Dim TL As New TraceLogger("", "get_earth_nov")
             // TL.Enabled = True
             // TL.LogMessage("get_earth_nov", "Start")
@@ -98,14 +98,14 @@ namespace ASCOM.Astrometry
         //  Name:   For Type = 0: n/a
         //			For Type = 1: n/a for numbered MPs. For unnumbered MPs, this
         //						  is the MPC PACKED designation.
-        //  result	A SAFEARRAY of VARIANT, each element VT_R8 (double). Elements
-        //			0-2 are the position vector of the body, elements 3.5 are the
-        //			velocity vector of the body. 
+        //  result	A SAFEARRAY of VARIANT, each element VT_R8 (float). Elements
+        //			0-2 are the position Vector2 of the body, elements 3.5 are the
+        //			velocity Vector2 of the body. 
         //
-        internal static void ephemeris_nov(ref IEphemeris ephDisp, double tjd, BodyType btype, int num, string name, Origin origin, ref double[] pos, ref double[] vel)
+        internal static void ephemeris_nov(ref IEphemeris ephDisp, float tjd, BodyType btype, int num, string name, Origin origin, ref float[] pos, ref float[] vel)
         {
             int i;
-            double[] posvel = new double[7], p = new double[3], v = new double[3];
+            float[] posvel = new float[7], p = new float[3], v = new float[3];
             // Dim bdy As bodystruct
             // Dim org As NOVAS2Net.Origin
             // Dim rc As Short
@@ -184,7 +184,7 @@ namespace ASCOM.Astrometry
             if (origin == Origin.Barycentric)
             {
 
-                double[] sun_pos = new double[4], sun_vel = new double[4];
+                float[] sun_pos = new float[4], sun_vel = new float[4];
 
                 // CHICKEN AND EGG ALERT!!! WE CANNOT CALL OURSELVES FOR 
                 // BARYCENTER CALCULATION -- AS AN APPROXIMATION, WE USE
@@ -217,7 +217,7 @@ namespace ASCOM.Astrometry
 
 
         //
-        // This is the function used to get the position and velocity vectors
+        // This is the function used to get the position and velocity Vector2s
         // for the major solar system bodies and the moon. It is patterned after
         // the solarsystem() function in the original NOVAS-C package. You can
         // pass an IDispatch pointer for an ephemeris component, and it will be 
@@ -226,7 +226,7 @@ namespace ASCOM.Astrometry
         // This function must set error info... it is designed to work with 
         // reflected exceptions from the attached ephemeris
         // 
-        internal static short solarsystem_nov(ref IEphemeris ephDisp, double tjd, double tdb, Body planet, Origin origin, ref double[] pos, ref double[] vel)
+        internal static short solarsystem_nov(ref IEphemeris ephDisp, float tjd, float tdb, Body planet, Origin origin, ref float[] pos, ref float[] vel)
         {
             // Dim pl As NOVAS2.Body, org As NOVAS2.Origin
             // Dim TL As New TraceLogger("", "solarsystem_nov")
@@ -289,7 +289,7 @@ namespace ASCOM.Astrometry
         // solsys3() - Internal function that gives reasonable ephemerides for 
         // Sun or Earth, barycentric or heliocentric.
         //
-        private static short solsys3_nov(double tjd, Body body, Origin origin, ref double[] pos, ref double[] vel)
+        private static short solsys3_nov(float tjd, Body body, Origin origin, ref float[] pos, ref float[] vel)
         {
 
             int i;
@@ -300,24 +300,24 @@ namespace ASCOM.Astrometry
             // These data are used for barycenter computations only.
             // */
 
-            double[] pm = new double[] { 1047.349d, 3497.898d, 22903.0d, 19412.2d };
-            double[] pa = new double[] { 5.203363d, 9.53707d, 19.191264d, 30.068963d };
-            double[] pl = new double[] { 0.60047d, 0.871693d, 5.466933d, 5.32116d };
-            double[] pn = new double[] { 0.001450138d, 0.0005841727d, 0.0002047497d, 0.0001043891d };
+            float[] pm = new float[] { 1047.349d, 3497.898d, 22903.0d, 19412.2d };
+            float[] pa = new float[] { 5.203363d, 9.53707d, 19.191264d, 30.068963d };
+            float[] pl = new float[] { 0.60047d, 0.871693d, 5.466933d, 5.32116d };
+            float[] pn = new float[] { 0.001450138d, 0.0005841727d, 0.0002047497d, 0.0001043891d };
 
             // /*
             // obl' is the obliquity of ecliptic at epoch J2000.0 in degrees.
             // */
 
-            const double obl = 23.43929111d;
+            const float obl = 23.43929111d;
 
-            double tlast = 0.0d;
-            double sine = default, cose = default, tmass = default;
-            double[] pbary = new double[4], vbary = new double[4];
+            float tlast = 0.0d;
+            float sine = default, cose = default, tmass = default;
+            float[] pbary = new float[4], vbary = new float[4];
 
-            double oblr, qjd, ras = default, decs = default, diss = default, dlon, sinl, cosl, x, y, z, xdot, ydot, zdot, f;
-            double[] pos1 = new double[4];
-            double[,] p = new double[4, 4];
+            float oblr, qjd, ras = default, decs = default, diss = default, dlon, sinl, cosl, x, y, z, xdot, ydot, zdot, f;
+            float[] pos1 = new float[4];
+            float[,] p = new float[4, 4];
 
             //
             // Check inputs
@@ -362,7 +362,7 @@ namespace ASCOM.Astrometry
                 {
                     qjd = tjd + (i - 1.0d) * 0.1d;
                     sun_eph_nov(qjd, ref ras, ref decs, ref diss);
-                    RADec2Vector(ras, decs, diss, ref pos1);
+                    RADec2Vector2(ras, decs, diss, ref pos1);
                     Precession(qjd, pos1, GlobalItems.J2000BASE, ref pos);
                     p[i, 0] = -pos[0];
                     p[i, 1] = -pos[1];
@@ -439,11 +439,11 @@ namespace ASCOM.Astrometry
 
         private struct sun_con
         {
-            internal double l;
-            internal double r;
-            internal double alpha;
-            internal double nu;
-            internal sun_con(double pl, double pr, double palpha, double pnu)
+            internal float l;
+            internal float r;
+            internal float alpha;
+            internal float nu;
+            internal sun_con(float pl, float pr, float palpha, float pnu)
             {
                 l = pl;
                 r = pr;
@@ -452,14 +452,14 @@ namespace ASCOM.Astrometry
             }
         }
 
-        private static void sun_eph_nov(double jd, ref double ra, ref double dec, ref double dis)
+        private static void sun_eph_nov(float jd, ref float ra, ref float dec, ref float dis)
         {
             int i;
 
-            double sum_lon = 0.0d;
-            double sum_r = 0.0d;
-            const double factor = 0.0000001d;
-            double u, arg, lon, t, t2, emean, sin_lon;
+            float sum_lon = 0.0d;
+            float sum_r = 0.0d;
+            const float factor = 0.0000001d;
+            float u, arg, lon, t, t2, emean, sin_lon;
 
             sun_con[] con = new sun_con[] { new sun_con(403406.0d, 0.0d, 4.721964d, 1.621043d), new sun_con(195207.0d, -97597.0d, 5.937458d, 62830.348067d), new sun_con(119433.0d, -59715.0d, 1.115589d, 62830.821524d), new sun_con(112392.0d, -56188.0d, 5.781616d, 62829.634302d), new sun_con(3891.0d, -1556.0d, 5.5474d, 125660.5691d), new sun_con(2819.0d, -1126.0d, 1.512d, 125660.9845d), new sun_con(1721.0d, -861.0d, 4.1897d, 62832.4766d), new sun_con(0.0d, 941.0d, 1.163d, 0.813d), new sun_con(660.0d, -264.0d, 5.415d, 125659.31d), new sun_con(350.0d, -163.0d, 4.315d, 57533.85d), new sun_con(334.0d, 0.0d, 4.553d, -33.931d), new sun_con(314.0d, 309.0d, 5.198d, 777137.715d), new sun_con(268.0d, -158.0d, 5.989d, 78604.191d), new sun_con(242.0d, 0.0d, 2.911d, 5.412d), new sun_con(234.0d, -54.0d, 1.423d, 39302.098d), new sun_con(158.0d, 0.0d, 0.061d, -34.861d), new sun_con(132.0d, -93.0d, 2.317d, 115067.698d), new sun_con(129.0d, -20.0d, 3.193d, 15774.337d), new sun_con(114.0d, 0.0d, 2.828d, 5296.67d), new sun_con(99.0d, -47.0d, 0.52d, 58849.27d), new sun_con(93.0d, 0.0d, 4.65d, 5296.11d), new sun_con(86.0d, 0.0d, 4.35d, -3980.7d), new sun_con(78.0d, -33.0d, 2.75d, 52237.69d), new sun_con(72.0d, -32.0d, 4.5d, 55076.47d), new sun_con(68.0d, 0.0d, 3.23d, 261.08d), new sun_con(64.0d, -10.0d, 1.22d, 15773.85d), new sun_con(46.0d, -16.0d, 0.14d, 188491.03d), new sun_con(38.0d, 0.0d, 3.44d, -7756.55d), new sun_con(37.0d, 0.0d, 4.37d, 264.89d), new sun_con(32.0d, -24.0d, 1.14d, 117906.27d), new sun_con(29.0d, -13.0d, 2.84d, 55075.75d), new sun_con(28.0d, 0.0d, 5.96d, -7961.39d), new sun_con(27.0d, -9.0d, 5.09d, 188489.81d), new sun_con(27.0d, 0.0d, 1.72d, 2132.19d), new sun_con(25.0d, -17.0d, 2.56d, 109771.03d), new sun_con(24.0d, -11.0d, 1.92d, 54868.56d), new sun_con(21.0d, 0.0d, 0.09d, 25443.93d), new sun_con(21.0d, 31.0d, 5.98d, -55731.43d), new sun_con(20.0d, -10.0d, 4.03d, 60697.74d), new sun_con(18.0d, 0.0d, 4.27d, 2132.79d), new sun_con(17.0d, -12.0d, 0.79d, 109771.63d), new sun_con(14.0d, 0.0d, 4.24d, -7752.82d), new sun_con(13.0d, -5.0d, 2.01d, 188491.91d), new sun_con(13.0d, 0.0d, 2.65d, 207.81d), new sun_con(13.0d, 0.0d, 4.98d, 29424.63d), new sun_con(12.0d, 0.0d, 0.93d, -7.99d), new sun_con(10.0d, 0.0d, 2.21d, 46941.14d), new sun_con(10.0d, 0.0d, 3.59d, -68.29d), new sun_con(10.0d, 0.0d, 1.5d, 21463.25d), new sun_con(10.0d, -9.0d, 2.55d, 157208.4d) };
 

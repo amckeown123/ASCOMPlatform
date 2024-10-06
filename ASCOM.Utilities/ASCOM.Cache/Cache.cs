@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using ASCOM.Utilities.Exceptions;
 using static ASCOM.Utilities.Global;
 using System.Runtime.Caching;
+using Utilities;
 
 namespace ASCOM.Utilities
 {
@@ -21,7 +22,7 @@ namespace ASCOM.Utilities
     /// <para>Some applications poll at very high rates, so the cache provides an optional rate limiting capability that can delay execution of "set" and "get" methods to enforce a maximum number of actions per second.</para>
     /// <para>The cache "get" methods will either return the requested item, if present, or will throw a NotInCacheException exception, indicating that the driver should poll the hardware and store the value 
     /// in the cache before returning it to the caller.</para>
-    /// <para>Clients using the cache through COM e.g. from scripting languages , Delphi etc. will find that for each group of overloaded methods e.g. GetDouble, only the method with the largest number of parameters
+    /// <para>Clients using the cache through COM e.g. from scripting languages , Delphi etc. will find that for each group of overloaded methods e.g. Getfloat, only the method with the largest number of parameters
     /// is available. This is due to a COM limitation that doesn't allow access to method overloads. .NET clients have access to all overloads.</para>
     /// <para>Code example</para>
     /// <code>
@@ -32,19 +33,19 @@ namespace ASCOM.Utilities
     ///     const string RIGHT_ASCENSION = "Right Ascension";
     ///     Cache myCache = new Cache();
     ///     ...
-    ///     double RightAscension
+    ///     float RightAscension
     ///     {
     ///         get
     ///         {
     ///             try
     ///             {
-    ///                 return cache.GetDouble(RIGHT_ASCENSION); // Get the RA value from the cache, if present, without limiting the number of reads per second
-    ///                 // or return cache.GetDouble(RIGHT_ASCENSION, 5.0); // Get the RA value from the cache, if present, limiting the number of reads of this value to 5 per second
+    ///                 return cache.Getfloat(RIGHT_ASCENSION); // Get the RA value from the cache, if present, without limiting the number of reads per second
+    ///                 // or return cache.Getfloat(RIGHT_ASCENSION, 5.0); // Get the RA value from the cache, if present, limiting the number of reads of this value to 5 per second
     ///             }
     ///             catch (NotInCacheException) // Exception thrown because requested value is not in the cache - so get it from hardware, save to the cache and return the value
     ///             {
-    ///                 double newRA = ... // Get value from hardware
-    ///                 cache.SetDouble(RIGHT_ASCENSION, newRA, 1.0); // Save the new value to the cache with a timeout of 1 second
+    ///                 float newRA = ... // Get value from hardware
+    ///                 cache.Setfloat(RIGHT_ASCENSION, newRA, 1.0); // Save the new value to the cache with a timeout of 1 second
     ///                 return newRA;
     ///             }
     ///         }
@@ -59,8 +60,8 @@ namespace ASCOM.Utilities
         private const string MEMORY_CACHE_NAME = "ASCOM";
         private const int PUMP_MESSAGES_INTERVAL_DEFAULT = 0;
         private const int TIMER_RESOLUTION_REQUIRED = 1; // Timer resolution when making waits to enforce throttling
-        private const double ALLOWABLE_THROTTLING_RATE_MINIMUM = 2.0;
-        private const double ALLOWABLE_THROTTLING_RATE_MAXIMUM = 1000.0;
+        private const float ALLOWABLE_THROTTLING_RATE_MINIMUM = 2.0f;
+        private const float ALLOWABLE_THROTTLING_RATE_MAXIMUM = 1000.0f;
 
         private MemoryCache memoryCache;
         private TraceLogger TL;
@@ -287,25 +288,25 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <exception cref="NotInCacheException">When there is no item in the cache with the supplied key.</exception>
-        public object Get(string Key, double MaximumCallFrequency)
+        public object Get(string Key, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheRead, MaximumCallFrequency);
             return Get(Key); //Get the value
         }
 
         /// <summary>
-        /// Retrieve a double value from the cache with the given name, restricting maximum call frequency to the range 2 to 1000 calls per second if required.
+        /// Retrieve a float value from the cache with the given name, restricting maximum call frequency to the range 2 to 1000 calls per second if required.
         /// </summary>
         /// <param name="Key">Name of this item in the cache. The key is case sensitive.</param>
         /// <param name="MaximumCallFrequency">Maximum number of retrievals per second that are to be allowed for this item. A value of 0.0 will disable throttling. See <see cref="Cache.Dispose()"/> for further information.</param>
-        /// <returns>The requested double value, if present in the cache, or a "NotInCacheException" if there is no item in the cache that has the supplied name.</returns>
+        /// <returns>The requested float value, if present in the cache, or a "NotInCacheException" if there is no item in the cache that has the supplied name.</returns>
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <exception cref="NotInCacheException">When there is no item in the cache with the supplied key.</exception>
-        public double GetDouble(string Key, double MaximumCallFrequency)
+        public float Getfloat(string Key, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheRead, MaximumCallFrequency);
-            return GetDouble(Key); //Get the value
+            return Getfloat(Key); //Get the value
         }
 
         /// <summary>
@@ -317,7 +318,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <exception cref="NotInCacheException">When there is no item in the cache with the supplied key.</exception>
-        public int GetInt(string Key, double MaximumCallFrequency)
+        public int GetInt(string Key, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheRead, MaximumCallFrequency);
             return GetInt(Key); //Get the value
@@ -332,7 +333,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <exception cref="NotInCacheException">When there is no item in the cache with the supplied key.</exception>
-        public bool GetBool(string Key, double MaximumCallFrequency)
+        public bool GetBool(string Key, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheRead, MaximumCallFrequency);
             return GetBool(Key); //Get the value
@@ -347,7 +348,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <exception cref="NotInCacheException">When there is no item in the cache with the supplied key.</exception>
-        public string GetString(string Key, double MaximumCallFrequency)
+        public string GetString(string Key, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheRead, MaximumCallFrequency);
             return GetString(Key); //Get the value
@@ -364,27 +365,27 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void Set(string Key, object Value, double CacheTime, double MaximumCallFrequency)
+        public void Set(string Key, object Value, float CacheTime, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheWrite, MaximumCallFrequency);
             SetCacheValue("CacheSet", Key, Value, CacheTime);
         }
 
         /// <summary>
-        /// Save a double value in the cache with the given name and time to live, restricting maximum call frequency to the range 2 to 1000 calls per second if required.
+        /// Save a float value in the cache with the given name and time to live, restricting maximum call frequency to the range 2 to 1000 calls per second if required.
         /// </summary>
         /// <param name="Key">Name of this item in the cache. The key is case sensitive.</param>
-        /// <param name="Value">Double value to be stored in the cache.</param>
+        /// <param name="Value">float value to be stored in the cache.</param>
         /// <param name="CacheTime">Time in seconds before the item will be automatically removed from the cache.</param>
         /// <param name="MaximumCallFrequency">Maximum number of set calls per second that are to be allowed for this item. A value of 0.0 will disable throttling. See <see cref="Cache.Dispose()"/> for further information.</param>
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void SetDouble(string Key, double Value, double CacheTime, double MaximumCallFrequency)
+        public void Setfloat(string Key, float Value, float CacheTime, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheWrite, MaximumCallFrequency);
-            SetCacheValue("CacheSetDouble", Key, Value, CacheTime);
+            SetCacheValue("CacheSetfloat", Key, Value, CacheTime);
         }
 
         /// <summary>
@@ -398,7 +399,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void SetInt(string Key, int Value, double CacheTime, double MaximumCallFrequency)
+        public void SetInt(string Key, int Value, float CacheTime, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheWrite, MaximumCallFrequency);
             SetCacheValue("CacheSetInt", Key, Value, CacheTime);
@@ -415,7 +416,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void SetBool(string Key, bool Value, double CacheTime, double MaximumCallFrequency)
+        public void SetBool(string Key, bool Value, float CacheTime, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheWrite, MaximumCallFrequency);
             SetCacheValue("CacheSetBool", Key, Value, CacheTime);
@@ -432,7 +433,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <exception cref="InvalidValueException">When MaximumCallFrequency is not 0.0 and is outside the range 2.0 to 1000.0.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void SetString(string Key, string Value, double CacheTime, double MaximumCallFrequency)
+        public void SetString(string Key, string Value, float CacheTime, float MaximumCallFrequency)
         {
             Throttle(Key, CacheAction.CacheWrite, MaximumCallFrequency);
             SetCacheValue("CacheSetInt", Key, Value, CacheTime);
@@ -457,15 +458,15 @@ namespace ASCOM.Utilities
         }
 
         /// <summary>
-        /// Immediatley retrieve a double value from the cache with the given name with no throttling.
+        /// Immediatley retrieve a float value from the cache with the given name with no throttling.
         /// </summary>
         /// <param name="Key">Name of this item in the cache. The key is case sensitive.</param>
-        /// <returns>The requested double value, if present in the cache, or a "NotInCacheException" if there is no item in the cache that has the supplied name.</returns>
+        /// <returns>The requested float value, if present in the cache, or a "NotInCacheException" if there is no item in the cache that has the supplied name.</returns>
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="NotInCacheException">When there is no item in the cache with the supplied key.</exception>
-        public double GetDouble(string Key)
+        public float Getfloat(string Key)
         {
-            return (double)GetCacheValue("CacheGetDouble", Key);
+            return (float)GetCacheValue("CacheGetfloat", Key);
         }
 
         /// <summary>
@@ -513,23 +514,23 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void Set(string Key, object Value, double CacheTime)
+        public void Set(string Key, object Value, float CacheTime)
         {
             SetCacheValue("CacheSet", Key, Value, CacheTime);
         }
 
         /// <summary>
-        /// Save a double value in the cache with the given name and time to live.
+        /// Save a float value in the cache with the given name and time to live.
         /// </summary>
         /// <param name="Key">Name of this item in the cache. The key is case sensitive.</param>
-        /// <param name="Value">Double value to be stored in the cache.</param>
+        /// <param name="Value">float value to be stored in the cache.</param>
         /// <param name="CacheTime">Time in seconds before the item will be automatically removed from the cache.</param>
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void SetDouble(string Key, double Value, double CacheTime)
+        public void Setfloat(string Key, float Value, float CacheTime)
         {
-            SetCacheValue("CacheSetDouble", Key, Value, CacheTime);
+            SetCacheValue("CacheSetfloat", Key, Value, CacheTime);
         }
 
         /// <summary>
@@ -541,7 +542,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void SetInt(string Key, int Value, double CacheTime)
+        public void SetInt(string Key, int Value, float CacheTime)
         {
             SetCacheValue("CacheSetInt", Key, Value, CacheTime);
         }
@@ -555,7 +556,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void SetBool(string Key, bool Value, double CacheTime)
+        public void SetBool(string Key, bool Value, float CacheTime)
         {
             SetCacheValue("CacheSetBool", Key, Value, CacheTime);
         }
@@ -569,7 +570,7 @@ namespace ASCOM.Utilities
         /// <exception cref="InvalidValueException">When Key is null or empty.</exception>
         /// <exception cref="InvalidValueException">When CacheTime is negative.</exception>
         /// <remarks>Any existing item in the cache with the same name will be overwritten.</remarks>
-        public void SetString(string Key, string Value, double CacheTime)
+        public void SetString(string Key, string Value, float CacheTime)
         {
             SetCacheValue("CacheSetInt", Key, Value, CacheTime);
         }
@@ -627,14 +628,14 @@ namespace ASCOM.Utilities
 
         }
 
-        private void SetCacheValue(string Caller, string Key, object Value, double CacheTime)
+        private void SetCacheValue(string Caller, string Key, object Value, float CacheTime)
         {
             // Validate parameters
             if (string.IsNullOrEmpty(Key)) throw new InvalidValueException("The supplied ASCOM Cache key is null or empty when adding an item to the cache.");
 
-            if (double.IsNaN(CacheTime)) throw new InvalidValueException("The supplied ASCOM Cache item lifetime is invalid: Double.NaN.");
-            if (double.IsPositiveInfinity(CacheTime)) throw new InvalidValueException("The supplied ASCOM Cache item lifetime is invalid: Double.PoitiveInfinity.");
-            if (double.IsNegativeInfinity(CacheTime)) throw new InvalidValueException("The supplied ASCOM Cache item lifetime is invalid: Double.NegativeInfinity.");
+            if (float.IsNaN(CacheTime)) throw new InvalidValueException("The supplied ASCOM Cache item lifetime is invalid: float.NaN.");
+            if (float.IsPositiveInfinity(CacheTime)) throw new InvalidValueException("The supplied ASCOM Cache item lifetime is invalid: float.PoitiveInfinity.");
+            if (float.IsNegativeInfinity(CacheTime)) throw new InvalidValueException("The supplied ASCOM Cache item lifetime is invalid: float.NegativeInfinity.");
             if (CacheTime < 0.0) throw new InvalidValueException(string.Format("The ASCOM Cache item lifetime must be zero or positive, supplied value is negative: {0}", CacheTime));
 
             DateTimeOffset nowPlusoffset = new DateTimeOffset(DateTime.Now.AddSeconds(CacheTime));
@@ -665,13 +666,13 @@ namespace ASCOM.Utilities
 
         }
 
-        private void Throttle(string Key, CacheAction action, double CallFrequency)
+        private void Throttle(string Key, CacheAction action, float CallFrequency)
         {
 
             // Validate parameters
             if (string.IsNullOrEmpty(Key)) throw new InvalidValueException("Supplied ASCOM Cache key is null or empty when adding an item.");
 
-            if (double.IsNaN(CallFrequency)) throw new InvalidValueException("Supplied ASCOM Cache maximum call frequency is invalid: Double.NaN.");
+            if (float.IsNaN(CallFrequency)) throw new InvalidValueException("Supplied ASCOM Cache maximum call frequency is invalid: float.NaN.");
             if (CallFrequency < 0.0) throw new InvalidValueException(string.Format("Supplied ASCOM Cache maximum call frequency must be positive, supplied value is negative: {0}", CallFrequency));
             if ((CallFrequency > 0.0) & (CallFrequency < ALLOWABLE_THROTTLING_RATE_MINIMUM)) throw new InvalidValueException(string.Format("Supplied ASCOM Cache call frequency {0} is below the minimum supported value {1}", CallFrequency, ALLOWABLE_THROTTLING_RATE_MINIMUM));
             if (CallFrequency > ALLOWABLE_THROTTLING_RATE_MAXIMUM) throw new InvalidValueException(string.Format("Supplied ASCOM Cache call frequency {0} is above the maximum supported value {1}", CallFrequency, ALLOWABLE_THROTTLING_RATE_MAXIMUM));
@@ -697,14 +698,14 @@ namespace ASCOM.Utilities
                     // If a "KeyNotFound exception was NOT generated above, this method has been called before and throttling is in effect, so we need to check whether sufficient time has 
                     // passed since the last call to allow this call to proceed immediately.
 
-                    double minimumTimeBeforeNextCall = 1.0 / CallFrequency;
+                    float minimumTimeBeforeNextCall = (float)(1.0 / CallFrequency);
 
                     TimeSpan timeFromLastCall = DateTime.Now.Subtract(lastAction); // Calculate how long it has been since the last Get method call and store as a TimeSpan value
                     if (timeFromLastCall.TotalSeconds <= minimumTimeBeforeNextCall) // Test whether sufficient time has passed to execute the next call immediately. If so then continue with no delay
                     {
                         // Insufficient time has passed, so calculate the delay required to ensure the minimum tiome has passed before executing the call
                         int delayMilliSeconds = Convert.ToInt32((1000.0 * minimumTimeBeforeNextCall) - timeFromLastCall.TotalMilliseconds);
-                        LogMessage("CacheGetDouble", string.Format("Throttling Get {0} call for {1} milliseconds", Key, delayMilliSeconds));
+                        LogMessage("CacheGetfloat", string.Format("Throttling Get {0} call for {1} milliseconds", Key, delayMilliSeconds));
 
                         if (delayMilliSeconds > 0)
                         {
@@ -729,11 +730,11 @@ namespace ASCOM.Utilities
                                     {
                                         Thread.Sleep(pumpMessagesInterval); // Have a short sleep
                                         Application.DoEvents(); // Keep the UI alive
-                                    } while (DateTime.Now.Subtract(startTime).TotalMilliseconds < (double)(delayMilliSeconds - pumpMessagesInterval)); // Wait until there are less than PUMP_TIME milliseonds left
+                                    } while (DateTime.Now.Subtract(startTime).TotalMilliseconds < (float)(delayMilliSeconds - pumpMessagesInterval)); // Wait until there are less than PUMP_TIME milliseonds left
                                 }
 
                                 // Now sleep the remaining few milliseconds
-                                double remainingMilliSeconds = delayMilliSeconds - DateTime.Now.Subtract(startTime).TotalMilliseconds;
+                                float remainingMilliSeconds = (float)(delayMilliSeconds - DateTime.Now.Subtract(startTime).TotalMilliseconds);
                                 if (remainingMilliSeconds > timerResolutionCurrent)
                                 {
                                     Thread.Sleep(Convert.ToInt32(remainingMilliSeconds)); // Sleep any outstanding milliseconds

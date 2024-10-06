@@ -59,17 +59,17 @@ namespace ASCOM.Simulator
         {
             try
             {
-                const string DOUBLE_SPACE = "\r\n\r\n";
+                const string float_SPACE = "\r\n\r\n";
                 const string SINGLE_SPACE = "\r\n";
 
                 #region Descriptive help text for the COOLING CONFIGURATION FORM and controls
 
                 // Set help text for the AMBIENT TEMPERATURE numeric control
                 CoolingHelp.SetHelpString(NumAmbientTemperature,
-                    "Sets the ambient environment temperature" + DOUBLE_SPACE +
-                    "This value is returned through the Camera.HeatSinkTemperature property" + DOUBLE_SPACE +
-                    "Must be less than or equal to the [SETPOINT + MAXIMUM_DELTA_T] temperature." + DOUBLE_SPACE +
-                    "Must be greater than or equal to the [SETPOINT] temperature." + DOUBLE_SPACE +
+                    "Sets the ambient environment temperature" + float_SPACE +
+                    "This value is returned through the Camera.HeatSinkTemperature property" + float_SPACE +
+                    "Must be less than or equal to the [SETPOINT + MAXIMUM_DELTA_T] temperature." + float_SPACE +
+                    "Must be greater than or equal to the [SETPOINT] temperature." + float_SPACE +
                     "NOTES:" + SINGLE_SPACE +
                     "1) The SetCCDTemperature property will throw an invalid value exception if the requested CCD temperature is above the value configured here."
                     );
@@ -77,18 +77,18 @@ namespace ASCOM.Simulator
 
                 // Set help text for the default SETPOINT temperature numeric control
                 CoolingHelp.SetHelpString(NumCCDSetPoint,
-                    "Sets the camera's default setpoint temperature." + DOUBLE_SPACE +
-                    "This value is set and returned through the Camera.SetCCDTemperature property." + DOUBLE_SPACE +
-                    "Must be less than or equal to [AMBIENT] temperature." + DOUBLE_SPACE +
+                    "Sets the camera's default setpoint temperature." + float_SPACE +
+                    "This value is set and returned through the Camera.SetCCDTemperature property." + float_SPACE +
+                    "Must be less than or equal to [AMBIENT] temperature." + float_SPACE +
                     "Must be greater than or equal to [LOWEST_SETTABLE]."
                     );
                 CoolingHelp.SetHelpString(LblCCDSetPoint, CoolingHelp.GetHelpString(NumCCDSetPoint)); // Add help text to the control label
 
                 // Set help text for the MAXIMUM TEMPERATURE DIFFERENTIAL numeric control
                 CoolingHelp.SetHelpString(NumCoolerDeltaTMax,
-                    "Sets the maximum temperature differential from ambient that the cooler can maintain." + DOUBLE_SPACE +
-                    "Must be less than or equal to the difference between the [AMBIENT] and [SETPOINT] temperatures." + DOUBLE_SPACE +
-                    string.Format("Must be greater than or equal to {0:0.0}.", DELTATMAX_MINIMUM) + DOUBLE_SPACE +
+                    "Sets the maximum temperature differential from ambient that the cooler can maintain." + float_SPACE +
+                    "Must be less than or equal to the difference between the [AMBIENT] and [SETPOINT] temperatures." + float_SPACE +
+                    string.Format("Must be greater than or equal to {0:0.0}.", DELTATMAX_MINIMUM) + float_SPACE +
                     "NOTES:" + SINGLE_SPACE +
                     "1) Over most of the cooling cycle and at the setpoint, the Camera.CoolerPower property is calculated from the CCD temperature expressed as a fraction of the cooler" + SINGLE_SPACE +
                     "   temperature range: [POWER] = [AMBIENT - CCD_TEMPERATURE] / [MAXIMUM_DELTA_T]." + SINGLE_SPACE +
@@ -98,11 +98,11 @@ namespace ASCOM.Simulator
 
                 // Set help text for the SETPOINT MINIMUM numeric control
                 CoolingHelp.SetHelpString(NumSetpointMinimum,
-                    "Sets the minimum temperature to which the cooler can be set without receiving an invalid value exception." + DOUBLE_SPACE +
-                    "When the setpoint is within the cooler's achievable temperature range, [AMBIENT] to [AMBIENT - MAXIMUM_DELTA_T], the setpoint will be achieved within the configured time." + DOUBLE_SPACE +
+                    "Sets the minimum temperature to which the cooler can be set without receiving an invalid value exception." + float_SPACE +
+                    "When the setpoint is within the cooler's achievable temperature range, [AMBIENT] to [AMBIENT - MAXIMUM_DELTA_T], the setpoint will be achieved within the configured time." + float_SPACE +
                     "If the setpoint is between [AMBIENT - MAXIMUM_DELTA_T] and the value configured here, the CCD temperature will exhibit the expected behaviour and fall to [AMBIENT - MAXIMUM_DELTA_T] but " + SINGLE_SPACE +
-                    "will not go below this value." + DOUBLE_SPACE +
-                    "Must be less than or equal to [AMBIENT - MAXIMUM_DELTA_T]." + DOUBLE_SPACE +
+                    "will not go below this value." + float_SPACE +
+                    "Must be less than or equal to [AMBIENT - MAXIMUM_DELTA_T]." + float_SPACE +
                     "NOTES:" + SINGLE_SPACE +
                     "1) The SetCCDTemperature property will throw an invalid value exception if the requested CCD temperature is below the value configured here."
                     );
@@ -110,9 +110,9 @@ namespace ASCOM.Simulator
 
                 // Set help text for the TIME TO GET TO SETPOINT numeric control
                 CoolingHelp.SetHelpString(NumTimeToSetPoint,
-                    "Sets the time taken to arrive at the maximum cooling temperature when cooling from ambient." + DOUBLE_SPACE +
-                    "Temperature changes of less than the maximum temperature difference will complete in less than the specified time." + DOUBLE_SPACE +
-                    string.Format("Must be greater than or equal to {0:0.0}.", TIMETOSETPOINT_MINIMUM) + DOUBLE_SPACE +
+                    "Sets the time taken to arrive at the maximum cooling temperature when cooling from ambient." + float_SPACE +
+                    "Temperature changes of less than the maximum temperature difference will complete in less than the specified time." + float_SPACE +
+                    string.Format("Must be greater than or equal to {0:0.0}.", TIMETOSETPOINT_MINIMUM) + float_SPACE +
                     "NOTES:" + SINGLE_SPACE +
                     "1) Not supported in \"Always at setpoint\" mode." + SINGLE_SPACE +
                     "2) When using the \"Well behaved\" mode and cooling over the full default temperature range of 40C, the CCD will be:" + SINGLE_SPACE +
@@ -127,12 +127,12 @@ namespace ASCOM.Simulator
 
                 // Set help text for the OVERSHOOT numeric control
                 CoolingHelp.SetHelpString(NumOvershoot,
-                    "Sets the amount of temperature overshoot that occurs when the CCD set point temperature is changed." + DOUBLE_SPACE +
-                    "When overshoot is 0.0, the reported CCD temperature will follow an exponential, Newton's cooling equation, path to the [SETPOINT] temperature." + DOUBLE_SPACE +
+                    "Sets the amount of temperature overshoot that occurs when the CCD set point temperature is changed." + float_SPACE +
+                    "When overshoot is 0.0, the reported CCD temperature will follow an exponential, Newton's cooling equation, path to the [SETPOINT] temperature." + float_SPACE +
                     "In \"Single overshoot\" mode the reported CCD temperature will overshoot by moving smoothly through the setpoint and, half way through the cooling cycle, arriving at the" + SINGLE_SPACE +
-                    "[SETPOINT - OVERSHOOT] temperature. It will then undershoot back through the setpoint before joining the Newton's curve and following this to the [SETPOINT] temperature." + DOUBLE_SPACE +
-                    "In \"Under damped\" mode , the reported CCD temperature will show a sine wave oscillation whose maximum amplitude is set here and which decreases linearly over the cooling cycle" + DOUBLE_SPACE +
-                    string.Format("Must be greater than or equal to {0:0.0}.", OVERSHOOT_MINIMUM) + DOUBLE_SPACE +
+                    "[SETPOINT - OVERSHOOT] temperature. It will then undershoot back through the setpoint before joining the Newton's curve and following this to the [SETPOINT] temperature." + float_SPACE +
+                    "In \"Under damped\" mode , the reported CCD temperature will show a sine wave oscillation whose maximum amplitude is set here and which decreases linearly over the cooling cycle" + float_SPACE +
+                    string.Format("Must be greater than or equal to {0:0.0}.", OVERSHOOT_MINIMUM) + float_SPACE +
                     "NOTES:" + SINGLE_SPACE +
                     "1) Not supported in \"Well behaved\", \"Always at setpoint\" and \"Never gets to setpoint\" modes." + SINGLE_SPACE +
                     "2) When warming, the CCD temperature will show the converse behaviour to that shown when cooling." + SINGLE_SPACE +
@@ -144,11 +144,11 @@ namespace ASCOM.Simulator
 
                 // Set help text for the UNDERDAMPED CYCLES numeric control
                 CoolingHelp.SetHelpString(NumUnderDampedCycles,
-                    "Sets the number of oscillatory half cycles that will be applied to the cooling curve." + DOUBLE_SPACE +
+                    "Sets the number of oscillatory half cycles that will be applied to the cooling curve." + float_SPACE +
                     "In \"Under damped\" mode, the CCD temperature will display a sine wave temperature variation, with a maximum amplitude of \"Cooler overshoot\" degrees, " + SINGLE_SPACE +
-                    "from the Newton's cooling curve temperature. The number of half cycles (Pi radians) set here will be fitted into the configured time to setpoint." + DOUBLE_SPACE +
-                    "The sine wave amplitude reduces linearly during the cooling cycle resulting in a curve that increasing approximates Newton's curve as the cooling cycle progresses." + DOUBLE_SPACE +
-                    "Must be greater than or equal to 0." + DOUBLE_SPACE +
+                    "from the Newton's cooling curve temperature. The number of half cycles (Pi radians) set here will be fitted into the configured time to setpoint." + float_SPACE +
+                    "The sine wave amplitude reduces linearly during the cooling cycle resulting in a curve that increasing approximates Newton's curve as the cooling cycle progresses." + float_SPACE +
+                    "Must be greater than or equal to 0." + float_SPACE +
                     "NOTES:" + SINGLE_SPACE +
                     "1) Only supported in \"Under damped mode\" ." + SINGLE_SPACE +
                     "2) The maximum overshoot will be less that the value configured in \"Cooler overshoot\"." + SINGLE_SPACE +
@@ -158,24 +158,24 @@ namespace ASCOM.Simulator
 
                 // Set help text for the RANDOM FLUCTUATIONS numeric control
                 CoolingHelp.SetHelpString(NumFluctuations,
-                    "Sets the size of random temperature fluctuations added to the CCD and heat sink temperatures." + DOUBLE_SPACE +
-                    "The returned CCD and heat sink temperatures will exhibit random fluctuations of up to ± this value. Set to 0.00 for fully reproducible behaviour," + DOUBLE_SPACE +
+                    "Sets the size of random temperature fluctuations added to the CCD and heat sink temperatures." + float_SPACE +
+                    "The returned CCD and heat sink temperatures will exhibit random fluctuations of up to ± this value. Set to 0.00 for fully reproducible behaviour," + float_SPACE +
                     string.Format("Must be greater than or equal to {0:0.0}.", FLUCTUATIONS_MINIMUM)
                     );
                 CoolingHelp.SetHelpString(LblFluctuations, CoolingHelp.GetHelpString(NumFluctuations)); // Add help text to the control label
 
                 // Set help text for the COOLER MODES drop-down
                 CoolingHelp.SetHelpString(cmbCoolerModes,
-                    "Selects the cooler's overall behavioural characteristics." + DOUBLE_SPACE +
+                    "Selects the cooler's overall behavioural characteristics." + float_SPACE +
                     "The \"Well behaved\" mode uses Newton's cooling equation to arrive smoothly at the setpoint in the configured time when cooling from ambient to the maximum cooling temperature." + SINGLE_SPACE +
-                    "If the starting temperature is lower than ambient, the cooler will take less time to arrive at the setpoint. This is the default behaviour and is suitable for most purposes." + DOUBLE_SPACE +
+                    "If the starting temperature is lower than ambient, the cooler will take less time to arrive at the setpoint. This is the default behaviour and is suitable for most purposes." + float_SPACE +
                     "The \"Single overshoot\" mode uses Newton's cooling equation as its majority component but also includes an \"overshoot\" component that gradually increases through the first 46% of the cooling cycle" + SINGLE_SPACE +
                     "causing the reported CCD temperature to pass through the setpoint and eventually exceed it by the configured amount. The overshoot contribution then reduces to zero over the next 20% of the cooling cycle" + SINGLE_SPACE +
-                    "leaving the remaining 30% of the cycle to follow Newton's curve to the setpoint" + DOUBLE_SPACE +
+                    "leaving the remaining 30% of the cycle to follow Newton's curve to the setpoint" + float_SPACE +
                     "The \"Under damped\" mode uses Newton's cooling equation as its majority component but also includes an oscillatory \"overshoot\" component that adds a sine wave contribution whose amplitude linearly" + SINGLE_SPACE +
-                    "decreases over the cooling cycle. The amplitude of the sine wave and the number of sine wave half cycles can be configured to create a wide variety of behavioural characteristics." + DOUBLE_SPACE +
-                    "The \"Always at setpoint\" mode goes immediately to the setpoint when the cooler is turned on or the setpoint is changed." + DOUBLE_SPACE +
-                    string.Format("The \"Never gets to setpoint\" mode uses Newton's cooling equation but under reports the CCD temperature by {0:P0} of the difference between ambient and the setpoint.", Camera.COOLER_NEVER_GETS_TO_SETPOINT_REDUCTION_FACTOR) + DOUBLE_SPACE +
+                    "decreases over the cooling cycle. The amplitude of the sine wave and the number of sine wave half cycles can be configured to create a wide variety of behavioural characteristics." + float_SPACE +
+                    "The \"Always at setpoint\" mode goes immediately to the setpoint when the cooler is turned on or the setpoint is changed." + float_SPACE +
+                    string.Format("The \"Never gets to setpoint\" mode uses Newton's cooling equation but under reports the CCD temperature by {0:P0} of the difference between ambient and the setpoint.", Camera.COOLER_NEVER_GETS_TO_SETPOINT_REDUCTION_FACTOR) + float_SPACE +
                     "NOTES:" + SINGLE_SPACE +
                     "1) Setting the temperature below the maximum achievable temperature but above the lowest settable temperature will result in the CCD temperature stabilising at the maximum achievable temperature." + SINGLE_SPACE +
                     "2) Attempting to set the CCD temperature below the lowest settable temperature will result in an InvalidValueException."
@@ -183,49 +183,49 @@ namespace ASCOM.Simulator
 
                 // Set help text for the RESET TO AMBIENT checkbox
                 CoolingHelp.SetHelpString(ChkResetToAmbientOnConnect,
-                    "Sets whether or not to reset the CCD temperature to ambient when the cooler is enabled or the setpoint is changed." + DOUBLE_SPACE +
+                    "Sets whether or not to reset the CCD temperature to ambient when the cooler is enabled or the setpoint is changed." + float_SPACE +
                     "The cooler will normally warm up or cool down from its current temperature, ambient on connection, but subsequently any temperature within the cooler's range, depending on previous cooling history." + SINGLE_SPACE +
-                    "In addition, the camera has a \"warm up\" characteristic when cooling is turned off, which makes the cooler warm from its current temperature to ambient in the specified \"cool down\" time." + DOUBLE_SPACE +
-                    "If this checkbox is unchecked the CCD temperature will behave as described above." + DOUBLE_SPACE +
+                    "In addition, the camera has a \"warm up\" characteristic when cooling is turned off, which makes the cooler warm from its current temperature to ambient in the specified \"cool down\" time." + float_SPACE +
+                    "If this checkbox is unchecked the CCD temperature will behave as described above." + float_SPACE +
                     "If this checkbox is checked, the CCD temperature will immediately reset to ambient when cooling is turned off; it will also reset to ambient when the setpoint changes, before cooling to the new setpoint." + SINGLE_SPACE +
                     "(This is a driver development aid to ensure that a reproducible, full, cooling curve is delivered every time the cooler is turned on or the setpoint changes.)"
                     );
 
                 // Set help text for the COOLER ENABLED AT POWER UP checkbox
                 CoolingHelp.SetHelpString(ChkPowerUpState,
-                    "Sets whether the cooler is enabled when the camera is initially connected." + DOUBLE_SPACE +
-                    "If checked, the camera will start the cooler when the Connected property is set to True and will immediately commence a cooling cycle to the configured setpoint. The CoolerOn property will immediately return True." + DOUBLE_SPACE +
+                    "Sets whether the cooler is enabled when the camera is initially connected." + float_SPACE +
+                    "If checked, the camera will start the cooler when the Connected property is set to True and will immediately commence a cooling cycle to the configured setpoint. The CoolerOn property will immediately return True." + float_SPACE +
                     "If unchecked, the cooler will not run until the application sets the CoolerOn property to True."
                     );
 
                 // Set help text for the OK button
                 CoolingHelp.SetHelpString(BtnOK,
-                    "Closes the form and saves any changes." + DOUBLE_SPACE +
+                    "Closes the form and saves any changes." + float_SPACE +
                     "The new configuration will be saved to the ASCOM Profile store."
                     );
 
                 // Set help text for the Cancel button
                 CoolingHelp.SetHelpString(BtnCancel,
-                    "Closes the form without saving any changes." + DOUBLE_SPACE +
+                    "Closes the form without saving any changes." + float_SPACE +
                     "Original configuration values will be retained and all changes discarded."
                     );
 
                 CoolingHelp.SetHelpString(ChkFitCurveToScreen,
-                    "Graph temperature range selection." + DOUBLE_SPACE +
+                    "Graph temperature range selection." + float_SPACE +
                     "Toggles between a graph view focused on the cooling curve and a view covering the full ambient to minimum setpoint temperature range."
                     );
 
                 // This empty picture box is present to provide a control that covers the whole form area. This approach is used because the HelpProvider doesn't work when clicking the form itself.
                 CoolingHelp.SetHelpString(BackgroundPictureBox,
-                    "Cooler Configuration Form - Sets the cooler's control and behavioural characteristics." + DOUBLE_SPACE +
+                    "Cooler Configuration Form - Sets the cooler's control and behavioural characteristics." + float_SPACE +
                     "Configures the Cooler's default control values including ambient temperature, setpoint, time to setpoint and maximum cooling range together with its overall cooling behaviour."
                     );
                 CoolingHelp.SetHelpString(LblHelpText, CoolingHelp.GetHelpString(BackgroundPictureBox)); // Add help text to the help instructions label
                 CoolingHelp.SetHelpString(LblGraph, CoolingHelp.GetHelpString(BackgroundPictureBox)); // Add help text to the graph descriptive label
 
                 CoolingHelp.SetHelpString(CoolingChart,
-                    "Cooling curve graph based on set configuration." + DOUBLE_SPACE +
-                    "The graph shows how the CCD temperature varies over time in response to the cooler being turned on or the CCD set temperature being changed. " + DOUBLE_SPACE +
+                    "Cooling curve graph based on set configuration." + float_SPACE +
+                    "The graph shows how the CCD temperature varies over time in response to the cooler being turned on or the CCD set temperature being changed. " + float_SPACE +
                     "It also shows the temperature range to which the CCD can be set, but that the cooler can never deliver, as well as the temperature below which InvalidValueExceptions will be thrown when setting the CCD temperature."
                     );
 
@@ -559,15 +559,15 @@ namespace ASCOM.Simulator
             Log.LogMessage("CoolerForm", "OK - Persisting variables to the camera object.");
 
             // Save the new cooler configuration to internal variables
-            camera.heatSinkTemperature = (double)NumAmbientTemperature.Value;
-            camera.setCcdTemperature = (double)NumCCDSetPoint.Value;
-            camera.coolerDeltaTMax = (double)NumCoolerDeltaTMax.Value;
-            camera.coolerTimeToSetPoint = (double)NumTimeToSetPoint.Value;
+            camera.heatSinkTemperature = (float)NumAmbientTemperature.Value;
+            camera.setCcdTemperature = (float)NumCCDSetPoint.Value;
+            camera.coolerDeltaTMax = (float)NumCoolerDeltaTMax.Value;
+            camera.coolerTimeToSetPoint = (float)NumTimeToSetPoint.Value;
             camera.coolerResetToAmbient = ChkResetToAmbientOnConnect.Checked;
-            camera.coolerFluctuation = (double)NumFluctuations.Value;
-            camera.coolerOvershoot = (double)NumOvershoot.Value;
-            camera.coolerUnderDampedCycles = (double)NumUnderDampedCycles.Value;
-            camera.coolerSetPointMinimum = (double)NumSetpointMinimum.Value;
+            camera.coolerFluctuation = (float)NumFluctuations.Value;
+            camera.coolerOvershoot = (float)NumOvershoot.Value;
+            camera.coolerUnderDampedCycles = (float)NumUnderDampedCycles.Value;
+            camera.coolerSetPointMinimum = (float)NumSetpointMinimum.Value;
             camera.coolerPowerUpState = ChkPowerUpState.Checked;
             camera.coolerGraphRange = ChkFitCurveToScreen.Checked;
 
@@ -609,20 +609,20 @@ namespace ASCOM.Simulator
         {
             const string COOLING_CURVE = "CoolingCurve";
             const int NUMBER_OF_CURVE_POINTS = 201; // Number of data points displayed in the cooling curve. Larger numbers give higher resolution but require more processing resource and execution time. Array indexes are [0] to [NUMBER_OF_CURVE_POINTS - 1]
-            const double ROUNDING_FACTOR = 10.0; // Round axis end values to the nearest multiple of this value when in "Full Range" graphing mode
-            const double SETPOINT_STRIPLINE_HALF_WIDTH = 0.5; // Half the width of the strip surrounding the setpoint showing when the cooling curve is getting close to the setpoint (degrees C)
+            const float ROUNDING_FACTOR = 10.0; // Round axis end values to the nearest multiple of this value when in "Full Range" graphing mode
+            const float SETPOINT_STRIPLINE_HALF_WIDTH = 0.5; // Half the width of the strip surrounding the setpoint showing when the cooling curve is getting close to the setpoint (degrees C)
 
             try
             {
                 Log.LogMessage("DrawCoolingCurve", "Number of curve points: {0}", NUMBER_OF_CURVE_POINTS);
 
                 // Define arrays to hold the cooler graph X and Y axis data points
-                double[] coolerTemperature = new double[NUMBER_OF_CURVE_POINTS]; // Elements will be numbered [0] to [NUMBER_OF_CURVE_POINTS - 1]
-                double[] CoolerTime = new double[NUMBER_OF_CURVE_POINTS];
+                float[] coolerTemperature = new float[NUMBER_OF_CURVE_POINTS]; // Elements will be numbered [0] to [NUMBER_OF_CURVE_POINTS - 1]
+                float[] CoolerTime = new float[NUMBER_OF_CURVE_POINTS];
 
-                double coolerConstant = camera.CalculateCoolerConstant((double)NumTimeToSetPoint.Value, (double)NumCoolerDeltaTMax.Value); // Calculate the cooling constant for the current time to setpoint
-                double temperatureRange = Math.Min((double)NumAmbientTemperature.Value - (double)NumCCDSetPoint.Value, (double)NumCoolerDeltaTMax.Value); // Ensure that the temperature range can't exceed the maximum delta T
-                double overallTimeToSetpoint = Math.Max(0.1, -Math.Log(Camera.COOLER_SETPOINT_REACHED_OFFSET / temperatureRange) / coolerConstant); // Calculate the time required to reach the setpoint from the starting CCD temperature, ensuring that it is always at least 0.1 so that it appears on the graph
+                float coolerConstant = camera.CalculateCoolerConstant((float)NumTimeToSetPoint.Value, (float)NumCoolerDeltaTMax.Value); // Calculate the cooling constant for the current time to setpoint
+                float temperatureRange = Math.Min((float)NumAmbientTemperature.Value - (float)NumCCDSetPoint.Value, (float)NumCoolerDeltaTMax.Value); // Ensure that the temperature range can't exceed the maximum delta T
+                float overallTimeToSetpoint = Math.Max(0.1, -Math.Log(Camera.COOLER_SETPOINT_REACHED_OFFSET / temperatureRange) / coolerConstant); // Calculate the time required to reach the setpoint from the starting CCD temperature, ensuring that it is always at least 0.1 so that it appears on the graph
 
                 Log.LogMessage("DrawCoolingCurve", "Overall time to setpoint: {0:0.0}, Ambient temperature: {1:0.0}, CCD setpoint: {2:0.0}, Cooler constant: {3}", overallTimeToSetpoint, NumAmbientTemperature.Value, NumCCDSetPoint.Value, camera.coolerConstant);
 
@@ -637,27 +637,27 @@ namespace ASCOM.Simulator
                 // Configure the chart axes - X = Cooling time - Y = Temperature (C)
                 // Set minimum and maximum axis values for the time (X) axis
                 CoolingChart.ChartAreas[0].AxisX.Minimum = 0.0;
-                CoolingChart.ChartAreas[0].AxisX.Maximum = (double)NumTimeToSetPoint.Value;
+                CoolingChart.ChartAreas[0].AxisX.Maximum = (float)NumTimeToSetPoint.Value;
 
                 // Set minimum and maximum axis values for the temperature (Y) axis depending on whether we are focusing on just the cooling curve itself or the whole temperature range
                 if (ChkFitCurveToScreen.Checked) // We are focused on the cooling curve so use default scaling based on the data points added below
                 {
-                    CoolingChart.ChartAreas[0].AxisY.Maximum = double.NaN; // A value of double.NaN indicates that we should use default scaling
-                    CoolingChart.ChartAreas[0].AxisY.Minimum = double.NaN;
+                    CoolingChart.ChartAreas[0].AxisY.Maximum = float.NaN; // A value of float.NaN indicates that we should use default scaling
+                    CoolingChart.ChartAreas[0].AxisY.Minimum = float.NaN;
 
                     // Fix the axis minimum and maximum for specific cooler modes
                     switch (cmbCoolerModes.SelectedItem.ToString())
                     {
                         case Camera.COOLERMODE_ALWAYS_AT_SETPOINT:
-                            double fitToScreenMinimum = RoundDown(Math.Max((double)NumCCDSetPoint.Value - 0.01, (double)NumSetpointMinimum.Value), ROUNDING_FACTOR);
-                            double fitToScreenMaximum = RoundUp((double)NumCCDSetPoint.Value + 0.1, ROUNDING_FACTOR);
+                            float fitToScreenMinimum = RoundDown(Math.Max((float)NumCCDSetPoint.Value - 0.01, (float)NumSetpointMinimum.Value), ROUNDING_FACTOR);
+                            float fitToScreenMaximum = RoundUp((float)NumCCDSetPoint.Value + 0.1, ROUNDING_FACTOR);
                             CoolingChart.ChartAreas[0].AxisY.Minimum = fitToScreenMinimum;
                             CoolingChart.ChartAreas[0].AxisY.Maximum = fitToScreenMaximum;
                             Log.LogMessage("DrawCoolingCurve", "Mode: Always at setpoint - Fit to screen axis Y minimum set to: {0:0.0}, Y maximum set to {1:0.0}", fitToScreenMinimum, fitToScreenMaximum);
                             break;
 
                         case Camera.COOLERMODE_NEVER_GETS_TO_SETPOINT:
-                            fitToScreenMinimum = RoundDown(Math.Max((double)NumCCDSetPoint.Value - 0.01, (double)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value)), ROUNDING_FACTOR);
+                            fitToScreenMinimum = RoundDown(Math.Max((float)NumCCDSetPoint.Value - 0.01, (float)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value)), ROUNDING_FACTOR);
                             CoolingChart.ChartAreas[0].AxisY.Minimum = fitToScreenMinimum;
                             Log.LogMessage("DrawCoolingCurve", "Mode: Never gets to setpoint - Fit to screen axis Y minimum set to: {0:0.0}", fitToScreenMinimum);
                             break;
@@ -665,10 +665,10 @@ namespace ASCOM.Simulator
                 }
                 else // We are displaying the full temperature range down to the lowest settable temperature
                 {
-                    double minimumMultiple = RoundDown((double)NumSetpointMinimum.Value, ROUNDING_FACTOR); // Calculate and set a round number for the low end of the temperature axis
+                    float minimumMultiple = RoundDown((float)NumSetpointMinimum.Value, ROUNDING_FACTOR); // Calculate and set a round number for the low end of the temperature axis
                     CoolingChart.ChartAreas[0].AxisY.Minimum = minimumMultiple;
 
-                    double maximumMultiple = RoundUp((double)NumAmbientTemperature.Value, ROUNDING_FACTOR);  // Calculate and set a round number for the high end of the temperature axis
+                    float maximumMultiple = RoundUp((float)NumAmbientTemperature.Value, ROUNDING_FACTOR);  // Calculate and set a round number for the high end of the temperature axis
                     CoolingChart.ChartAreas[0].AxisY.Maximum = maximumMultiple;
                 }
 
@@ -691,22 +691,22 @@ namespace ASCOM.Simulator
                 closeToSetpointStripline.Interval = 0; // Indicate that it does not repeat
 
                 // Set the default strip line start and width - Starting half a strip width below the set point and extending half a strip width above the set point giving an overall width of two times the strip half width
-                double stripLineStart = (double)NumCCDSetPoint.Value - SETPOINT_STRIPLINE_HALF_WIDTH;
-                double stripLineWidth = SETPOINT_STRIPLINE_HALF_WIDTH * 2.0;
+                float stripLineStart = (float)NumCCDSetPoint.Value - SETPOINT_STRIPLINE_HALF_WIDTH;
+                float stripLineWidth = SETPOINT_STRIPLINE_HALF_WIDTH * 2.0;
                 Log.LogMessage("DrawCoolingCurve", "Default strip line start: {0}, Default strip line width: {1}", stripLineStart, stripLineWidth);
 
                 // Handle edge case: When the strip approaches the lowest achievable temperature
-                if (stripLineStart < (double)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value)) // Part of the strip line will be below the lowest achievable temperature so don't draw this part
+                if (stripLineStart < (float)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value)) // Part of the strip line will be below the lowest achievable temperature so don't draw this part
                 {
-                    stripLineWidth = Math.Max(0.0, (double)(NumCCDSetPoint.Value - NumAmbientTemperature.Value + NumCoolerDeltaTMax.Value) + SETPOINT_STRIPLINE_HALF_WIDTH); // Calculate the new strip line width, ensuring that it can never be negative
-                    stripLineStart = (double)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value); // Set the start of the strip line to the lowest achievable temperature
+                    stripLineWidth = Math.Max(0.0, (float)(NumCCDSetPoint.Value - NumAmbientTemperature.Value + NumCoolerDeltaTMax.Value) + SETPOINT_STRIPLINE_HALF_WIDTH); // Calculate the new strip line width, ensuring that it can never be negative
+                    stripLineStart = (float)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value); // Set the start of the strip line to the lowest achievable temperature
                     Log.LogMessage("DrawCoolingCurve", "Strip line falls below bottom of chart - Strip line start: {0}, Strip line width: {1}", stripLineStart, stripLineWidth);
                 }
 
                 // Handle edge case: When the strip approaches ambient temperature
-                if (stripLineStart + stripLineWidth > (double)(NumAmbientTemperature.Value)) // Part of the strip line will be above ambient temperature
+                if (stripLineStart + stripLineWidth > (float)(NumAmbientTemperature.Value)) // Part of the strip line will be above ambient temperature
                 {
-                    stripLineWidth = (double)(NumAmbientTemperature.Value - NumCCDSetPoint.Value) + SETPOINT_STRIPLINE_HALF_WIDTH; // Calculate the new strip line width. The strip line start default calculated above will be correct in this case
+                    stripLineWidth = (float)(NumAmbientTemperature.Value - NumCCDSetPoint.Value) + SETPOINT_STRIPLINE_HALF_WIDTH; // Calculate the new strip line width. The strip line start default calculated above will be correct in this case
                     Log.LogMessage("DrawCoolingCurve", "Strip line falls above top of chart - Strip line start: {0}, Strip line width: {1}", stripLineStart, stripLineWidth);
                 }
 
@@ -721,8 +721,8 @@ namespace ASCOM.Simulator
                 // Create a strip line to mark the temperature range that is settable but not achievable
                 StripLine unachievableTemperatureRangeStripline = new StripLine(); // Create the strip line instance
                 unachievableTemperatureRangeStripline.Interval = 0; // Indicate that it does not repeat
-                unachievableTemperatureRangeStripline.IntervalOffset = (double)NumSetpointMinimum.Value; // Set the start temperature of the strip line
-                unachievableTemperatureRangeStripline.StripWidth = Math.Max(0.0, (double)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value - NumSetpointMinimum.Value)); // Calculate the new strip line width, ensuring that it can never be negative
+                unachievableTemperatureRangeStripline.IntervalOffset = (float)NumSetpointMinimum.Value; // Set the start temperature of the strip line
+                unachievableTemperatureRangeStripline.StripWidth = Math.Max(0.0, (float)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value - NumSetpointMinimum.Value)); // Calculate the new strip line width, ensuring that it can never be negative
                 unachievableTemperatureRangeStripline.BackColor = Color.MistyRose;
                 unachievableTemperatureRangeStripline.ForeColor = Color.MistyRose;
                 unachievableTemperatureRangeStripline.ToolTip = string.Format("The CCD temperature can be set here ({0:0.0}C - {1:0.0}C) but the camera will never reach this temperature", unachievableTemperatureRangeStripline.IntervalOffset, unachievableTemperatureRangeStripline.IntervalOffset + unachievableTemperatureRangeStripline.StripWidth);
@@ -733,7 +733,7 @@ namespace ASCOM.Simulator
                 ann.AxisX = CoolingChart.ChartAreas[0].AxisX;
                 ann.AxisY = CoolingChart.ChartAreas[0].AxisY;
                 ann.IsSizeAlwaysRelative = false;
-                ann.AnchorY = (double)NumCCDSetPoint.Value;
+                ann.AnchorY = (float)NumCCDSetPoint.Value;
                 ann.IsInfinitive = true;
                 ann.ClipToChartArea = CoolingChart.ChartAreas[0].Name;
                 ann.LineColor = Color.Red;
@@ -748,7 +748,7 @@ namespace ASCOM.Simulator
                 annMax.AxisX = CoolingChart.ChartAreas[0].AxisX;
                 annMax.AxisY = CoolingChart.ChartAreas[0].AxisY;
                 annMax.IsSizeAlwaysRelative = false;
-                annMax.AnchorY = (double)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value);
+                annMax.AnchorY = (float)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value);
                 annMax.IsInfinitive = true;
                 annMax.ClipToChartArea = CoolingChart.ChartAreas[0].Name;
                 annMax.LineColor = Color.Orange;
@@ -763,7 +763,7 @@ namespace ASCOM.Simulator
                 annLowest.AxisX = CoolingChart.ChartAreas[0].AxisX;
                 annLowest.AxisY = CoolingChart.ChartAreas[0].AxisY;
                 annLowest.IsSizeAlwaysRelative = false;
-                annLowest.AnchorY = (double)(NumSetpointMinimum.Value);
+                annLowest.AnchorY = (float)(NumSetpointMinimum.Value);
                 annLowest.IsInfinitive = true;
                 annLowest.ClipToChartArea = CoolingChart.ChartAreas[0].Name;
                 annLowest.LineColor = Color.Red;
@@ -792,9 +792,9 @@ namespace ASCOM.Simulator
                 // Calculate the data points and add them to the data arrays
                 for (int i = 0; i < NUMBER_OF_CURVE_POINTS; i++)
                 {
-                    double timeFraction = (double)i / ((double)NUMBER_OF_CURVE_POINTS - 1.0);
+                    float timeFraction = (float)i / ((float)NUMBER_OF_CURVE_POINTS - 1.0);
                     CoolerTime[i] = overallTimeToSetpoint * timeFraction;
-                    camera.CalculateCoolerTemperature(timeFraction, overallTimeToSetpoint, (double)NumAmbientTemperature.Value, Math.Max((double)NumCCDSetPoint.Value, (double)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value)), (double)NumUnderDampedCycles.Value, (double)NumOvershoot.Value, (double)NumAmbientTemperature.Value, (double)NumCoolerDeltaTMax.Value, coolerConstant, cmbCoolerModes.SelectedItem.ToString());
+                    camera.CalculateCoolerTemperature(timeFraction, overallTimeToSetpoint, (float)NumAmbientTemperature.Value, Math.Max((float)NumCCDSetPoint.Value, (float)(NumAmbientTemperature.Value - NumCoolerDeltaTMax.Value)), (float)NumUnderDampedCycles.Value, (float)NumOvershoot.Value, (float)NumAmbientTemperature.Value, (float)NumCoolerDeltaTMax.Value, coolerConstant, cmbCoolerModes.SelectedItem.ToString());
                     coolerTemperature[i] = camera.ccdTemperature;
                     Log.LogMessage("DrawCoolingCurve", "Adding point {0} - Time fraction: {1:0.000}, Cooler time: {2:0.000}, CCD Temperature: {3:0.000}", i, timeFraction, CoolerTime[i], coolerTemperature[i]);
                 }
@@ -816,7 +816,7 @@ namespace ASCOM.Simulator
         /// <param name="Value"></param>
         /// <param name="RoundingFactor"></param>
         /// <returns></returns>
-        double RoundDown(double Value, double RoundingFactor)
+        float RoundDown(float Value, float RoundingFactor)
         {
             return Math.Floor(Value / RoundingFactor) * RoundingFactor;
         }
@@ -827,7 +827,7 @@ namespace ASCOM.Simulator
         /// <param name="Value"></param>
         /// <param name="RoundingFactor"></param>
         /// <returns></returns>
-        double RoundUp(double Value, double RoundingFactor)
+        float RoundUp(float Value, float RoundingFactor)
         {
             return Math.Ceiling(Value / RoundingFactor) * RoundingFactor;
         }

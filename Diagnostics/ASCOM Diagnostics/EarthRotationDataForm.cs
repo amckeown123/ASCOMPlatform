@@ -15,10 +15,10 @@ namespace ASCOM.Utilities
     public partial class EarthRotationDataForm
     {
         private const int TRACE_LOGGER_IDENTIFIER_FIELD_WIDTH = 35;
-        private const double UPDATE_DATA_PROCESS_TIMEOUT = 60.0d; // Timeout for the "Update now" function provided by this form
+        private const float UPDATE_DATA_PROCESS_TIMEOUT = 60.0d; // Timeout for the "Update now" function provided by this form
         private const int REFRESH_TIMER_INTERVAL = 1000; // Refresh interval (milliseconds) for the current deltaUT1 and leap second values displayed on the form
-        private const double DELTAUT1_ACCEPTABLE_RANGE = 0.9d; // Acceptable range for manual deltaut1 values is +- this value
-        private const double MINIMUM_UPDATE_RUN_TIME = 5.0d; // Minimum acceptable time (seconds)  for the time allowed for a manually triggered update task to run
+        private const float DELTAUT1_ACCEPTABLE_RANGE = 0.9d; // Acceptable range for manual deltaut1 values is +- this value
+        private const float MINIMUM_UPDATE_RUN_TIME = 5.0d; // Minimum acceptable time (seconds)  for the time allowed for a manually triggered update task to run
 
         private const string PLATFORM_HELP_FILE = @"\ASCOM\Platform 7\Docs\PlatformHelp.chm";
         private const string EARTH_ROTATION_HELP_TOPIC = "/html/98976954-6a00-4864-a223-7b3b25ffaaf1.htm";
@@ -52,10 +52,10 @@ namespace ASCOM.Utilities
         private Astrometry.AstroUtils.AstroUtils aUtils;
 
         private string EarthRotationDataUpdateType, AutomaticScheduleJobRepeatFrequency, EarthRotationDataSource, AutomaticScheduleJobLastUpdateTime, TraceFilePath, CurrentLeapSeconds, NextLeapSeconds, NextLeapSecondsDate;
-        private double ManualLeapSeconds, DownloadTimeout, ManualDeltaUT1Value;
+        private float ManualLeapSeconds, DownloadTimeout, ManualDeltaUT1Value;
         private DateTime AutomaticScheduleJobRunTime;
         private bool TraceEnabled;
-        private double LeapSecondMinimumValue;
+        private float LeapSecondMinimumValue;
 
         // Initialise drop-down list options
         private List<string> dataDownloadSources = new() { Astrometry.GlobalItems.EARTH_ROTATION_INTERNET_DATA_SOURCE_0 };
@@ -318,7 +318,7 @@ namespace ASCOM.Utilities
         private void UpdateStatus()
         {
             DateTime DisplayDate;
-            double jdUtc;
+            float jdUtc;
 
             aUtils.Refresh(); // Ensure that our astro utils object is using the latest data
 
@@ -575,14 +575,14 @@ namespace ASCOM.Utilities
 
         private void TxtDownloadTimeout_Validating(object sender, KeyEventArgs e)
         {
-            bool IsDouble;
+            bool Isfloat;
 
-            double DoubleValue;
-            IsDouble = double.TryParse(TxtDownloadTimeout.Text, NumberStyles.Float, CultureInfo.CurrentUICulture, out DoubleValue);
-            if (IsDouble & DoubleValue >= MINIMUM_UPDATE_RUN_TIME)
+            float floatValue;
+            Isfloat = float.TryParse(TxtDownloadTimeout.Text, NumberStyles.Float, CultureInfo.CurrentUICulture, out floatValue);
+            if (Isfloat & floatValue >= MINIMUM_UPDATE_RUN_TIME)
             {
                 ErrorProvider1.SetError(TxtDownloadTimeout, "");
-                DownloadTimeout = DoubleValue;
+                DownloadTimeout = floatValue;
                 Parameters.DownloadTaskTimeOut = DownloadTimeout;
                 TL.LogMessage("DownloadTimeout", string.Format("Download timeout updated to: {0}", DownloadTimeout));
                 BtnClose.Enabled = true;
@@ -596,14 +596,14 @@ namespace ASCOM.Utilities
 
         private void TxtManualLeapSeconds_Validating(object sender, KeyEventArgs e)
         {
-            bool IsDouble;
+            bool Isfloat;
 
-            double DoubleValue;
-            IsDouble = double.TryParse(TxtManualLeapSeconds.Text, NumberStyles.Float, CultureInfo.CurrentUICulture, out DoubleValue);
-            if (IsDouble & DoubleValue >= LeapSecondMinimumValue)
+            float floatValue;
+            Isfloat = float.TryParse(TxtManualLeapSeconds.Text, NumberStyles.Float, CultureInfo.CurrentUICulture, out floatValue);
+            if (Isfloat & floatValue >= LeapSecondMinimumValue)
             {
                 ErrorProvider1.SetError(TxtManualLeapSeconds, "");
-                ManualLeapSeconds = DoubleValue;
+                ManualLeapSeconds = floatValue;
                 Parameters.ManualLeapSeconds = ManualLeapSeconds;
                 TL.LogMessage("ManualLeapSeconds", string.Format("Manual leap seconds updated to: {0}", ManualLeapSeconds));
                 BtnClose.Enabled = true;
@@ -622,14 +622,14 @@ namespace ASCOM.Utilities
 
         private void TxtDeltaUT1Manuals_Validating(object sender, KeyEventArgs e)
         {
-            bool IsDouble;
+            bool Isfloat;
 
-            double DoubleValue;
-            IsDouble = double.TryParse(TxtManualDeltaUT1.Text, NumberStyles.Float, CultureInfo.CurrentUICulture, out DoubleValue);
-            if (IsDouble & DoubleValue >= -DELTAUT1_ACCEPTABLE_RANGE & DoubleValue <= +DELTAUT1_ACCEPTABLE_RANGE)
+            float floatValue;
+            Isfloat = float.TryParse(TxtManualDeltaUT1.Text, NumberStyles.Float, CultureInfo.CurrentUICulture, out floatValue);
+            if (Isfloat & floatValue >= -DELTAUT1_ACCEPTABLE_RANGE & floatValue <= +DELTAUT1_ACCEPTABLE_RANGE)
             {
                 ErrorProvider1.SetError(TxtManualDeltaUT1, "");
-                ManualDeltaUT1Value = DoubleValue;
+                ManualDeltaUT1Value = floatValue;
                 Parameters.ManualDeltaUT1 = ManualDeltaUT1Value;
                 TL.LogMessage("ManualDeltaUT1Value", string.Format(CultureInfo.CurrentUICulture, "Manual DeltaUT1 value updated to: {0}", ManualDeltaUT1Value));
                 BtnClose.Enabled = true;

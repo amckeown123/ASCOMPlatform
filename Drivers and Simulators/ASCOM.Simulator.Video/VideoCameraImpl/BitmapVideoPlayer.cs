@@ -442,8 +442,8 @@ namespace Simulator.VideoCameraImpl
 				if (currentFrameIndex > allImagesPixels.Count - 1)
 				{
 					Profiler.StopTimer(100);
-					double msForAllImages = Profiler.GetElapsedMillisecondsForTimer(100);
-					double fps = allImagesPixels.Count * 1000.0 / msForAllImages;
+					float msForAllImages = Profiler.GetElapsedMillisecondsForTimer(100);
+					float fps = allImagesPixels.Count * 1000.0 / msForAllImages;
 					DebugTrace.TraceVerbose(string.Format("Camera running at {0} fps", fps.ToString("#0.00")));
 
 					currentFrameIndex = 0;
@@ -662,7 +662,7 @@ namespace Simulator.VideoCameraImpl
 			return lastBufferedImage;
 		}
 
-		public void StartRecording(string fileName, double fps, bool showCompressionDialog)
+		public void StartRecording(string fileName, float fps, bool showCompressionDialog)
 		{
 		    if (!isRecording)
 		    {

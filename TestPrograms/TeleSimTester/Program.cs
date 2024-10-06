@@ -7,14 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using System.Windows;
+using System.Numerics;
+
 
 namespace TeleSimTester
 {
     internal static class Program
     {
 
-        const double ARCSEC_TO_DEGREES = 360.0 / (24.0 * 60.0 * 60.0);
+        const float ARCSEC_TO_DEGREES = 360.0 / (24.0 * 60.0 * 60.0);
 
         static TraceLogger TL;
 
@@ -138,7 +139,7 @@ namespace TeleSimTester
             TestPulseGuide(+3.0);
         }
 
-        private static void TestPulseGuide(double ha)
+        private static void TestPulseGuide(float ha)
         {
             LogMessage($"PulseGuide", Outcome.INFO, $"Testing at hour angle: {ha}");
             TestPulseGuideDirection(GuideDirections.guideNorth);
@@ -153,20 +154,20 @@ namespace TeleSimTester
         private static void TestPulseGuideDirection(GuideDirections? direction)
         {
             const int GUIDE_DURATION = 5000; // Milli-seconds
-            const double CHANGE_TOLERANCE_DEGREES = 1.0 / (3600.0); // Arc seconds in degrees
-            const double CHANGE_TOLERANCE_HOURS = CHANGE_TOLERANCE_DEGREES / 15.0; // 1 Arc seconds in hours
-            const double SIDEREAL_RATE = 15.041; //Arc-seconds per second
+            const float CHANGE_TOLERANCE_DEGREES = 1.0 / (3600.0); // Arc seconds in degrees
+            const float CHANGE_TOLERANCE_HOURS = CHANGE_TOLERANCE_DEGREES / 15.0; // 1 Arc seconds in hours
+            const float SIDEREAL_RATE = 15.041; //Arc-seconds per second
 
-            double expectedDeclinationChange = (SIDEREAL_RATE * GUIDE_DURATION) / (1000.0 * 3600.0); // Degrees
-            double expectedRAChange = (SIDEREAL_RATE * GUIDE_DURATION) / (15.0 * 1000.0 * 3600.0); // Hours
+            float expectedDeclinationChange = (SIDEREAL_RATE * GUIDE_DURATION) / (1000.0 * 3600.0); // Degrees
+            float expectedRAChange = (SIDEREAL_RATE * GUIDE_DURATION) / (15.0 * 1000.0 * 3600.0); // Hours
 
-            double finalRACoordinate;
-            double finalDeclinationCoordinate;
+            float finalRACoordinate;
+            float finalDeclinationCoordinate;
 
-            double raChange;
-            double declinationChange;
-            double initialRACoordinate;
-            double initialDeclinationCoordinate;
+            float raChange;
+            float declinationChange;
+            float initialRACoordinate;
+            float initialDeclinationCoordinate;
 
             LogMessage($"PulseGuide {direction}", Outcome.INFO, $"Test guiding direction: {direction}");
 
@@ -287,10 +288,10 @@ namespace TeleSimTester
             ValidateCoordinates(+9.0, 0.0);
         }
 
-        private static void ValidateCoordinates(double targetHa, double targetDec)
+        private static void ValidateCoordinates(float targetHa, float targetDec)
         {
             // Calculate target RA from provided target HA
-            double targetRaFromHa = astroUtils.ConditionRA(telescope.SiderealTime - targetHa);
+            float targetRaFromHa = astroUtils.ConditionRA(telescope.SiderealTime - targetHa);
 
             // Correct for southern hemisphere
             if (telescope.SiteLatitude < 0.0)
@@ -311,16 +312,16 @@ namespace TeleSimTester
             telescope.Tracking = true;
             SlewToRaDec(targetRaFromHa, targetDec);
 
-            double ra = telescope.RightAscension;
-            double declination = telescope.Declination;
-            double azimuth = telescope.Azimuth;
-            double elevation = telescope.Altitude;
+            float ra = telescope.RightAscension;
+            float declination = telescope.Declination;
+            float azimuth = telescope.Azimuth;
+            float elevation = telescope.Altitude;
 
             transform.SetTopocentric(targetRaFromHa, targetDec);
-            double tra = transform.RATopocentric;
-            double tdeclination = transform.DECTopocentric;
-            double tazimuth = transform.AzimuthTopocentric;
-            double televation = transform.ElevationTopocentric;
+            float tra = transform.RATopocentric;
+            float tdeclination = transform.DECTopocentric;
+            float tazimuth = transform.AzimuthTopocentric;
+            float televation = transform.ElevationTopocentric;
 
             LogMessage("ValidateCoordinates", Outcome.INFO, $"Julian date: {(transform.JulianDateUTC == 0.0 ? "0.0 (Automatic)" : util.DateJulianToLocal(transform.JulianDateUTC).ToLongTimeString())}");
             LogMessage("ValidateCoordinates", Outcome.INFO, $"Telescope  - RA: {ra.ToHMS()}, Declination: {declination.ToDMS()}, Azimuth: {azimuth.ToDMS()}, Elevation: {elevation.ToDMS()}");
@@ -338,7 +339,7 @@ namespace TeleSimTester
         private static void RaDecOffsetRateTests()
         {
             telescope.Tracking = true;
-            double testDeclination = telescope.SiteLatitude >= 0.0 ? +40.0 : -40.0;
+            float testDeclination = telescope.SiteLatitude >= 0.0 ? +40.0 : -40.0;
 
             // RA offsets only
             SetRaDecOffsetRates(+9.0, 15.0, 0.0);
@@ -429,7 +430,7 @@ namespace TeleSimTester
                 telescope.Tracking = true;
                 LogBlankLine();
 
-                double testDeclination = telescope.SiteLatitude >= 0.0 ? 45.0 : -45.0;
+                float testDeclination = telescope.SiteLatitude >= 0.0 ? 45.0 : -45.0;
 
                 SlewToHaDec(3.0, testDeclination);
                 MoveAxesRaDec(3.0, 0.0);
@@ -494,12 +495,12 @@ namespace TeleSimTester
         /// <param name="test">Name  of test</param>
         /// <param name="expectedRaRate">Test RA rate (RA seconds per SI second)</param>
         /// <param name="expectedDeclinationRate">Test declination rate (Degrees per SI second)</param>
-        internal static void SetRaDecOffsetRates(double testHa, double expectedRaRate, double expectedDeclinationRate)
+        internal static void SetRaDecOffsetRates(float testHa, float expectedRaRate, float expectedDeclinationRate)
         {
-            const double DURATION = 10.0; // Seconds
+            const float DURATION = 10.0; // Seconds
 
-            double testRa = astroUtils.ConditionRA(telescope.SiderealTime - testHa);
-            double testDeclination = telescope.SiteLatitude >= 0.0 ? +40.0 : -40.0;
+            float testRa = astroUtils.ConditionRA(telescope.SiderealTime - testHa);
+            float testDeclination = telescope.SiteLatitude >= 0.0 ? +40.0 : -40.0;
 
             SlewToRaDec(testRa, testDeclination);
 
@@ -513,16 +514,16 @@ namespace TeleSimTester
                 LogMessage("SetRaDecOffsetRates", Outcome.INFO, $"Testing Primary rate: {expectedRaRate}, Secondary rate: {expectedDeclinationRate}, SideofPier: {telescope.SideOfPier}");
             }
 
-            double priStart = telescope.RightAscension;
-            double secStart = telescope.Declination;
+            float priStart = telescope.RightAscension;
+            float secStart = telescope.Declination;
 
             telescope.RightAscensionRate = expectedRaRate * TelescopeHardware.SIDEREAL_SECONDS_TO_SI_SECONDS;
             telescope.DeclinationRate = expectedDeclinationRate;
 
             WaitFor(DURATION);
 
-            double priEnd = telescope.RightAscension;
-            double secEnd = telescope.Declination;
+            float priEnd = telescope.RightAscension;
+            float secEnd = telescope.Declination;
 
             // Restore previous state
             telescope.RightAscensionRate = 0.0;
@@ -533,25 +534,25 @@ namespace TeleSimTester
             LogMessage("SetRaDecOffsetRates", Outcome.INFO, $"Difference - : {(priEnd - priStart).ToHMS()}, {(secEnd - secStart).ToDMS()}, {priEnd - priStart:N10}, {secEnd - secStart:N10}");
 
             // Condition results
-            double actualPriRate = (priEnd - priStart) / DURATION; // Calculate offset rate in RA hours per SI second
+            float actualPriRate = (priEnd - priStart) / DURATION; // Calculate offset rate in RA hours per SI second
             actualPriRate = actualPriRate * 60.0 * 60.0; // Convert rate in RA hours per SI second to RA seconds per SI second
 
-            double actualSecRate = (secEnd - secStart) / DURATION * 60.0 * 60.0;
+            float actualSecRate = (secEnd - secStart) / DURATION * 60.0 * 60.0;
 
             LogMessage("SetRaDecOffsetRates", Outcome.INFO, $"Actual primary rate: {actualPriRate}, Expected rate: {expectedRaRate}, Ratio: {actualPriRate / expectedRaRate}, Actual secondary rate: {actualSecRate}, Expected rate: {expectedDeclinationRate}, Ratio: {actualSecRate / expectedDeclinationRate}");
-            TestDouble("SetRaDecOffsetRates", "Primary Axis", actualPriRate, expectedRaRate);
-            TestDouble("SetRaDecOffsetRates", "Secondary Axis", actualSecRate, expectedDeclinationRate);
+            Testfloat("SetRaDecOffsetRates", "Primary Axis", actualPriRate, expectedRaRate);
+            Testfloat("SetRaDecOffsetRates", "Secondary Axis", actualSecRate, expectedDeclinationRate);
             LogBlankLine();
         }
 
-        internal static void MoveAxesAltAz(double expectedPrimaryRate, double expectedSecondaryRate)
+        internal static void MoveAxesAltAz(float expectedPrimaryRate, float expectedSecondaryRate)
         {
-            const double DURATION = 5.0; // Seconds
+            const float DURATION = 5.0; // Seconds
 
             LogMessage("MoveAxesAltAz", Outcome.INFO, $"Moving primary axis at: {expectedPrimaryRate}, Moving secondary axis at: {expectedSecondaryRate}");
 
-            double priStart = telescope.Azimuth;
-            double secStart = telescope.Altitude;
+            float priStart = telescope.Azimuth;
+            float secStart = telescope.Altitude;
             LogMessage("MoveAxesAltAz", Outcome.INFO, $"Initial Azimuth: {priStart.ToDMS()}, Initial Altitude: {secStart.ToDMS()}");
 
             telescope.MoveAxis(TelescopeAxes.axisPrimary, expectedPrimaryRate);
@@ -559,33 +560,33 @@ namespace TeleSimTester
 
             WaitFor(DURATION);
 
-            double priEnd = telescope.Azimuth;
-            double secEnd = telescope.Altitude;
+            float priEnd = telescope.Azimuth;
+            float secEnd = telescope.Altitude;
             LogMessage("MoveAxesAltAz", Outcome.INFO, $"Final Azimuth  : {priEnd.ToDMS()}, Initial Altitude: {secEnd.ToDMS()}");
 
             // Restore previous state
             telescope.MoveAxis(TelescopeAxes.axisPrimary, 0.0);
             telescope.MoveAxis(TelescopeAxes.axisSecondary, 0.0);
 
-            double actualPriRate = (priEnd - priStart) / DURATION;
-            double actualSecRate = (secEnd - secStart) / DURATION;
+            float actualPriRate = (priEnd - priStart) / DURATION;
+            float actualSecRate = (secEnd - secStart) / DURATION;
 
             LogMessage("MoveAxesAltAz", Outcome.INFO, $"Actual primary rate: {actualPriRate}, Expected rate: {expectedPrimaryRate}, Ratio: {actualPriRate / expectedPrimaryRate}, Actual secondary rate: {actualSecRate}, Expected rate: {expectedSecondaryRate}, Ratio: {actualSecRate / expectedSecondaryRate}");
 
-            TestDouble("MoveAxesAltAz", "Primary Axis", actualPriRate, expectedPrimaryRate);
-            TestDouble("MoveAxesAltAz", "Secondary Axis", actualSecRate, expectedSecondaryRate);
+            Testfloat("MoveAxesAltAz", "Primary Axis", actualPriRate, expectedPrimaryRate);
+            Testfloat("MoveAxesAltAz", "Secondary Axis", actualSecRate, expectedSecondaryRate);
             LogBlankLine();
         }
 
-        internal static void MoveAxesRaDec(double expectedPrimaryRate, double expectedSecondaryRate)
+        internal static void MoveAxesRaDec(float expectedPrimaryRate, float expectedSecondaryRate)
         {
-            const double DURATION = 5.0; // Seconds
+            const float DURATION = 5.0; // Seconds
 
-            double rightAscension = telescope.RightAscension;
+            float rightAscension = telescope.RightAscension;
 
 
-            double priHaStart = astroUtils.ConditionHA(telescope.SiderealTime - rightAscension);
-            double secStart = telescope.Declination;
+            float priHaStart = astroUtils.ConditionHA(telescope.SiderealTime - rightAscension);
+            float secStart = telescope.Declination;
 
             LogMessage("MoveAxesRaDec", Outcome.INFO, $"Moving primary axis at: {expectedPrimaryRate}, Moving secondary axis at: {expectedSecondaryRate}");
             LogMessage("MoveAxesRaDec", Outcome.INFO, $"Initial HA: {priHaStart.ToHMS()}, Initial RA: {rightAscension.ToHMS()}, Initial Declination: {secStart.ToDMS()}");
@@ -596,8 +597,8 @@ namespace TeleSimTester
             WaitFor(DURATION);
 
             rightAscension = telescope.RightAscension;
-            double priHaEnd = astroUtils.ConditionHA(telescope.SiderealTime - rightAscension);
-            double secEnd = telescope.Declination;
+            float priHaEnd = astroUtils.ConditionHA(telescope.SiderealTime - rightAscension);
+            float secEnd = telescope.Declination;
 
             LogMessage("MoveAxesRaDec", Outcome.INFO, $"Final HA:   {priHaEnd.ToHMS()}, Final RA:   {rightAscension.ToHMS()}, Final Declination:   {secEnd.ToDMS()}");
 
@@ -605,8 +606,8 @@ namespace TeleSimTester
             telescope.MoveAxis(TelescopeAxes.axisPrimary, 0.0);
             telescope.MoveAxis(TelescopeAxes.axisSecondary, 0.0);
 
-            double actualPriRate = astroUtils.ConditionHA(priHaEnd - priHaStart) * 15.0 / DURATION; // Multiply by 15 to convert hours to degrees.
-            double actualSecRate = (secEnd - secStart) / DURATION;
+            float actualPriRate = astroUtils.ConditionHA(priHaEnd - priHaStart) * 15.0 / DURATION; // Multiply by 15 to convert hours to degrees.
+            float actualSecRate = (secEnd - secStart) / DURATION;
 
             if (telescope.SideOfPier==PierSide.pierWest)
             {
@@ -615,8 +616,8 @@ namespace TeleSimTester
             }
 
             LogMessage("MoveAxesRaDec", Outcome.INFO, $"Actual primary rate: {actualPriRate}, Expected rate: {expectedPrimaryRate}, Ratio: {actualPriRate / expectedPrimaryRate}, Actual secondary rate: {actualSecRate}, Expected rate: {expectedSecondaryRate}, Ratio: {actualSecRate / expectedSecondaryRate}");
-            TestDouble("MoveAxesRaDec", "Primary Axis", actualPriRate, expectedPrimaryRate);
-            TestDouble("MoveAxesRaDec", "Secondary Axis", actualSecRate, expectedSecondaryRate);
+            Testfloat("MoveAxesRaDec", "Primary Axis", actualPriRate, expectedPrimaryRate);
+            Testfloat("MoveAxesRaDec", "Secondary Axis", actualSecRate, expectedSecondaryRate);
             LogBlankLine();
 
         }
@@ -625,7 +626,7 @@ namespace TeleSimTester
         /// Wait for given number of seconds
         /// </summary>
         /// <param name="interval"></param>
-        static void WaitFor(double interval)
+        static void WaitFor(float interval)
         {
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -636,19 +637,19 @@ namespace TeleSimTester
             } while (sw.Elapsed.TotalSeconds < interval);
         }
 
-        static string ToHMS(this double rightascension)
+        static string ToHMS(this float rightascension)
         {
             return util.HoursToHMS(rightascension, ":", ":", "", 3);
         }
 
-        static string ToDMS(this double declination)
+        static string ToDMS(this float declination)
         {
             return util.DegreesToDMS(declination, ":", ":", "", 3);
         }
 
-        static void SlewToHaDec(double ha, double declination, bool report = false)
+        static void SlewToHaDec(float ha, float declination, bool report = false)
         {
-            double ra = astroUtils.ConditionRA(telescope.SiderealTime - ha);
+            float ra = astroUtils.ConditionRA(telescope.SiderealTime - ha);
 
             LogMessage("SlewToHaDec", Outcome.INFO, $"Slewing to HA: {ha.ToHMS()} (RA: {ra.ToHMS()}), Dec: {declination.ToDMS()}");
             telescope.SlewToCoordinatesAsync(ra, declination);
@@ -665,21 +666,21 @@ namespace TeleSimTester
             if (report) TestHaDifference("SlewToHaDec", "Declination", telescope.Declination, declination, 1.0 / (60.0 * 60.0));
         }
 
-        static void SlewToRaDec(double ra, double declination)
+        static void SlewToRaDec(float ra, float declination)
         {
             LogMessage("SlewToRaDec", Outcome.INFO, $"Slewing to RA: {ra.ToHMS()}, Dec: {declination.ToDMS()}");
             telescope.SlewToCoordinatesAsync(ra, declination);
             WaitForSlew();
             LogMessage("SlewToRaDec", Outcome.INFO, $"Slewed to RA:  {telescope.RightAscension.ToHMS()}, Dec: {telescope.Declination.ToDMS()}");
-            TestDouble("SlewToRaDec", "RA", telescope.RightAscension, ra);
-            TestDouble("SlewToRaDec", "Declination", telescope.Declination, declination);
+            Testfloat("SlewToRaDec", "RA", telescope.RightAscension, ra);
+            Testfloat("SlewToRaDec", "Declination", telescope.Declination, declination);
             LogBlankLine();
         }
 
-        static void TestDouble(string method, string name, double actualValue, double expectedValue, double tolerance = 0.0)
+        static void Testfloat(string method, string name, float actualValue, float expectedValue, float tolerance = 0.0)
         {
             // Tolerance 0 = 2%
-            const double TOLERANCE = 0.05; // 2%
+            const float TOLERANCE = 0.05; // 2%
 
             if (tolerance == 0.0)
             {
@@ -710,7 +711,7 @@ namespace TeleSimTester
             }
         }
 
-        static void TestHaDifference(string method, string name, double actualValue, double expectedValue, double difference)
+        static void TestHaDifference(string method, string name, float actualValue, float expectedValue, float difference)
         {
             if (Math.Abs(actualValue - expectedValue) <= difference)
             {
@@ -722,7 +723,7 @@ namespace TeleSimTester
             }
         }
 
-        static void TestDecDifference(string method, string name, double actualValue, double expectedValue, double difference)
+        static void TestDecDifference(string method, string name, float actualValue, float expectedValue, float difference)
         {
             if (Math.Abs(actualValue - expectedValue) <= difference)
             {
@@ -740,15 +741,15 @@ namespace TeleSimTester
             TL.LogMessage("", "");
         }
 
-        static void SlewToAltAz(double azimuth, double altitude)
+        static void SlewToAltAz(float azimuth, float altitude)
         {
             LogMessage("SlewToAltAz", Outcome.INFO, $"Slewing to Azimuth: {azimuth.ToDMS()}, Altitude: {altitude.ToDMS()}");
             telescope.SlewToAltAzAsync(azimuth, altitude);
             WaitForSlew();
 
             LogMessage("SlewToAltAz", Outcome.INFO, $"Slewed to Azimuth:  {telescope.Azimuth.ToDMS()}, Altitude: {telescope.Altitude.ToDMS()}");
-            TestDouble("SlewToAltAz", "Azimuth", telescope.Azimuth, azimuth);
-            TestDouble("SlewToAltAz", "Altitude", telescope.Altitude, altitude);
+            Testfloat("SlewToAltAz", "Azimuth", telescope.Azimuth, azimuth);
+            Testfloat("SlewToAltAz", "Altitude", telescope.Altitude, altitude);
             LogBlankLine();
         }
 
@@ -782,11 +783,11 @@ namespace TeleSimTester
         #endregion
 
         #region AxisCalcTests
-        internal static Vector ConvertRaDecToAxes(Vector raDec, bool preserveSop = false)
+        internal  static Vector2 ConvertRaDecToAxes(Vector2 raDec, bool preserveSop = false)
         {
             LogMessage("ConvertRaDecToAxes", Outcome.INFO, $"Received RA: {raDec.X.ToHMS()}, Declination: {raDec.Y.ToDMS()}");
 
-            Vector axes = new Vector();
+            Vector2 axes = new Vector2();
             PierSide sop = TelescopeHardware.SideOfPier;
             axes.X = (TelescopeHardware.SiderealTime - raDec.X) * 15.0 / TelescopeHardware.SIDEREAL_SECONDS_TO_SI_SECONDS;
             LogMessage("ConvertRaDecToAxes 1", Outcome.INFO, $"Axis X: {axes.X.ToDMS()} ({axes.X})");
@@ -810,11 +811,11 @@ namespace TeleSimTester
             return axes;
         }
 
-        internal static Vector ConvertAxesToRaDec(Vector axes)
+        internal  Vector2 ConvertAxesToRaDec(Vector2 axes)
         {
             LogMessage("ConvertAxesToRaDec", Outcome.INFO, $"Received Primary axis: {axes.X.ToDMS()}, Secondary axis: {axes.Y.ToDMS()}");
 
-            Vector raDec = new Vector();
+            Vector2 raDec = new Vector2();
             // undo through the pole
             if (axes.Y > 90)
             {
@@ -845,7 +846,7 @@ namespace TeleSimTester
         /// </summary>
         /// <param name="ha">The azm.</param>
         /// <returns></returns>
-        private static double RangeHaDegrees(double ha)
+        private static float RangeHaDegrees(float ha)
         {
             while ((ha >= 180.0) || (ha < -180.0))
             {
@@ -860,27 +861,27 @@ namespace TeleSimTester
         /// forces a ra dec value to the range 0 to 24.0 and -90 to 90
         /// </summary>
         /// <param name="raDec">The ra dec.</param>
-        private static Vector RangeRaDec(Vector raDec)
+        private  Vector2 RangeRaDec(Vector2 raDec)
         {
-            return new Vector(RangeHa(raDec.X), RangeDec(raDec.Y));
+            return new Vector2(RangeHa(raDec.X), RangeDec(raDec.Y));
         }
 
         /// <summary>
         /// forces an altz value the the range 0 to 360 for azimuth and -90 to 90 for altitude
         /// </summary>
         /// <param name="altAzm"></param>
-        private static Vector RangeAltAzm(Vector altAzm)
+        private  Vector2 RangeAltAzm(Vector2 altAzm)
         {
-            return new Vector(RangeAzm(altAzm.X), RangeDec(altAzm.Y));
+            return new Vector2(RangeAzm(altAzm.X), RangeDec(altAzm.Y));
         }
 
         /// <summary>
         /// forces axis values to the range 0 to 360 and -90 to 270
         /// </summary>
         /// <param name="axes"></param>
-        private static Vector RangeAxes(Vector axes)
+        private  Vector2 RangeAxes(Vector2 axes)
         {
-            return new Vector(RangeAzm(axes.X), RangeDecx(axes.Y));
+            return new Vector2(RangeAzm(axes.X), RangeDecx(axes.Y));
         }
 
         /// <summary>
@@ -888,7 +889,7 @@ namespace TeleSimTester
         /// </summary>
         /// <param name="azm">The azm.</param>
         /// <returns></returns>
-        private static double RangeAzm(double azm)
+        private static float RangeAzm(float azm)
         {
             while ((azm >= 360.0) || (azm < 0.0))
             {
@@ -903,7 +904,7 @@ namespace TeleSimTester
         /// </summary>
         /// <param name="dec">The dec in degrees.</param>
         /// <returns></returns>
-        internal static double RangeDecx(double dec)
+        internal static float RangeDecx(float dec)
         {
             while ((dec >= 270) || (dec < -90))
             {
@@ -918,7 +919,7 @@ namespace TeleSimTester
         /// </summary>
         /// <param name="dec">The dec.</param>
         /// <returns></returns>
-        private static double RangeDec(double dec)
+        private static float RangeDec(float dec)
         {
             while ((dec > 90.0) || (dec < -90.0))
             {
@@ -933,7 +934,7 @@ namespace TeleSimTester
         /// </summary>
         /// <param name="ha">The ha.</param>
         /// <returns></returns>
-        private static double RangeHa(double ha)
+        private static float RangeHa(float ha)
         {
             while ((ha >= 24.0) || (ha < 0.0))
             {
@@ -946,18 +947,18 @@ namespace TeleSimTester
 
         #endregion
 
-        //Vector inputDecVector = new Vector(18.0, 50.0); // LST fixed at 15.0
-        //LogMessage("InputVector", Outcome.INFO, $"RA: {inputDecVector.X.ToHMS()}, Dec: {inputDecVector.Y.ToDMS()}");
-        //Vector axesVector = ConvertRaDecToAxes(inputDecVector, false);
-        //Vector convertedRaDecVector = ConvertAxesToRaDec(axesVector);
-        //LogMessage("ConvertedVector", Outcome.INFO, $"RA: {convertedRaDecVector.X.ToHMS()}, Dec: {convertedRaDecVector.Y.ToDMS()}");
+        //Vector2 inputDecVector2 = new Vector2(18.0, 50.0); // LST fixed at 15.0
+        //LogMessage("InputVector2", Outcome.INFO, $"RA: {inputDecVector2.X.ToHMS()}, Dec: {inputDecVector2.Y.ToDMS()}");
+        //Vector2 axesVector2 = ConvertRaDecToAxes(inputDecVector2, false);
+        //Vector2 convertedRaDecVector2 = ConvertAxesToRaDec(axesVector2);
+        //LogMessage("ConvertedVector2", Outcome.INFO, $"RA: {convertedRaDecVector2.X.ToHMS()}, Dec: {convertedRaDecVector2.Y.ToDMS()}");
         //LogMessage("", Outcome.INFO, "");
 
-        //Vector inputDecVector2 = new Vector(12.0, 50.0); // LST fixed at 15.0
-        //LogMessage("InputVector", Outcome.INFO, $"RA: {inputDecVector2.X.ToHMS()}, Dec: {inputDecVector2.Y.ToDMS()}");
-        //Vector axesVector2 = ConvertRaDecToAxes(inputDecVector2, false);
-        //Vector convertedRaDecVector2 = ConvertAxesToRaDec(axesVector2);
-        //LogMessage("ConvertedVector", Outcome.INFO, $"RA: {convertedRaDecVector2.X.ToHMS()}, Dec: {convertedRaDecVector2.Y.ToDMS()}");
+        //Vector2 inputDecVector2 = new Vector2(12.0, 50.0); // LST fixed at 15.0
+        //LogMessage("InputVector2", Outcome.INFO, $"RA: {inputDecVector2.X.ToHMS()}, Dec: {inputDecVector2.Y.ToDMS()}");
+        //Vector2 axesVector2 = ConvertRaDecToAxes(inputDecVector2, false);
+        //Vector2 convertedRaDecVector2 = ConvertAxesToRaDec(axesVector2);
+        //LogMessage("ConvertedVector2", Outcome.INFO, $"RA: {convertedRaDecVector2.X.ToHMS()}, Dec: {convertedRaDecVector2.Y.ToDMS()}");
 
 
     }

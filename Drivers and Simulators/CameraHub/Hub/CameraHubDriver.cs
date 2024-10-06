@@ -1,10 +1,11 @@
 using ASCOM.DeviceInterface;
-using ASCOM.LocalServer;
+using ASCOM.DynamicClients;
 using ASCOM.Utilities;
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
 
 namespace ASCOM.CameraHub.Camera
 {
@@ -620,14 +621,14 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the current CCD temperature in degrees Celsius.
         /// </summary>
         /// <value>The CCD temperature.</value>
-        public double CCDTemperature
+        public float CCDTemperature
         {
             get
             {
                 try
                 {
                     CheckConnected("CCDTemperature");
-                    double ccdTemperature = CameraHub.CCDTemperature;
+                    float ccdTemperature = CameraHub.CCDTemperature;
                     LogMessage("CCDTemperature", ccdTemperature.ToString());
                     return ccdTemperature;
                 }
@@ -922,14 +923,14 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the present cooler power level, in percent.
         /// </summary>
         /// <value>The cooler power.</value>
-        public double CoolerPower
+        public float CoolerPower
         {
             get
             {
                 try
                 {
                     CheckConnected("CoolerPower");
-                    double coolerPower = CameraHub.CoolerPower;
+                    float coolerPower = CameraHub.CoolerPower;
                     LogMessage("CoolerPower", coolerPower.ToString());
                     return coolerPower;
                 }
@@ -945,14 +946,14 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the gain of the camera in photoelectrons per A/D unit.
         /// </summary>
         /// <value>The electrons per ADU.</value>
-        public double ElectronsPerADU
+        public float ElectronsPerADU
         {
             get
             {
                 try
                 {
                     CheckConnected("ElectronsPerADU");
-                    double electronsPerAdu = CameraHub.ElectronsPerADU;
+                    float electronsPerAdu = CameraHub.ElectronsPerADU;
                     LogMessage("ElectronsPerADU", electronsPerAdu.ToString());
                     return electronsPerAdu;
                 }
@@ -968,14 +969,14 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the maximum exposure time supported by <see cref="StartExposure">StartExposure</see>.
         /// </summary>
         /// <returns>The maximum exposure time, in seconds, that the camera supports</returns>
-        public double ExposureMax
+        public float ExposureMax
         {
             get
             {
                 try
                 {
                     CheckConnected("ExposureMax");
-                    double exposureMax = CameraHub.ExposureMax;
+                    float exposureMax = CameraHub.ExposureMax;
                     LogMessage("ExposureMax", exposureMax.ToString());
                     return exposureMax;
                 }
@@ -991,14 +992,14 @@ namespace ASCOM.CameraHub.Camera
         /// Minimum exposure time
         /// </summary>
         /// <returns>The minimum exposure time, in seconds, that the camera supports through <see cref="StartExposure">StartExposure</see></returns>
-        public double ExposureMin
+        public float ExposureMin
         {
             get
             {
                 try
                 {
                     CheckConnected("ExposureMin");
-                    double exposureMin = CameraHub.ExposureMin;
+                    float exposureMin = CameraHub.ExposureMin;
                     LogMessage("ExposureMin", exposureMin.ToString());
                     return exposureMin;
                 }
@@ -1014,14 +1015,14 @@ namespace ASCOM.CameraHub.Camera
         /// Exposure resolution
         /// </summary>
         /// <returns>The smallest increment in exposure time supported by <see cref="StartExposure">StartExposure</see>.</returns>
-        public double ExposureResolution
+        public float ExposureResolution
         {
             get
             {
                 try
                 {
                     CheckConnected("ExposureResolution");
-                    double exposureResolution = CameraHub.ExposureResolution;
+                    float exposureResolution = CameraHub.ExposureResolution;
                     LogMessage("ExposureResolution", exposureResolution.ToString());
                     return exposureResolution;
                 }
@@ -1074,14 +1075,14 @@ namespace ASCOM.CameraHub.Camera
         /// Reports the full well capacity of the camera in electrons, at the current camera settings (binning, SetupDialog settings, etc.)
         /// </summary>
         /// <value>The full well capacity.</value>
-        public double FullWellCapacity
+        public float FullWellCapacity
         {
             get
             {
                 try
                 {
                     CheckConnected("FullWellCapacity");
-                    double fullWellCapacity = CameraHub.FullWellCapacity;
+                    float fullWellCapacity = CameraHub.FullWellCapacity;
                     LogMessage("FullWellCapacity", fullWellCapacity.ToString());
                     return fullWellCapacity;
                 }
@@ -1231,14 +1232,14 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the current heat sink temperature (called"ambient temperature" by some manufacturers) in degrees Celsius.
         /// </summary>
         /// <value>The heat sink temperature.</value>
-        public double HeatSinkTemperature
+        public float HeatSinkTemperature
         {
             get
             {
                 try
                 {
                     CheckConnected("HeatSinkTemperature");
-                    double heatSinkTemperature = CameraHub.HeatSinkTemperature;
+                    float heatSinkTemperature = CameraHub.HeatSinkTemperature;
                     LogMessage("HeatSinkTemperature", heatSinkTemperature.ToString());
                     return heatSinkTemperature;
                 }
@@ -1346,14 +1347,14 @@ namespace ASCOM.CameraHub.Camera
         /// Reports the actual exposure duration in seconds (i.e. shutter open time).
         /// </summary>
         /// <value>The last duration of the exposure.</value>
-        public double LastExposureDuration
+        public float LastExposureDuration
         {
             get
             {
                 try
                 {
                     CheckConnected("LastExposureDuration");
-                    double lastExposureDuration = CameraHub.LastExposureDuration;
+                    float lastExposureDuration = CameraHub.LastExposureDuration;
                     LogMessage("LastExposureDuration", lastExposureDuration.ToString());
                     return lastExposureDuration;
                 }
@@ -1668,14 +1669,14 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the width of the CCD chip pixels in microns.
         /// </summary>
         /// <value>The pixel size X.</value>
-        public double PixelSizeX
+        public float PixelSizeX
         {
             get
             {
                 try
                 {
                     CheckConnected("PixelSizeX");
-                    double pixelSizeX = CameraHub.PixelSizeX;
+                    float pixelSizeX = CameraHub.PixelSizeX;
                     LogMessage("PixelSizeX", pixelSizeX.ToString());
                     return pixelSizeX;
                 }
@@ -1691,14 +1692,14 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the height of the CCD chip pixels in microns.
         /// </summary>
         /// <value>The pixel size Y.</value>
-        public double PixelSizeY
+        public float PixelSizeY
         {
             get
             {
                 try
                 {
                     CheckConnected("PixelSizeY");
-                    double pixelSizeY = CameraHub.PixelSizeY;
+                    float pixelSizeY = CameraHub.PixelSizeY;
                     LogMessage("PixelSizeY", pixelSizeY.ToString());
                     return pixelSizeY;
                 }
@@ -1843,14 +1844,14 @@ namespace ASCOM.CameraHub.Camera
         /// Sets the camera cooler setpoint in degrees Celsius, and returns the current setpoint.
         /// </summary>
         /// <value>The set CCD temperature.</value>
-        public double SetCCDTemperature
+        public float SetCCDTemperature
         {
             get
             {
                 try
                 {
                     CheckConnected("SetCCDTemperature Get");
-                    double setCcdTemperature = CameraHub.SetCCDTemperature;
+                    float setCcdTemperature = CameraHub.SetCCDTemperature;
                     LogMessage("SetCCDTemperature Get", setCcdTemperature.ToString());
                     return setCcdTemperature;
                 }
@@ -1881,7 +1882,7 @@ namespace ASCOM.CameraHub.Camera
         /// </summary>
         /// <param name="duration">Duration of exposure in seconds, can be zero if <see cref="StartExposure">Light</see> is <c>false</c></param>
         /// <param name="light"><c>true</c> for light frame, <c>false</c> for dark frame (ignored if no shutter)</param>
-        public void StartExposure(double duration, bool light)
+        public void StartExposure(float duration, bool light)
         {
             try
             {
@@ -1991,14 +1992,14 @@ namespace ASCOM.CameraHub.Camera
         /// <summary>
         /// Camera's sub-exposure interval
         /// </summary>
-        public double SubExposureDuration
+        public float SubExposureDuration
         {
             get
             {
                 try
                 {
                     CheckConnected("SubExposureDuration Get");
-                    double subExposureDuration = CameraHub.SubExposureDuration;
+                    float subExposureDuration = CameraHub.SubExposureDuration;
                     LogMessage("SubExposureDuration Get", subExposureDuration.ToString());
                     return subExposureDuration;
                 }

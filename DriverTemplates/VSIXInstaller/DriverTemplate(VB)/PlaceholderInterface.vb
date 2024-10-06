@@ -28,35 +28,35 @@ End Interface
 
 ' The following classes are just dummies to stop compilation errors in this template solution. They are not used in drivers or anywhere else
 Partial Public Class DeviceTelescope
-    Public Sub Dispose() Implements ITelescopeV3.Dispose
+    Public Sub Dispose() Implements ITelescopeV4.Dispose
     End Sub
 
-    Public Sub SetupDialog() Implements ITelescopeV3.SetupDialog
+    Public Sub SetupDialog() Implements ITelescopeV4.SetupDialog
     End Sub
 
-    Public ReadOnly Property SupportedActions() As ArrayList Implements ITelescopeV3.SupportedActions
+    Public ReadOnly Property SupportedActions() As ArrayList Implements ITelescopeV4.SupportedActions
         Get
             Return New ArrayList()
         End Get
     End Property
 
-    Public Function Action(ByVal ActionName As String, ByVal ActionParameters As String) As String Implements ITelescopeV3.Action
+    Public Function Action(ByVal ActionName As String, ByVal ActionParameters As String) As String Implements ITelescopeV4.Action
         Throw New MethodNotImplementedException("Action")
     End Function
 
-    Public Sub CommandBlind(ByVal Command As String, Optional ByVal Raw As Boolean = False) Implements ITelescopeV3.CommandBlind
+    Public Sub CommandBlind(ByVal Command As String, Optional ByVal Raw As Boolean = False) Implements ITelescopeV4.CommandBlind
         Throw New MethodNotImplementedException("CommandBlind")
     End Sub
 
-    Public Function CommandBool(ByVal Command As String, Optional ByVal Raw As Boolean = False) As Boolean Implements ITelescopeV3.CommandBool
+    Public Function CommandBool(ByVal Command As String, Optional ByVal Raw As Boolean = False) As Boolean Implements ITelescopeV4.CommandBool
         Throw New MethodNotImplementedException("CommandBool")
     End Function
 
-    Public Function CommandString(ByVal Command As String, Optional ByVal Raw As Boolean = False) As String Implements ITelescopeV3.CommandString
+    Public Function CommandString(ByVal Command As String, Optional ByVal Raw As Boolean = False) As String Implements ITelescopeV4.CommandString
         Throw New MethodNotImplementedException("CommandString")
     End Function
 
-    Public Property Connected() As Boolean Implements ITelescopeV3.Connected
+    Public Property Connected() As Boolean Implements ITelescopeV4.Connected
         Get
             Return False
         End Get
@@ -64,31 +64,31 @@ Partial Public Class DeviceTelescope
         End Set
     End Property
 
-    Public ReadOnly Property Description As String Implements ITelescopeV3.Description
+    Public ReadOnly Property Description As String Implements ITelescopeV4.Description
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property DriverInfo As String Implements ITelescopeV3.DriverInfo
+    Public ReadOnly Property DriverInfo As String Implements ITelescopeV4.DriverInfo
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property DriverVersion() As String Implements ITelescopeV3.DriverVersion
+    Public ReadOnly Property DriverVersion() As String Implements ITelescopeV4.DriverVersion
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property InterfaceVersion() As Short Implements ITelescopeV3.InterfaceVersion
+    Public ReadOnly Property InterfaceVersion() As Short Implements ITelescopeV4.InterfaceVersion
         Get
             Return 0
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements ITelescopeV3.Name
+    Public ReadOnly Property Name As String Implements ITelescopeV4.Name
         Get
             Return ""
         End Get

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Security.Cryptography;
-using ASCOM.Common.Interfaces;
-using ASCOM.Common;
+using Microsoft.Extensions.Logging;
+
 
 namespace ASCOM.DynamicClients
 {

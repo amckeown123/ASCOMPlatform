@@ -11,10 +11,10 @@
     <Setting Name="SupportedExposuresList" Type="System.String" Scope="User">
       <Value Profile="(Default)">0.04#;0.08#;0.16#;0.32#;0.64#;1.28#;2.56#;5.12#;10.24</Value>
     </Setting>
-    <Setting Name="ExposureMax" Type="System.Double" Scope="User">
+    <Setting Name="ExposureMax" Type="System.float" Scope="User">
       <Value Profile="(Default)">8</Value>
     </Setting>
-    <Setting Name="ExposureMin" Type="System.Double" Scope="User">
+    <Setting Name="ExposureMin" Type="System.float" Scope="User">
       <Value Profile="(Default)">0.033</Value>
     </Setting>
     <Setting Name="CameraType" Type="ASCOM.Simulator.Properties.SimulatedCameraType" Scope="User">
@@ -53,10 +53,10 @@
     <Setting Name="SupportsGainRange" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="PixelSizeX" Type="System.Double" Scope="User">
+    <Setting Name="PixelSizeX" Type="System.float" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
-    <Setting Name="PixelSizeY" Type="System.Double" Scope="User">
+    <Setting Name="PixelSizeY" Type="System.float" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="UseEmbeddedVideoSource" Type="System.Boolean" Scope="User">

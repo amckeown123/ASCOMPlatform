@@ -12,12 +12,12 @@ Namespace Kepler
     ''' <remarks>
     ''' The Kepler Ephemeris object contains an orbit engine which takes the orbital parameters of a solar system 
     ''' body, plus a a terrestrial date/time, and produces the heliocentric equatorial position and 
-    ''' velocity vectors of the body in Cartesian coordinates. Orbital parameters are not required for 
+    ''' velocity Vector2s of the body in Cartesian coordinates. Orbital parameters are not required for 
     ''' the major planets, Kepler contains an ephemeris generator for these bodies that is within 0.05 
     ''' arc seconds of the JPL DE404 over a wide range of times, Perturbations from major planets are applied 
     ''' to ephemerides for minor planets. 
-    ''' <para>The results are passed back as an array containing the two vectors. 
-    ''' Note that this is the format expected for the ephemeris generator used by the NOVAS-COM vector 
+    ''' <para>The results are passed back as an array containing the two Vector2s. 
+    ''' Note that this is the format expected for the ephemeris generator used by the NOVAS-COM Vector2 
     ''' astrometry engine. For more information see the description of Ephemeris.GetPositionAndVelocity().</para>
     ''' <para>
     ''' <b>Ephemeris Calculations</b><br />
@@ -45,7 +45,7 @@ Namespace Kepler
     ''' <br /><br /><i>Julian dates </i><br />
     ''' These are standard Julian "date serial" numbers, and are expressed in UTC time or Terrestrial 
     ''' time. The fractional part of these numbers represents time within a day. The standard ActiveX 
-    ''' "Double" precision of 15 digits gives a resolution of about one millisecond in a full Julian date. 
+    ''' "float" precision of 15 digits gives a resolution of about one millisecond in a full Julian date. 
     ''' This is sufficient for the purposes of this program. 
     ''' <br /><br /><i>Hourly Time Values </i><br />
     ''' These are typically used to represent sidereal time and right ascension. They are simple real 
@@ -72,7 +72,7 @@ Namespace Kepler
     Public Class Ephemeris
         Implements IEphemeris
 
-        Private Const DTVEL As Double = 0.01
+        Private Const DTVEL As float = 0.01
 
         'Ephemeris variables
         Private m_Name As String 'Name of body
@@ -83,7 +83,7 @@ Namespace Kepler
         Private m_e As orbit 'Elements, etc for minor planets/comets, etc.
         'Private TL As TraceLogger
         'gplan variables
-        Private ss(NARGS, 31), cc(NARGS, 31), Args(NARGS), LP_equinox, NF_arcsec, Ea_arcsec, pA_precession As Double
+        Private ss(NARGS, 31), cc(NARGS, 31), Args(NARGS), LP_equinox, NF_arcsec, Ea_arcsec, pA_precession As float
 
         ''' <summary>
         ''' Create a new Ephemeris component and initialise it
@@ -103,11 +103,11 @@ Namespace Kepler
         ''' <value>Semi-major axis in AU</value>
         ''' <returns>Semi-major axis in AU</returns>
         ''' <remarks></remarks>
-        Public Property a() As Double Implements IEphemeris.a
+        Public Property a() As float Implements IEphemeris.a
             Get
                 Return m_e.a
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.a = value
             End Set
         End Property
@@ -135,11 +135,11 @@ Namespace Kepler
         ''' <value>Orbital eccentricity </value>
         ''' <returns>Orbital eccentricity </returns>
         ''' <remarks></remarks>
-        Public Property e() As Double Implements IEphemeris.e
+        Public Property e() As float Implements IEphemeris.e
             Get
                 Return m_e.ecc
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.ecc = value
             End Set
         End Property
@@ -150,11 +150,11 @@ Namespace Kepler
         ''' <value>Epoch of osculation of the orbital elements</value>
         ''' <returns>Terrestrial Julian date</returns>
         ''' <remarks></remarks>
-        Public Property Epoch() As Double Implements IEphemeris.Epoch
+        Public Property Epoch() As float Implements IEphemeris.Epoch
             Get
                 Return m_e.epoch
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.epoch = value
             End Set
         End Property
@@ -165,11 +165,11 @@ Namespace Kepler
         ''' <value>Slope parameter for magnitude</value>
         ''' <returns>Slope parameter for magnitude</returns>
         ''' <remarks></remarks>
-        Public Property G() As Double Implements IEphemeris.G
+        Public Property G() As float Implements IEphemeris.G
             Get
                 Throw New Exceptions.ValueNotAvailableException("Kepler:G Read - Magnitude slope parameter calculation not implemented")
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 Throw New Exceptions.ValueNotAvailableException("Kepler:G Write - Magnitude slope parameter calculation not implemented")
             End Set
         End Property
@@ -185,13 +185,13 @@ Namespace Kepler
         ''' more info. If you are using ACP, there are functions available to convert between UTC and 
         ''' Terrestrial time, and for estimating the current value of delta-T. See the Overview page for 
         ''' the Kepler.Ephemeris class for more information on time keeping systems.</remarks>
-        Public Function GetPositionAndVelocity(ByVal tjd As Double) As Double() Implements IEphemeris.GetPositionAndVelocity
-            Dim posvec(5) As Double
+        Public Function GetPositionAndVelocity(ByVal tjd As float) As float() Implements IEphemeris.GetPositionAndVelocity
+            Dim posvec(5) As float
             Dim ai(1) As Integer
-            Dim pos(3, 3) As Double
+            Dim pos(3, 3) As float
             Dim op As orbit = New orbit
             Dim i As Integer
-            Dim qjd, p(2) As Double
+            Dim qjd, p(2) As float
 
             If Not m_bTypeValid Then Throw New Exceptions.ValueNotSetException("Kepler:GetPositionAndVelocity Body type has not been set")
             'TL.LogMessage("GetPosAndVel", m_Number.ToString)
@@ -238,7 +238,7 @@ Namespace Kepler
                 pos(i, 2) = p(2)
             Next
 
-            'pos(1,x) contains the pos vector
+            'pos(1,x) contains the pos Vector2
             'pos(0,x) and pos(2,x) are used to determine the velocity based on position change with time!
             For i = 0 To 2
                 posvec(i) = pos(1, i)
@@ -254,11 +254,11 @@ Namespace Kepler
         ''' <value>Absolute visual magnitude</value>
         ''' <returns>Absolute visual magnitude</returns>
         ''' <remarks></remarks>
-        Public Property H() As Double Implements IEphemeris.H
+        Public Property H() As float Implements IEphemeris.H
             Get
                 Throw New Exceptions.ValueNotAvailableException("Kepler:H Read - Visual magnitude calculation not implemented")
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 Throw New Exceptions.ValueNotAvailableException("Kepler:H Write - Visual magnitude calculation not implemented")
             End Set
         End Property
@@ -269,11 +269,11 @@ Namespace Kepler
         ''' <value>The J2000.0 inclination</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public Property Incl() As Double Implements IEphemeris.Incl
+        Public Property Incl() As float Implements IEphemeris.Incl
             Get
                 Return m_e.i
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.i = value
             End Set
         End Property
@@ -284,11 +284,11 @@ Namespace Kepler
         ''' <value>Mean anomaly at the epoch</value>
         ''' <returns>Mean anomaly at the epoch</returns>
         ''' <remarks></remarks>
-        Public Property M() As Double Implements IEphemeris.M
+        Public Property M() As float Implements IEphemeris.M
             Get
                 Return m_e.M
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.M = value
             End Set
         End Property
@@ -299,11 +299,11 @@ Namespace Kepler
         ''' <value>Mean daily motion</value>
         ''' <returns>Degrees per day</returns>
         ''' <remarks></remarks>
-        Public Property n() As Double Implements IEphemeris.n
+        Public Property n() As float Implements IEphemeris.n
             Get
                 Return m_e.dm
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.dm = value
             End Set
         End Property
@@ -331,11 +331,11 @@ Namespace Kepler
         ''' <value>The J2000.0 longitude of the ascending node</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public Property Node() As Double Implements IEphemeris.Node
+        Public Property Node() As float Implements IEphemeris.Node
             Get
                 Return m_e.W
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.W = value
             End Set
         End Property
@@ -362,11 +362,11 @@ Namespace Kepler
         ''' <value>Orbital period</value>
         ''' <returns>Years</returns>
         ''' <remarks></remarks>
-        Public Property P() As Double Implements IEphemeris.P
+        Public Property P() As float Implements IEphemeris.P
             Get
                 Throw New Exceptions.ValueNotAvailableException("Kepler:P Read - Orbital period calculation not implemented")
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 Throw New Exceptions.ValueNotAvailableException("Kepler:P Write - Orbital period calculation not implemented")
             End Set
         End Property
@@ -377,11 +377,11 @@ Namespace Kepler
         ''' <value>The J2000.0 argument of perihelion</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        Public Property Peri() As Double Implements IEphemeris.Peri
+        Public Property Peri() As float Implements IEphemeris.Peri
             Get
                 Return m_e.wp
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.wp = value
             End Set
         End Property
@@ -392,11 +392,11 @@ Namespace Kepler
         ''' <value>Perihelion distance</value>
         ''' <returns>AU</returns>
         ''' <remarks></remarks>
-        Public Property q() As Double Implements IEphemeris.q
+        Public Property q() As float Implements IEphemeris.q
             Get
                 Return m_e.a
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.a = value
             End Set
         End Property
@@ -407,11 +407,11 @@ Namespace Kepler
         ''' <value>Reciprocal semi-major axis</value>
         ''' <returns>1/AU</returns>
         ''' <remarks></remarks>
-        Public Property z() As Double Implements IEphemeris.z
+        Public Property z() As float Implements IEphemeris.z
             Get
                 Return 1.0 / m_e.a
             End Get
-            Set(ByVal value As Double)
+            Set(ByVal value As float)
                 m_e.a = 1.0 / value
             End Set
         End Property

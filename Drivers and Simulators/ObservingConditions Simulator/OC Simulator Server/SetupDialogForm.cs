@@ -106,8 +106,8 @@ namespace ASCOM.Simulator
             // Place any validation constraint checks here
             OCSimulator.TraceState = chkTrace.Checked;
             OCSimulator.DebugTraceState = chkDebugTrace.Checked;
-            OCSimulator.SensorQueryInterval = Convert.ToDouble(numSensorQueryInterval.Value);
-            OCSimulator.AveragePeriod = Convert.ToDouble(numAveragePeriod.Value);
+            OCSimulator.SensorQueryInterval = Convert.Tofloat(numSensorQueryInterval.Value);
+            OCSimulator.AveragePeriod = Convert.Tofloat(numAveragePeriod.Value);
             OCSimulator.NumberOfReadingsToAverage = Convert.ToInt32(numNumberOfReadingsToAverage.Value);
 
             foreach (string sensor in OCSimulator.SimulatedProperties)

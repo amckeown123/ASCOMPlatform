@@ -1,7 +1,4 @@
-using ASCOM.Alpaca.Clients;
-using ASCOM.Com;
-using ASCOM.Common;
-using ASCOM.Tools;
+using ASCOM.Utilities;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

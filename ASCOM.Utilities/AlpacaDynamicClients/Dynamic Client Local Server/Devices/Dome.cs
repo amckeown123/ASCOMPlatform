@@ -633,22 +633,22 @@ namespace ASCOM.DynamicClients
             client.SetPark();
         }
 
-        public void SlewToAltitude(double Altitude)
+        public void SlewToAltitude(float Altitude)
         {
             client.SlewToAltitude(Altitude);
         }
 
-        public void SlewToAzimuth(double Azimuth)
+        public void SlewToAzimuth(float Azimuth)
         {
             client.SlewToAzimuth(Azimuth);
         }
 
-        public void SyncToAzimuth(double Azimuth)
+        public void SyncToAzimuth(float Azimuth)
         {
             client.SyncToAzimuth(Azimuth);
         }
 
-        public double Altitude
+        public float Altitude
         {
             get
             {
@@ -672,7 +672,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double Azimuth
+        public float Azimuth
         {
             get
             {

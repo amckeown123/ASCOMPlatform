@@ -67,15 +67,15 @@ Module RegistryCommonCode
 
         Return l_Value
     End Function
-    Friend Function GetDouble(ByVal p_Key As RegistryKey, ByVal p_Name As String, ByVal p_DefaultValue As Double) As Double
-        Dim l_Value As Double
+    Friend Function Getfloat(ByVal p_Key As RegistryKey, ByVal p_Name As String, ByVal p_DefaultValue As float) As float
+        Dim l_Value As float
         Dim m_HKCU, m_SettingsKey As RegistryKey
 
         m_HKCU = Registry.CurrentUser
         m_HKCU.CreateSubKey(REGISTRY_UTILITIES_FOLDER)
         m_SettingsKey = m_HKCU.OpenSubKey(REGISTRY_UTILITIES_FOLDER, True)
 
-        'LogMsg("GetDouble", GlobalVarsAndCode.MessageLevel.msgDebug, p_Name.ToString & " " & p_DefaultValue.ToString)
+        'LogMsg("Getfloat", GlobalVarsAndCode.MessageLevel.msgDebug, p_Name.ToString & " " & p_DefaultValue.ToString)
         Try
             If p_Key.GetValueKind(p_Name) = RegistryValueKind.String Then ' Value does exist
                 l_Value = CDbl(p_Key.GetValue(p_Name))
@@ -84,7 +84,7 @@ Module RegistryCommonCode
             SetName(p_Name, p_DefaultValue.ToString)
             l_Value = p_DefaultValue
         Catch ex As Exception
-            'LogMsg("GetDouble", GlobalVarsAndCode.MessageLevel.msgError, "Unexpected exception: " & ex.ToString)
+            'LogMsg("Getfloat", GlobalVarsAndCode.MessageLevel.msgError, "Unexpected exception: " & ex.ToString)
             l_Value = p_DefaultValue
         End Try
         m_SettingsKey.Flush() 'Clean up registry keys

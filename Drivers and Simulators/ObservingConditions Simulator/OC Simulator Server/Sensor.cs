@@ -23,27 +23,27 @@ namespace ASCOM.Simulator
         }
 
         public string SensorName { get; set; }
-        public double SimCurrentValue { get; set; }
-        public double SimToValue { get; set; }
-        public double SimFromValue { get; set; }
-        public double ValueCycleTime { get; set; }
+        public float SimCurrentValue { get; set; }
+        public float SimToValue { get; set; }
+        public float SimFromValue { get; set; }
+        public float ValueCycleTime { get; set; }
         public bool IsImplemented { get; set; }
         public bool ShowNotReady { get; set; }
-        public double NotReadyDelay { get; set; }
+        public float NotReadyDelay { get; set; }
         public DateTime TimeOfLastUpdate { get; set; }
         public List<OCSimulator.TimeValue> Readings { get; set; }
         public OCSimulator.ValueCycleDirections ValueCycleDirection { get; set; }
         public bool Override { get; set; }
-        public double OverrideValue { get; set; }
+        public float OverrideValue { get; set; }
 
         public void ReadProfile(Profile driverProfile)
         {
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", "Starting to read profile values");
 
-            SimFromValue = Convert.ToDouble(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.SIMFROMVALUE_PROFILENAME, SensorName, OCSimulator.SimulatorDefaultFromValues[SensorName].ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+            SimFromValue = Convert.Tofloat(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.SIMFROMVALUE_PROFILENAME, SensorName, OCSimulator.SimulatorDefaultFromValues[SensorName].ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", SensorName + " SimFromValue: " + SimFromValue);
 
-            SimToValue = Convert.ToDouble(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.SIMTOVALUE_PROFILENAME, SensorName, OCSimulator.SimulatorDefaultToValues[SensorName].ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+            SimToValue = Convert.Tofloat(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.SIMTOVALUE_PROFILENAME, SensorName, OCSimulator.SimulatorDefaultToValues[SensorName].ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", SensorName + " SimToValue: " + SimToValue);
 
             IsImplemented = Convert.ToBoolean(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.IS_IMPLEMENTED_PROFILENAME, SensorName, OCSimulator.IS_IMPLEMENTED_DEFAULT), CultureInfo.InvariantCulture);
@@ -52,16 +52,16 @@ namespace ASCOM.Simulator
             ShowNotReady = Convert.ToBoolean(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.SHOW_NOT_READY_PROFILENAME, SensorName, OCSimulator.SHOW_NOT_READY_DEFAULT), CultureInfo.InvariantCulture);
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", SensorName + " ShowNotReady: " + ShowNotReady.ToString());
 
-            NotReadyDelay = Convert.ToDouble(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.NOT_READY_DELAY_PROFILENAME, SensorName, OCSimulator.NOT_READY_DELAY_DEFAULT), CultureInfo.InvariantCulture);
+            NotReadyDelay = Convert.Tofloat(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.NOT_READY_DELAY_PROFILENAME, SensorName, OCSimulator.NOT_READY_DELAY_DEFAULT), CultureInfo.InvariantCulture);
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", SensorName + " NotReadyDelay: " + NotReadyDelay.ToString());
 
-            ValueCycleTime = Convert.ToDouble(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.VALUE_CYCLE_TIME_PROFILE_NAME, SensorName, OCSimulator.VALUE_CYCLE_TIME_DEFAULT), CultureInfo.InvariantCulture);
+            ValueCycleTime = Convert.Tofloat(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.VALUE_CYCLE_TIME_PROFILE_NAME, SensorName, OCSimulator.VALUE_CYCLE_TIME_DEFAULT), CultureInfo.InvariantCulture);
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", SensorName + " Value CycleTime: " + ValueCycleTime.ToString());
 
             Override = Convert.ToBoolean(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.OVERRIDE_PROFILENAME, SensorName, OCSimulator.OVERRIDE_DEFAULT), CultureInfo.InvariantCulture);
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", SensorName + " Override: " + Override.ToString());
 
-            OverrideValue = Convert.ToDouble(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.OVERRIDE_VALUE_PROFILENAME, SensorName, OCSimulator.SimulatorDefaultFromValues[SensorName].ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+            OverrideValue = Convert.Tofloat(driverProfile.GetValue(OCSimulator.DRIVER_PROGID, OCSimulator.OVERRIDE_VALUE_PROFILENAME, SensorName, OCSimulator.SimulatorDefaultFromValues[SensorName].ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", SensorName + " OverrideValue: " + OverrideValue.ToString());
 
             OCSimulator.TL.LogMessage("Sensor.ReadProfile", "Completed reading profile values");

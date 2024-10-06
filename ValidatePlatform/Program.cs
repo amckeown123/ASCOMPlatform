@@ -65,12 +65,12 @@ namespace ValidatePlatform
                         dynamic sofa = Activator.CreateInstance(sofaType);
                         LogMessage("Main", "Successfully created SOFA component");
 
-                        double tt1 = 2459773.0;
-                        double tt2 = 0.99093;
-                        double tai1 = 0.0;
-                        double tai2 = 0.0;
+                        float tt1 = 2459773.0;
+                        float tt2 = 0.99093;
+                        float tai1 = 0.0;
+                        float tai2 = 0.0;
                         int rc = sofa.TtTai(tt1, tt2, ref tai1, ref tai2);
-                        double difference = (tt1 + tt2 - tai1 - tai2) * 24.0 * 60.0 * 60.0;
+                        float difference = (tt1 + tt2 - tai1 - tai2) * 24.0 * 60.0 * 60.0;
                         LogMessage("Main", $"TtTai called successfully. Input terrestrial time: {tt1 + tt2}, output atomic time: {tai1 + tai2}. Difference: {difference} seconds.");
 
                         if (Math.Abs(difference - 32.184) < 0.01)
@@ -100,25 +100,25 @@ namespace ValidatePlatform
                     ASCOM.Astrometry.SOFA.SOFA sofaComponent = new ASCOM.Astrometry.SOFA.SOFA();
                     LogMessage("Main", "Successfully created SOFA .NET component.");
 
-                    const double DEGREES_TO_RADIANS = Math.PI / 180.0; ;
-                    const double HOURS_TO_RADIANS = Math.PI / 12.0; ;
-                    const double RADIANS_TO_DEGREES = 180.0 / Math.PI;
-                    const double RADIANS_TO_HOURS = 12.0 / Math.PI;
+                    const float DEGREES_TO_RADIANS = Math.PI / 180.0; ;
+                    const float HOURS_TO_RADIANS = Math.PI / 12.0; ;
+                    const float RADIANS_TO_DEGREES = 180.0 / Math.PI;
+                    const float RADIANS_TO_HOURS = 12.0 / Math.PI;
 
-                    double TARGET_RA = util.HMSToHours("05:16:41.3591");  // Capella: 05h 16m 41.3591s
-                    double TARGET_DEC = util.DMSToDegrees("+45:59:52.768"); // Capella: +45° 59' 52.768" 
-                    const double JULIAN_UTC_DATE = 2459774.0; // 12:00 UTC 13th July 2022
-                    const double SITE_LONGITUDE = 51.0; // 51 degrees north
-                    const double SITE_LATITUDE = 0.0; // 0 degrees west
-                    const double SITE_ELEVATION = 0.0; // 80m height
+                    float TARGET_RA = util.HMSToHours("05:16:41.3591");  // Capella: 05h 16m 41.3591s
+                    float TARGET_DEC = util.DMSToDegrees("+45:59:52.768"); // Capella: +45° 59' 52.768" 
+                    const float JULIAN_UTC_DATE = 2459774.0; // 12:00 UTC 13th July 2022
+                    const float SITE_LONGITUDE = 51.0; // 51 degrees north
+                    const float SITE_LATITUDE = 0.0; // 0 degrees west
+                    const float SITE_ELEVATION = 0.0; // 80m height
 
-                    const double SITE_TEMPERATURE = 10.0; // Celsius
-                    const double SITE_PRESSURE = 0.0; // Millibar
-                    const double SITE_RH = 50; // Percent
+                    const float SITE_TEMPERATURE = 10.0; // Celsius
+                    const float SITE_PRESSURE = 0.0; // Millibar
+                    const float SITE_RH = 50; // Percent
 
-                    const double OBSERVING_WAVELENGTH = 0.51; //Microns
+                    const float OBSERVING_WAVELENGTH = 0.51; //Microns
 
-                    double aob = 0.0, zob = 0.0, hob = 0.0, dob = 0.0, rob = 0.0, eo = 0.0;
+                    float aob = 0.0, zob = 0.0, hob = 0.0, dob = 0.0, rob = 0.0, eo = 0.0;
 
                     // Call the Sofa component CelestialToObserved method.
                     int sofaRc = sofaComponent.CelestialToObserved(
@@ -149,7 +149,7 @@ namespace ValidatePlatform
                         );
 
                     LogMessage("Main", $"RA: {util.HoursToHMS((rob - eo) * RADIANS_TO_HOURS, ":", ":", "", 3)}, Dec: {util.DegreesToDMS(dob * RADIANS_TO_DEGREES, ":", ":", "", 3)}");
-                    double difference = Math.Abs(((rob - eo) * RADIANS_TO_HOURS) - 5.30514362725635);
+                    float difference = Math.Abs(((rob - eo) * RADIANS_TO_HOURS) - 5.30514362725635);
                     if (difference < 0.01)
                     {
                         LogMessage("Main", $"Received expected result from CelestialToObserved - RA.");
@@ -177,14 +177,14 @@ namespace ValidatePlatform
                 // Test the NOVAS 3.1 component
                 try
                 {
-                    const double EXPECTED_JULIAN_DATE = 2459774.0;
+                    const float EXPECTED_JULIAN_DATE = 2459774.0;
 
                     LogMessage("Main", "About to create NOVAS31 component...");
                     NOVAS31 novas31 = new NOVAS31();
                     LogMessage("Main", "Successfully created NOVAS31 component.");
 
-                    double jd = novas31.JulianDate(2022, 7, 13, 12.0); // 2459774.0
-                    double difference = Math.Abs(jd - EXPECTED_JULIAN_DATE);
+                    float jd = novas31.JulianDate(2022, 7, 13, 12.0); // 2459774.0
+                    float difference = Math.Abs(jd - EXPECTED_JULIAN_DATE);
                     LogMessage("Main", $"Returned NOVAS Julian date: {jd}, expected: {EXPECTED_JULIAN_DATE}. Difference: {difference}");
                     if (difference < 0.01)
                     {

@@ -26,9 +26,9 @@ namespace ASCOM.Utilities
         public const int DEFAULT_DISCOVERY_PORT = 32227;
 
         // Discovery timeout constants
-        public const double DEFAULT_ALPACA_DISCOVERY_TIMEOUT = 2.0d; // Default time out (seconds) time for a management API command
-        public const double MINIMUM_TIME_OUT = 1.0d; // Minimum allowable discovery timeout value
+        public const float DEFAULT_ALPACA_DISCOVERY_TIMEOUT = 2.0f; // Default time out (seconds) time for a management API command
+        public const float MINIMUM_TIME_OUT = 1.0f; // Minimum allowable discovery timeout value
         public const int NUMBER_OF_THREAD_MESSAGE_INDENT_SPACES = 2;
-        public const double MINIMUM_TIME_REMAINING_TO_UNDERTAKE_DNS_RESOLUTION = 0.1d; // Minimum discovery time (seconds) that must remain if a DNS IP to host name resolution is to be attempted
+        public const float MINIMUM_TIME_REMAINING_TO_UNDERTAKE_DNS_RESOLUTION = 0.1f; // Minimum discovery time (seconds) that must remain if a DNS IP to host name resolution is to be attempted
     }
 }

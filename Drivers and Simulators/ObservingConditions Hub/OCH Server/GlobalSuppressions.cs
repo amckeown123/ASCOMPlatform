@@ -5,4 +5,4 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0020:Use pattern matching", Justification = "<Pending>", Scope = "member", Target = "~M:ASCOM.Simulator.Hub.UpdateAllSensors(System.String)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0020:Use pattern matching", Justification = "<Pending>", Scope = "member", Target = "~M:ASCOM.Simulator.Hub.GetDeviceSensorValue(System.String)~System.Double")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0020:Use pattern matching", Justification = "<Pending>", Scope = "member", Target = "~M:ASCOM.Simulator.Hub.GetDeviceSensorValue(System.String)~System.float")]

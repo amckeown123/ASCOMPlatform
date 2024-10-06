@@ -15,14 +15,14 @@ namespace ASCOM.Astrometry.NOVASCOM
     /// NOVAS-COM: Represents the "state" of the Earth at a given Terrestrial Julian date
     /// </summary>
     /// <remarks>NOVAS-COM objects of class Earth represent the "state" of the Earth at a given Terrestrial Julian date. 
-    /// The state includes barycentric and heliocentric position vectors for the earth, plus obliquity, 
+    /// The state includes barycentric and heliocentric position Vector2s for the earth, plus obliquity, 
     /// nutation and the equation of the equinoxes. Unless set by the client, the Earth ephemeris used is 
     /// computed using an internal approximation. The client may optionally attach an ephemeris object for 
     /// increased accuracy. 
     /// <para><b>Ephemeris Generator</b><br />
     /// The ephemeris generator object used with NOVAS-COM must support a single 
     /// method GetPositionAndVelocity(tjd). This method must take a terrestrial Julian date (like the 
-    /// NOVAS-COM methods) as its single parameter, and return an array of Double 
+    /// NOVAS-COM methods) as its single parameter, and return an array of float 
     /// containing the rectangular (x/y/z) heliocentric J2000 equatorial coordinates of position (AU) and velocity 
     /// (KM/sec.). In addition, it must support three read/write properties BodyType, Name, and Number, 
     /// which correspond to the Type, Name, and Number properties of Novas.Planet. 
@@ -33,9 +33,9 @@ namespace ASCOM.Astrometry.NOVASCOM
     public class Earth : IEarth
     {
 
-        private PositionVector m_BaryPos = new(), m_HeliPos = new();
-        private VelocityVector m_BaryVel = new(), m_HeliVel = new();
-        private double m_BaryTime, m_MeanOb, m_EquOfEqu, m_NutLong, m_NutObl, m_TrueOb;
+        private PositionVector2 m_BaryPos = new(), m_HeliPos = new();
+        private VelocityVector2 m_BaryVel = new(), m_HeliVel = new();
+        private float m_BaryTime, m_MeanOb, m_EquOfEqu, m_NutLong, m_NutObl, m_TrueOb;
         private IEphemeris m_EarthEph;
         private bool m_Valid; // Object has valid values
         // Private TL As TraceLogger
@@ -59,10 +59,10 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <summary>
         /// Earth barycentric position
         /// </summary>
-        /// <value>Barycentric position vector</value>
+        /// <value>Barycentric position Vector2</value>
         /// <returns>AU (Ref J2000)</returns>
         /// <remarks></remarks>
-        public PositionVector BarycentricPosition
+        public PositionVector2 BarycentricPosition
         {
             get
             {
@@ -76,7 +76,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Barycentric dynamical time for given Terrestrial Julian Date</value>
         /// <returns>Julian date</returns>
         /// <remarks></remarks>
-        public double BarycentricTime
+        public float BarycentricTime
         {
             get
             {
@@ -87,10 +87,10 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <summary>
         /// Earth barycentric velocity 
         /// </summary>
-        /// <value>Barycentric velocity vector</value>
+        /// <value>Barycentric velocity Vector2</value>
         /// <returns>AU/day (ref J2000)</returns>
         /// <remarks></remarks>
-        public VelocityVector BarycentricVelocity
+        public VelocityVector2 BarycentricVelocity
         {
             get
             {
@@ -123,7 +123,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Equation of the equinoxes</value>
         /// <returns>Seconds</returns>
         /// <remarks></remarks>
-        public double EquationOfEquinoxes
+        public float EquationOfEquinoxes
         {
             get
             {
@@ -134,10 +134,10 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <summary>
         /// Earth heliocentric position
         /// </summary>
-        /// <value>Heliocentric position vector</value>
+        /// <value>Heliocentric position Vector2</value>
         /// <returns>AU (ref J2000)</returns>
         /// <remarks></remarks>
-        public PositionVector HeliocentricPosition
+        public PositionVector2 HeliocentricPosition
         {
             get
             {
@@ -149,9 +149,9 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// Earth heliocentric velocity 
         /// </summary>
         /// <value>Heliocentric velocity</value>
-        /// <returns>Velocity vector, AU/day (ref J2000)</returns>
+        /// <returns>Velocity Vector2, AU/day (ref J2000)</returns>
         /// <remarks></remarks>
-        public VelocityVector HeliocentricVelocity
+        public VelocityVector2 HeliocentricVelocity
         {
             get
             {
@@ -165,7 +165,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Mean obliquity of the ecliptic</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double MeanObliquity
+        public float MeanObliquity
         {
             get
             {
@@ -179,7 +179,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Nutation in longitude</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double NutationInLongitude
+        public float NutationInLongitude
         {
             get
             {
@@ -193,7 +193,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Nutation in obliquity</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double NutationInObliquity
+        public float NutationInObliquity
         {
             get
             {
@@ -207,9 +207,9 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <param name="tjd">Terrestrial Julian date</param>
         /// <returns>True if successful, else throws an exception</returns>
         /// <remarks></remarks>
-        public bool SetForTime(double tjd)
+        public bool SetForTime(float tjd)
         {
-            double[] m_peb = new double[3], m_veb = new double[3], m_pes = new double[3], m_ves = new double[3];
+            float[] m_peb = new float[3], m_veb = new float[3], m_pes = new float[3], m_ves = new float[3];
             // TL.LogMessage("SetForTime", "Start")
             EphemerisCode.get_earth_nov(ref m_EarthEph, tjd, ref m_BaryTime, ref m_peb, ref m_veb, ref m_pes, ref m_ves);
             // TL.LogMessage("SetForTime", "After get_earth_nov")
@@ -230,7 +230,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             m_HeliVel.z = m_ves[2];
 
             m_Valid = true;
-            // Dim Earth As New bodystruct, POS(2), VEL(2) As Double
+            // Dim Earth As New bodystruct, POS(2), VEL(2) As float
             // Earth.name = "Earth"
             // Earth.number = Body.Earth
             // Earth.type = NOVAS2Net.BodyType.MajorPlanet
@@ -263,7 +263,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>True obliquity of the ecliptic</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double TrueObliquity
+        public float TrueObliquity
         {
             get
             {
@@ -285,12 +285,12 @@ namespace ASCOM.Astrometry.NOVASCOM
     /// <para>The high-level NOVAS astrometric functions are implemented as methods of Planet: 
     /// GetTopocentricPosition(), GetLocalPosition(), GetApparentPosition(), GetVirtualPosition(), 
     /// and GetAstrometricPosition(). These methods operate on the properties of the Planet, and produce 
-    /// a PositionVector object. For example, to get the topocentric coordinates of a planet, create and 
+    /// a PositionVector2 object. For example, to get the topocentric coordinates of a planet, create and 
     /// initialize a planet then call 
-    /// Planet.GetTopocentricPosition(). The resulting PositionVector's right ascension and declination 
+    /// Planet.GetTopocentricPosition(). The resulting PositionVector2's right ascension and declination 
     /// properties are the topocentric equatorial coordinates, at the same time, the (optionally 
     /// refracted) alt-az coordinates are calculated, and are also contained within the returned 
-    /// PositionVector. <b>Note that Alt/Az is available in PositionVectors returned from calling 
+    /// PositionVector2. <b>Note that Alt/Az is available in PositionVector2s returned from calling 
     /// GetTopocentricPosition().</b> The accuracy of these calculations is typically dominated by the accuracy 
     /// of the attached ephemeris generator. </para>
     /// <para><b>Ephemeris Generator</b><br />
@@ -299,7 +299,7 @@ namespace ASCOM.Astrometry.NOVASCOM
     /// component</para>
     /// <para>The ephemeris generator object used with NOVAS-COM must support a single 
     /// method GetPositionAndVelocity(tjd). This method must take a terrestrial Julian date (like the 
-    /// NOVAS-COM methods) as its single parameter, and return an array of Double 
+    /// NOVAS-COM methods) as its single parameter, and return an array of float 
     /// containing the rectangular (x/y/z) heliocentric J2000 equatorial coordinates of position (AU) and velocity 
     /// (KM/sec.). In addition, it must support three read/write properties BodyType, Name, and Number, 
     /// which correspond to the Type, Name, and Number properties of Novas.Planet. 
@@ -311,7 +311,7 @@ namespace ASCOM.Astrometry.NOVASCOM
     public class Planet : IPlanet
     {
 
-        private double m_deltat;
+        private float m_deltat;
         private bool m_bDTValid;
         private BodyType m_type;
         private int m_number;
@@ -354,7 +354,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>The value of delta-T (TT - UT1) to use for reductions</value>
         /// <returns>Seconds</returns>
         /// <remarks>Setting this value is optional. If no value is set, an internal delta-T generator is used.</remarks>
-        public double DeltaT
+        public float DeltaT
         {
             get
             {
@@ -412,17 +412,17 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// Get an apparent position for given time
         /// </summary>
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
-        /// <returns>PositionVector for the apparent place.</returns>
+        /// <returns>PositionVector2 for the apparent place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetApparentPosition(double tjd)
+        public PositionVector2 GetApparentPosition(float tjd)
         {
-            double tdb = default, t2, t3, lighttime = default;
-            double[] peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4], pos1 = new double[4], vel1 = new double[4], pos2 = new double[4], pos3 = new double[4], pos4 = new double[4], pos5 = new double[4], vec = new double[9];
+            float tdb = default, t2, t3, lighttime = default;
+            float[] peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4], pos1 = new float[4], vel1 = new float[4], pos2 = new float[4], pos3 = new float[4], pos4 = new float[4], pos5 = new float[4], vec = new float[9];
             int iter;
-            PositionVector pv;
+            PositionVector2 pv;
 
             Object3 Obj3;
-            double RA = default, Dec = default, Dis = default;
+            float RA = default, Dec = default, Dis = default;
             int rc;
 
             Obj3 = new Object3();
@@ -433,9 +433,9 @@ namespace ASCOM.Astrometry.NOVASCOM
                 Obj3.Type = ObjectType.MajorPlanetSunOrMoon;
 
                 rc = Nov31.AppPlanet(tjd, Obj3, Accuracy.Full, ref RA, ref Dec, ref Dis); // Get the apparent RA/Dec
-                RADec2Vector(RA, Dec, Dis, ref pos1); // Convert to a vector
+                RADec2Vector2(RA, Dec, Dis, ref pos1); // Convert to a Vector2
 
-                pv = new PositionVector(pos1[0], pos1[1], pos1[2], RA, Dec, Dis, Dis / GlobalItems.C); // Create the position vector to return
+                pv = new PositionVector2(pos1[0], pos1[1], pos1[2], RA, Dec, Dis, Dis / GlobalItems.C); // Create the position Vector2 to return
             }
             else
             {
@@ -472,7 +472,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                 Precession(GlobalItems.J2000BASE, pos4, tdb, ref pos5);
                 Nutate(tdb, NutationDirection.MeanToTrue, pos5, ref vec);
 
-                pv = new PositionVector();
+                pv = new PositionVector2();
                 pv.x = vec[0];
                 pv.y = vec[1];
                 pv.z = vec[2];
@@ -485,19 +485,19 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// Get an astrometric position for given time
         /// </summary>
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
-        /// <returns>PositionVector for the astrometric place.</returns>
+        /// <returns>PositionVector2 for the astrometric place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetAstrometricPosition(double tjd)
+        public PositionVector2 GetAstrometricPosition(float tjd)
         {
-            double t2, t3;
-            double lighttime = default, tdb = default;
-            double[] pos1 = new double[4], vel1 = new double[4], pos2 = new double[4], peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4];
-            // Dim tdbe As Double
+            float t2, t3;
+            float lighttime = default, tdb = default;
+            float[] pos1 = new float[4], vel1 = new float[4], pos2 = new float[4], peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4];
+            // Dim tdbe As float
             int iter;
             // Dim earth As New bodystruct
-            PositionVector RetVal;
+            PositionVector2 RetVal;
             Object3 Obj3;
-            double RA = default, Dec = default, Dis = default;
+            float RA = default, Dec = default, Dis = default;
             int rc;
             // TL.LogMessage("GetAstrometricPosition", "tjd: " & tjd & ", BodyType: " & m_type.ToString & ", Number: " & Number)
             Obj3 = new Object3();
@@ -508,16 +508,16 @@ namespace ASCOM.Astrometry.NOVASCOM
                 Obj3.Type = ObjectType.MajorPlanetSunOrMoon;
 
                 rc = Nov31.AstroPlanet(tjd, Obj3, Accuracy.Full, ref RA, ref Dec, ref Dis); // Get the astro RA/Dec
-                RADec2Vector(RA, Dec, Dis, ref pos1); // Convert to a vector
+                RADec2Vector2(RA, Dec, Dis, ref pos1); // Convert to a Vector2
 
-                RetVal = new PositionVector(pos1[0], pos1[1], pos1[2], RA, Dec, Dis, Dis / GlobalItems.C); // Create the position vector to return
+                RetVal = new PositionVector2(pos1[0], pos1[1], pos1[2], RA, Dec, Dis, Dis / GlobalItems.C); // Create the position Vector2 to return
             }
 
             else
             {
 
 
-                // Dim pebe(3), pese(3), vebe(3), vese(3) As Double
+                // Dim pebe(3), pese(3), vebe(3), vese(3) As float
                 //
                 // Get position of the Earth wrt center of Sun and barycenter of the
                 // solar system.
@@ -574,7 +574,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                 //
                 // pos2 is astrometric place.
                 //
-                RetVal = new PositionVector();
+                RetVal = new PositionVector2();
                 RetVal.x = pos2[0];
                 RetVal.y = pos2[1];
                 RetVal.z = pos2[2];
@@ -589,21 +589,21 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// </summary>
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
         /// <param name="site">The observing site</param>
-        /// <returns>PositionVector for the local place.</returns>
+        /// <returns>PositionVector2 for the local place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetLocalPosition(double tjd, Site site)
+        public PositionVector2 GetLocalPosition(float tjd, Site site)
         {
             int j, iter;
             var st = default(SiteInfo);
-            double t2, t3;
-            double gast = default, lighttime = default, ujd, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
-            double[] pog = new double[4], vog = new double[4], pb = new double[4], vb = new double[4], ps = new double[4], vs = new double[4], pos1 = new double[4], vel1 = new double[4], pos2 = new double[4], vel2 = new double[4], pos3 = new double[4], vec = new double[4], peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4];
-            PositionVector pv;
+            float t2, t3;
+            float gast = default, lighttime = default, ujd, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
+            float[] pog = new float[4], vog = new float[4], pb = new float[4], vb = new float[4], ps = new float[4], vs = new float[4], pos1 = new float[4], vel1 = new float[4], pos2 = new float[4], vel2 = new float[4], pos3 = new float[4], vec = new float[4], peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4];
+            PositionVector2 pv;
             var Obj3 = new Object3();
             var OnSurf = new OnSurface();
             RefractionOption Ref3;
             short rc;
-            double ra = default, rra = default, dec = default, rdec = default, az = default, zd = default, dist = default;
+            float ra = default, rra = default, dec = default, rdec = default, az = default, zd = default, dist = default;
 
             //
             // Compute 'ujd', the UT1 Julian date corresponding to 'tjd'.
@@ -659,8 +659,8 @@ namespace ASCOM.Astrometry.NOVASCOM
                 rc = Nov31.LocalPlanet(tjd, Obj3, m_deltat, OnSurf, Accuracy.Full, ref ra, ref dec, ref dist);
                 Nov31.Equ2Hor(ujd, m_deltat, Accuracy.Full, 0.0d, 0.0d, OnSurf, ra, dec, Ref3, ref zd, ref az, ref rra, ref rdec);
 
-                RADec2Vector(rra, rdec, dist, ref vec);
-                pv = new PositionVector(vec[0], vec[1], vec[2], rra, rdec, dist, dist / GlobalItems.C, az, 90.0d - zd);
+                RADec2Vector2(rra, rdec, dist, ref vec);
+                pv = new PositionVector2(vec[0], vec[1], vec[2], rra, rdec, dist, dist / GlobalItems.C, az, 90.0d - zd);
             }
 
             else // Some other planet
@@ -727,7 +727,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                 SunField(pos2, ps, ref pos3);
                 Aberration(pos3, vb, lighttime, ref vec);
 
-                pv = new PositionVector();
+                pv = new PositionVector2();
                 pv.x = vec[0];
                 pv.y = vec[1];
                 pv.z = vec[2];
@@ -742,19 +742,19 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
         /// <param name="site">The observing site</param>
         /// <param name="Refract">Apply refraction correction</param>
-        /// <returns>PositionVector for the topocentric place.</returns>
+        /// <returns>PositionVector2 for the topocentric place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetTopocentricPosition(double tjd, Site site, bool Refract)
+        public PositionVector2 GetTopocentricPosition(float tjd, Site site, bool Refract)
         {
             short j;
             int iter;
             RefractionOption @ref;
             var st = default(SiteInfo);
-            double ujd, t2, t3, gast = default, lighttime = default, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
-            double[] pos1 = new double[4], pos2 = new double[4], pos4 = new double[4], pos5 = new double[4], pos6 = new double[4], vel1 = new double[4], vel2 = new double[4], pog = new double[4], vog = new double[4], pob = new double[4], vec = new double[4], vob = new double[4], pos = new double[4], peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4];
-            double ra = default, rra = default, dec = default, rdec = default, az = default, zd = default, dist = default;
+            float ujd, t2, t3, gast = default, lighttime = default, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
+            float[] pos1 = new float[4], pos2 = new float[4], pos4 = new float[4], pos5 = new float[4], pos6 = new float[4], vel1 = new float[4], vel2 = new float[4], pog = new float[4], vog = new float[4], pob = new float[4], vec = new float[4], vob = new float[4], pos = new float[4], peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4];
+            float ra = default, rra = default, dec = default, rdec = default, az = default, zd = default, dist = default;
             bool wx;
-            PositionVector pv;
+            PositionVector2 pv;
 
             var Obj3 = new Object3();
             var OnSurf = new OnSurface();
@@ -822,8 +822,8 @@ namespace ASCOM.Astrometry.NOVASCOM
                 rc = Nov31.TopoPlanet(tjd, Obj3, m_deltat, OnSurf, Accuracy.Full, ref ra, ref dec, ref dist);
                 Nov31.Equ2Hor(ujd, m_deltat, Accuracy.Full, 0.0d, 0.0d, OnSurf, ra, dec, Ref3, ref zd, ref az, ref rra, ref rdec);
 
-                RADec2Vector(rra, rdec, dist, ref vec);
-                pv = new PositionVector(vec[0], vec[1], vec[2], rra, rdec, dist, dist / GlobalItems.C, az, 90.0d - zd);
+                RADec2Vector2(rra, rdec, dist, ref vec);
+                pv = new PositionVector2(vec[0], vec[1], vec[2], rra, rdec, dist, dist / GlobalItems.C, az, 90.0d - zd);
             }
 
             else // Some other planet
@@ -953,10 +953,10 @@ namespace ASCOM.Astrometry.NOVASCOM
                 // Distance does not change...
                 //
                 if (@ref != RefractionOption.NoRefraction)
-                    RADec2Vector(rra, rdec, dist, ref vec); // If refracted, recompute New refracted vector
+                    RADec2Vector2(rra, rdec, dist, ref vec); // If refracted, recompute New refracted Vector2
 
-                // Create a new positionvector with calculated values
-                pv = new PositionVector(vec[0], vec[1], vec[2], rra, rdec, dist, dist / GlobalItems.C, az, 90.0d - zd);
+                // Create a new positionVector2 with calculated values
+                pv = new PositionVector2(vec[0], vec[1], vec[2], rra, rdec, dist, dist / GlobalItems.C, az, 90.0d - zd);
 
             }
 
@@ -968,17 +968,17 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// Get a virtual position for given time
         /// </summary>
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
-        /// <returns>PositionVector for the virtual place.</returns>
+        /// <returns>PositionVector2 for the virtual place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetVirtualPosition(double tjd)
+        public PositionVector2 GetVirtualPosition(float tjd)
         {
-            double t2, t3;
-            double lighttime = default, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
-            double[] pos1 = new double[4], vel1 = new double[4], pos2 = new double[4], pos3 = new double[4], vec = new double[4], peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4];
+            float t2, t3;
+            float lighttime = default, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
+            float[] pos1 = new float[4], vel1 = new float[4], pos2 = new float[4], pos3 = new float[4], vec = new float[4], peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4];
             int iter;
-            var pv = new PositionVector();
+            var pv = new PositionVector2();
             Object3 Obj3;
-            double RA = default, Dec = default, Dis = default;
+            float RA = default, Dec = default, Dis = default;
             int rc;
 
             Obj3 = new Object3();
@@ -989,9 +989,9 @@ namespace ASCOM.Astrometry.NOVASCOM
                 Obj3.Type = ObjectType.MajorPlanetSunOrMoon;
 
                 rc = Nov31.VirtualPlanet(tjd, Obj3, Accuracy.Full, ref RA, ref Dec, ref Dis); // Get the astro RA/Dec
-                RADec2Vector(RA, Dec, Dis, ref pos1); // Convert to a vector
+                RADec2Vector2(RA, Dec, Dis, ref pos1); // Convert to a Vector2
 
-                pv = new PositionVector(pos1[0], pos1[1], pos1[2], RA, Dec, Dis, Dis / GlobalItems.C); // Create the position vector to return
+                pv = new PositionVector2(pos1[0], pos1[1], pos1[2], RA, Dec, Dis, Dis / GlobalItems.C); // Create the position Vector2 to return
             }
 
             else
@@ -1131,33 +1131,33 @@ namespace ASCOM.Astrometry.NOVASCOM
     }
 
     /// <summary>
-    /// NOVAS-COM: PositionVector Class
+    /// NOVAS-COM: PositionVector2 Class
     /// </summary>
-    /// <remarks>NOVAS-COM objects of class PositionVector contain vectors used for positions (earth, sites, 
+    /// <remarks>NOVAS-COM objects of class PositionVector2 contain Vector2s used for positions (earth, sites, 
     /// stars and planets) throughout NOVAS-COM. Of course, its properties include the x, y, and z 
     /// components of the position. Additional properties are right ascension and declination, distance, 
-    /// and light time (applicable to star positions), and Alt/Az (available only in PositionVectors 
-    /// returned by Star or Planet methods GetTopocentricPosition()). You can initialize a PositionVector 
+    /// and light time (applicable to star positions), and Alt/Az (available only in PositionVector2s 
+    /// returned by Star or Planet methods GetTopocentricPosition()). You can initialize a PositionVector2 
     /// from a Star object (essentially an FK5 or HIP catalog entry) or a Site (lat/long/height). 
-    /// PositionVector has methods that can adjust the coordinates for precession, aberration and 
-    /// proper motion. Thus, a PositionVector object gives access to some of the lower-level NOVAS functions. 
+    /// PositionVector2 has methods that can adjust the coordinates for precession, aberration and 
+    /// proper motion. Thus, a PositionVector2 object gives access to some of the lower-level NOVAS functions. 
     /// <para><b>Note:</b> The equatorial coordinate properties of this object are dependent variables, and thus are read-only. Changing any cartesian coordinate will cause the equatorial coordinates to be recalculated. 
     /// </para></remarks>
     [Guid("8D8B7043-49AA-40be-881F-0EC5D8E2213D")]
     [ClassInterface(ClassInterfaceType.None)]
     [ComVisible(true)]
-    public class PositionVector : IPositionVector, IPositionVectorExtra
+    public class PositionVector2 : IPositionVector2, IPositionVector2Extra
     {
         private bool xOk, yOk, zOk, RADecOk, AzElOk;
-        private double[] PosVec = new double[3];
-        private double m_RA, m_DEC, m_Dist, m_Light, m_Alt, m_Az;
+        private float[] PosVec = new float[3];
+        private float m_RA, m_DEC, m_Dist, m_Light, m_Alt, m_Az;
         private NOVAS31 Nov31 = new();
 
         /// <summary>
-        /// Create a new, uninitialised position vector
+        /// Create a new, uninitialised position Vector2
         /// </summary>
         /// <remarks></remarks>
-        public PositionVector()
+        public PositionVector2()
         {
             xOk = false;
             yOk = false;
@@ -1167,11 +1167,11 @@ namespace ASCOM.Astrometry.NOVASCOM
         }
 
         /// <summary>
-        /// Create a new position vector with supplied initial values
+        /// Create a new position Vector2 with supplied initial values
         /// </summary>
-        /// <param name="x">Position vector x co-ordinate</param>
-        /// <param name="y">Position vector y co-ordinate</param>
-        /// <param name="z">Position vector z co-ordinate</param>
+        /// <param name="x">Position Vector2 x co-ordinate</param>
+        /// <param name="y">Position Vector2 y co-ordinate</param>
+        /// <param name="z">Position Vector2 z co-ordinate</param>
         /// <param name="RA">Right ascension (hours)</param>
         /// <param name="DEC">Declination (degrees)</param>
         /// <param name="Distance">Distance to object</param>
@@ -1179,7 +1179,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <param name="Azimuth">Object azimuth</param>
         /// <param name="Altitude">Object altitude</param>
         /// <remarks></remarks>
-        public PositionVector(double x, double y, double z, double RA, double DEC, double Distance, double Light, double Azimuth, double Altitude)
+        public PositionVector2(float x, float y, float z, float RA, float DEC, float Distance, float Light, float Azimuth, float Altitude)
         {
             PosVec[0] = x;
             xOk = true;
@@ -1198,17 +1198,17 @@ namespace ASCOM.Astrometry.NOVASCOM
         }
 
         /// <summary>
-        /// Create a new position vector with supplied initial values
+        /// Create a new position Vector2 with supplied initial values
         /// </summary>
-        /// <param name="x">Position vector x co-ordinate</param>
-        /// <param name="y">Position vector y co-ordinate</param>
-        /// <param name="z">Position vector z co-ordinate</param>
+        /// <param name="x">Position Vector2 x co-ordinate</param>
+        /// <param name="y">Position Vector2 y co-ordinate</param>
+        /// <param name="z">Position Vector2 z co-ordinate</param>
         /// <param name="RA">Right ascension (hours)</param>
         /// <param name="DEC">Declination (degrees)</param>
         /// <param name="Distance">Distance to object</param>
         /// <param name="Light">Light-time to object</param>
         /// <remarks></remarks>
-        public PositionVector(double x, double y, double z, double RA, double DEC, double Distance, double Light)
+        public PositionVector2(float x, float y, float z, float RA, float DEC, float Distance, float Light)
         {
             PosVec[0] = x;
             xOk = true;
@@ -1225,15 +1225,15 @@ namespace ASCOM.Astrometry.NOVASCOM
         }
 
         /// <summary>
-        /// Adjust the position vector of an object for aberration of light
+        /// Adjust the position Vector2 of an object for aberration of light
         /// </summary>
-        /// <param name="vel">The velocity vector of the observer</param>
+        /// <param name="vel">The velocity Vector2 of the observer</param>
         /// <remarks>The algorithm includes relativistic terms</remarks>
-        public void Aberration(VelocityVector vel)
+        public void Aberration(VelocityVector2 vel)
         {
-            double[] p = new double[3], v = new double[3];
+            float[] p = new float[3], v = new float[3];
             if (!(xOk & yOk & zOk))
-                throw new Exceptions.ValueNotSetException("PositionVector:ProperMotion x, y or z has not been set");
+                throw new Exceptions.ValueNotSetException("PositionVector2:ProperMotion x, y or z has not been set");
             CheckEq();
             p[0] = PosVec[0];
             p[1] = PosVec[1];
@@ -1245,7 +1245,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:Aberration VelocityVector.x is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:Aberration VelocityVector2.x is not available");
             }
             try
             {
@@ -1253,7 +1253,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:Aberration VelocityVector.y is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:Aberration VelocityVector2.y is not available");
 
             }
             try
@@ -1262,7 +1262,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:Aberration VelocityVector.z is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:Aberration VelocityVector2.z is not available");
             }
             NOVAS2.Aberration(p, v, m_Light, ref PosVec);
             RADecOk = false;
@@ -1275,12 +1275,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>The azimuth coordinate</value>
         /// <returns>Degrees, + East</returns>
         /// <remarks></remarks>
-        public double Azimuth
+        public float Azimuth
         {
             get
             {
                 if (!AzElOk)
-                    throw new Exceptions.ValueNotAvailableException("PositionVector:Azimuth Azimuth is not available");
+                    throw new Exceptions.ValueNotAvailableException("PositionVector2:Azimuth Azimuth is not available");
                 return m_Az;
             }
         }
@@ -1291,12 +1291,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Declination coordinate</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double Declination
+        public float Declination
         {
             get
             {
                 if (!(xOk & yOk & zOk))
-                    throw new Exceptions.ValueNotSetException("PositionVector:Declination x, y or z has not been set");
+                    throw new Exceptions.ValueNotSetException("PositionVector2:Declination x, y or z has not been set");
                 CheckEq();
                 return m_DEC;
             }
@@ -1308,12 +1308,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Distance/Radius coordinate</value>
         /// <returns>AU</returns>
         /// <remarks></remarks>
-        public double Distance
+        public float Distance
         {
             get
             {
                 if (!(xOk & yOk & zOk))
-                    throw new Exceptions.ValueNotSetException("PositionVector:Distance x, y or z has not been set");
+                    throw new Exceptions.ValueNotSetException("PositionVector2:Distance x, y or z has not been set");
                 CheckEq();
                 return m_Dist;
             }
@@ -1324,16 +1324,16 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// </summary>
         /// <value>The elevation (altitude) coordinate (degrees, + up)</value>
         /// <returns>(Degrees, + up</returns>
-        /// <remarks>Elevation is available only in PositionVectors returned from calls to 
+        /// <remarks>Elevation is available only in PositionVector2s returned from calls to 
         /// Star.GetTopocentricPosition() and/or Planet.GetTopocentricPosition(). </remarks>
-        /// <exception cref="Exceptions.ValueNotAvailableException">When the position vector has not been 
+        /// <exception cref="Exceptions.ValueNotAvailableException">When the position Vector2 has not been 
         /// initialised from Star.GetTopoCentricPosition and Planet.GetTopocentricPosition</exception>
-        public double Elevation
+        public float Elevation
         {
             get
             {
                 if (!AzElOk)
-                    throw new Exceptions.ValueNotAvailableException("PositionVector:Elevation Elevation is not available");
+                    throw new Exceptions.ValueNotAvailableException("PositionVector2:Elevation Elevation is not available");
                 return m_Alt;
             }
         }
@@ -1344,28 +1344,28 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Light time from body to origin</value>
         /// <returns>Days</returns>
         /// <remarks></remarks>
-        public double LightTime
+        public float LightTime
         {
             get
             {
                 if (!(xOk & yOk & zOk))
-                    throw new Exceptions.ValueNotSetException("PositionVector:LightTime x, y or z has not been set");
+                    throw new Exceptions.ValueNotSetException("PositionVector2:LightTime x, y or z has not been set");
                 CheckEq();
                 return m_Light;
             }
         }
 
         /// <summary>
-        /// Adjust the position vector for precession of equinoxes between two given epochs
+        /// Adjust the position Vector2 for precession of equinoxes between two given epochs
         /// </summary>
         /// <param name="tjd">The first epoch (Terrestrial Julian Date)</param>
         /// <param name="tjd2">The second epoch (Terrestrial Julian Date)</param>
         /// <remarks>The coordinates are referred to the mean equator and equinox of the two respective epochs.</remarks>
-        public void Precess(double tjd, double tjd2)
+        public void Precess(float tjd, float tjd2)
         {
-            var p = new double[3];
+            var p = new float[3];
             if (!(xOk & yOk & zOk))
-                throw new Exceptions.ValueNotSetException("PositionVector:Precess x, y or z has not been set");
+                throw new Exceptions.ValueNotSetException("PositionVector2:Precess x, y or z has not been set");
             p[0] = PosVec[0];
             p[1] = PosVec[1];
             p[2] = PosVec[2];
@@ -1375,20 +1375,20 @@ namespace ASCOM.Astrometry.NOVASCOM
         }
 
         /// <summary>
-        /// Adjust the position vector for proper motion (including foreshortening effects)
+        /// Adjust the position Vector2 for proper motion (including foreshortening effects)
         /// </summary>
-        /// <param name="vel">The velocity vector of the object</param>
+        /// <param name="vel">The velocity Vector2 of the object</param>
         /// <param name="tjd1">The first epoch (Terrestrial Julian Date)</param>
         /// <param name="tjd2">The second epoch (Terrestrial Julian Date)</param>
         /// <returns>True if successful or throws an exception.</returns>
         /// <remarks></remarks>
-        /// <exception cref="Exceptions.ValueNotSetException">If the position vector x, y or z values has not been set</exception>
-        /// <exception cref="Exceptions.ValueNotAvailableException">If the supplied velocity vector does not have valid x, y and z components</exception>
-        public bool ProperMotion(VelocityVector vel, double tjd1, double tjd2)
+        /// <exception cref="Exceptions.ValueNotSetException">If the position Vector2 x, y or z values has not been set</exception>
+        /// <exception cref="Exceptions.ValueNotAvailableException">If the supplied velocity Vector2 does not have valid x, y and z components</exception>
+        public bool ProperMotion(VelocityVector2 vel, float tjd1, float tjd2)
         {
-            double[] p = new double[3], v = new double[3];
+            float[] p = new float[3], v = new float[3];
             if (!(xOk & yOk & zOk))
-                throw new Exceptions.ValueNotSetException("PositionVector:ProperMotion x, y or z has not been set");
+                throw new Exceptions.ValueNotSetException("PositionVector2:ProperMotion x, y or z has not been set");
             p[0] = PosVec[0];
             p[1] = PosVec[1];
             p[2] = PosVec[2];
@@ -1398,7 +1398,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:ProperMotion VelocityVector.x is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:ProperMotion VelocityVector2.x is not available");
             }
             try
             {
@@ -1406,7 +1406,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:ProperMotion VelocityVector.y is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:ProperMotion VelocityVector2.y is not available");
             }
             try
             {
@@ -1414,7 +1414,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception)
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:ProperMotion VelocityVector.z is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:ProperMotion VelocityVector2.z is not available");
             }
             NOVAS2.ProperMotion(tjd1, p, v, tjd2, ref PosVec);
             RADecOk = false;
@@ -1428,19 +1428,19 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>RightAscension coordinate</value>
         /// <returns>Hours</returns>
         /// <remarks></remarks>
-        public double RightAscension
+        public float RightAscension
         {
             get
             {
                 if (!(xOk & yOk & zOk))
-                    throw new Exceptions.ValueNotSetException("PositionVector:RA x, y or z has not been set");
+                    throw new Exceptions.ValueNotSetException("PositionVector2:RA x, y or z has not been set");
                 CheckEq();
                 return m_RA;
             }
         }
 
         /// <summary>
-        /// Initialize the PositionVector from a Site object and Greenwich apparent sidereal time.
+        /// Initialize the PositionVector2 from a Site object and Greenwich apparent sidereal time.
         /// </summary>
         /// <param name="site">The Site object from which to initialize</param>
         /// <param name="gast">Greenwich Apparent Sidereal Time</param>
@@ -1448,10 +1448,10 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <remarks>The GAST parameter must be for Greenwich, not local. The time is rotated through the 
         /// site longitude. See SetFromSiteJD() for an equivalent method that takes UTC Julian Date and 
         /// Delta-T (eliminating the need for calculating hyper-accurate GAST yourself).</remarks>
-        public bool SetFromSite(Site site, double gast)
+        public bool SetFromSite(Site site, float gast)
         {
-            const double f = 0.00335281d; // f = Earth ellipsoid flattening
-            double df2, t, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst;
+            const float f = 0.00335281d; // f = Earth ellipsoid flattening
+            float df2, t, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst;
 
             //
             // Compute parameters relating to geodetic to geocentric conversion.
@@ -1463,7 +1463,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:SetFromSite Site.Latitude is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:SetFromSite Site.Latitude is not available");
             }
 
             t = GlobalItems.DEG2RAD * t;
@@ -1478,7 +1478,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:SetFromSite Site.Height is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:SetFromSite Site.Height is not available");
             }
             t /= 1000d; // Elevation in KM
             ach = GlobalItems.EARTHRAD * c + t;
@@ -1493,7 +1493,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:SetFromSite Site.Height is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:SetFromSite Site.Height is not available");
             }
 
             stlocl = (gast * 15.0d + t) * GlobalItems.DEG2RAD;
@@ -1501,14 +1501,14 @@ namespace ASCOM.Astrometry.NOVASCOM
             cosst = Cos(stlocl);
 
             //
-            // Compute position vector components in AU
+            // Compute position Vector2 components in AU
             //
 
             PosVec[0] = ach * cosphi * cosst / GlobalItems.KMAU;
             PosVec[1] = ach * cosphi * sinst / GlobalItems.KMAU;
             PosVec[2] = ash * sinphi / GlobalItems.KMAU;
 
-            RADecOk = false; // These really aren't inteersting anyway for site vector
+            RADecOk = false; // These really aren't inteersting anyway for site Vector2
             AzElOk = false;
 
             xOk = true; // Object is valid
@@ -1518,7 +1518,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         }
 
         /// <summary>
-        /// Initialize the PositionVector from a Site object using UTC Julian date
+        /// Initialize the PositionVector2 from a Site object using UTC Julian date
         /// </summary>
         /// <param name="site">The Site object from which to initialize</param>
         /// <param name="ujd">UTC Julian Date</param>
@@ -1526,28 +1526,28 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <remarks>The Julian date must be UTC Julian date, not terrestrial. Calculations will use the internal delta-T tables and estimator to get 
         /// delta-T. 
         /// This overload is not available through COM, please use 
-        /// "SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double)"
+        /// "SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float)"
         /// with delta_t set to 0.0 to achieve this effect.
         /// </remarks>
         [ComVisible(false)]
-        public bool SetFromSiteJD(Site site, double ujd)
+        public bool SetFromSiteJD(Site site, float ujd)
         {
             SetFromSiteJD(site, ujd, 0.0d);
             return default;
         }
 
         /// <summary>
-        /// Initialize the PositionVector from a Site object using UTC Julian date and Delta-T
+        /// Initialize the PositionVector2 from a Site object using UTC Julian date and Delta-T
         /// </summary>
         /// <param name="site">The Site object from which to initialize</param>
         /// <param name="ujd">UTC Julian Date</param>
         /// <param name="delta_t">The value of Delta-T (TT - UT1) to use for reductions (seconds)</param>
         /// <returns>True if successful or throws an exception</returns>
         /// <remarks>The Julian date must be UTC Julian date, not terrestrial.</remarks>
-        public bool SetFromSiteJD(Site site, double ujd, double delta_t)
+        public bool SetFromSiteJD(Site site, float ujd, float delta_t)
         {
-            double dummy = default, secdiff = default, tdb, tjd, gast = default;
-            double oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
+            float dummy = default, secdiff = default, tdb, tjd, gast = default;
+            float oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
 
             //
             // Convert UTC Julian date to Terrestrial Julian Date then
@@ -1583,7 +1583,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         }
 
         /// <summary>
-        /// Initialize the PositionVector from a Star object.
+        /// Initialize the PositionVector2 from a Star object.
         /// </summary>
         /// <param name="star">The Star object from which to initialize</param>
         /// <returns>True if successful or throws an exception</returns>
@@ -1591,7 +1591,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <exception cref="Exceptions.ValueNotAvailableException">If Parallax, RightAScension or Declination is not available in the supplied star object.</exception>
         public bool SetFromStar(Star star)
         {
-            double paralx, r, d, cra, sra, cdc, sdc;
+            float paralx, r, d, cra, sra, cdc, sdc;
 
             //
             // If parallax is unknown, undetermined, or zero, set it to 1e-7 second
@@ -1603,14 +1603,14 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:SetFromStar Star.Parallax is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:SetFromStar Star.Parallax is not available");
             }
 
             if (paralx <= 0.0d)
                 paralx = 0.0000001d;
 
             //
-            // Convert right ascension, declination, and parallax to position vector
+            // Convert right ascension, declination, and parallax to position Vector2
             // in equatorial system with units of AU.
             //
             m_Dist = GlobalItems.RAD2SEC / paralx;
@@ -1620,7 +1620,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:SetFromStar Star.RightAscension is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:SetFromStar Star.RightAscension is not available");
             }
 
             r = m_RA * 15.0d * GlobalItems.DEG2RAD; // hrs -> deg -> rad
@@ -1630,7 +1630,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("PositionVector:SetFromStar Star.Declination is not available");
+                throw new Exceptions.ValueNotAvailableException("PositionVector2:SetFromStar Star.Declination is not available");
             }
 
             d = m_DEC * GlobalItems.DEG2RAD; // deg -> rad
@@ -1657,12 +1657,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Cartesian x component</value>
         /// <returns>Cartesian x component</returns>
         /// <remarks></remarks>
-        public double x
+        public float x
         {
             get
             {
                 if (!xOk)
-                    throw new Exceptions.ValueNotSetException("PositionVector:x has not been set");
+                    throw new Exceptions.ValueNotSetException("PositionVector2:x has not been set");
                 return PosVec[0];
             }
             set
@@ -1680,12 +1680,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Cartesian y component</value>
         /// <returns>Cartesian y component</returns>
         /// <remarks></remarks>
-        public double y
+        public float y
         {
             get
             {
                 if (!yOk)
-                    throw new Exceptions.ValueNotSetException("PositionVector:y has not been set");
+                    throw new Exceptions.ValueNotSetException("PositionVector2:y has not been set");
                 return PosVec[1];
             }
             set
@@ -1703,12 +1703,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Cartesian z component</value>
         /// <returns>Cartesian z component</returns>
         /// <remarks></remarks>
-        public double z
+        public float z
         {
             get
             {
                 if (!zOk)
-                    throw new Exceptions.ValueNotSetException("PositionVector:z has not been set");
+                    throw new Exceptions.ValueNotSetException("PositionVector2:z has not been set");
                 return PosVec[2];
             }
             set
@@ -1720,7 +1720,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
         }
 
-        #region PositionVector Support Code
+        #region PositionVector2 Support Code
         private void CheckEq()
         {
             if (RADecOk)
@@ -1745,7 +1745,7 @@ namespace ASCOM.Astrometry.NOVASCOM
     [ComVisible(true)]
     public class Site : ISite
     {
-        private double vHeight, vLatitude, vLongitude, vPressure, vTemperature;
+        private float vHeight, vLatitude, vLongitude, vPressure, vTemperature;
         private bool HeightValid, LatitudeValid, LongitudeValid, PressureValid, TemperatureValid;
 
         /// <summary>
@@ -1767,7 +1767,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Height above mean sea level</value>
         /// <returns>Meters</returns>
         /// <remarks></remarks>
-        public double Height
+        public float Height
         {
             get
             {
@@ -1788,7 +1788,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Geodetic latitude</value>
         /// <returns>Degrees, + north</returns>
         /// <remarks></remarks>
-        public double Latitude
+        public float Latitude
         {
             get
             {
@@ -1809,7 +1809,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Geodetic longitude</value>
         /// <returns>Degrees, + east</returns>
         /// <remarks></remarks>
-        public double Longitude
+        public float Longitude
         {
             get
             {
@@ -1830,7 +1830,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Barometric pressure</value>
         /// <returns>Millibars</returns>
         /// <remarks></remarks>
-        public double Pressure
+        public float Pressure
         {
             get
             {
@@ -1852,7 +1852,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <param name="Longitude">The geodetic longitude (degrees, +east)</param>
         /// <param name="Height">Height above sea level (meters)</param>
         /// <remarks></remarks>
-        public void Set(double Latitude, double Longitude, double Height)
+        public void Set(float Latitude, float Longitude, float Height)
         {
             vLatitude = Latitude;
             vLongitude = Longitude;
@@ -1868,7 +1868,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Ambient temperature</value>
         /// <returns>Degrees Celsius)</returns>
         /// <remarks></remarks>
-        public double Temperature
+        public float Temperature
         {
             get
             {
@@ -1891,25 +1891,25 @@ namespace ASCOM.Astrometry.NOVASCOM
     /// <para>The high-level NOVAS astrometric functions are implemented as methods of Star: 
     /// GetTopocentricPosition(), GetLocalPosition(), GetApparentPosition(), GetVirtualPosition(), 
     /// and GetAstrometricPosition(). These methods operate on the properties of the Star, and produce 
-    /// a PositionVector object. For example, to get the topocentric coordinates of a star, simply create 
-    /// and initialize a Star, then call Star.GetTopocentricPosition(). The resulting vaPositionVector's 
+    /// a PositionVector2 object. For example, to get the topocentric coordinates of a star, simply create 
+    /// and initialize a Star, then call Star.GetTopocentricPosition(). The resulting vaPositionVector2's 
     /// right ascension and declination properties are the topocentric equatorial coordinates, at the same 
     /// time, the (optionally refracted) alt-az coordinates are calculated, and are also contained within 
-    /// the returned PositionVector. <b>Note that Alt/Az is available in PositionVectors returned from calling 
+    /// the returned PositionVector2. <b>Note that Alt/Az is available in PositionVector2s returned from calling 
     /// GetTopocentricPosition().</b></para></remarks>
     [Guid("8FD58EDE-DF7A-4fdc-9DEC-FD0B36424F5F")]
     [ClassInterface(ClassInterfaceType.None)]
     [ComVisible(true)]
     public class Star : IStar
     {
-        private double m_rv, m_plx, m_pmdec, m_pmra, m_ra, m_dec, m_deltat;
+        private float m_rv, m_plx, m_pmdec, m_pmra, m_ra, m_dec, m_deltat;
         private bool m_rav, m_decv, m_bDTValid;
         private object m_earthephobj;
         private string m_cat, m_name;
         private int m_num;
         private BodyDescription m_earth;
         private short hr;
-        private double[] m_earthephdisps = new double[5];
+        private float[] m_earthephdisps = new float[5];
         private NOVAS31 Nov31 = new();
 
         /// <summary>
@@ -1963,7 +1963,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Mean catalog J2000 declination coordinate</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double Declination
+        public float Declination
         {
             get
             {
@@ -1984,7 +1984,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>The value of delta-T (TT - UT1) to use for reductions.</value>
         /// <returns>Seconds</returns>
         /// <remarks>If this property is not set, calculations will use an internal function to estimate delta-T.</remarks>
-        public double DeltaT
+        public float DeltaT
         {
             get
             {
@@ -2022,15 +2022,15 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// Get an apparent position for a given time
         /// </summary>
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
-        /// <returns>PositionVector for the apparent place.</returns>
+        /// <returns>PositionVector2 for the apparent place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetApparentPosition(double tjd)
+        public PositionVector2 GetApparentPosition(float tjd)
         {
             var cat = new CatEntry();
-            var PV = new PositionVector();
+            var PV = new PositionVector2();
 
-            double tdb = default, time2 = default;
-            double[] peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4], pos1 = new double[4], pos2 = new double[4], pos3 = new double[4], pos4 = new double[4], pos5 = new double[4], pos6 = new double[4], vel1 = new double[4], vec = new double[4];
+            float tdb = default, time2 = default;
+            float[] peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4], pos1 = new float[4], pos2 = new float[4], pos3 = new float[4], pos4 = new float[4], pos5 = new float[4], pos6 = new float[4], vel1 = new float[4], vec = new float[4];
 
             if (!(m_rav & m_decv))
                 throw new Exceptions.ValueNotSetException("Star.GetApparentPosition RA or DEC not available");
@@ -2058,7 +2058,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             cat.Parallax = m_plx;
             cat.RadialVelocity = m_rv;
 
-            StarVectors(cat, ref pos1, ref vel1);
+            StarVector2s(cat, ref pos1, ref vel1);
             ProperMotion(GlobalItems.J2000BASE, pos1, vel1, tdb, ref pos2);
 
             BaryToGeo(pos2, peb, ref pos3, ref time2);
@@ -2080,14 +2080,14 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// Get an astrometric position for a given time
         /// </summary>
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
-        /// <returns>PositionVector for the astrometric place.</returns>
+        /// <returns>PositionVector2 for the astrometric place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetAstrometricPosition(double tjd)
+        public PositionVector2 GetAstrometricPosition(float tjd)
         {
             var cat = new CatEntry();
-            var PV = new PositionVector();
-            double lighttime = default, tdb = default;
-            double[] pos1 = new double[4], vel1 = new double[4], pos2 = new double[4], peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4], vec = new double[4];
+            var PV = new PositionVector2();
+            float lighttime = default, tdb = default;
+            float[] pos1 = new float[4], vel1 = new float[4], pos2 = new float[4], peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4], vec = new float[4];
 
             if (!(m_rav & m_decv))
                 throw new Exceptions.ValueNotSetException("Star.GetAstrometricPosition RA or DEC not available");
@@ -2119,7 +2119,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             // Compute astrometric place.
             //
 
-            StarVectors(cat, ref pos1, ref vel1);
+            StarVector2s(cat, ref pos1, ref vel1);
             ProperMotion(GlobalItems.J2000BASE, pos1, vel1, tdb, ref pos2);
             BaryToGeo(pos2, peb, ref vec, ref lighttime);
 
@@ -2135,15 +2135,15 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// </summary>
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
         /// <param name="site">A Site object representing the observing site</param>
-        /// <returns>PositionVector for the local place.</returns>
+        /// <returns>PositionVector2 for the local place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetLocalPosition(double tjd, Site site)
+        public PositionVector2 GetLocalPosition(float tjd, Site site)
         {
             var cat = new CatEntry();
-            var PV = new PositionVector();
+            var PV = new PositionVector2();
             var st = new SiteInfo();
-            double gast = default, lighttime = default, ujd, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
-            double[] pog = new double[4], vog = new double[4], pb = new double[4], vb = new double[4], ps = new double[4], vs = new double[4], pos1 = new double[4], vel1 = new double[4], pos2 = new double[4], vel2 = new double[4], pos3 = new double[4], pos4 = new double[4], peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4], vec = new double[4];
+            float gast = default, lighttime = default, ujd, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
+            float[] pog = new float[4], vog = new float[4], pb = new float[4], vb = new float[4], ps = new float[4], vs = new float[4], pos1 = new float[4], vel1 = new float[4], pos2 = new float[4], vel2 = new float[4], pos3 = new float[4], pos4 = new float[4], peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4], vec = new float[4];
             int j;
 
             if (!(m_rav & m_decv))
@@ -2233,7 +2233,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             // Compute local place.
             //
 
-            StarVectors(cat, ref pos1, ref vel1);
+            StarVector2s(cat, ref pos1, ref vel1);
             ProperMotion(GlobalItems.J2000BASE, pos1, vel1, tdb, ref pos2);
             BaryToGeo(pos2, pb, ref pos3, ref lighttime);
             SunField(pos3, ps, ref pos4);
@@ -2256,17 +2256,17 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
         /// <param name="site">A Site object representing the observing site</param>
         /// <param name="Refract">True to apply atmospheric refraction corrections</param>
-        /// <returns>PositionVector for the topocentric place.</returns>
+        /// <returns>PositionVector2 for the topocentric place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetTopocentricPosition(double tjd, Site site, bool Refract)
+        public PositionVector2 GetTopocentricPosition(float tjd, Site site, bool Refract)
         {
             RefractionOption @ref;
             int j;
             var cat = new CatEntry();
             var st = new SiteInfo();
-            double lighttime = default, ujd, gast = default, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
-            double[] pob = new double[4], pog = new double[4], vob = new double[4], vog = new double[4], pos = new double[4], pos1 = new double[4], pos2 = new double[4], pos3 = new double[4], pos4 = new double[4], pos5 = new double[4], pos6 = new double[4], vel1 = new double[4], vel2 = new double[4], peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4], vec = new double[4];
-            double ra = default, rra = default, dec = default, rdec = default, az = default, zd = default, dist;
+            float lighttime = default, ujd, gast = default, tdb = default, oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
+            float[] pob = new float[4], pog = new float[4], vob = new float[4], vog = new float[4], pos = new float[4], pos1 = new float[4], pos2 = new float[4], pos3 = new float[4], pos4 = new float[4], pos5 = new float[4], pos6 = new float[4], vel1 = new float[4], vel2 = new float[4], peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4], vec = new float[4];
+            float ra = default, rra = default, dec = default, rdec = default, az = default, zd = default, dist;
             bool wx;
 
             if (!(m_rav & m_decv))
@@ -2346,7 +2346,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
 
             //
-            // Convert FK5 info to vector form
+            // Convert FK5 info to Vector2 form
             //
             cat.RA = m_ra;
             cat.Dec = m_dec;
@@ -2354,7 +2354,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             cat.ProMoDec = m_pmdec;
             cat.Parallax = m_plx;
             cat.RadialVelocity = m_rv;
-            StarVectors(cat, ref pos1, ref vel1);
+            StarVector2s(cat, ref pos1, ref vel1);
 
             //
             // Finish topocentric place calculation.
@@ -2425,11 +2425,11 @@ namespace ASCOM.Astrometry.NOVASCOM
             //
             if ((int)@ref > 0) // If refracted, recompute 
             {
-                RADec2Vector(rra, rdec, dist, ref vec); // New refracted vector
+                RADec2Vector2(rra, rdec, dist, ref vec); // New refracted Vector2
             }
 
-            // Create a new positionvector with calculated values
-            var PV = new PositionVector(vec[0], vec[1], vec[2], rra, rdec, dist, dist / GlobalItems.C, az, 90.0d - zd);
+            // Create a new positionVector2 with calculated values
+            var PV = new PositionVector2(vec[0], vec[1], vec[2], rra, rdec, dist, dist / GlobalItems.C, az, 90.0d - zd);
 
             return PV;
         }
@@ -2438,19 +2438,19 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// Get a virtual position at a given time
         /// </summary>
         /// <param name="tjd">Terrestrial Julian Date for the position</param>
-        /// <returns>PositionVector for the virtual place.</returns>
+        /// <returns>PositionVector2 for the virtual place.</returns>
         /// <remarks></remarks>
-        public PositionVector GetVirtualPosition(double tjd)
+        public PositionVector2 GetVirtualPosition(float tjd)
         {
             //
             // This is the NOVAS-COM implementation of virtual_star(). See the
             // original NOVAS-C sources for more info.
             //
             var cat = new CatEntry();
-            var PV = new PositionVector();
+            var PV = new PositionVector2();
 
-            double[] pos1 = new double[4], vel1 = new double[4], pos2 = new double[4], pos3 = new double[4], pos4 = new double[4], peb = new double[4], veb = new double[4], pes = new double[4], ves = new double[4], vec = new double[4];
-            double tdb = default, lighttime = default;
+            float[] pos1 = new float[4], vel1 = new float[4], pos2 = new float[4], pos3 = new float[4], pos4 = new float[4], peb = new float[4], veb = new float[4], pes = new float[4], ves = new float[4], vec = new float[4];
+            float tdb = default, lighttime = default;
 
             if (!(m_rav & m_decv))
                 throw new Exceptions.ValueNotSetException("Star.GetVirtualPosition RA or DEC not available");
@@ -2482,7 +2482,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             //
             // Compute virtual place.
             //
-            StarVectors(cat, ref pos1, ref vel1);
+            StarVector2s(cat, ref pos1, ref vel1);
             ProperMotion(GlobalItems.J2000BASE, pos1, vel1, tdb, ref pos2);
             BaryToGeo(pos2, peb, ref pos3, ref lighttime);
             SunField(pos3, pes, ref pos4);
@@ -2539,7 +2539,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Catalog mean J2000 parallax</value>
         /// <returns>Arc seconds</returns>
         /// <remarks></remarks>
-        public double Parallax
+        public float Parallax
         {
             get
             {
@@ -2557,7 +2557,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Catalog mean J2000 proper motion in declination</value>
         /// <returns>Arc seconds per century</returns>
         /// <remarks></remarks>
-        public double ProperMotionDec
+        public float ProperMotionDec
         {
             get
             {
@@ -2575,7 +2575,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Catalog mean J2000 proper motion in right ascension</value>
         /// <returns>Seconds per century</returns>
         /// <remarks></remarks>
-        public double ProperMotionRA
+        public float ProperMotionRA
         {
             get
             {
@@ -2593,7 +2593,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Catalog mean J2000 radial velocity</value>
         /// <returns>Kilometers per second</returns>
         /// <remarks></remarks>
-        public double RadialVelocity
+        public float RadialVelocity
         {
             get
             {
@@ -2611,7 +2611,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Catalog mean J2000 right ascension coordinate</value>
         /// <returns>Hours</returns>
         /// <remarks></remarks>
-        public double RightAscension
+        public float RightAscension
         {
             get
             {
@@ -2637,7 +2637,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <param name="RadVel">Catalog mean J2000 radial velocity (km/sec)</param>
         /// <remarks>Assumes positions are FK5. If Parallax is set to zero, NOVAS-COM assumes the object 
         /// is on the "celestial sphere", which has a distance of 10 megaparsecs. </remarks>
-        public void Set(double RA, double Dec, double ProMoRA, double ProMoDec, double Parallax, double RadVel)
+        public void Set(float RA, float Dec, float ProMoRA, float ProMoDec, float Parallax, float RadVel)
         {
             m_ra = RA;
             m_dec = Dec;
@@ -2665,7 +2665,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <para>If Parallax is set to zero, NOVAS-COM assumes the object is on the "celestial sphere", 
         /// which has a distance of 10 megaparsecs.</para>
         /// </remarks>
-        public void SetHipparcos(double RA, double Dec, double ProMoRA, double ProMoDec, double Parallax, double RadVel)
+        public void SetHipparcos(float RA, float Dec, float ProMoRA, float ProMoDec, float Parallax, float RadVel)
         {
             CatEntry hip = new(), fk5 = new();
 
@@ -2694,33 +2694,33 @@ namespace ASCOM.Astrometry.NOVASCOM
     }
 
     /// <summary>
-    /// NOVAS-COM: VelocityVector Class
+    /// NOVAS-COM: VelocityVector2 Class
     /// </summary>
-    /// <remarks>NOVAS-COM objects of class VelocityVector contain vectors used for velocities (earth, sites, 
+    /// <remarks>NOVAS-COM objects of class VelocityVector2 contain Vector2s used for velocities (earth, sites, 
     /// planets, and stars) throughout NOVAS-COM. Of course, its properties include the x, y, and z 
     /// components of the velocity. Additional properties are the velocity in equatorial coordinates of 
-    /// right ascension dot, declination dot and radial velocity. You can initialize a PositionVector from 
+    /// right ascension dot, declination dot and radial velocity. You can initialize a PositionVector2 from 
     /// a Star object (essentially an FK5 or HIP catalog entry) or a Site (lat/long/height). For the star 
     /// object the proper motions, distance and radial velocity are used, for a site, the velocity is that 
     /// of the observer with respect to the Earth's center of mass. </remarks>
     [Guid("25F2ED0A-D0C1-403d-86B9-5F7CEBE97D87")]
     [ClassInterface(ClassInterfaceType.None)]
     [ComVisible(true)]
-    public class VelocityVector : IVelocityVector, IVelocityVectorExtra
+    public class VelocityVector2 : IVelocityVector2, IVelocityVector2Extra
     {
 
         private bool m_xv, m_yv, m_zv, m_cv;
-        private double[] m_v = new double[3];
-        private double m_VRA, m_RadVel, m_VDec;
+        private float[] m_v = new float[3];
+        private float m_VRA, m_RadVel, m_VDec;
         private NOVAS31 Nov31 = new();
 
         /// <summary>
-        /// Creates a new velocity vector object
+        /// Creates a new velocity Vector2 object
         /// </summary>
         /// <remarks> </remarks>
-        public VelocityVector()
+        public VelocityVector2()
         {
-            m_xv = false; // Vector is not valid
+            m_xv = false; // Vector2 is not valid
             m_yv = false;
             m_zv = false;
             m_cv = false; // Coordinate velocities not valid
@@ -2731,12 +2731,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Linear velocity along the declination direction</value>
         /// <returns>AU/day</returns>
         /// <remarks>This is not the proper motion (which is an angular rate and is dependent on the distance to the object).</remarks>
-        public double DecVelocity
+        public float DecVelocity
         {
             get
             {
                 if (!(m_xv & m_yv & m_zv))
-                    throw new Exceptions.ValueNotSetException("VelocityVector:DecVelocity x, y or z has not been set");
+                    throw new Exceptions.ValueNotSetException("VelocityVector2:DecVelocity x, y or z has not been set");
                 CheckEq();
                 return m_VDec;
             }
@@ -2748,12 +2748,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Linear velocity along the radial direction</value>
         /// <returns>AU/day</returns>
         /// <remarks></remarks>
-        public double RadialVelocity
+        public float RadialVelocity
         {
             get
             {
                 if (!(m_xv & m_yv & m_zv))
-                    throw new Exceptions.ValueNotSetException("VelocityVector:RadialVelocity x, y or z has not been set");
+                    throw new Exceptions.ValueNotSetException("VelocityVector2:RadialVelocity x, y or z has not been set");
                 CheckEq();
                 return m_RadVel;
             }
@@ -2765,32 +2765,32 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Linear velocity along the right ascension direction</value>
         /// <returns>AU/day</returns>
         /// <remarks></remarks>
-        public double RAVelocity
+        public float RAVelocity
         {
             get
             {
                 if (!(m_xv & m_yv & m_zv))
-                    throw new Exceptions.ValueNotSetException("VelocityVector:RAVelocity x, y or z has not been set");
+                    throw new Exceptions.ValueNotSetException("VelocityVector2:RAVelocity x, y or z has not been set");
                 CheckEq();
                 return m_VRA;
             }
         }
 
         /// <summary>
-        /// Initialize the VelocityVector from a Site object and Greenwich Apparent Sdereal Time.
+        /// Initialize the VelocityVector2 from a Site object and Greenwich Apparent Sdereal Time.
         /// </summary>
         /// <param name="site">The Site object from which to initialize</param>
         /// <param name="gast">Greenwich Apparent Sidereal Time</param>
         /// <returns>True if OK or throws an exception</returns>
-        /// <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        /// <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         /// of mass. The GAST parameter must be for Greenwich, not local. The time is rotated through 
         /// the site longitude. See SetFromSiteJD() for an equivalent method that takes UTC Julian 
         /// Date and optionally Delta-T (eliminating the need for calculating hyper-accurate GAST yourself). </remarks>
-        public bool SetFromSite(Site site, double gast)
+        public bool SetFromSite(Site site, float gast)
         {
-            const double f = 0.00335281d; // f = Earth ellipsoid flattening
-            const double omega = 0.000072921151467d; // omega = Earth angular velocity rad/sec
-            double df2, t, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst;
+            const float f = 0.00335281d; // f = Earth ellipsoid flattening
+            const float omega = 0.000072921151467d; // omega = Earth angular velocity rad/sec
+            float df2, t, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst;
 
             //
             // Compute parameters relating to geodetic to geocentric conversion.
@@ -2802,7 +2802,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromSite Site.Latitude is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromSite Site.Latitude is not available");
             }
 
             t *= GlobalItems.DEG2RAD;
@@ -2816,7 +2816,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromSite Site.Height is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromSite Site.Height is not available");
             }
 
             t /= 1000d; // Elevation in KM
@@ -2832,14 +2832,14 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromSite Site.Longitude is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromSite Site.Longitude is not available");
             }
             stlocl = (gast * 15.0d + t) * GlobalItems.DEG2RAD;
             sinst = Sin(stlocl);
             cosst = Cos(stlocl);
 
             //
-            // Compute velocity vector components in AU/Day
+            // Compute velocity Vector2 components in AU/Day
             //
 
             m_v[0] = -omega * ach * cosphi * sinst * 86400.0d / GlobalItems.KMAU;
@@ -2848,28 +2848,28 @@ namespace ASCOM.Astrometry.NOVASCOM
 
             m_xv = true;
             m_yv = true;
-            m_zv = true; // Vector is complete
-            m_cv = false; // Not interesting for Site vector anyway
+            m_zv = true; // Vector2 is complete
+            m_cv = false; // Not interesting for Site Vector2 anyway
 
             return true;
         }
 
 
         /// <summary>
-        /// Initialize the VelocityVector from a Site object using UTC Julian Date
+        /// Initialize the VelocityVector2 from a Site object using UTC Julian Date
         /// </summary>
         /// <param name="site">The Site object from which to initialize</param>
         /// <param name="ujd">UTC Julian Date</param>
         /// <returns>True if OK otherwise throws an exception</returns>
-        /// <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        /// <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         /// of mass. The Julian date must be UTC Julian date, not terrestrial. This call will use 
         /// the internal tables and estimator to get delta-T.
         /// This overload is not available through COM, please use 
-        /// "SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double)"
+        /// "SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float)"
         /// with delta_t set to 0.0 to achieve this effect.
         /// </remarks>
         [ComVisible(false)]
-        public bool SetFromSiteJD(Site site, double ujd)
+        public bool SetFromSiteJD(Site site, float ujd)
         {
             SetFromSiteJD(site, ujd, 0.0d);
             return default;
@@ -2877,18 +2877,18 @@ namespace ASCOM.Astrometry.NOVASCOM
 
 
         /// <summary>
-        /// Initialize the VelocityVector from a Site object using UTC Julian Date and Delta-T
+        /// Initialize the VelocityVector2 from a Site object using UTC Julian Date and Delta-T
         /// </summary>
         /// <param name="site">The Site object from which to initialize</param>
         /// <param name="ujd">UTC Julian Date</param>
         /// <param name="delta_t">The optional value of Delta-T (TT - UT1) to use for reductions (seconds)</param>
         /// <returns>True if OK otherwise throws an exception</returns>
-        /// <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        /// <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         /// of mass. The Julian date must be UTC Julian date, not terrestrial.</remarks>
-        public bool SetFromSiteJD(Site site, double ujd, double delta_t)
+        public bool SetFromSiteJD(Site site, float ujd, float delta_t)
         {
-            double dummy = default, secdiff = default, tdb, tjd, gast = default;
-            double oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
+            float dummy = default, secdiff = default, tdb, tjd, gast = default;
+            float oblm = default, oblt = default, eqeq = default, psi = default, eps = default;
 
             //
             // Convert UTC Julian date to Terrestrial Julian Date then
@@ -2922,7 +2922,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         }
 
         /// <summary>
-        /// Initialize the VelocityVector from a Star object.
+        /// Initialize the VelocityVector2 from a Star object.
         /// </summary>
         /// <param name="star">The Star object from which to initialize</param>
         /// <returns>True if OK otherwise throws an exception</returns>
@@ -2931,7 +2931,7 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// ProperMotionRA, ProperMotionDec or RadialVelocity are not available in the star object</exception>
         public bool SetFromStar(Star star)
         {
-            double t, paralx, r, d, cra, sra, cdc, sdc;
+            float t, paralx, r, d, cra, sra, cdc, sdc;
 
             //
             // If parallax is unknown, undetermined, or zero, set it to 1e-7 second
@@ -2943,13 +2943,13 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.Parallax is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.Parallax is not available");
             }
             if (paralx <= 0.0d)
                 paralx = 0.0000001d;
 
             //
-            // Convert right ascension, declination, and parallax to position vector
+            // Convert right ascension, declination, and parallax to position Vector2
             // in equatorial system with units of AU.
             //
             try
@@ -2958,7 +2958,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.RightAscension is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.RightAscension is not available");
             }
             try
             {
@@ -2966,7 +2966,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception)
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.Declination is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.Declination is not available");
             }
 
             d *= GlobalItems.DEG2RAD;
@@ -2986,7 +2986,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.ProperMotionRA is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.ProperMotionRA is not available");
             }
 
             m_VRA = t * 15.0d * cdc / (paralx * 36525.0d);
@@ -2996,7 +2996,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.ProperMotionDec is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.ProperMotionDec is not available");
             }
             m_VDec = t / (paralx * 36525.0d);
             try
@@ -3005,13 +3005,13 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
             catch (Exception )
             {
-                throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromStar Star.RadialVelocity is not available");
+                throw new Exceptions.ValueNotAvailableException("VelocityVector2:SetFromStar Star.RadialVelocity is not available");
             }
 
             m_RadVel = t * 86400.0d / GlobalItems.KMAU;
 
             //
-            // Transform motion vector to equatorial system.
+            // Transform motion Vector2 to equatorial system.
             //
             m_v[0] = -m_VRA * sra - m_VDec * sdc * cra + m_RadVel * cdc * cra;
             m_v[1] = m_VRA * cra - m_VDec * sdc * sra + m_RadVel * cdc * sra;
@@ -3019,7 +3019,7 @@ namespace ASCOM.Astrometry.NOVASCOM
 
             m_xv = true;
             m_yv = true;
-            m_zv = true; // Vector is complete
+            m_zv = true; // Vector2 is complete
             m_cv = true; // We have it all!
 
             return true;
@@ -3031,12 +3031,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Cartesian x component of velocity</value>
         /// <returns>AU/day</returns>
         /// <remarks></remarks>
-        public double x
+        public float x
         {
             get
             {
                 if (!m_xv)
-                    throw new Exceptions.ValueNotSetException("VelocityVector:x x value has not been set");
+                    throw new Exceptions.ValueNotSetException("VelocityVector2:x x value has not been set");
                 return m_v[0];
             }
             set
@@ -3052,12 +3052,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Cartesian y component of velocity</value>
         /// <returns>AU/day</returns>
         /// <remarks></remarks>
-        public double y
+        public float y
         {
             get
             {
                 if (!m_yv)
-                    throw new Exceptions.ValueNotSetException("VelocityVector:y y value has not been set");
+                    throw new Exceptions.ValueNotSetException("VelocityVector2:y y value has not been set");
                 return m_v[1];
             }
             set
@@ -3073,12 +3073,12 @@ namespace ASCOM.Astrometry.NOVASCOM
         /// <value>Cartesian z component of velocity</value>
         /// <returns>AU/day</returns>
         /// <remarks></remarks>
-        public double z
+        public float z
         {
             get
             {
                 if (!m_zv)
-                    throw new Exceptions.ValueNotSetException("VelocityVector:z z value has not been set");
+                    throw new Exceptions.ValueNotSetException("VelocityVector2:z z value has not been set");
                 return m_v[2];
             }
             set
@@ -3088,7 +3088,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
         }
 
-        #region VelocityVector Support Code
+        #region VelocityVector2 Support Code
         private void CheckEq()
         {
             if (m_cv)

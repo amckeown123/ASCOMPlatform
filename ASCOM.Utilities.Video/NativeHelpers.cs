@@ -177,7 +177,7 @@ namespace ASCOM.Utilities.Video
             }
             return rc;
         }
-        internal int SetGamma(double gamma)
+        internal int SetGamma(float gamma)
         {
             if (Is64Bit()) // 64bit call
             {
@@ -255,7 +255,7 @@ namespace ASCOM.Utilities.Video
             return rc;
         }
 
-        internal int CreateNewAviFile(string fileName, int width, int height, int bpp, double fps, bool showCompressionDialog)
+        internal int CreateNewAviFile(string fileName, int width, int height, int bpp, float fps, bool showCompressionDialog)
         {
             if (Is64Bit()) // 64bit call
             {
@@ -378,7 +378,7 @@ namespace ASCOM.Utilities.Video
             [In, Out] byte[] bitmapBytes);
 
         [DllImport(VIDEOUTILS32_DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SetGamma")]
-        private static extern int SetGamma32(double gamma);
+        private static extern int SetGamma32(float gamma);
 
         [DllImport(VIDEOUTILS32_DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ApplyGammaBrightness")]
         private static extern int ApplyGammaBrightness32(
@@ -406,7 +406,7 @@ namespace ASCOM.Utilities.Video
         private static extern int GetResultingIntegratedFrame32([In, Out] int[,] pixels);
 
         [DllImport(VIDEOUTILS32_DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNewAviFile")]
-        private static extern int CreateNewAviFile32([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height, int bpp, double fps, bool showCompressionDialog);
+        private static extern int CreateNewAviFile32([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height, int bpp, float fps, bool showCompressionDialog);
 
         [DllImport(VIDEOUTILS32_DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AviFileAddFrame")]
         private static extern int AviFileAddFrame32([In, MarshalAs(UnmanagedType.LPArray)] int[,] pixels);
@@ -468,7 +468,7 @@ namespace ASCOM.Utilities.Video
             [In, Out] byte[] bitmapBytes);
 
         [DllImport(VIDEOUTILS64_DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SetGamma")]
-        private static extern int SetGamma64(double gamma);
+        private static extern int SetGamma64(float gamma);
 
         [DllImport(VIDEOUTILS64_DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "ApplyGammaBrightness")]
         private static extern int ApplyGammaBrightness64(
@@ -496,7 +496,7 @@ namespace ASCOM.Utilities.Video
         private static extern int GetResultingIntegratedFrame64([In, Out] int[,] pixels);
 
         [DllImport(VIDEOUTILS64_DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateNewAviFile")]
-        private static extern int CreateNewAviFile64([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height, int bpp, double fps, bool showCompressionDialog);
+        private static extern int CreateNewAviFile64([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height, int bpp, float fps, bool showCompressionDialog);
 
         [DllImport(VIDEOUTILS64_DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AviFileAddFrame")]
         private static extern int AviFileAddFrame64([In, MarshalAs(UnmanagedType.LPArray)] int[,] pixels);

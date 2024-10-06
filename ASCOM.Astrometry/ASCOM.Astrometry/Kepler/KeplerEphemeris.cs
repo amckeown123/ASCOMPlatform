@@ -50,12 +50,12 @@ namespace ASCOM.Astrometry.Kepler
     /// <remarks>
     /// The Kepler Ephemeris object contains an orbit engine which takes the orbital parameters of a solar system 
     /// body, plus a a terrestrial date/time, and produces the heliocentric equatorial position and 
-    /// velocity vectors of the body in Cartesian coordinates. Orbital parameters are not required for 
+    /// velocity Vector2s of the body in Cartesian coordinates. Orbital parameters are not required for 
     /// the major planets, Kepler contains an ephemeris generator for these bodies that is within 0.05 
     /// arc seconds of the JPL DE404 over a wide range of times, Perturbations from major planets are applied 
     /// to ephemerides for minor planets. 
-    /// <para>The results are passed back as an array containing the two vectors. 
-    /// Note that this is the format expected for the ephemeris generator used by the NOVAS-COM vector 
+    /// <para>The results are passed back as an array containing the two Vector2s. 
+    /// Note that this is the format expected for the ephemeris generator used by the NOVAS-COM Vector2 
     /// astrometry engine. For more information see the description of Ephemeris.GetPositionAndVelocity().</para>
     /// <para>
     /// <b>Ephemeris Calculations</b><br />
@@ -83,7 +83,7 @@ namespace ASCOM.Astrometry.Kepler
     /// <br /><br /><i>Julian dates </i><br />
     /// These are standard Julian "date serial" numbers, and are expressed in UTC time or Terrestrial 
     /// time. The fractional part of these numbers represents time within a day. The standard ActiveX 
-    /// "Double" precision of 15 digits gives a resolution of about one millisecond in a full Julian date. 
+    /// "float" precision of 15 digits gives a resolution of about one millisecond in a full Julian date. 
     /// This is sufficient for the purposes of this program. 
     /// <br /><br /><i>Hourly Time Values </i><br />
     /// These are typically used to represent sidereal time and right ascension. They are simple real 
@@ -109,7 +109,7 @@ namespace ASCOM.Astrometry.Kepler
     public class Ephemeris : IEphemeris
     {
 
-        private const double DTVEL = 0.01d;
+        private const float DTVEL = 0.01f;
 
         // Ephemeris variables
         private string m_Name; // Name of body
@@ -117,11 +117,11 @@ namespace ASCOM.Astrometry.Kepler
         private bool m_bNumberValid;
         private BodyType m_Type; // Type of body
         private bool m_bTypeValid;
-        private KeplerGlobalCode.Orbit m_e = new(0.0d); // Elements, etc for minor planets/comets, etc.
+        private KeplerGlobalCode.Orbit m_e = new(0.0f); // Elements, etc for minor planets/comets, etc.
         // Public Shared TL As TraceLogger
         // gplan variables
-        private double[,] ss = new double[19, 32], cc = new double[19, 32];
-        private double[] Args = new double[19];
+        private float[,] ss = new float[19, 32], cc = new float[19, 32];
+        private float[] Args = new float[19];
 
         /// <summary>
         /// Create a new Ephemeris component and initialise it
@@ -135,8 +135,8 @@ namespace ASCOM.Astrometry.Kepler
             m_bTypeValid = false;
             m_Name = ""; // Sentinel
             m_Type = default;
-            m_e.ptable.lon_tbl = new double[] { 0.0d }; // Initialise orbit arrays
-            m_e.ptable.lat_tbl = new double[] { 0.0d };
+            m_e.ptable.lon_tbl = new float[] { 0.0f }; // Initialise orbit arrays
+            m_e.ptable.lat_tbl = new float[] { 0.0f };
         }
         /// <summary>
         /// Semi-major axis (AU)
@@ -144,14 +144,14 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Semi-major axis in AU</value>
         /// <returns>Semi-major axis in AU</returns>
         /// <remarks></remarks>
-        public double a
+        public float a
         {
             get
             {
-                if (double.IsNaN(m_e.semiMajorAxis))
+                if (float.IsNaN(m_e.semiMajorAxis))
                 {
                     // TL.LogMessage("Get a", $"NOT SET - Returning semi-major axis: {0.0}")
-                    return 0.0d;
+                    return 0.0f;
                 }
                 else
                 {
@@ -173,14 +173,14 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Perihelion distance</value>
         /// <returns>AU</returns>
         /// <remarks></remarks>
-        public double q
+        public float q
         {
             get
             {
-                if (double.IsNaN(m_e.perihelionDistance))
+                if (float.IsNaN(m_e.perihelionDistance))
                 {
                     // TL.LogMessage("Get q", $"NOT SET - Returning perihelion distance: {0.0}")
-                    return 0.0d;
+                    return 0.0f;
                 }
                 else
                 {
@@ -223,7 +223,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Orbital eccentricity </value>
         /// <returns>Orbital eccentricity </returns>
         /// <remarks></remarks>
-        public double e
+        public float e
         {
             get
             {
@@ -242,7 +242,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Epoch of osculation of the orbital elements</value>
         /// <returns>Terrestrial Julian date</returns>
         /// <remarks></remarks>
-        public double Epoch
+        public float Epoch
         {
             get
             {
@@ -260,7 +260,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Slope parameter for magnitude</value>
         /// <returns>Slope parameter for magnitude</returns>
         /// <remarks></remarks>
-        public double G
+        public float G
         {
             get
             {
@@ -283,11 +283,11 @@ namespace ASCOM.Astrometry.Kepler
         /// more info. If you are using ACP, there are functions available to convert between UTC and 
         /// Terrestrial time, and for estimating the current value of delta-T. See the Overview page for 
         /// the Kepler.Ephemeris class for more information on time keeping systems.</remarks>
-        public double[] GetPositionAndVelocity(double tjd)
+        public float[] GetPositionAndVelocity(float tjd)
         {
-            var posvec = new double[6];
+            var posvec = new float[6];
             var ai = new int[2];
-            var pos = new double[4, 4];
+            var pos = new float[4, 4];
             var op = new KeplerGlobalCode.Orbit();
             int i;
 
@@ -380,9 +380,9 @@ namespace ASCOM.Astrometry.Kepler
                             // 2) Set        Un-set
                             // 3) Un-set     Set
                             // 4) Set        Set
-                            if (double.IsNaN(m_e.semiMajorAxis)) // Semi-major axis is not set
+                            if (float.IsNaN(m_e.semiMajorAxis)) // Semi-major axis is not set
                             {
-                                if (double.IsNaN(m_e.perihelionDistance)) // No semi-major axis or perihelion distance
+                                if (float.IsNaN(m_e.perihelionDistance)) // No semi-major axis or perihelion distance
                                 {
                                     // TL?.LogMessage("GetPositionAndVelocity2", $"Perihelion distance: {m_e.perihelionDistance}, Semi-major axis: {m_e.semiMajorAxis}, m_e.a: {m_e.a}")
 
@@ -398,7 +398,7 @@ namespace ASCOM.Astrometry.Kepler
                                     if (!m_e.eccentricityHasBeenSet)
                                         throw new InvalidOperationException($"Kepler.GetPositionAndVelocity - Cannot calculate comet position because the orbit eccentricity has not been provided.");
 
-                                    m_e.a = m_e.perihelionDistance / (1.0d - m_e.ecc);
+                                    m_e.a = (float)(m_e.perihelionDistance / (1.0d - m_e.ecc));
                                     m_e.semiMajorAxis = m_e.a;
                                     // TL?.LogMessage("GetPositionAndVelocity3", $"Perihelion distance: {m_e.perihelionDistance}, Semi-major axis: {m_e.semiMajorAxis}, m_e.a: {m_e.a}")
                                 }
@@ -407,14 +407,14 @@ namespace ASCOM.Astrometry.Kepler
                             {
                                 m_e.a = m_e.semiMajorAxis;
 
-                                if (double.IsNaN(m_e.perihelionDistance))
+                                if (float.IsNaN(m_e.perihelionDistance))
                                 {
                                     // Update perihelion distance from the formula: PerihelionDistance  = SemiMajorAxis * (1 - OrbitalEccentricity) and use this
 
                                     // Validate that the calculation can be completed, otherwise ignore because the orbit can still be calculated
                                     if (m_e.eccentricityHasBeenSet)
                                     {
-                                        m_e.perihelionDistance = m_e.semiMajorAxis * (1.0d - m_e.ecc);
+                                        m_e.perihelionDistance = (float)(m_e.semiMajorAxis * (1.0d - m_e.ecc));
                                     }
                                 }
 
@@ -426,7 +426,7 @@ namespace ASCOM.Astrometry.Kepler
                                 }
                             }
                         }
-                        else if (!double.IsNaN(m_e.semiMajorAxis)) // Eccentricity is >=1.0 and this is a parabolic or hyperbolic orbit so there is no major axis
+                        else if (!float.IsNaN(m_e.semiMajorAxis)) // Eccentricity is >=1.0 and this is a parabolic or hyperbolic orbit so there is no major axis
                         {
                             throw new InvalidOperationException($"Kepler.GetPositionAndVelocity - Eccentricity is >=1.0 {m_e.ecc} (parabolic or hyperbolic trajectory, not an elliptical orbit) but a semi-major axis value has been set implying an orbit.");
                         }
@@ -440,8 +440,8 @@ namespace ASCOM.Astrometry.Kepler
 
             for (i = 0; i <= 2; i++)
             {
-                var p = new double[3];
-                double qjd;
+                var p = new float[3];
+                float qjd;
                 qjd = tjd + (i - 1) * DTVEL;
                 // TL?.LogMessage("GetPositionAndVelocity", $"tjd: {tjd}, qjd: {qjd}, DTVEL: {DTVEL}")
                 KeplerGlobalCode.KeplerCalc(qjd, ref op, ref p);
@@ -451,12 +451,12 @@ namespace ASCOM.Astrometry.Kepler
                 pos[i, 2] = p[2];
             }
 
-            // pos(1,x) contains the pos vector
+            // pos(1,x) contains the pos Vector2
             // pos(0,x) and pos(2,x) are used to determine the velocity based on position change with time!
             for (i = 0; i <= 2; i++)
             {
                 posvec[i] = pos[1, i];
-                posvec[3 + i] = (pos[2, i] - pos[0, i]) / (2.0d * DTVEL);
+                posvec[3 + i] = (float)((pos[2, i] - pos[0, i]) / (2.0d * DTVEL));
             }
 
             // TL.LogMessage("GetPosVel", $"Loop {i} - Array posvec: {posvec(0)}, {posvec(1)}, {posvec(2)}, {posvec(3)}, {posvec(4)}, {posvec(5)}")
@@ -470,7 +470,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Absolute visual magnitude</value>
         /// <returns>Absolute visual magnitude</returns>
         /// <remarks></remarks>
-        public double H
+        public float H
         {
             get
             {
@@ -488,7 +488,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>The J2000.0 inclination</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double Incl
+        public float Incl
         {
             get
             {
@@ -506,7 +506,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Mean anomaly at the epoch</value>
         /// <returns>Mean anomaly at the epoch</returns>
         /// <remarks></remarks>
-        public double M
+        public float M
         {
             get
             {
@@ -524,7 +524,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Mean daily motion</value>
         /// <returns>Degrees per day</returns>
         /// <remarks></remarks>
-        public double n
+        public float n
         {
             get
             {
@@ -563,7 +563,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>The J2000.0 longitude of the ascending node</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double Node
+        public float Node
         {
             get
             {
@@ -602,7 +602,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Orbital period</value>
         /// <returns>Years</returns>
         /// <remarks></remarks>
-        public double P
+        public float P
         {
             get
             {
@@ -620,7 +620,7 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>The J2000.0 argument of perihelion</value>
         /// <returns>Degrees</returns>
         /// <remarks></remarks>
-        public double Peri
+        public float Peri
         {
             get
             {
@@ -638,15 +638,15 @@ namespace ASCOM.Astrometry.Kepler
         /// <value>Reciprocal semi-major axis</value>
         /// <returns>1/AU</returns>
         /// <remarks></remarks>
-        public double z
+        public float z
         {
             get
             {
-                return 1.0d / m_e.a;
+                return (float)(1.0d / m_e.a);
             }
             set
             {
-                m_e.a = 1.0d / value;
+                m_e.a = (float)(1.0d / value);
             }
         }
     }

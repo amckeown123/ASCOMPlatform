@@ -240,7 +240,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <param name="useIpV4">Search for Alpaca devices that use IPv4 addresses. (One or both of useIpV4 and useIpV6 must be True.)</param>
         /// <param name="useIpV6">Search for Alpaca devices that use IPv6 addresses. (One or both of useIpV4 and useIpV6 must be True.)</param>
         [DispId(4)]
-        void StartDiscovery(int numberOfPolls, int pollInterval, int discoveryPort, double discoveryDuration, bool resolveDnsName, bool useIpV4, bool useIpV6);
+        void StartDiscovery(int numberOfPolls, int pollInterval, int discoveryPort, float discoveryDuration, bool resolveDnsName, bool useIpV4, bool useIpV6);
     }
 
     /// <summary>
@@ -589,10 +589,10 @@ namespace ASCOM.Utilities.Interfaces
         void WaitForMilliseconds(int Milliseconds);
 
         /// <summary>
-        /// Convert sexagesimal degrees to binary double-precision degrees
+        /// Convert sexagesimal degrees to binary float-precision degrees
         /// </summary>
         /// <param name="DMS">The sexagesimal input string (degrees)</param>
-        /// <returns>The double-precision binary value (degrees) represented by the sexagesimal input</returns>
+        /// <returns>The float-precision binary value (degrees) represented by the sexagesimal input</returns>
         /// <remarks><para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just 
         /// about anything that resembles sexagesimal. Thee way they operate is to first separate the input string 
         /// into numeric "tokens", strings consisting only of the numerals 0-9, plus and minus, and period. All other 
@@ -607,13 +607,13 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>Note that plain units, for example 23.128734523 are acceptable to the method. </para>
         /// </remarks>
         [DispId(2)]
-        double DMSToDegrees(string DMS);
+        float DMSToDegrees(string DMS);
 
         /// <summary>
-        /// Convert sexagesimal hours to binary double-precision hours
+        /// Convert sexagesimal hours to binary float-precision hours
         /// </summary>
         /// <param name="HMS">The sexagesimal input string (hours)</param>
-        /// <returns>The double-precision binary value (hours) represented by the sexagesimal input </returns>
+        /// <returns>The float-precision binary value (hours) represented by the sexagesimal input </returns>
         /// <remarks>
         /// <para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just about 
         /// anything that resembles sexagesimal. Thee way they operate is to first separate the input string into 
@@ -631,13 +631,13 @@ namespace ASCOM.Utilities.Interfaces
         /// for example 23.128734523 are acceptable to the method. </para>
         /// </remarks>
         [DispId(3)]
-        double HMSToHours(string HMS);
+        float HMSToHours(string HMS);
 
         /// <summary>
-        /// Convert sexagesimal hours to binary double-precision hours
+        /// Convert sexagesimal hours to binary float-precision hours
         /// </summary>
         /// <param name="HMS">The sexagesimal input string (hours)</param>
-        /// <returns>The double-precision binary value (hours) represented by the sexagesimal input</returns>
+        /// <returns>The float-precision binary value (hours) represented by the sexagesimal input</returns>
         /// <remarks>
         /// <para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just about 
         /// anything that resembles sexagesimal. Thee way they operate is to first separate the input string into 
@@ -655,7 +655,7 @@ namespace ASCOM.Utilities.Interfaces
         /// for example 23.128734523 are acceptable to the method. </para>
         /// </remarks>
         [DispId(4)]
-        double HMSToDegrees(string HMS);
+        float HMSToDegrees(string HMS);
 
         /// <summary>
         /// Convert degrees to sexagesimal degrees, minutes and seconds with specified second decimal places
@@ -668,11 +668,11 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Sexagesimal representation of degrees input value, degrees, minutes, and seconds</returns>
         /// <remarks>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+        /// "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
         [DispId(5)]
-        string DegreesToDMS(double Degrees, string DegDelim, string MinDelim, string SecDelim, int SecDecimalDigits);
+        string DegreesToDMS(float Degrees, string DegDelim, string MinDelim, string SecDelim, int SecDecimalDigits);
 
         /// <summary>
         /// Convert hours to sexagesimal hours, minutes, and seconds with specified number of second decimal places
@@ -687,7 +687,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// </remarks>
         [DispId(6)]
-        string HoursToHMS(double Hours, string HrsDelim, string MinDelim, string SecDelim, int SecDecimalDigits);
+        string HoursToHMS(float Hours, string HrsDelim, string MinDelim, string SecDelim, int SecDecimalDigits);
 
         /// <summary>
         /// Convert degrees to sexagesimal degrees and minutes with the specified number of minute decimal places
@@ -701,7 +701,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// </remarks>
         [DispId(7)]
-        string DegreesToDM(double Degrees, string DegDelim, string MinDelim, int MinDecimalDigits);
+        string DegreesToDM(float Degrees, string DegDelim, string MinDelim, int MinDecimalDigits);
 
         /// <summary>
         /// Convert hours to sexagesimal hours and minutes with supplied number of minute decimal places
@@ -715,7 +715,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// </remarks>
         [DispId(8)]
-        string HoursToHM(double Hours, string HrsDelim, string MinDelim, int MinDecimalDigits);
+        string HoursToHM(float Hours, string HrsDelim, string MinDelim, int MinDecimalDigits);
 
         /// <summary>
         /// Convert degrees to sexagesimal hours, minutes, and seconds with the specified number of second decimal places
@@ -730,7 +730,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
         /// </remarks>
         [DispId(9)]
-        string DegreesToHMS(double Degrees, string HrsDelim, string MinDelim, string SecDelim, int SecDecimalDigits);
+        string DegreesToHMS(float Degrees, string HrsDelim, string MinDelim, string SecDelim, int SecDecimalDigits);
 
         /// <summary>
         /// Convert degrees to sexagesimal hours and minutes with supplied number of minute decimal places
@@ -744,7 +744,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
         /// </remarks>
         [DispId(10)]
-        string DegreesToHM(double Degrees, string HrsDelim, string MinDelim, int MinDecimalDigits);
+        string DegreesToHM(float Degrees, string HrsDelim, string MinDelim, int MinDecimalDigits);
 
         /// <summary>
         /// Current Platform version in m.n form
@@ -789,7 +789,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>The offset is in hours, such that UTC = local + offset. The offset includes any daylight/summer time that may be 
         /// in effect.</remarks>
         [DispId(15)]
-        double TimeZoneOffset { get; }
+        float TimeZoneOffset { get; }
 
         /// <summary>
         /// The current UTC Date
@@ -805,7 +805,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Current Julian date</returns>
         /// <remarks>This is quantised to the second in the COM component but to a small decimal fraction in the .NET component</remarks>
         [DispId(17)]
-        double JulianDate { get; }
+        float JulianDate { get; }
 
         /// <summary>
         /// Convert local-time Date to Julian date
@@ -814,7 +814,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Julian date</returns>
         /// <remarks>Julian dates are always in UTC </remarks>
         [DispId(18)]
-        double DateLocalToJulian(DateTime LocalDate);
+        float DateLocalToJulian(DateTime LocalDate);
 
         /// <summary>
         /// Convert Julian date to local-time Date
@@ -823,7 +823,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Date in local-time for the given Julian date</returns>
         /// <remarks>Julian dates are always in UTC</remarks>
         [DispId(19)]
-        DateTime DateJulianToLocal(double JD);
+        DateTime DateJulianToLocal(float JD);
 
         /// <summary>
         /// Convert UTC Date to Julian date
@@ -832,7 +832,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Julian date</returns>
         /// <remarks>Julian dates are always in UTC </remarks>
         [DispId(20)]
-        double DateUTCToJulian(DateTime UTCDate);
+        float DateUTCToJulian(DateTime UTCDate);
 
         /// <summary>
         /// Convert Julian date to UTC Date
@@ -841,7 +841,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Date in UTC for the given Julian date</returns>
         /// <remarks>Julian dates are always in UTC </remarks>
         [DispId(21)]
-        DateTime DateJulianToUTC(double JD);
+        DateTime DateJulianToUTC(float JD);
 
         /// <summary>
         /// Convert UTC Date to local-time Date
@@ -926,7 +926,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <item><description>Byte</description></item>
         /// <item><description>SByte</description></item>
         /// <item><description>Single</description></item>
-        /// <item><description>Double</description></item>
+        /// <item><description>float</description></item>
         /// <item><description>Boolean</description></item>
         /// <item><description>DateTime</description></item>
         /// <item><description>String</description></item>
@@ -980,7 +980,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <param name="ToUnits">Integer value from the Units enum indicating the units to which the input value should be converted</param>
         /// <returns>Input value converted to the new specified units</returns>
         [DispId(32)]
-        double ConvertUnits(double InputValue, Units FromUnits, Units ToUnits);
+        float ConvertUnits(float InputValue, Units FromUnits, Units ToUnits);
 
         /// <summary>
         /// Calculate the dew point given the ambient temperature and humidity
@@ -989,7 +989,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <param name="AmbientTemperature">Ambient temperature in degrees C</param>
         /// <returns>Dew point in degrees C</returns>
         [DispId(33)]
-        double Humidity2DewPoint(double Humidity, double AmbientTemperature);
+        float Humidity2DewPoint(float Humidity, float AmbientTemperature);
 
         /// <summary>
         /// Calculate the humidity given the ambient temperature and dew point
@@ -998,7 +998,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <param name="AmbientTemperature">Ambient temperature in degrees C</param>
         /// <returns>Humidity expressed in percent (0.0 .. 100.0)</returns>
         [DispId(34)]
-        double DewPoint2Humidity(double DewPoint, double AmbientTemperature);
+        float DewPoint2Humidity(float DewPoint, float AmbientTemperature);
 
         /// <summary>
         /// Convert atmospheric pressure from one altitude above mean sea level to another
@@ -1008,7 +1008,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <param name="ToAltitudeAboveMeanSeaLevel">Altitude to which the pressure is to be converted</param>
         /// <returns>Pressure in hPa at the "To" altitude</returns>
         [DispId(35)]
-        double ConvertPressure(double Pressure, double FromAltitudeAboveMeanSeaLevel, double ToAltitudeAboveMeanSeaLevel);
+        float ConvertPressure(float Pressure, float FromAltitudeAboveMeanSeaLevel, float ToAltitudeAboveMeanSeaLevel);
 
     } // Interface to Utilities.Util
 
@@ -1030,7 +1030,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>This overload is not available through COM, please use "Choose(ByVal DriverProgID As String)"
         /// with an empty string parameter to achieve this effect.</para>
         /// </remarks>
-        string DegreesToDMS(double Degrees);
+        string DegreesToDMS(float Degrees);
         /// <summary>
         /// Convert degrees to sexagesimal degrees, minutes and seconds with with default minute and second delimiters MM' SS" 
         /// </summary>
@@ -1041,10 +1041,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
         /// characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+        /// "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToDMS(double Degrees, string DegDelim);
+        string DegreesToDMS(float Degrees, string DegDelim);
         /// <summary>
         /// Convert degrees to sexagesimal degrees, minutes and seconds with default second delimiter SS" 
         /// </summary>
@@ -1056,10 +1056,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
         /// characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+        /// "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToDMS(double Degrees, string DegDelim, string MinDelim);
+        string DegreesToDMS(float Degrees, string DegDelim, string MinDelim);
         /// <summary>
         /// Convert degrees to sexagesimal degrees, minutes and seconds
         /// </summary>
@@ -1072,10 +1072,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
         /// characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+        /// "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToDMS(double Degrees, string DegDelim, string MinDelim, string SecDelim);
+        string DegreesToDMS(float Degrees, string DegDelim, string MinDelim, string SecDelim);
 
         /// <summary>
         /// Convert hours to sexagesimal hours, minutes, and seconds with default delimiters HH:MM:SS
@@ -1085,10 +1085,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        /// "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string HoursToHMS(double Hours);
+        string HoursToHMS(float Hours);
         /// <summary>
         /// Convert hours to sexagesimal hours, minutes, and seconds with default minutes and seconds delimiters MM:SS
         /// </summary>
@@ -1098,10 +1098,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        /// "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string HoursToHMS(double Hours, string HrsDelim);
+        string HoursToHMS(float Hours, string HrsDelim);
         /// <summary>
         /// Convert hours to sexagesimal hours, minutes, and seconds with default second delimiter of null string
         /// </summary>
@@ -1112,10 +1112,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        /// "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string HoursToHMS(double Hours, string HrsDelim, string MinDelim);
+        string HoursToHMS(float Hours, string HrsDelim, string MinDelim);
         /// <summary>
         /// Convert hours to sexagesimal hours, minutes, and seconds
         /// </summary>
@@ -1127,10 +1127,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        /// "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string HoursToHMS(double Hours, string HrsDelim, string MinDelim, string SecDelim);
+        string HoursToHMS(float Hours, string HrsDelim, string MinDelim, string SecDelim);
 
         /// <summary>
         /// Convert degrees to sexagesimal degrees and minutes with default delimiters DD° MM'
@@ -1140,10 +1140,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToDM(double Degrees);
+        string DegreesToDM(float Degrees);
         /// <summary>
         /// Convert degrees to sexagesimal degrees and minutes with the default minutes delimiter MM'
         /// </summary>
@@ -1153,10 +1153,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToDM(double Degrees, string DegDelim);
+        string DegreesToDM(float Degrees, string DegDelim);
         /// <summary>
         /// Convert degrees to sexagesimal degrees and minutes
         /// </summary>
@@ -1167,10 +1167,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToDM(double Degrees, string DegDelim, string MinDelim);
+        string DegreesToDM(float Degrees, string DegDelim, string MinDelim);
 
         /// <summary>
         /// Convert hours to sexagesimal hours and minutes with default delimiters HH:MM
@@ -1180,10 +1180,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with an suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string HoursToHM(double Hours);
+        string HoursToHM(float Hours);
         /// <summary>
         /// Convert hours to sexagesimal hours and minutes with default minutes delimiter MM (null string)
         /// </summary>
@@ -1193,10 +1193,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with an suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string HoursToHM(double Hours, string HrsDelim);
+        string HoursToHM(float Hours, string HrsDelim);
         /// <summary>
         /// Convert hours to sexagesimal hours and minutes
         /// </summary>
@@ -1207,10 +1207,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with an suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string HoursToHM(double Hours, string HrsDelim, string MinDelim);
+        string HoursToHM(float Hours, string HrsDelim, string MinDelim);
 
         /// <summary>
         /// Convert degrees to sexagesimal hours, minutes, and seconds with default delimiters of HH:MM:SS
@@ -1220,10 +1220,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself.</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        /// "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToHMS(double Degrees);
+        string DegreesToHMS(float Degrees);
         /// <summary>
         /// Convert degrees to sexagesimal hours, minutes, and seconds with the default second and minute delimiters of MM:SS
         /// </summary>
@@ -1233,10 +1233,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        /// "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToHMS(double Degrees, string HrsDelim);
+        string DegreesToHMS(float Degrees, string HrsDelim);
         /// <summary>
         /// Convert degrees to sexagesimal hours, minutes, and seconds with the default second delimiter SS (null string)
         /// </summary>
@@ -1247,10 +1247,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        /// "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToHMS(double Degrees, string HrsDelim, string MinDelim);
+        string DegreesToHMS(float Degrees, string HrsDelim, string MinDelim);
         /// <summary>
         /// Convert degrees to sexagesimal hours, minutes, and seconds
         /// </summary>
@@ -1262,10 +1262,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        /// "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToHMS(double Degrees, string HrsDelim, string MinDelim, string SecDelim);
+        string DegreesToHMS(float Degrees, string HrsDelim, string MinDelim, string SecDelim);
 
         /// <summary>
         /// Convert degrees to sexagesimal hours and minutes with default delimiters HH:MM
@@ -1275,10 +1275,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToHM(double Degrees);
+        string DegreesToHM(float Degrees);
         /// <summary>
         /// Convert degrees to sexagesimal hours and minutes with default minute delimiter MM (null string)
         /// </summary>
@@ -1288,10 +1288,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToHM(double Degrees, string HrsDelim);
+        string DegreesToHM(float Degrees, string HrsDelim);
         /// <summary>
         /// Convert degrees to sexagesimal hours and minutes
         /// </summary>
@@ -1302,10 +1302,10 @@ namespace ASCOM.Utilities.Interfaces
         /// <remarks>
         /// <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
         /// <para>This overload is not available through COM, please use 
-        /// "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        /// "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         /// with suitable parameters to achieve this effect.</para>
         /// </remarks>
-        string DegreesToHM(double Degrees, string HrsDelim, string MinDelim);
+        string DegreesToHM(float Degrees, string HrsDelim, string MinDelim);
     }
 
     /// <summary>
@@ -1439,7 +1439,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Retrieved variable value</returns>
         /// <remarks>
         /// <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        /// <para>Does not provide access to other registry data types such as binary and double-word. </para>
+        /// <para>Does not provide access to other registry data types such as binary and float-word. </para>
         /// <para>If a default value is supplied and the value is not already present in the profile store,
         /// the default value will be set in the profile store and then returned as the value of the 
         /// DriverID/SubKey/Name. If the default value is set to null (C#) or Nothing (VB) then no value will
@@ -1578,7 +1578,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Retrieved variable value</returns>
         /// <remarks>
         /// <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        /// <para>Does not provide access to other registry data types such as binary and double-word. </para>
+        /// <para>Does not provide access to other registry data types such as binary and float-word. </para>
         /// <para>This overload is not available through COM, please use 
         /// "GetValue(ByVal DriverID As String, ByVal Name As String, ByVal SubKey As String)"
         /// with SubKey set to empty string achieve this effect.</para>
@@ -1594,7 +1594,7 @@ namespace ASCOM.Utilities.Interfaces
         /// <returns>Retrieved variable value</returns>
         /// <remarks>
         /// <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        /// <para>Does not provide access to other registry data types such as binary and double-word. </para>
+        /// <para>Does not provide access to other registry data types such as binary and float-word. </para>
         /// </remarks>
         string GetValue(string DriverID, string Name, string SubKey);
 

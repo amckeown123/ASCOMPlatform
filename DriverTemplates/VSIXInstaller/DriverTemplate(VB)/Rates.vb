@@ -24,7 +24,7 @@ Public Class Rate
     ' Default constructor - Internal prevents public creation
     ' of instances. These are values for AxisRates.
     '
-    Friend Sub New(ByVal Minimum As Double, ByVal Maximum As Double)
+    Friend Sub New(ByVal Minimum As float, ByVal Maximum As float)
         m_dMaximum = Maximum
         m_dMinimum = Minimum
     End Sub
@@ -35,20 +35,20 @@ Public Class Rate
         ' TODO Add any required object cleanup here
     End Sub
 
-    Public Property Maximum() As Double Implements IRate.Maximum
+    Public Property Maximum() As float Implements IRate.Maximum
         Get
             Return m_dMaximum
         End Get
-        Set(ByVal Value As Double)
+        Set(ByVal Value As float)
             m_dMaximum = Value
         End Set
     End Property
 
-    Public Property Minimum() As Double Implements IRate.Minimum
+    Public Property Minimum() As float Implements IRate.Minimum
         Get
             Return m_dMinimum
         End Get
-        Set(ByVal Value As Double)
+        Set(ByVal Value As float)
             m_dMinimum = Value
         End Set
     End Property

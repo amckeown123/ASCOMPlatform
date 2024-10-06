@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Runtime.InteropServices;
-using ASCOM.Common;
-using ASCOM.Common.Interfaces;
 using ASCOM.DeviceInterface;
+using Microsoft.Extensions.Logging;
 
 namespace ASCOM.DynamicClients
 {
@@ -52,7 +51,7 @@ namespace ASCOM.DynamicClients
             pos = -1;
         }
 
-        internal void Add(double Minium, double Maximum, ILogger TL)
+        internal void Add(float Minium, float Maximum, ILogger TL)
         {
             TL.LogMessage(LogLevel.Debug,"AxisRates.Add", "Before m_Rates.Length: " + m_Rates.Length);
             Rate r = new Rate(Minium, Maximum); // Create a new rate to add to the new array

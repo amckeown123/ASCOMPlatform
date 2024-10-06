@@ -63,7 +63,7 @@ namespace ASCOM.Controls
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.UserPaint, true);
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.OptimizedfloatBuffer, true);
             BackColor = Color.Transparent;
             Resize += AquaGaugeResize;
             _requiresRedraw = true;
@@ -275,7 +275,7 @@ namespace ASCOM.Controls
             set
             {
                 _enableTransparentBackground = value;
-                SetStyle(ControlStyles.OptimizedDoubleBuffer, !_enableTransparentBackground);
+                SetStyle(ControlStyles.OptimizedfloatBuffer, !_enableTransparentBackground);
                 _requiresRedraw = true;
                 Refresh();
             }

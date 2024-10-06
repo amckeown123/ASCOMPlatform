@@ -6,9 +6,9 @@
     Private Earth As ASCOM.Astrometry.BodyDescription
     Private LocationStruct As ASCOM.Astrometry.SiteInfo
 
-    Private POS(2), VEL(2), POSNow(2), RANow, DECNow, rc, Distance, JD As Double
+    Private POS(2), VEL(2), POSNow(2), RANow, DECNow, rc, Distance, JD As float
 
-    Private Const J2000 As Double = 2451545.0 'Julian day for J2000 epoch
+    Private Const J2000 As float = 2451545.0 'Julian day for J2000 epoch
 
     Sub Example()
         Utl = New ASCOM.Utilities.Util 'Create structures and get Julian date
@@ -26,10 +26,10 @@
         StarStruct.ProMoRA = 2.5
         StarStruct.RadialVelocity = 3
 
-        ASCOM.Astrometry.NOVAS.NOVAS2.StarVectors(StarStruct, POS, VEL) 'Convert the star data to position and velocity vectors
-        ASCOM.Astrometry.NOVAS.NOVAS2.Precession(J2000, POS, JD, POSNow) 'Precess position vector to current date
-        ASCOM.Astrometry.NOVAS.NOVAS2.Vector2RADec(POSNow, RANow, DECNow) 'Convert vector back into precessed RA and Dec
-        MsgBox("POS StarVectors RA: " & Utl.HoursToHMS(RANow, ":", ":", "", 3) & "  DEC: " & Utl.DegreesToDMS(DECNow, ":", ":", "", 3))
+        ASCOM.Astrometry.NOVAS.NOVAS2.StarVector2s(StarStruct, POS, VEL) 'Convert the star data to position and velocity Vector2s
+        ASCOM.Astrometry.NOVAS.NOVAS2.Precession(J2000, POS, JD, POSNow) 'Precess position Vector2 to current date
+        ASCOM.Astrometry.NOVAS.NOVAS2.Vector2RADec(POSNow, RANow, DECNow) 'Convert Vector2 back into precessed RA and Dec
+        MsgBox("POS StarVector2s RA: " & Utl.HoursToHMS(RANow, ":", ":", "", 3) & "  DEC: " & Utl.DegreesToDMS(DECNow, ":", ":", "", 3))
 
         Body.Name = "Mars" 'Initialise planet object
         Body.Type = ASCOM.Astrometry.BodyType.MajorPlanet

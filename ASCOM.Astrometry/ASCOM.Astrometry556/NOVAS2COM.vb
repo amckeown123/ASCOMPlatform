@@ -23,7 +23,7 @@ Namespace NOVAS
     ''' <code>rc = ASCOM.Astrometry.NOVAS2COM.AppStar(tjd, earth, star, ra, dec)</code> 
     ''' <para>Method names are identical to those used in NOVAS2, as are almost all paramaters. There are a few 
     ''' changes that introduce some new structures but these should be self explanatory. One significant difference 
-    ''' is that position and velocity vectors are returned as structures rather than double arrays. This was done 
+    ''' is that position and velocity Vector2s are returned as structures rather than float arrays. This was done 
     ''' to make type checking more effective.</para>
     ''' <para>Testing of the high level supervisory functions has been carried out using real-time star data from
     ''' the USNO web site. Values provided by this NOVAS2 implementation agree on average to about 50 milli 
@@ -41,15 +41,15 @@ Namespace NOVAS
         Implements INOVAS2
 
         ''' <summary>
-        ''' Corrects position vector for aberration of light.
+        ''' Corrects position Vector2 for aberration of light.
         ''' </summary>
-        ''' <param name="pos">Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
-        ''' <param name="vel">Velocity vector of center of mass of the Earth, referred to origin at solar system barycenter, components in AU/day.</param>
+        ''' <param name="pos">Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
+        ''' <param name="vel">Velocity Vector2 of center of mass of the Earth, referred to origin at solar system barycenter, components in AU/day.</param>
         ''' <param name="lighttime">Light time from body to Earth in days.</param>
-        ''' <param name="pos2">OUT: Position vector, referred to origin at center of mass of the Earth, corrected for aberration, components in AU</param>
+        ''' <param name="pos2">OUT: Position Vector2, referred to origin at center of mass of the Earth, corrected for aberration, components in AU</param>
         ''' <returns>0...Everything OK.</returns>
         ''' <remarks>Algorithm includes relativistic terms.</remarks>
-        Public Function Aberration(ByVal pos() As Double, ByVal vel() As Double, ByVal lighttime As Double, ByRef pos2() As Double) As Short Implements INOVAS2.Aberration
+        Public Function Aberration(ByVal pos() As float, ByVal vel() As float, ByVal lighttime As float, ByRef pos2() As float) As Short Implements INOVAS2.Aberration
             Return NOVAS2.Aberration(pos, vel, lighttime, pos2)
         End Function
 
@@ -67,7 +67,7 @@ Namespace NOVAS
         ''' >0...See error description in function 'ephemeris'.
         ''' </pre></returns>
         ''' <remarks></remarks>
-        Public Function AppPlanet(ByVal tjd As Double, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByRef ra As Double, ByRef dec As Double, ByRef dis As Double) As Short Implements INOVAS2.AppPlanet
+        Public Function AppPlanet(ByVal tjd As float, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByRef ra As float, ByRef dec As float, ByRef dis As float) As Short Implements INOVAS2.AppPlanet
             Return NOVAS2.AppPlanet(tjd, ss_object, earth, ra, dec, dis)
         End Function
 
@@ -83,7 +83,7 @@ Namespace NOVAS
         '''  0...Everything OK
         ''' >0...Error code from function 'solarsystem'.</pre></returns>
         ''' <remarks></remarks>
-        Public Function AppStar(ByVal tjd As Double, ByRef earth As BodyDescription, ByRef star As CatEntry, ByRef ra As Double, ByRef dec As Double) As Short Implements INOVAS2.AppStar
+        Public Function AppStar(ByVal tjd As float, ByRef earth As BodyDescription, ByRef star As CatEntry, ByRef ra As float, ByRef dec As float) As Short Implements INOVAS2.AppStar
             Return NOVAS2.AppStar(tjd, earth, star, ra, dec)
         End Function
 
@@ -100,7 +100,7 @@ Namespace NOVAS
         '''  0...Everything OK.
         ''' >0...See error description in function 'ephemeris'.</pre></returns>
         ''' <remarks></remarks>
-        Public Function AstroPlanet(ByVal tjd As Double, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByRef ra As Double, ByRef dec As Double, ByRef dis As Double) As Short Implements INOVAS2.AstroPlanet
+        Public Function AstroPlanet(ByVal tjd As float, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByRef ra As float, ByRef dec As float, ByRef dis As float) As Short Implements INOVAS2.AstroPlanet
             Return NOVAS2.AstroPlanet(tjd, ss_object, earth, ra, dec, dis)
         End Function
 
@@ -117,20 +117,20 @@ Namespace NOVAS
         ''' >0...Error code from function 'solarsystem'.
         ''' </pre></returns>
         ''' <remarks>     Computes the astrometric place of a star, given its mean place, proper motion, parallax, and radial velocity for J2000.0.</remarks>
-        Public Function AstroStar(ByVal tjd As Double, ByRef earth As BodyDescription, ByRef star As CatEntry, ByRef ra As Double, ByRef dec As Double) As Short Implements INOVAS2.AstroStar
+        Public Function AstroStar(ByVal tjd As float, ByRef earth As BodyDescription, ByRef star As CatEntry, ByRef ra As float, ByRef dec As float) As Short Implements INOVAS2.AstroStar
             Return NOVAS2.AstroStar(tjd, earth, star, ra, dec)
         End Function
 
         ''' <summary>
         ''' Moves the origin of coordinates from the barycenter of the solar system to the center of mass of the Earth
         ''' </summary>
-        ''' <param name="pos">Position vector, referred to origin at solar system barycenter, components in AU.</param>
-        ''' <param name="earthvector">Position vector of center of mass of the Earth, referred to origin at solar system barycenter, components in AU.</param>
-        ''' <param name="pos2">OUT: Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
+        ''' <param name="pos">Position Vector2, referred to origin at solar system barycenter, components in AU.</param>
+        ''' <param name="earthVector2">Position Vector2 of center of mass of the Earth, referred to origin at solar system barycenter, components in AU.</param>
+        ''' <param name="pos2">OUT: Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
         ''' <param name="lighttime">OUT: Light time from body to Earth in days.</param>
         ''' <remarks>This corrects for parallax.</remarks>
-        Public Sub BaryToGeo(ByVal pos() As Double, ByVal earthvector() As Double, ByRef pos2() As Double, ByRef lighttime As Double) Implements INOVAS2.BaryToGeo
-            NOVAS2.BaryToGeo(pos, earthvector, pos2, lighttime)
+        Public Sub BaryToGeo(ByVal pos() As float, ByVal earthVector2() As float, ByRef pos2() As float, ByRef lighttime As float) Implements INOVAS2.BaryToGeo
+            NOVAS2.BaryToGeo(pos, earthVector2, pos2, lighttime)
         End Sub
 
         ''' <summary>
@@ -142,7 +142,7 @@ Namespace NOVAS
         ''' <param name="day">OUT: Day number</param>
         ''' <param name="hour">OUT: Time in hours</param>
         ''' <remarks></remarks>
-        Public Sub CalDate(ByVal tjd As Double, ByRef year As Short, ByRef month As Short, ByRef day As Short, ByRef hour As Double) Implements INOVAS2.CalDate
+        Public Sub CalDate(ByVal tjd As float, ByRef year As Short, ByRef month As Short, ByRef day As Short, ByRef hour As float) Implements INOVAS2.CalDate
             NOVAS2.CalDate(tjd, year, month, day, hour)
         End Sub
 
@@ -157,7 +157,7 @@ Namespace NOVAS
         ''' <para>3. Daily values of the offsets are published, for example, in IERS Bulletins A and B.</para>
         ''' <para>4. This function is the "C" version of Fortran NOVAS routine "celpol".</para>
         ''' </remarks>
-        Public Sub CelPole(ByVal del_dpsi As Double, ByVal del_deps As Double) Implements INOVAS2.CelPole
+        Public Sub CelPole(ByVal del_dpsi As float, ByVal del_deps As float) Implements INOVAS2.CelPole
             NOVAS2.CelPole(del_dpsi, del_deps)
         End Sub
 
@@ -171,7 +171,7 @@ Namespace NOVAS
         ''' <param name="dpsi">OUT: Nutation in longitude in arcseconds at 'tjd'.</param>
         ''' <param name="deps">OUT: Nutation in obliquity in arcseconds at 'tjd'.</param>
         ''' <remarks></remarks>
-        Public Sub EarthTilt(ByVal tjd As Double, ByRef mobl As Double, ByRef tobl As Double, ByRef eq As Double, ByRef dpsi As Double, ByRef deps As Double) Implements INOVAS2.EarthTilt
+        Public Sub EarthTilt(ByVal tjd As float, ByRef mobl As float, ByRef tobl As float, ByRef eq As float, ByRef dpsi As float, ByRef deps As float) Implements INOVAS2.EarthTilt
             NOVAS2.EarthTilt(tjd, mobl, tobl, eq, dpsi, deps)
         End Sub
 
@@ -181,8 +181,8 @@ Namespace NOVAS
         ''' <param name="tjd">TDB Julian date.</param>
         ''' <param name="cel_obj">Structure containing the designation of the body of interest</param>
         ''' <param name="origin">Origin point (solar system barycentre or centre of mass of the Sun</param>
-        ''' <param name="pos">OUT: Position vector of 'body' at tjd; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        ''' <param name="vel">OUT: Velocity vector of 'body' at tjd; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        ''' <param name="pos">OUT: Position Vector2 of 'body' at tjd; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        ''' <param name="vel">OUT: Velocity Vector2 of 'body' at tjd; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         ''' <returns><pre>
         ''' 0    ... Everything OK.
         ''' 1    ... Invalid value of 'origin'.
@@ -191,7 +191,7 @@ Namespace NOVAS
         ''' 10+n ... where n is the error code from 'solarsystem'.
         ''' 20+n ... where n is the error code from 'readeph'.</pre></returns>
         ''' <remarks></remarks>
-        Public Function Ephemeris(ByVal tjd As Double, ByRef cel_obj As BodyDescription, ByVal origin As Origin, ByRef pos() As Double, ByRef vel() As Double) As Short Implements INOVAS2.Ephemeris
+        Public Function Ephemeris(ByVal tjd As float, ByRef cel_obj As BodyDescription, ByVal origin As Origin, ByRef pos() As float, ByRef vel() As float) As Short Implements INOVAS2.Ephemeris
             Return NOVAS2.Ephemeris(tjd, cel_obj, origin, pos, vel)
         End Function
 
@@ -216,7 +216,7 @@ Namespace NOVAS
         ''' for polar motion, which is significant at the sub-arcsecond 
         ''' level.  This function can also adjust coordinates for atmospheric 
         ''' refraction.</remarks>
-        Public Sub Equ2Hor(ByVal tjd As Double, ByVal deltat As Double, ByVal x As Double, ByVal y As Double, ByRef location As SiteInfo, ByVal ra As Double, ByVal dec As Double, ByVal ref_option As RefractionOption, ByRef zd As Double, ByRef az As Double, ByRef rar As Double, ByRef decr As Double) Implements INOVAS2.Equ2Hor
+        Public Sub Equ2Hor(ByVal tjd As float, ByVal deltat As float, ByVal x As float, ByVal y As float, ByRef location As SiteInfo, ByVal ra As float, ByVal dec As float, ByVal ref_option As RefractionOption, ByRef zd As float, ByRef az As float, ByRef rar As float, ByRef decr As float) Implements INOVAS2.Equ2Hor
             NOVAS2.Equ2Hor(tjd, deltat, x, y, location, ra, dec, ref_option, zd, az, rar, decr)
         End Sub
 
@@ -231,7 +231,7 @@ Namespace NOVAS
         '''   a[3] = D (mean elongation of the Moon from the Sun)
         '''   a[4] = omega (mean longitude of the Moon's ascending node)</pre></param>
         ''' <remarks></remarks>
-        Public Sub FundArgs(ByVal t As Double, ByRef a() As Double) Implements INOVAS2.FundArgs
+        Public Sub FundArgs(ByVal t As float, ByRef a() As float) Implements INOVAS2.FundArgs
             NOVAS2.FundArgs(t, a)
         End Sub
 
@@ -241,16 +241,16 @@ Namespace NOVAS
         ''' <param name="tjd">TT (or TDT) Julian date.</param>
         ''' <param name="earth">Structure containing the body designation for the Earth.</param>
         ''' <param name="tdb">OUT: TDB Julian date corresponding to 'tjd'.</param>
-        ''' <param name="bary_earthp">OUT: Barycentric position vector of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        ''' <param name="bary_earthv">OUT: Barycentric velocity vector of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox  of J2000.0, in AU/Day.</param>
-        ''' <param name="helio_earthp">OUT: Heliocentric position vector of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        ''' <param name="helio_earthv">OUT: Heliocentric velocity vector of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        ''' <param name="bary_earthp">OUT: Barycentric position Vector2 of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        ''' <param name="bary_earthv">OUT: Barycentric velocity Vector2 of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox  of J2000.0, in AU/Day.</param>
+        ''' <param name="helio_earthp">OUT: Heliocentric position Vector2 of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        ''' <param name="helio_earthv">OUT: Heliocentric velocity Vector2 of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         ''' <returns><pre>
         '''  0...Everything OK.
         ''' >0...Error code from function 'solarsystem'.</pre>
         ''' </returns>
         ''' <remarks></remarks>
-        Public Function GetEarth(ByVal tjd As Double, ByRef earth As BodyDescription, ByRef tdb As Double, ByRef bary_earthp() As Double, ByRef bary_earthv() As Double, ByRef helio_earthp() As Double, ByRef helio_earthv() As Double) As Short Implements INOVAS2.GetEarth
+        Public Function GetEarth(ByVal tjd As float, ByRef earth As BodyDescription, ByRef tdb As float, ByRef bary_earthp() As float, ByRef bary_earthv() As float, ByRef helio_earthp() As float, ByRef helio_earthv() As float) As Short Implements INOVAS2.GetEarth
             Return NOVAS2.GetEarth(tjd, earth, tdb, bary_earthp, bary_earthv, helio_earthp, helio_earthv)
         End Function
 
@@ -263,7 +263,7 @@ Namespace NOVAS
         ''' <param name="hour">Time in hours</param>
         ''' <returns>OUT: Julian date.</returns>
         ''' <remarks></remarks>
-        Public Function JulianDate(ByVal year As Short, ByVal month As Short, ByVal day As Short, ByVal hour As Double) As Double Implements INOVAS2.JulianDate
+        Public Function JulianDate(ByVal year As Short, ByVal month As Short, ByVal day As Short, ByVal hour As float) As float Implements INOVAS2.JulianDate
             Return NOVAS2.JulianDate(year, month, day, hour)
         End Function
 
@@ -283,7 +283,7 @@ Namespace NOVAS
         ''' >0...See error description in function 'ephemeris'.
         ''' </pre></returns>
         ''' <remarks></remarks>
-        Public Function LocalPlanet(ByVal tjd As Double, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByVal deltat As Double, ByRef location As SiteInfo, ByRef ra As Double, ByRef dec As Double, ByRef dis As Double) As Short Implements INOVAS2.LocalPlanet
+        Public Function LocalPlanet(ByVal tjd As float, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByVal deltat As float, ByRef location As SiteInfo, ByRef ra As float, ByRef dec As float, ByRef dis As float) As Short Implements INOVAS2.LocalPlanet
             Return NOVAS2.LocalPlanet(tjd, ss_object, earth, deltat, location, ra, dec, dis)
         End Function
 
@@ -302,7 +302,7 @@ Namespace NOVAS
         ''' >0...Error code from function 'solarsystem'.
         '''</pre></returns>
         ''' <remarks></remarks>
-        Public Function LocalStar(ByVal tjd As Double, ByRef earth As BodyDescription, ByVal deltat As Double, ByRef star As CatEntry, ByRef location As SiteInfo, ByRef ra As Double, ByRef dec As Double) As Short Implements INOVAS2.LocalStar
+        Public Function LocalStar(ByVal tjd As float, ByRef earth As BodyDescription, ByVal deltat As float, ByRef star As CatEntry, ByRef location As SiteInfo, ByRef ra As float, ByRef dec As float) As Short Implements INOVAS2.LocalStar
             Return NOVAS2.LocalStar(tjd, earth, deltat, star, location, ra, dec)
         End Function
 
@@ -320,7 +320,7 @@ Namespace NOVAS
         ''' <param name="rad_vel">Radial velocity.</param>
         ''' <param name="star">OUT: Structure containing the input data</param>
         ''' <remarks></remarks>
-        Public Sub MakeCatEntry(ByVal catalog As String, ByVal star_name As String, ByVal star_num As Integer, ByVal ra As Double, ByVal dec As Double, ByVal pm_ra As Double, ByVal pm_dec As Double, ByVal parallax As Double, ByVal rad_vel As Double, ByRef star As CatEntry) Implements INOVAS2.MakeCatEntry
+        Public Sub MakeCatEntry(ByVal catalog As String, ByVal star_name As String, ByVal star_num As Integer, ByVal ra As float, ByVal dec As float, ByVal pm_ra As float, ByVal pm_dec As float, ByVal parallax As float, ByVal rad_vel As float, ByRef star As CatEntry) Implements INOVAS2.MakeCatEntry
             NOVAS2.MakeCatEntry(catalog, star_name, star_num, ra, dec, pm_ra, pm_dec, parallax, rad_vel, star)
         End Sub
 
@@ -341,7 +341,7 @@ Namespace NOVAS
         ''' place at date 'tjd'.  Proper motion, parallax and radial velocity 
         ''' are assumed to be zero.
         '''</remarks>
-        Public Function MeanStar(ByVal tjd As Double, ByRef earth As BodyDescription, ByVal ra As Double, ByVal dec As Double, ByRef mra As Double, ByRef mdec As Double) As Short Implements INOVAS2.MeanStar
+        Public Function MeanStar(ByVal tjd As float, ByRef earth As BodyDescription, ByVal ra As float, ByVal dec As float, ByRef mra As float, ByRef mdec As float) As Short Implements INOVAS2.MeanStar
             Return NOVAS2.MeanStar(tjd, earth, ra, dec, mra, mdec)
         End Function
 
@@ -352,11 +352,11 @@ Namespace NOVAS
         ''' <param name="fn">Flag determining 'direction' of transformation;<pre>
         '''    fn  = 0 transformation applied, mean to true.
         '''    fn != 0 inverse transformation applied, true to mean.</pre></param>
-        ''' <param name="pos">Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of epoch.</param>
-        ''' <param name="pos2">OUT: Position vector, geocentric equatorial rectangular coordinates, referred to true equator and equinox of epoch.</param>
+        ''' <param name="pos">Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of epoch.</param>
+        ''' <param name="pos2">OUT: Position Vector2, geocentric equatorial rectangular coordinates, referred to true equator and equinox of epoch.</param>
         ''' <returns>0...Everything OK.</returns>
         ''' <remarks>Inverse transformation may be applied by setting flag 'fn'.</remarks>
-        Public Function Nutate(ByVal tjd As Double, ByVal fn As NutationDirection, ByVal pos() As Double, ByRef pos2() As Double) As Short Implements INOVAS2.Nutate
+        Public Function Nutate(ByVal tjd As float, ByVal fn As NutationDirection, ByVal pos() As float, ByRef pos2() As float) As Short Implements INOVAS2.Nutate
             Return NOVAS2.Nutate(tjd, fn, pos, pos2)
         End Function
 
@@ -368,21 +368,21 @@ Namespace NOVAS
         ''' <param name="obliqnutation">OUT: Nutation in obliquity in arcseconds.</param>
         ''' <returns>0...Everything OK.</returns>
         ''' <remarks></remarks>
-        Public Function NutationAngles(ByVal tdbtime As Double, ByRef longnutation As Double, ByRef obliqnutation As Double) As Short Implements INOVAS2.NutationAngles
+        Public Function NutationAngles(ByVal tdbtime As float, ByRef longnutation As float, ByRef obliqnutation As float) As Short Implements INOVAS2.NutationAngles
             Return NOVAS2.NutationAngles(tdbtime, longnutation, obliqnutation)
         End Function
 
         ''' <summary>
-        ''' Transforms a vector from an Earth-fixed geographic system to a space-fixed system
+        ''' Transforms a Vector2 from an Earth-fixed geographic system to a space-fixed system
         ''' </summary>
         ''' <param name="tjd">TT (or TDT) Julian date</param>
         ''' <param name="gast">Greenwich apparent sidereal time, in hours.</param>
         ''' <param name="x"> Conventionally-defined X coordinate of rotational pole with respect to CIO, in arcseconds.</param>
         ''' <param name="y">Conventionally-defined Y coordinate of rotational pole with respect to CIO, in arcseconds.</param>
-        ''' <param name="vece"> Vector in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
-        ''' <param name="vecs">OUT: Vector in geocentric rectangular space-fixed system, referred to mean equator and equinox of J2000.0.</param>
-        ''' <remarks>Transforms a vector from an Earth-fixed geographic system to a space-fixed system based on mean equator and equinox of J2000.0; applies rotations for wobble, spin, nutation, and precession.</remarks>
-        Public Sub Pnsw(ByVal tjd As Double, ByVal gast As Double, ByVal x As Double, ByVal y As Double, ByVal vece() As Double, ByRef vecs() As Double) Implements INOVAS2.Pnsw
+        ''' <param name="vece"> Vector2 in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
+        ''' <param name="vecs">OUT: Vector2 in geocentric rectangular space-fixed system, referred to mean equator and equinox of J2000.0.</param>
+        ''' <remarks>Transforms a Vector2 from an Earth-fixed geographic system to a space-fixed system based on mean equator and equinox of J2000.0; applies rotations for wobble, spin, nutation, and precession.</remarks>
+        Public Sub Pnsw(ByVal tjd As float, ByVal gast As float, ByVal x As float, ByVal y As float, ByVal vece() As float, ByRef vecs() As float) Implements INOVAS2.Pnsw
             NOVAS2.Pnsw(tjd, gast, x, y, vece, vecs)
         End Sub
 
@@ -390,11 +390,11 @@ Namespace NOVAS
         ''' Precesses equatorial rectangular coordinates from one epoch to another.
         ''' </summary>
         ''' <param name="tjd1">TDB Julian date of first epoch.</param>
-        ''' <param name="pos">Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of first epoch.</param>
+        ''' <param name="pos">Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of first epoch.</param>
         ''' <param name="tjd2">TDB Julian date of second epoch.</param>
-        ''' <param name="pos2">OUT: Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of second epoch.</param>
+        ''' <param name="pos2">OUT: Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of second epoch.</param>
         ''' <remarks>The coordinates are referred to the mean equator and equinox of the two respective epochs.</remarks>
-        Public Sub Precession(ByVal tjd1 As Double, ByVal pos() As Double, ByVal tjd2 As Double, ByRef pos2() As Double) Implements INOVAS2.Precession
+        Public Sub Precession(ByVal tjd1 As float, ByVal pos() As float, ByVal tjd2 As float, ByRef pos2() As float) Implements INOVAS2.Precession
             NOVAS2.Precession(tjd1, pos, tjd2, pos2)
         End Sub
 
@@ -402,25 +402,25 @@ Namespace NOVAS
         ''' Applies proper motion, including foreshortening effects, to a star's position.
         ''' </summary>
         ''' <param name="tjd1">TDB Julian date of first epoch.</param>
-        ''' <param name="pos">Position vector at first epoch.</param>
-        ''' <param name="vel">Velocity vector at first epoch.</param>
+        ''' <param name="pos">Position Vector2 at first epoch.</param>
+        ''' <param name="vel">Velocity Vector2 at first epoch.</param>
         ''' <param name="tjd2">TDB Julian date of second epoch.</param>
-        ''' <param name="pos2">OUT: Position vector at second epoch.</param>
+        ''' <param name="pos2">OUT: Position Vector2 at second epoch.</param>
         ''' <remarks></remarks>
-        Public Sub ProperMotion(ByVal tjd1 As Double, ByVal pos() As Double, ByVal vel() As Double, ByVal tjd2 As Double, ByRef pos2() As Double) Implements INOVAS2.ProperMotion
+        Public Sub ProperMotion(ByVal tjd1 As float, ByVal pos() As float, ByVal vel() As float, ByVal tjd2 As float, ByRef pos2() As float) Implements INOVAS2.ProperMotion
             NOVAS2.ProperMotion(tjd1, pos, vel, tjd2, pos2)
         End Sub
 
         ''' <summary>
-        ''' Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates).
+        ''' Converts equatorial spherical coordinates to a Vector2 (equatorial rectangular coordinates).
         ''' </summary>
         ''' <param name="ra">Right ascension (hours).</param>
         ''' <param name="dec">Declination (degrees).</param>
         ''' <param name="dist">Distance</param>
-        ''' <param name="pos">Position vector, equatorial rectangular coordinates (AU).</param>
+        ''' <param name="pos">Position Vector2, equatorial rectangular coordinates (AU).</param>
         ''' <remarks></remarks>
-        Public Sub RADec2Vector(ByVal ra As Double, ByVal dec As Double, ByVal dist As Double, ByRef pos() As Double) Implements INOVAS2.RADec2Vector
-            NOVAS2.RADec2Vector(ra, dec, dist, pos)
+        Public Sub RADec2Vector2(ByVal ra As float, ByVal dec As float, ByVal dist As float, ByRef pos() As float) Implements INOVAS2.RADec2Vector2
+            NOVAS2.RADec2Vector2(ra, dec, dist, pos)
         End Sub
 
         ''' <summary>
@@ -431,7 +431,7 @@ Namespace NOVAS
         ''' <param name="zd_obs">bserved zenith distance, in degrees.</param>
         ''' <returns>Atmospheric refraction, in degrees.</returns>
         ''' <remarks>This version computes approximate refraction for optical wavelengths.</remarks>
-        Public Function Refract(ByRef location As SiteInfo, ByVal ref_option As Short, ByVal zd_obs As Double) As Double Implements INOVAS2.Refract
+        Public Function Refract(ByRef location As SiteInfo, ByVal ref_option As Short, ByVal zd_obs As float) As float Implements INOVAS2.Refract
             Return NOVAS2.Refract(location, ref_option, zd_obs)
         End Function
 
@@ -460,7 +460,7 @@ Namespace NOVAS
         ''' <param name="ee"> Equation of the equinoxes (seconds of time). [Note: this  quantity is computed by function 'earthtilt'.]</param>
         ''' <param name="gst">Greenwich apparent sidereal time, in hours.</param>
         ''' <remarks></remarks>
-        Public Sub SiderealTime(ByVal jd_high As Double, ByVal jd_low As Double, ByVal ee As Double, ByRef gst As Double) Implements INOVAS2.SiderealTime
+        Public Sub SiderealTime(ByVal jd_high As float, ByVal jd_low As float, ByVal ee As float, ByRef gst As float) Implements INOVAS2.SiderealTime
             NOVAS2.SiderealTime(jd_high, jd_low, ee, gst)
         End Sub
 
@@ -474,15 +474,15 @@ Namespace NOVAS
         ''' Set 'body' = 2 or 'body' = 3 for the Earth.
         '''</pre></param>
         ''' <param name="origin">Required origin: solar system barycenter or center of mass of the Sun</param>
-        ''' <param name="pos">OUT: Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        ''' <param name="vel">OUT: Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        ''' <param name="pos">OUT: Position Vector2 of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        ''' <param name="vel">OUT: Velocity Vector2 of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         ''' <returns><pre>
         ''' 0...Everything OK.
         ''' 1...Input Julian date ('tjd') out of range.
         ''' 2...Invalid value of 'body'.
         '''</pre></returns>
         ''' <remarks> Provides the position and velocity of the Earth at epoch 'tjd' by evaluating a closed-form theory without reference to an  external file.  This function can also provide the position and velocity of the Sun.</remarks>
-        Public Function SolarSystem(ByVal tjd As Double, ByVal body As Body, ByVal origin As Origin, ByRef pos() As Double, ByRef vel() As Double) As Short Implements INOVAS2.SolarSystem
+        Public Function SolarSystem(ByVal tjd As float, ByVal body As Body, ByVal origin As Origin, ByRef pos() As float, ByRef vel() As float) As Short Implements INOVAS2.SolarSystem
             Return NOVAS2.SolarSystem(tjd, body, origin, pos, vel)
         End Function
 
@@ -490,22 +490,22 @@ Namespace NOVAS
         ''' Transforms geocentric rectangular coordinates from rotating system to non-rotating system
         ''' </summary>
         ''' <param name="st">Local apparent sidereal time at reference meridian, in hours.</param>
-        ''' <param name="pos1">Vector in geocentric rectangular rotating system, referred to rotational equator and orthogonal reference meridian.</param>
-        ''' <param name="pos2">OUT: Vector in geocentric rectangular non-rotating system, referred to true equator and equinox of date.</param>
+        ''' <param name="pos1">Vector2 in geocentric rectangular rotating system, referred to rotational equator and orthogonal reference meridian.</param>
+        ''' <param name="pos2">OUT: Vector2 in geocentric rectangular non-rotating system, referred to true equator and equinox of date.</param>
         ''' <remarks>Transforms geocentric rectangular coordinates from rotating system based on rotational equator and orthogonal reference meridian to  non-rotating system based on true equator and equinox of date.</remarks>
-        Public Sub Spin(ByVal st As Double, ByVal pos1() As Double, ByRef pos2() As Double) Implements INOVAS2.Spin
+        Public Sub Spin(ByVal st As float, ByVal pos1() As float, ByRef pos2() As float) Implements INOVAS2.Spin
             NOVAS2.Spin(st, pos1, pos2)
         End Sub
 
         ''' <summary>
-        ''' Converts angular quanities for stars to vectors.
+        ''' Converts angular quanities for stars to Vector2s.
         ''' </summary>
         ''' <param name="star">Catalog entry structure containing J2000.0 catalog data with FK5-style units </param>
-        ''' <param name="pos">Position vector, equatorial rectangular coordinates, components in AU.</param>
-        ''' <param name="vel">Velocity vector, equatorial rectangular coordinates, components in AU/Day.</param>
+        ''' <param name="pos">Position Vector2, equatorial rectangular coordinates, components in AU.</param>
+        ''' <param name="vel">Velocity Vector2, equatorial rectangular coordinates, components in AU/Day.</param>
         ''' <remarks></remarks>
-        Public Sub StarVectors(ByVal star As CatEntry, ByRef pos() As Double, ByRef vel() As Double) Implements INOVAS2.StarVectors
-            NOVAS2.StarVectors(star, pos, vel)
+        Public Sub StarVector2s(ByVal star As CatEntry, ByRef pos() As float, ByRef vel() As float) Implements INOVAS2.StarVector2s
+            NOVAS2.StarVector2s(star, pos, vel)
         End Sub
 
         ''' <summary>
@@ -516,20 +516,20 @@ Namespace NOVAS
         ''' <param name="dec">OUT: Declination referred to mean equator and equinox of date  (degrees).</param>
         ''' <param name="dis">OUT: Geocentric distance (AU).</param>
         ''' <remarks></remarks>
-        Public Sub SunEph(ByVal jd As Double, ByRef ra As Double, ByRef dec As Double, ByRef dis As Double) Implements INOVAS2.SunEph
+        Public Sub SunEph(ByVal jd As float, ByRef ra As float, ByRef dec As float, ByRef dis As float) Implements INOVAS2.SunEph
             NOVAS2.SunEph(jd, ra, dec, dis)
         End Sub
 
         ''' <summary>
-        ''' Corrects position vector for the deflection of light in the gravitational field of the Sun. 
+        ''' Corrects position Vector2 for the deflection of light in the gravitational field of the Sun. 
         ''' </summary>
-        ''' <param name="pos">Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
-        ''' <param name="earthvector">Position vector of center of mass of the Earth, referred to origin at center of mass of the Sun, components in AU.</param>
-        ''' <param name="pos2">Position vector, referred to origin at center of mass of the Earth, corrected for gravitational deflection, components in AU.</param>
+        ''' <param name="pos">Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
+        ''' <param name="earthVector2">Position Vector2 of center of mass of the Earth, referred to origin at center of mass of the Sun, components in AU.</param>
+        ''' <param name="pos2">Position Vector2, referred to origin at center of mass of the Earth, corrected for gravitational deflection, components in AU.</param>
         ''' <returns>0...Everything OK.</returns>
         ''' <remarks>This function is valid for bodies within the solar system as well as for stars.</remarks>
-        Public Function SunField(ByVal pos() As Double, ByVal earthvector() As Double, ByRef pos2() As Double) As Short Implements INOVAS2.SunField
-            Return NOVAS2.SunField(pos, earthvector, pos2)
+        Public Function SunField(ByVal pos() As float, ByVal earthVector2() As float, ByRef pos2() As float) As Short Implements INOVAS2.SunField
+            Return NOVAS2.SunField(pos, earthVector2, pos2)
         End Function
 
         ''' <summary>
@@ -539,19 +539,19 @@ Namespace NOVAS
         ''' <param name="tdtjd">OUT: TT (or TDT) Julian date.</param>
         ''' <param name="secdiff">OUT: Difference tdbjd-tdtjd, in seconds.</param>
         ''' <remarks>Computes the terrestrial time (TT) or terrestrial dynamical time (TDT) Julian date corresponding to a barycentric dynamical time (TDB) Julian date.</remarks>
-        Public Sub Tdb2Tdt(ByVal tdb As Double, ByRef tdtjd As Double, ByRef secdiff As Double) Implements INOVAS2.Tdb2Tdt
+        Public Sub Tdb2Tdt(ByVal tdb As float, ByRef tdtjd As float, ByRef secdiff As float) Implements INOVAS2.Tdb2Tdt
             NOVAS2.Tdb2Tdt(tdb, tdtjd, secdiff)
         End Sub
 
         ''' <summary>
-        ''' Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth.
+        ''' Computes the position and velocity Vector2s of a terrestrial observer with respect to the center of the Earth.
         ''' </summary>
         ''' <param name="locale">Longitude, latitude and height of the observer (in a SiteInfoStruct)</param>
         ''' <param name="st">Local apparent sidereal time at reference meridian in hours.</param>
-        ''' <param name="pos"> Position vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU.</param>
-        ''' <param name="vel"> Velocity vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/Day.</param>
+        ''' <param name="pos"> Position Vector2 of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU.</param>
+        ''' <param name="vel"> Velocity Vector2 of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/Day.</param>
         ''' <remarks></remarks>
-        Public Sub Terra(ByRef locale As SiteInfo, ByVal st As Double, ByRef pos() As Double, ByRef vel() As Double) Implements INOVAS2.Terra
+        Public Sub Terra(ByRef locale As SiteInfo, ByVal st As float, ByRef pos() As float, ByRef vel() As float) Implements INOVAS2.Terra
             NOVAS2.Terra(locale, st, pos, vel)
         End Sub
 
@@ -571,7 +571,7 @@ Namespace NOVAS
         ''' >0...See error description in function 'ephemeris'.
         ''' </pre></returns>
         ''' <remarks></remarks>
-        Public Function TopoPlanet(ByVal tjd As Double, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByVal deltat As Double, ByRef location As SiteInfo, ByRef ra As Double, ByRef dec As Double, ByRef dis As Double) As Short Implements INOVAS2.TopoPlanet
+        Public Function TopoPlanet(ByVal tjd As float, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByVal deltat As float, ByRef location As SiteInfo, ByRef ra As float, ByRef dec As float, ByRef dis As float) As Short Implements INOVAS2.TopoPlanet
             Return NOVAS2.TopoPlanet(tjd, ss_object, earth, deltat, location, ra, dec, dis)
         End Function
 
@@ -589,7 +589,7 @@ Namespace NOVAS
         '''  0...Everything OK.
         ''' >0...Error code from function 'solarsystem'.</pre></returns>
         ''' <remarks></remarks>
-        Public Function TopoStar(ByVal tjd As Double, ByRef earth As BodyDescription, ByVal deltat As Double, ByRef star As CatEntry, ByRef location As SiteInfo, ByRef ra As Double, ByRef dec As Double) As Short Implements INOVAS2.TopoStar
+        Public Function TopoStar(ByVal tjd As float, ByRef earth As BodyDescription, ByVal deltat As float, ByRef star As CatEntry, ByRef location As SiteInfo, ByRef ra As float, ByRef dec As float) As Short Implements INOVAS2.TopoStar
             Return NOVAS2.TopoStar(tjd, earth, deltat, star, location, ra, dec)
         End Function
 
@@ -625,7 +625,7 @@ Namespace NOVAS
         ''' 4. This function uses TDB Julian dates internally, but no 
         '''    distinction between TDB and TT is necessary.
         '''</pre></remarks>
-        Public Sub TransformCat(ByVal [option] As TransformationOption, ByVal date_incat As Double, ByRef incat As CatEntry, ByVal date_newcat As Double, ByRef newcat_id() As Byte, ByRef newcat As CatEntry) Implements INOVAS2.TransformCat
+        Public Sub TransformCat(ByVal [option] As TransformationOption, ByVal date_incat As float, ByRef incat As CatEntry, ByVal date_newcat As float, ByRef newcat_id() As Byte, ByRef newcat As CatEntry) Implements INOVAS2.TransformCat
             NOVAS2.TransformCat([option], date_incat, incat, date_newcat, newcat_id, newcat)
         End Sub
 
@@ -659,18 +659,18 @@ Namespace NOVAS
         End Sub
 
         ''' <summary>
-        ''' Converts an vector in equatorial rectangular coordinates to equatorial spherical coordinates.
+        ''' Converts an Vector2 in equatorial rectangular coordinates to equatorial spherical coordinates.
         ''' </summary>
-        ''' <param name="pos">Position vector, equatorial rectangular coordinates.</param>
+        ''' <param name="pos">Position Vector2, equatorial rectangular coordinates.</param>
         ''' <param name="ra">OUT: Right ascension in hours.</param>
         ''' <param name="dec">OUT: Declination in degrees.</param>
         ''' <returns><pre>
         ''' 0...Everything OK.
-        ''' 1...All vector components are zero; 'ra' and 'dec' are indeterminate.
+        ''' 1...All Vector2 components are zero; 'ra' and 'dec' are indeterminate.
         ''' 2...Both vec[0] and vec[1] are zero, but vec[2] is nonzero; 'ra' is indeterminate.</pre>
         ''' </returns>
         ''' <remarks></remarks>
-        Public Function Vector2RADec(ByVal pos() As Double, ByRef ra As Double, ByRef dec As Double) As Short Implements INOVAS2.Vector2RADec
+        Public Function Vector2RADec(ByVal pos() As float, ByRef ra As float, ByRef dec As float) As Short Implements INOVAS2.Vector2RADec
             Return NOVAS2.Vector2RADec(pos, ra, dec)
         End Function
 
@@ -688,7 +688,7 @@ Namespace NOVAS
         ''' >0...See error description in function 'ephemeris'.
         ''' </pre></returns>
         ''' <remarks></remarks>
-        Public Function VirtualPlanet(ByVal tjd As Double, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByRef ra As Double, ByRef dec As Double, ByRef dis As Double) As Short Implements INOVAS2.VirtualPlanet
+        Public Function VirtualPlanet(ByVal tjd As float, ByRef ss_object As BodyDescription, ByRef earth As BodyDescription, ByRef ra As float, ByRef dec As float, ByRef dis As float) As Short Implements INOVAS2.VirtualPlanet
             Return NOVAS2.VirtualPlanet(tjd, ss_object, earth, ra, dec, dis)
         End Function
 
@@ -707,7 +707,7 @@ Namespace NOVAS
         ''' <remarks>
         ''' Computes the virtual place of a star at date 'tjd', given its 
         ''' mean place, proper motion, parallax, and radial velocity for J2000.0.</remarks>
-        Public Function VirtualStar(ByVal tjd As Double, ByRef earth As BodyDescription, ByRef star As CatEntry, ByRef ra As Double, ByRef dec As Double) As Short Implements INOVAS2.VirtualStar
+        Public Function VirtualStar(ByVal tjd As float, ByRef earth As BodyDescription, ByRef star As CatEntry, ByRef ra As float, ByRef dec As float) As Short Implements INOVAS2.VirtualStar
             Return NOVAS2.VirtualStar(tjd, earth, star, ra, dec)
         End Function
 
@@ -716,10 +716,10 @@ Namespace NOVAS
         ''' </summary>
         ''' <param name="x"> Conventionally-defined X coordinate of rotational pole with respect to CIO, in arcseconds.</param>
         ''' <param name="y">Conventionally-defined Y coordinate of rotational pole with respect to CIO, in arcseconds.</param>
-        ''' <param name="pos1">Vector in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
-        ''' <param name="pos2">OUT: Vector in geocentric rectangular rotating system, referred to rotational equator and orthogonal Greenwich meridian</param>
-        ''' <remarks>Corrects Earth-fixed geocentric rectangular coordinates for polar motion.  Transforms a vector from Earth-fixed geographic system to rotating system based on rotational equator and orthogonal Greenwich meridian through axis of rotation.</remarks>
-        Public Sub Wobble(ByVal x As Double, ByVal y As Double, ByVal pos1() As Double, ByRef pos2() As Double) Implements INOVAS2.Wobble
+        ''' <param name="pos1">Vector2 in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
+        ''' <param name="pos2">OUT: Vector2 in geocentric rectangular rotating system, referred to rotational equator and orthogonal Greenwich meridian</param>
+        ''' <remarks>Corrects Earth-fixed geocentric rectangular coordinates for polar motion.  Transforms a Vector2 from Earth-fixed geographic system to rotating system based on rotational equator and orthogonal Greenwich meridian through axis of rotation.</remarks>
+        Public Sub Wobble(ByVal x As float, ByVal y As float, ByVal pos1() As float, ByRef pos2() As float) Implements INOVAS2.Wobble
             NOVAS2.Wobble(x, y, pos1, pos2)
         End Sub
     End Class

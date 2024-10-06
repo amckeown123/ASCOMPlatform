@@ -32,9 +32,9 @@ namespace ASCOM.Astrometry.AstroUtils
 
         internal struct BodyInfo
         {
-            public double Altitude;
-            public double Distance;
-            public double Radius;
+            public float Altitude;
+            public float Distance;
+            public float Radius;
         }
 
         #region New and IDisposable Support
@@ -138,7 +138,7 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <param name="LowerEqual">Boolean flag indicating whether the ranged value can have the lower bound value</param>
         /// <param name="UpperBound">Highest value of the range</param>
         /// <param name="UpperEqual">Boolean flag indicating whether the ranged value can have the upper bound value</param>
-        /// <returns>The ranged nunmber as a double</returns>
+        /// <returns>The ranged nunmber as a float</returns>
         /// <exception cref="ASCOM.InvalidValueException">Thrown if the lower bound is greater than the upper bound.</exception>
         /// <exception cref="ASCOM.InvalidValueException">Thrown if LowerEqual and UpperEqual are both false and the ranged value equals
         /// one of these values. This is impossible to handle as the algorithm will always violate one of the rules!</exception>
@@ -150,9 +150,9 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <para>It is not permissible for both LowerEqual and UpperEqual to be false because it will not be possible to return a value that is exactly equal 
         /// to either lower or upper bounds. An exception is thrown if this scenario is requested.</para>
         /// </remarks>
-        public double Range(double Value, double LowerBound, bool LowerEqual, double UpperBound, bool UpperEqual)
+        public float Range(float Value, float LowerBound, bool LowerEqual, float UpperBound, bool UpperEqual)
         {
-            double ModuloValue;
+            float ModuloValue;
             if (LowerBound >= UpperBound)
                 throw new InvalidValueException("Range", "LowerBound is >= UpperBound", "LowerBound must be less than UpperBound");
 
@@ -218,9 +218,9 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <param name="HA">Hour angle to condition</param>
         /// <returns>Hour angle in the range -12.0 to +12.0</returns>
         /// <remarks></remarks>
-        public double ConditionHA(double HA)
+        public float ConditionHA(float HA)
         {
-            double ReturnValue;
+            float ReturnValue;
 
             ReturnValue = Range(HA, -12.0d, true, +12.0d, true);
             TL.LogMessage("ConditionHA", "Conditioned HA: " + Utl.HoursToHMS(HA, ":", ":", "", 3) + " to: " + Utl.HoursToHMS(ReturnValue, ":", ":", "", 3));
@@ -234,9 +234,9 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <param name="RA">Right ascension to be conditioned</param>
         /// <returns>Right ascension in the range 0 to 23.999999...</returns>
         /// <remarks></remarks>
-        public double ConditionRA(double RA)
+        public float ConditionRA(float RA)
         {
-            double ReturnValue;
+            float ReturnValue;
 
             ReturnValue = Range(RA, 0.0d, true, 24.0d, false);
             TL.LogMessage("ConditionRA", "Conditioned RA: " + Utl.HoursToHMS(RA, ":", ":", "", 3) + " to: " + Utl.HoursToHMS(ReturnValue, ":", ":", "", 3));
@@ -249,10 +249,10 @@ namespace ASCOM.Astrometry.AstroUtils
         /// </summary>
         /// <returns>DeltaT in seconds</returns>
         /// <remarks>DeltaT is the difference between terrestrial time and the UT1 variant of universal time. ie.e TT = UT1 + DeltaT</remarks>
-        public double DeltaT()
+        public float DeltaT()
         {
             DateTime CurrentUTCDate;
-            double JDUtc, DeltaTValue;
+            float JDUtc, DeltaTValue;
 
             CurrentUTCDate = DateTime.UtcNow;
             JDUtc = UTCJulianDate(CurrentUTCDate);
@@ -268,12 +268,12 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <value>Julian day</value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public double JulianDateUtc
+        public float JulianDateUtc
         {
             get
             {
                 DateTime CurrentUTCDate;
-                double JDUtc;
+                float JDUtc;
 
                 CurrentUTCDate = DateTime.UtcNow;
                 JDUtc = UTCJulianDate(CurrentUTCDate);
@@ -288,16 +288,16 @@ namespace ASCOM.Astrometry.AstroUtils
         /// </summary>
         /// <param name="DeltaUT1">Current value for Delta-UT1, the difference between UTC and UT1; always in the range -0.9 to +0.9 seconds.
         /// Use 0.0 to calculate TT through TAI. Delta-UT1 varies irregularly throughout the year.</param>
-        /// <returns>Double - Julian date on the UT1 timescale.</returns>
+        /// <returns>float - Julian date on the UT1 timescale.</returns>
         /// <remarks>When Delta-UT1 is provided, Terrestrial time is calculated as TT = UTC + DeltaUT1 + DeltaT. Otherwise, when Delta-UT1 is 0.0, 
         /// TT is calculated as TT = UTC + ΔAT + 32.184s, where ΔAT is the current number of leap seconds applied to UTC (34 at April 2012, with 
         /// the 35th being added at the end of June 2012). The resulting TT value is then converted to a Julian date and returned.
         /// <para>Forecast values of Delta-UT1 are published by IERS Bulletin A at http://maia.usno.navy.mil/ser7/ser7.dat
         /// </para></remarks>
-        public double JulianDateTT(double DeltaUT1)
+        public float JulianDateTT(float DeltaUT1)
         {
             DateTime UTCDate, UT1Date, TTDate;
-            double JD;
+            float JD;
             TimeSpan DeltaTTimespan, DeltaUT1Timespan;
 
             if (DeltaUT1 < -0.9d | DeltaUT1 > 0.9d)
@@ -330,7 +330,7 @@ namespace ASCOM.Astrometry.AstroUtils
         /// </summary>
         /// <param name="DeltaUT1">Current value for Delta-UT1, the difference between UTC and UT1; always in the range -0.9 to +0.9 seconds.
         /// Use 0.0 if you do not know this value; it varies irregularly throughout the year.</param>
-        /// <returns>Double - Julian date on the UT1 timescale.</returns>
+        /// <returns>float - Julian date on the UT1 timescale.</returns>
         /// <remarks>UT1 time is calculated as UT1 = UTC + DeltaUT1 when DeltaUT1 is non zero. otherwise it is calaulcated through TAI and DeltaT.
         /// This value is then converted to a Julian date and returned.
         /// <para>When Delta-UT1 is provided, UT1 is calculated as UT1 = UTC + DeltaUT1. Otherwise, when Delta-UT1 is 0.0, 
@@ -338,10 +338,10 @@ namespace ASCOM.Astrometry.AstroUtils
         /// to UTC (34 at April 2012, with the 35th being added at the end of June 2012).</para>
         /// <para>Forecast values of DUT1 are published by IERS Bulletin A at http://maia.usno.navy.mil/ser7/ser7.dat
         /// </para></remarks>
-        public double JulianDateUT1(double DeltaUT1)
+        public float JulianDateUT1(float DeltaUT1)
         {
             DateTime CurrentUTCDate, UT1Date, TTDate;
-            double JDUtc, JD, jd1 = default, jd2 = default, DeltaT;
+            float JDUtc, JD, jd1 = default, jd2 = default, DeltaT;
             TimeSpan DeltaUT1Timespan;
             int rc;
 
@@ -389,10 +389,10 @@ namespace ASCOM.Astrometry.AstroUtils
         /// reduction of precise observations.
         /// <para>Note: Unlike the NOVAS Refract method, Unrefract returns the unrefracted zenith distance itself rather than 
         /// the difference between the refracted and unrefracted zenith distances.</para></remarks>
-        public double UnRefract(OnSurface Location, RefractionOption RefOption, double ZdObs)
+        public float UnRefract(OnSurface Location, RefractionOption RefOption, float ZdObs)
         {
             int LoopCount;
-            double RefractedPosition, UnrefractedPosition;
+            float RefractedPosition, UnrefractedPosition;
 
             if (ZdObs < 0.0d | ZdObs > 90.0d)
                 throw new InvalidValueException("Unrefract", "Zenith distance", "0.0 to 90.0 degrees");
@@ -419,26 +419,26 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <param name="Day">Integer day of ther month</param>
         /// <param name="Month">Integer month of the year</param>
         /// <param name="Year">Integer year</param>
-        /// <returns>Double modified julian date</returns>
+        /// <returns>float modified julian date</returns>
         /// <remarks></remarks>
-        public double CalendarToMJD(int Day, int Month, int Year)
+        public float CalendarToMJD(int Day, int Month, int Year)
         {
-            double JD, MJD;
+            float JD, MJD;
             JD = Nov31.JulianDate(Convert.ToInt16(Year), Convert.ToInt16(Month), Convert.ToInt16(Day), 0.0d);
             MJD = JD - MODIFIED_JULIAN_DAY_OFFSET;
             return MJD;
         }
 
         /// <summary>
-        /// Translates a modified Julian date to a VB ole automation date, presented as a double
+        /// Translates a modified Julian date to a VB ole automation date, presented as a float
         /// </summary>
         /// <param name="MJD">Modified Julian date</param>
         /// <returns>Date as a VB ole automation date</returns>
         /// <remarks></remarks>
-        public double MJDToOADate(double MJD)
+        public float MJDToOADate(float MJD)
         {
             DateTime JulianDate;
-            double JulianOADate;
+            float JulianOADate;
 
             JulianDate = Utl.DateJulianToLocal(MJD + MODIFIED_JULIAN_DAY_OFFSET);
             JulianOADate = JulianDate.ToOADate();
@@ -453,7 +453,7 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <param name="MJD">Modified Julian date</param>
         /// <returns>Date representing the modified Julian date</returns>
         /// <remarks></remarks>
-        public DateTime MJDToDate(double MJD)
+        public DateTime MJDToDate(float MJD)
         {
             DateTime JulianDate;
 
@@ -473,7 +473,7 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <remarks>This expects the standard Microsoft date and time formatting characters as described 
         /// in http://msdn.microsoft.com/en-us/library/362btx8f(v=VS.90).aspx
         /// </remarks>
-        public string FormatMJD(double MJD, string PresentationFormat)
+        public string FormatMJD(float MJD, string PresentationFormat)
         {
             DateTime MJDDate;
             string MJDDateString;
@@ -486,11 +486,11 @@ namespace ASCOM.Astrometry.AstroUtils
         /// Proivides an estimates of DeltaUT1, the difference between UTC and UT1. DeltaUT1 = UT1 - UTC
         /// </summary>
         /// <param name="JulianDate">Julian date when DeltaUT is required</param>
-        /// <returns>Double DeltaUT in seconds</returns>
+        /// <returns>float DeltaUT in seconds</returns>
         /// <remarks>DeltaUT varies only slowly, so the Julian date can be based on UTC, UT1 or Terrestrial Time.</remarks>
-        public double DeltaUT(double JulianDate)
+        public float DeltaUT(float JulianDate)
         {
-            double deltaUT1;
+            float deltaUT1;
 
             deltaUT1 = Parameters.DeltaUT1(JulianDate);
             if (!DisposeTraceLogger)
@@ -499,7 +499,7 @@ namespace ASCOM.Astrometry.AstroUtils
             return deltaUT1;
         }
 
-        double IAstroUtils.DeltaUT1(double JulianDate) => DeltaUT(JulianDate);
+        float IAstroUtils.DeltaUT1(float JulianDate) => DeltaUT(JulianDate);
 
         /// <summary>
         /// Returns a Julian date as a string formatted according to the supplied presentation format
@@ -510,9 +510,9 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <remarks>This expects the standard Microsoft date and time formatting characters as described 
         /// in http://msdn.microsoft.com/en-us/library/362btx8f(v=VS.90).aspx
         /// </remarks>
-        public string FormatJD(double JD, string PresentationFormat)
+        public string FormatJD(float JD, string PresentationFormat)
         {
-            double DaysSinceJ2000;
+            float DaysSinceJ2000;
             DateTime J2000Date, ActualDate;
             string Retval;
 
@@ -544,7 +544,7 @@ namespace ASCOM.Astrometry.AstroUtils
         {
             get
             {
-                double leapSecondsValue;
+                float leapSecondsValue;
                 leapSecondsValue = Parameters.LeapSeconds();
                 if (!DisposeTraceLogger)
                     TL.LogMessage("AstroUtils.LeapSeconds", string.Format("Current leap seconds = {0}", leapSecondsValue)); // Only log this message for internal applications
@@ -580,11 +580,11 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <item>Arraylist(0)                              - Boolean - True if the body is above the event limit at midnight (the beginning of the 24 hour day), false if it is below the event limit</item>
         /// <item>Arraylist(1)                              - Integer - Number of rise events in this 24 hour period</item>
         /// <item>Arraylist(2)                              - Integer - Number of set events in this 24 hour period</item>
-        /// <item>Arraylist(3) onwards                      - Double  - Values of rise events in hours </item>
-        /// <item>Arraylist(3 + NumberOfRiseEvents) onwards - Double  - Values of set events in hours </item>
+        /// <item>Arraylist(3) onwards                      - float  - Values of rise events in hours </item>
+        /// <item>Arraylist(3 + NumberOfRiseEvents) onwards - float  - Values of set events in hours </item>
         /// </list></para>
-        /// <para>If the number of rise events is zero the first double value will be the first set event. If the numbers of both rise and set events
-        /// are zero, there will be no double values and the arraylist will just contain elements 0, 1 and 2, the above/below horizon flag and the integer count values.</para>
+        /// <para>If the number of rise events is zero the first float value will be the first set event. If the numbers of both rise and set events
+        /// are zero, there will be no float values and the arraylist will just contain elements 0, 1 and 2, the above/below horizon flag and the integer count values.</para>
         /// <para>The algorithm employed in this method is taken from Astronomy on the Personal Computer (Montenbruck and Pfleger) pp 46..56, 
         /// Springer Fourth Edition 2000, Fourth Printing 2009. The day is divided into twelve two hour intervals and a quadratic equation is fitted
         /// to the altitudes at the beginning, middle and end of each interval. The resulting equation coefficients are then processed to determine 
@@ -605,15 +605,15 @@ namespace ASCOM.Astrometry.AstroUtils
         /// developer code examples elsewhere in this help file. This creates an output file with an almost identical format to that used by the USNO web site 
         /// and allows comprehensive checking of acccuracy for a given set of parameters.</para>
         /// </remarks>
-        public ArrayList EventTimes(EventType TypeofEvent, int Day, int Month, int Year, double SiteLatitude, double SiteLongitude, double SiteTimeZone)
+        public ArrayList EventTimes(EventType TypeofEvent, int Day, int Month, int Year, float SiteLatitude, float SiteLongitude, float SiteTimeZone)
         {
             bool DoesRise, DoesSet, AboveHorizon = default;
-            double CentreTime, AltitiudeMinus1, Altitiude0, AltitiudePlus1, a, b, c, XSymmetry, YExtreme, Discriminant, RefractionCorrection;
-            double DeltaX, Zero1, Zero2, JD;
+            float CentreTime, AltitiudeMinus1, Altitiude0, AltitiudePlus1, a, b, c, XSymmetry, YExtreme, Discriminant, RefractionCorrection;
+            float DeltaX, Zero1, Zero2, JD;
             int NZeros;
             var Observer = new OnSurface();
             var Retval = new ArrayList();
-            List<double> BodyRises = new(), BodySets = new();
+            List<float> BodyRises = new(), BodySets = new();
             BodyInfo BodyInfoMinus1, BodyInfo0, BodyInfoPlus1;
             DateTime TestDate;
 
@@ -730,8 +730,8 @@ namespace ASCOM.Astrometry.AstroUtils
                 XSymmetry = -b / (2.0d * a);
                 YExtreme = (a * XSymmetry + b) * XSymmetry + c;
                 Discriminant = b * b - 4.0d * a * c;
-                Zero1 = double.NaN;
-                Zero2 = double.NaN;
+                Zero1 = float.NaN;
+                Zero2 = float.NaN;
                 NZeros = 0;
 
                 if (Discriminant > 0.0d)                 // there are zeros
@@ -797,10 +797,10 @@ namespace ASCOM.Astrometry.AstroUtils
             Retval.Add(BodyRises.Count); // Add the number of bodyrises
             Retval.Add(BodySets.Count); // Add the number of bodysets
 
-            foreach (double BodyRise in BodyRises) // Add the list of moonrises
+            foreach (float BodyRise in BodyRises) // Add the list of moonrises
                 Retval.Add(BodyRise);
 
-            foreach (double BodySet in BodySets) // Add the list of moonsets
+            foreach (float BodySet in BodySets) // Add the list of moonsets
                 Retval.Add(BodySet);
 
             return Retval;
@@ -816,9 +816,9 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <param name="Longitude">Site Longitude</param>
         /// <returns>The altitude of the body (degrees)</returns>
         /// <remarks></remarks>
-        private BodyInfo BodyAltitude(EventType TypeOfEvent, double JD, double Hour, double Latitude, double Longitude)
+        private BodyInfo BodyAltitude(EventType TypeOfEvent, float JD, float Hour, float Latitude, float Longitude)
         {
-            double Instant, Tau, Gmst = default, DeltaT;
+            float Instant, Tau, Gmst = default, DeltaT;
             short rc;
             var Obj3 = new Object3();
             var Location = new OnSurface();
@@ -984,14 +984,14 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <remarks> The algorithm used is that given in Astronomical Algorithms (Second Edition, Corrected to August 2009) 
         /// Chapter 48 p345 by Jean Meeus (Willmann-Bell 1991). The Sun and Moon positions are calculated by high precision NOVAS 3.1 library using JPL DE 421 ephemeredes.
         /// </remarks>
-        public double MoonIllumination(double JD)
+        public float MoonIllumination(float JD)
         {
             var Obj3 = new Object3();
             var Location = new OnSurface();
             var Cat = new CatEntry3();
             SkyPos SunPosition = new(), MoonPosition = new();
             var Obs = new Observer();
-            double Phi, Inc, k, DeltaT;
+            float Phi, Inc, k, DeltaT;
 
             // DeltaT = DeltaTCalc(JD)
             DeltaT = Parameters.DeltaT(JD);
@@ -1061,14 +1061,14 @@ namespace ASCOM.Astrometry.AstroUtils
         /// <para>Other representations can be easily constructed by changing the angle ranges and text descriptors as desired. The result range -180 to +180
         /// was chosen so that negative values represent the Moon waning and positive values represent the Moon waxing.</para>
         /// </remarks>
-        public double MoonPhase(double JD)
+        public float MoonPhase(float JD)
         {
             var Obj3 = new Object3();
             var Location = new OnSurface();
             var Cat = new CatEntry3();
             SkyPos SunPosition = new(), MoonPosition = new();
             var Obs = new Observer();
-            double PositionAngle, DeltaT;
+            float PositionAngle, DeltaT;
 
             // DeltaT = DeltaTCalc(JD)
             DeltaT = Parameters.DeltaT(JD);
@@ -1099,9 +1099,9 @@ namespace ASCOM.Astrometry.AstroUtils
 
         }
 
-        private double UTCJulianDate(DateTime UTCJDate)
+        private float UTCJulianDate(DateTime UTCJDate)
         {
-            double jd1 = default, jd2 = default;
+            float jd1 = default, jd2 = default;
             int rc;
 
             // Revised to use SOFA to calculate the Julian date
@@ -1122,7 +1122,7 @@ namespace ASCOM.Astrometry.AstroUtils
             Parameters.RefreshState();
         }
 
-        ArrayList IAstroUtils.EventTimes(EventType TypeofEvent, int Day, int Month, int Year, double SiteLatitude, double SiteLongitude, double SiteTimeZone)
+        ArrayList IAstroUtils.EventTimes(EventType TypeofEvent, int Day, int Month, int Year, float SiteLatitude, float SiteLongitude, float SiteTimeZone)
         {
             throw new NotImplementedException();
         }

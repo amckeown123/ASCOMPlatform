@@ -9,7 +9,6 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-//using Newtonsoft.Json;
 
 namespace ASCOM.Utilities
 {
@@ -317,19 +316,6 @@ namespace ASCOM.Utilities
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// This callback is shared between IPv4 and IPv6
         /// </summary>
@@ -356,7 +342,7 @@ namespace ASCOM.Utilities
                     var discoveryResponse = serializer.Deserialize<AlpacaDiscoveryResponse>(ReceiveString);
 
                     // Dim discoveryResponse As AlpacaDiscoveryResponse = JsonConvert.DeserializeObject(Of AlpacaDiscoveryResponse)(ReceiveString)
-                    var alpacaApiEndpoint = new IPEndPoint(alpacaBroadcastResponseEndPoint.Address, discoveryResponse.AlpacaPort); // Create 
+                    IPEndPoint alpacaApiEndpoint = new IPEndPoint(alpacaBroadcastResponseEndPoint.Address, discoveryResponse.AlpacaPort); // Create 
                     if (!CachedEndpoints.Contains(alpacaApiEndpoint))
                     {
                         CachedEndpoints.Add(alpacaApiEndpoint);

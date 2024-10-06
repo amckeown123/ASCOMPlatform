@@ -12,7 +12,7 @@ namespace ASCOM.Utilities
         private int _InterfaceVersion;
         private string _DriverVersion;
         private string _Name;
-        private double[,] _AxisRates;
+        private float[,] _AxisRates;
         private bool _AxisRatesRelative;
 
         public string ProgID
@@ -111,7 +111,7 @@ namespace ASCOM.Utilities
             }
         }
 
-        public double[,] AxisRates
+        public float[,] AxisRates
         {
             get
             {

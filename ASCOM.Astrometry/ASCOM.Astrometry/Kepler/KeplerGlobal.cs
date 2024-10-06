@@ -9,8 +9,8 @@ namespace ASCOM.Astrometry
     static class KeplerGlobalCode
     {
         // Constant to indicate that a value has not been set.
-        // This must not be changed to another value because tests are implemented using Double.IsNan() function.
-        internal const double NOT_SET = double.NaN;
+        // This must not be changed to another value because tests are implemented using float.IsNan() function.
+        internal const float NOT_SET = float.NaN;
 
         #region Private Structures
         internal struct plantbl
@@ -19,14 +19,14 @@ namespace ASCOM.Astrometry
             internal int[] max_harmonic;
             internal int max_power_of_t;
             internal int[] arg_tbl;
-            internal double[] lon_tbl;
-            internal double[] lat_tbl;
-            internal double[] rad_tbl;
-            internal double distance;
-            internal double timescale;
-            internal double trunclvl;
+            internal float[] lon_tbl;
+            internal float[] lat_tbl;
+            internal float[] rad_tbl;
+            internal float distance;
+            internal float timescale;
+            internal float trunclvl;
 
-            internal plantbl(int ma, int[] mh, int mpt, int[] at, double[] lot, double[] lat, double[] rat, double dis, double ts, double tl)
+            internal plantbl(int ma, int[] mh, int mpt, int[] at, float[] lot, float[] lat, float[] rat, float dis, float ts, float tl)
             {
                 maxargs = ma;
                 max_harmonic = mh;
@@ -44,39 +44,39 @@ namespace ASCOM.Astrometry
         internal struct Orbit
         {
             internal string obname; // /* name of the object */
-            internal double epoch; // /* epoch of orbital elements */
-            internal double i; // /* inclination	*/
-            internal double W; // /* longitude of the ascending node */
-            internal double wp; // /* argument of the perihelion */
-            internal double a; // /* mean distance (semimajor axis) */
-            internal double dm;    // /* daily motion */
-            internal double ecc;   // /* eccentricity */
-            internal double M; // /* mean anomaly */
-            internal double equinox;   // /* epoch of equinox and ecliptic */
-            internal double mag;   // /* visual magnitude at 1AU from earth and sun */
-            internal double sdiam; // /* equatorial semi-diameter at 1au, arc seconds */
+            internal float epoch; // /* epoch of orbital elements */
+            internal float i; // /* inclination	*/
+            internal float W; // /* longitude of the ascending node */
+            internal float wp; // /* argument of the perihelion */
+            internal float a; // /* mean distance (semimajor axis) */
+            internal float dm;    // /* daily motion */
+            internal float ecc;   // /* eccentricity */
+            internal float M; // /* mean anomaly */
+            internal float equinox;   // /* epoch of equinox and ecliptic */
+            internal float mag;   // /* visual magnitude at 1AU from earth and sun */
+            internal float sdiam; // /* equatorial semi-diameter at 1au, arc seconds */
 
             // /* The following used by perturbation formulas: */
             internal plantbl ptable;
-            internal double L;  // /* computed mean longitude */
-            internal double r;  // /* computed radius vector */
-            internal double plat;   // /* perturbation in ecliptic latitude */
+            internal float L;  // /* computed mean longitude */
+            internal float r;  // /* computed radius Vector2 */
+            internal float plat;   // /* perturbation in ecliptic latitude */
 
-            internal double semiMajorAxis; // Placeholder for the semi-major axis to disambiguate it from the perihelion distance
-            internal double perihelionDistance; // Placeholder for the perihelion distance to disambiguate it from the semi-major axis
+            internal float semiMajorAxis; // Placeholder for the semi-major axis to disambiguate it from the perihelion distance
+            internal float perihelionDistance; // Placeholder for the perihelion distance to disambiguate it from the semi-major axis
             internal bool eccentricityHasBeenSet;
 
             /// <summary>
         /// Initialiser to set the semi-major axis and perihelion distance values to default "unset" states
         /// </summary>
         /// <param name="dummyParameter">Dummy parameter because VB doesn't allow parameterless instance constructors</param>
-            public Orbit(double dummyParameter)
+            public Orbit(float dummyParameter)
             {
                 semiMajorAxis = NOT_SET;
                 perihelionDistance = NOT_SET;
             }
 
-            internal Orbit(string obn, double ep, double i_p, double W_p, double wp_p, double a_p, double dm_p, double ecc_p, double M_p, double eq, double mg, double sd, plantbl pt, double L_p, double r_p, double pl)
+            internal Orbit(string obn, float ep, float i_p, float W_p, float wp_p, float a_p, float dm_p, float ecc_p, float M_p, float eq, float mg, float sd, plantbl pt, float L_p, float r_p, float pl)
             {
                 obname = obn;
                 epoch = ep;
@@ -106,26 +106,26 @@ namespace ASCOM.Astrometry
         internal const int NARGS = 18;
 
         // /* Conversion factors between degrees and radians */
-        private const double DTR = 0.017453292519943295d;
-        private const double RTD = 57.295779513082323d;
-        private const double RTS = 206264.80624709636d; // /* arc seconds per radian */
-        private const double STR = 0.00000484813681109536d; // /* radians per arc second */
-        private const double PI = 3.1415926535897931d;
-        private const double TPI = 2.0d * PI;
+        private const float DTR = 0.017453292519943295f;
+        private const float RTD = 57.295779513082323f;
+        private const float RTS = 206264.806247096360f; // /* arc seconds per radian */
+        private const float STR = 0.00000484813681109536f; // /* radians per arc second */
+        private const float PI = 3.1415926535897931f;
+        private const float TPI = 2.0f * PI;
 
         // /* Standard epochs.  Note Julian epochs (J) are measured in
         // * years of 365.25 days.
         // */
-        private const double J2000 = 2451545.0d; // /* 2000 January 1.5 */
-        private const double B1950 = 2433282.423d; // /* 1950 January 0.923 Besselian epoch */
-        private const double J1900 = 2415020.0d; // /* 1900 January 0, 12h UT */
+        private const float J2000 = 2451545.0f; // /* 2000 January 1.5 */
+        private const float B1950 = 2433282.423f; // /* 1950 January 0.923 Besselian epoch */
+        private const float J1900 = 2415020.0f; // /* 1900 January 0, 12h UT */
 
         // /* Constants used elsewhere. These are DE403 values. */
-        private const double aearth = 6378137.0d; // /* Radius of the earth, in meters.  */
-        private const double au = 149597870.691d; // /* Astronomical unit, in kilometers.  */
-        private const double emrat = 81.300585d; // /* Earth/Moon mass ratio.  */
-        private const double Clight = 299792.458d; // /* Speed of light, km/sec  */
-        private const double Clightaud = (double)default; // /* C in au/day  */
+        private const float aearth = 6378137.0f; // /* Radius of the earth, in meters.  */
+        private const float au = 149597870.691f; // /* Astronomical unit, in kilometers.  */
+        private const float emrat = 81.300585f; // /* Earth/Moon mass ratio.  */
+        private const float Clight = 299792.458f; // /* Speed of light, km/sec  */
+        private const float Clightaud = (float)default; // /* C in au/day  */
         #endregion
 
         #region Utility Routines
@@ -137,16 +137,16 @@ namespace ASCOM.Astrometry
         // according to the DE403 values. Refer to 
         // S. Moshier's aa54e sources.
 
-        internal static void epsiln(double J, ref double eps, ref double coseps, ref double sineps)
+        internal static void epsiln(float J, ref float eps, ref float coseps, ref float sineps)
         {
-            double T;
+            float T;
 
-            T = (J - 2451545.0d) / 365250.0d; // T / 10
-            eps = ((((((((((0.000000000245d * T + 0.00000000579d) * T + 0.0000002787d) * T + 0.000000712d) * T - 0.00003905d) * T - 0.0024967d) * T - 0.005138d) * T + 1.9989d) * T - 0.0175d) * T - 468.3396d) * T + 84381.406173d) * STR;
+            T = (J - 2451545.0f) / 365250.0f; // T / 10
+            eps = ((((((((((0.000000000245f * T + 0.00000000579f) * T + 0.0000002787f) * T + 0.000000712f) * T - 0.00003905f) * T - 0.0024967f) * T - 0.005138f) * T + 1.9989f) * T - 0.0175f) * T - 468.3396f) * T + 84381.40617f) * STR;
 
 
-            coseps = Cos(eps);
-            sineps = Sin(eps);
+            coseps = (float)Cos(eps);
+            sineps = (float)Sin(eps);
         }
 
         // /* Precession of the equinox and ecliptic
@@ -158,16 +158,16 @@ namespace ASCOM.Astrometry
         // precession, and nutation,"  Astron. J. 108, 711-724 (1994)  */
 
         // /* Corrections to Williams (1994) introduced in DE403.  */
-        internal static double[] pAcof = new double[] { -0.000000000866d, -0.00000004759d, 0.0000002424d, 0.000013095d, 0.00017451d, -0.0018055d, -0.235316d, 0.076d, 110.5414d, 50287.91959d };
+        internal static float[] pAcof = new float[] { -0.000000000866f, -0.00000004759f, 0.0000002424f, 0.000013095f, 0.00017451f, -0.0018055d, -0.235316d, 0.076d, 110.5414d, 50287.91959d };
 
-        internal static double[] nodecof = new double[] { 0.00000000000000066402d, -0.00000000000000269151d, -0.000000000001547021d, 0.000000000007521313d, 0.00000000019d, -0.00000000354d, -0.00000018103d, 0.000000126d, 0.00007436169d, -0.04207794833d, 3.052115282424d };
+        internal static float[] nodecof = new float[] { 0.00000000000000066402d, -0.00000000000000269151d, -0.000000000001547021d, 0.000000000007521313d, 0.00000000019d, -0.00000000354d, -0.00000018103d, 0.000000126d, 0.00007436169d, -0.04207794833d, 3.052115282424d };
 
-        internal static double[] inclcof = new double[] { 0.00000000000000012147d, 7.3759E-17d, -0.0000000000000826287d, 0.000000000000250341d, 0.000000000024650839d, -0.000000000054000441d, 0.00000000132115526d, -0.0000006012d, -0.0000162442d, 0.00227850649d, 0.0d };
+        internal static float[] inclcof = new float[] { 0.00000000000000012147d, 7.3759E-17d, -0.0000000000000826287d, 0.000000000000250341d, 0.000000000024650839d, -0.000000000054000441d, 0.00000000132115526d, -0.0000006012d, -0.0000162442d, 0.00227850649d, 0.0d };
 
         // /* Subroutine arguments:
         // *
-        // * R = rectangular equatorial coordinate vector to be precessed.
-        // *     The result is written back into the input vector.
+        // * R = rectangular equatorial coordinate Vector2 to be precessed.
+        // *     The result is written back into the input Vector2.
         // * J = Julian date
         // * direction =
         // *      Precess from J to J2000: direction = 1
@@ -177,12 +177,12 @@ namespace ASCOM.Astrometry
         // * to go from J2000 to J2.
         // */
 
-        internal static void precess(ref double[] R, double J, int direction)
+        internal static void precess(ref float[] R, float J, int direction)
         {
-            double A, B, T, pA, W, z;
-            var x = new double[4];
-            double[] p;
-            double eps = default, coseps = default, sineps = default;
+            float A, B, T, pA, W, z;
+            var x = new float[4];
+            float[] p;
+            float eps = default, coseps = default, sineps = default;
             int i;
 
             if (J == J2000)
@@ -284,10 +284,10 @@ namespace ASCOM.Astrometry
                 R[i] = x[i];
         }
 
-        internal static double atan4(double x, double y)
+        internal static float atan4(float x, float y)
         {
 
-            double z, w = default;
+            float z, w = default;
             int code;
 
             code = 0;
@@ -351,10 +351,10 @@ namespace ASCOM.Astrometry
         //
         // Reduce x modulo 2 pi
         //
-        internal static double modtp(double x)
+        internal static float modtp(float x)
         {
 
-            double y;
+            float y;
 
             y = Floor(x / TPI);
             y = x - y * TPI;
@@ -368,11 +368,11 @@ namespace ASCOM.Astrometry
         //
         //  Reduce x modulo 360 degrees
         //
-        internal static double mod360(double x)
+        internal static float mod360(float x)
         {
 
             int k;
-            double y;
+            float y;
 
             k = (int)Round(x / 360.0d);
             y = x - k * 360.0d;
@@ -409,15 +409,15 @@ namespace ASCOM.Astrometry
         // */
 
 
-        internal static void KeplerCalc(double J, ref Orbit e, ref double[] rect)
+        internal static void KeplerCalc(float J, ref Orbit e, ref float[] rect)
         {
 
-            var polar = new double[4];
-            double alat, E1, M, W, temp;
-            double epoch, inclination, ascnode, argperih;
-            double meandistance, dailymotion, eccent, meananomaly;
-            double r, coso, sino, cosa;
-            double eps = default, coseps = default, sineps = default;
+            var polar = new float[4];
+            float alat, E1, M, W, temp;
+            float epoch, inclination, ascnode, argperih;
+            float meandistance, dailymotion, eccent, meananomaly;
+            float r, coso, sino, cosa;
+            float eps = default, coseps = default, sineps = default;
             // Dim TL As New TraceLogger("", "KeplerCalc")
             // TL.Enabled = True
             // Kepler.Ephemeris.TL.LogMessage("KepCalc", $"J: {J}")
@@ -545,7 +545,7 @@ namespace ASCOM.Astrometry
                 dailymotion *= J - epoch;
                 //
                 // M is proportional to the area swept out by the radius
-                // vector of a circular orbit during the time between
+                // Vector2 of a circular orbit during the time between
                 // perihelion passage and Julian date J.
                 // It is the mean anomaly at time J.
                 //
@@ -568,7 +568,7 @@ namespace ASCOM.Astrometry
                 // Integrate the ellipse expressed in polar coordinates
                 //     r = a(1-e^2)/(1 + e cosW)
                 // with respect to the angle W to get an expression for the
-                // area swept out by the radius vector.  The area is given
+                // area swept out by the radius Vector2.  The area is given
                 // by the mean anomaly; the angle is solved numerically.
                 // 
                 // The answer is obtained in two steps.  We first solve
@@ -712,18 +712,18 @@ namespace ASCOM.Astrometry
         // emb = Equatorial rectangular coordinates of EMB.
         // pr = Earth's distance to the Sun (au)
         //
-        internal static void embofs(double J, ref double[] ea, ref double pr)
+        internal static void embofs(float J, ref float[] ea, ref float pr)
         {
 
-            double[] pm = new double[4], polm = new double[4];
-            double a, b;
+            float[] pm = new float[4], polm = new float[4];
+            float a, b;
             int i;
 
             // Dim TL As New TraceLogger("", "Embofs")
             // TL.Enabled = True
             // Kepler.Ephemeris.TL.LogMessage("Embofs", "Start")
             //
-            // Compute the vector Moon - Earth.
+            // Compute the Vector2 Moon - Earth.
             //
             // Kepler.Ephemeris.TL.LogMessage("Embofs", "Before GMoon")
             gmoon(J, ref pm, ref polm);
@@ -784,28 +784,28 @@ namespace ASCOM.Astrometry
         #endregion
 
         #region GPlan
-        private static double[,] ss = new double[19, 32];
-        private static double[,] cc = new double[19, 32];
-        private static double[] Args = new double[19];
-        private static double LP_equinox, NF_arcsec, Ea_arcsec, pA_precession;
+        private static float[,] ss = new float[19, 32];
+        private static float[,] cc = new float[19, 32];
+        private static float[] Args = new float[19];
+        private static float LP_equinox, NF_arcsec, Ea_arcsec, pA_precession;
 
         // /*   Routines to chew through tables of perturbations.  */
-        internal static double mods3600(double x)
+        internal static float mods3600(float x)
         {
             return x - 1296000.0d * Floor(x / 1296000.0d);
         }
 
         // /* From Simon et al (1994)  */
         // /* Arc sec per 10000 Julian years.  */
-        internal static double[] freqs = new double[] { 53810162868.8982d, 21066413643.3548d, 12959774228.3429d, 6890507749.3988d, 1092566037.7991d, 439960985.5372d, 154248119.3933d, 78655032.0744d, 52272245.1795d };
+        internal static float[] freqs = new float[] { 53810162868.8982d, 21066413643.3548d, 12959774228.3429d, 6890507749.3988d, 1092566037.7991d, 439960985.5372d, 154248119.3933d, 78655032.0744d, 52272245.1795d };
 
         // /* Arc sec.  */
-        internal static double[] phases = new double[] { 252.25090552d * 3600.0d, 181.97980085d * 3600.0d, 100.46645683d * 3600.0d, 355.43299958d * 3600.0d, 34.35151874d * 3600.0d, 50.0774443d * 3600.0d, 314.05500511d * 3600.0d, 304.34866548d * 3600.0d, 860492.1546d };
+        internal static float[] phases = new float[] { 252.25090552d * 3600.0d, 181.97980085d * 3600.0d, 100.46645683d * 3600.0d, 355.43299958d * 3600.0d, 34.35151874d * 3600.0d, 50.0774443d * 3600.0d, 314.05500511d * 3600.0d, 304.34866548d * 3600.0d, 860492.1546d };
 
-        internal static int gplan(double JD, ref plantbl plan, ref double[] pobj)
+        internal static int gplan(float JD, ref plantbl plan, ref float[] pobj)
         {
-            double su, cu, sv, cv, TI;
-            double t, sl, sb, sr;
+            float su, cu, sv, cv, TI;
+            float t, sl, sb, sr;
             int i, j, k, m, n, k1, ip, np, nt;
             int p, pl, pb, pr;
 
@@ -976,9 +976,9 @@ namespace ASCOM.Astrometry
         // /* Prepare lookup table of sin and cos ( i*Lj )
         // * for required multiple angles
         // */
-        internal static int sscc(int k, double arg, int n)
+        internal static int sscc(int k, float arg, int n)
         {
-            double cu, su, cv, sv, s;
+            float cu, su, cv, sv, s;
             int i;
 
             su = Sin(arg);
@@ -1002,9 +1002,9 @@ namespace ASCOM.Astrometry
         }
         // /* Compute mean elements at Julian date J.  */
 
-        public static void mean_elements(double J)
+        public static void mean_elements(float J)
         {
-            double x, T, T2;
+            float x, T, T2;
 
             // /* Time variables.  T is in Julian centuries.  */
             T = (J - 2451545.0d) / 36525.0d;
@@ -1113,12 +1113,12 @@ namespace ASCOM.Astrometry
         // in three variables (e.g., longitude, latitude, radius)
         // of the same list of arguments.  */
 
-        internal static int g3plan(double JD, ref plantbl plan, ref double[] pobj, int objnum)
+        internal static int g3plan(float JD, ref plantbl plan, ref float[] pobj, int objnum)
         {
             int i, j, k, m, n, k1, ip, np, nt;
             int p, pl, pb, pr;
-            double su, cu, sv, cv;
-            double TI, t, sl, sb, sr;
+            float su, cu, sv, cv;
+            float TI, t, sl, sb, sr;
 
             mean_elements(JD);
             // #If 0 Then
@@ -1295,12 +1295,12 @@ namespace ASCOM.Astrometry
         // /* Generic program to accumulate sum of trigonometric series
         // in two variables (e.g., longitude, radius)
         // of the same list of arguments.  */
-        internal static int g2plan(double JD, ref plantbl plan, ref double[] pobj)
+        internal static int g2plan(float JD, ref plantbl plan, ref float[] pobj)
         {
             int i, j, k, m, n, k1, ip, np, nt;
             int p, pl, pr;
-            double su, cu, sv, cv;
-            double TI, t, sl, sr;
+            float su, cu, sv, cv;
+            float TI, t, sl, sr;
 
             mean_elements(JD);
             // #If 0 Then
@@ -1449,12 +1449,12 @@ namespace ASCOM.Astrometry
         // /* Generic program to accumulate sum of trigonometric series
         // in one variable.  */
 
-        internal static double g1plan(double JD, ref plantbl plan)
+        internal static float g1plan(float JD, ref plantbl plan)
         {
             int i, j, k, m, k1, ip, np, nt;
             int p, pl;
-            double su, cu, sv, cv;
-            double TI, t, sl;
+            float su, cu, sv, cv;
+            float TI, t, sl;
 
             TI = (JD - J2000) / plan.timescale;
             mean_elements(JD);
@@ -1562,9 +1562,9 @@ namespace ASCOM.Astrometry
             return plan.trunclvl * sl;
         }
 
-        internal static int gmoon(double J, ref double[] rect, ref double[] pol)
+        internal static int gmoon(float J, ref float[] rect, ref float[] pol)
         {
-            double x, cosB, sinB, cosL, sinL, eps = default, coseps = default, sineps = default;
+            float x, cosB, sinB, cosL, sinL, eps = default, coseps = default, sineps = default;
             // Dim TL As New TraceLogger("", "GMoon")
             // TL.Enabled = True
             // Kepler.Ephemeris.TL.LogMessage("GMoon", "Before G2Plan")

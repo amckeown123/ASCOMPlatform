@@ -54,15 +54,15 @@ namespace ASCOM.Simulator
         public const string PROGRAM_ID = "ASCOM.Simulator.Telescope";  //Key used to store the settings
         public const string REGISTRATION_VERSION = "1";
 
-        public const double STATE_UPDATE_TIMER_INTERVAL = 0.1; // 10 ticks per second
-        public const double HANDBOX_UPDATE_TIMER_INTERVAL = 0.25; // 4 ticks per second
+        public const float STATE_UPDATE_TIMER_INTERVAL = 0.1; // 10 ticks per second
+        public const float HANDBOX_UPDATE_TIMER_INTERVAL = 0.25; // 4 ticks per second
 
         // ---------------------
         // Simulation Parameters
         // ---------------------
-        internal const double INSTRUMENT_APERTURE = 0.2;            // 8 inch = 20 cm
-        internal const double INSTRUMENT_APERTURE_AREA = 0.0269;    // 3 inch obstruction
-        internal const double INSTRUMENT_FOCAL_LENGTH = 1.26;      // f/6.3 instrument
+        internal const float INSTRUMENT_APERTURE = 0.2;            // 8 inch = 20 cm
+        internal const float INSTRUMENT_APERTURE_AREA = 0.0269;    // 3 inch obstruction
+        internal const float INSTRUMENT_FOCAL_LENGTH = 1.26;      // f/6.3 instrument
         public const string INSTRUMENT_NAME = "Simulator";       // Our name
         public const string INSTRUMENT_DESCRIPTION = "Software Telescope Simulator for ASCOM";
 
@@ -221,32 +221,32 @@ namespace ASCOM.Simulator
         }
 
         /// <summary>
-        /// Extension method to format a double in sesegesimal HH:MM:SS.sss format
+        /// Extension method to format a float in sesegesimal HH:MM:SS.sss format
         /// </summary>
         /// <param name="value">Value to be presented</param>
         /// <returns>HH:MM:SS.sss formatted string</returns>
-        public static string ToHMS(this double value)
+        public static string ToHMS(this float value)
         {
-            return DoubleToSexagesimalSeconds(value, ":", ":", "", 3);
+            return floatToSexagesimalSeconds(value, ":", ":", "", 3);
         }
 
         /// <summary>
-        /// Extension method to format a double in sesegesimal DD:MM:SS.sss format
+        /// Extension method to format a float in sesegesimal DD:MM:SS.sss format
         /// </summary>
         /// <param name="value">Value to be presented</param>
         /// <returns>DDD:MM:SS.sss formatted string</returns>
-        public static string ToDMS(this double value)
+        public static string ToDMS(this float value)
         {
-            return DoubleToSexagesimalSeconds(value, ":", ":", "", 3);
+            return floatToSexagesimalSeconds(value, ":", ":", "", 3);
         }
 
-        private static string DoubleToSexagesimalSeconds(double Units, string DegDelim, string MinDelim, string SecDelim, int SecDecimalDigits)
+        private static string floatToSexagesimalSeconds(float Units, string DegDelim, string MinDelim, string SecDelim, int SecDecimalDigits)
         {
             string wholeUnits, wholeMinutes, seconds, secondsFormatString;
             bool inputIsNegative;
 
             // Deal with NaN and infinity values by returning string representations of these states.
-            if (double.IsNaN(Units) | double.IsInfinity(Units))
+            if (float.IsNaN(Units) | float.IsInfinity(Units))
                 return Units.ToString();
 
             // Convert the input value to a positive number if required and store the sign
@@ -259,11 +259,11 @@ namespace ASCOM.Simulator
 
             // Extract the number of whole units and save the remainder
             wholeUnits = Math.Floor(Units).ToString().PadLeft(2, '0');
-            double remainderInMinutes = (Units - Convert.ToDouble(wholeUnits)) * 60.0; // Remainder in minutes
+            float remainderInMinutes = (Units - Convert.Tofloat(wholeUnits)) * 60.0; // Remainder in minutes
 
             // Extract the number of whole minutes and save the remainder
             wholeMinutes = Math.Floor(remainderInMinutes).ToString().PadLeft(2, '0');// Integral minutes
-            double remainderInSeconds = (remainderInMinutes - System.Convert.ToDouble(wholeMinutes)) * 60.0; // Remainder in seconds
+            float remainderInSeconds = (remainderInMinutes - System.Convert.Tofloat(wholeMinutes)) * 60.0; // Remainder in seconds
 
             if (SecDecimalDigits == 0) secondsFormatString = "00"; // No decimal point or decimal digits
             else secondsFormatString = "00." + new String('0', SecDecimalDigits); // Format$ string of form 00.0000

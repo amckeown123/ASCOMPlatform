@@ -1,3 +1,5 @@
+
+
 namespace ASCOM.Controls
 {
     /// <summary>
@@ -6,6 +8,9 @@ namespace ASCOM.Controls
     /// </summary>
     public interface ICadencedControl
     {
+
+        public enum CadencePattern;
+
         /// <summary>
         ///   Gets or sets the cadence (blink pattern) of the control.
         ///   Different cadence patterns imply different levels of urgency or severity.

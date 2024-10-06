@@ -17,14 +17,14 @@ class DeviceCamera
 
     private const int ccdWidth = 1394; // Constants to define the CCD pixel dimensions
     private const int ccdHeight = 1040;
-    private const double pixelSize = 6.45; // Constant for the pixel physical dimension
+    private const float pixelSize = 6.45; // Constant for the pixel physical dimension
 
     private int cameraNumX = ccdWidth; // Initialise variables to hold values required for functionality tested by Conform
     private int cameraNumY = ccdHeight;
     private int cameraStartX = 0;
     private int cameraStartY = 0;
     private DateTime exposureStart = DateTime.MinValue;
-    private double cameraLastExposureDuration = 0.0;
+    private float cameraLastExposureDuration = 0.0;
     private bool cameraImageReady = false;
     private int[,] cameraImageArray;
     private object[,] cameraImageArrayVariant;
@@ -104,7 +104,7 @@ class DeviceCamera
 	/// Returns the current CCD temperature in degrees Celsius.
 	/// </summary>
 	/// <value>The CCD temperature.</value>
-	public double CCDTemperature
+	public float CCDTemperature
     {
         get
         {
@@ -275,7 +275,7 @@ class DeviceCamera
 	/// Returns the present cooler power level, in percent.
 	/// </summary>
 	/// <value>The cooler power.</value>
-	public double CoolerPower
+	public float CoolerPower
     {
         get
         {
@@ -288,7 +288,7 @@ class DeviceCamera
 	/// Returns the gain of the camera in photoelectrons per A/D unit.
 	/// </summary>
 	/// <value>The electrons per ADU.</value>
-	public double ElectronsPerADU
+	public float ElectronsPerADU
     {
         get
         {
@@ -301,7 +301,7 @@ class DeviceCamera
 	/// Returns the maximum exposure time supported by <see cref="StartExposure">StartExposure</see>.
 	/// </summary>
 	/// <returns>The maximum exposure time, in seconds, that the camera supports</returns>
-	public double ExposureMax
+	public float ExposureMax
     {
         get
         {
@@ -314,7 +314,7 @@ class DeviceCamera
 	/// Minimum exposure time
 	/// </summary>
 	/// <returns>The minimum exposure time, in seconds, that the camera supports through <see cref="StartExposure">StartExposure</see></returns>
-	public double ExposureMin
+	public float ExposureMin
     {
         get
         {
@@ -327,7 +327,7 @@ class DeviceCamera
 	/// Exposure resolution
 	/// </summary>
 	/// <returns>The smallest increment in exposure time supported by <see cref="StartExposure">StartExposure</see>.</returns>
-	public double ExposureResolution
+	public float ExposureResolution
     {
         get
         {
@@ -358,7 +358,7 @@ class DeviceCamera
 	/// Reports the full well capacity of the camera in electrons, at the current camera settings (binning, SetupDialog settings, etc.)
 	/// </summary>
 	/// <value>The full well capacity.</value>
-	public double FullWellCapacity
+	public float FullWellCapacity
     {
         get
         {
@@ -443,7 +443,7 @@ class DeviceCamera
 	/// Returns the current heat sink temperature (called "ambient temperature" by some manufacturers) in degrees Celsius.
 	/// </summary>
 	/// <value>The heat sink temperature.</value>
-	public double HeatSinkTemperature
+	public float HeatSinkTemperature
     {
         get
         {
@@ -530,7 +530,7 @@ class DeviceCamera
 	/// Reports the actual exposure duration in seconds (i.e. shutter open time).
 	/// </summary>
 	/// <value>The last duration of the exposure.</value>
-	public double LastExposureDuration
+	public float LastExposureDuration
     {
         get
         {
@@ -716,7 +716,7 @@ class DeviceCamera
 	/// Returns the width of the CCD chip pixels in microns.
 	/// </summary>
 	/// <value>The pixel size X.</value>
-	public double PixelSizeX
+	public float PixelSizeX
     {
         get
         {
@@ -729,7 +729,7 @@ class DeviceCamera
 	/// Returns the height of the CCD chip pixels in microns.
 	/// </summary>
 	/// <value>The pixel size Y.</value>
-	public double PixelSizeY
+	public float PixelSizeY
     {
         get
         {
@@ -812,7 +812,7 @@ class DeviceCamera
 	/// Sets the camera cooler setpoint in degrees Celsius, and returns the current setpoint.
 	/// </summary>
 	/// <value>The set CCD temperature.</value>
-	public double SetCCDTemperature
+	public float SetCCDTemperature
     {
         get
         {
@@ -831,7 +831,7 @@ class DeviceCamera
 	/// </summary>
 	/// <param name="Duration">Duration of exposure in seconds, can be zero if <see cref="StartExposure">Light</see> is <c>false</c></param>
 	/// <param name="Light"><c>true</c> for light frame, <c>false</c> for dark frame (ignored if no shutter)</param>
-	public void StartExposure(double Duration, bool Light)
+	public void StartExposure(float Duration, bool Light)
     {
         if (Duration < 0.0) throw new InvalidValueException("StartExposure", Duration.ToString(), "0.0 upwards");
         if (cameraNumX > ccdWidth) throw new InvalidValueException("StartExposure", cameraNumX.ToString(), ccdWidth.ToString());
@@ -892,7 +892,7 @@ class DeviceCamera
 	/// <summary>
 	/// Camera's sub-exposure interval
 	/// </summary>
-	public double SubExposureDuration
+	public float SubExposureDuration
     {
         get
         {

@@ -282,7 +282,7 @@ namespace ASCOM.Utilities
             TL.LogMessage("PEReader", "Determining whether this is an assembly");
             try
             {
-                SuppliedAssembly = Assembly.ReflectionOnlyLoadFrom(FileName);
+                SuppliedAssembly = Assembly.LoadFile(FileName);
                 IsAssembly = true; // We got here without an exception so it must be an assembly
                 TL.LogMessage("PEReader.IsAssembly", "Found an assembly because it loaded OK to the reflection context: " + IsAssembly);
             }

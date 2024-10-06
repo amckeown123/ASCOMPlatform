@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -59,7 +61,8 @@ namespace SetACL
         /// <param name="Severity">Event severity</param>
         /// <param name="Id">Id number</param>
         /// <param name="Except">Initiating exception or Nothing</param>
-        /// <remarks></remarks>
+        /// <rks></remarks>
+        [STAThread]
         internal static void LogEvent(string Caller, string Msg, EventLogEntryType Severity, EventLogErrors Id, string Except)
         {
 
@@ -74,6 +77,9 @@ namespace SetACL
             try
             {
                 if (!EventLog.SourceExists(EVENT_SOURCE)) // Create the event log if it doesn't exist
+                {
+                }
+                else
                 {
                     EventLog.CreateEventSource(EVENT_SOURCE, EVENTLOG_NAME);
                     ELog = new EventLog(EVENTLOG_NAME, ".", EVENT_SOURCE); // Create a pointer to the event log

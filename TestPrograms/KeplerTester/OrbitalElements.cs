@@ -7,7 +7,7 @@ namespace KeplerConsoleApp
 {
 	internal class OrbitalElements
 	{
-		private const double BASE_EPOCH = 2400000.5;
+		private const float BASE_EPOCH = 2400000.5f;
 
 		public OrbitalElements( string def )
 		{
@@ -17,14 +17,14 @@ namespace KeplerConsoleApp
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public DateTime PerihelionPassage { get; set; }
-		public double Epoch { get; set; }
-		public double PeriDistance { get; set; }
-		public double OrbitalEccentricity { get; set; }
-		public double ArgOfPerihelion { get; set; }
-		public double LongitudeOfAscNode { get; set; }
-		public double Inclination { get; set; }
-		public double SlopeParameter { get; set; }
-		public double VisualMagnitude { get; set; }
+		public float Epoch { get; set; }
+		public float PeriDistance { get; set; }
+		public float OrbitalEccentricity { get; set; }
+		public float ArgOfPerihelion { get; set; }
+		public float LongitudeOfAscNode { get; set; }
+		public float Inclination { get; set; }
+		public float SlopeParameter { get; set; }
+		public float VisualMagnitude { get; set; }
 
 		private void ParseElements(string def ) 
 		{
@@ -47,7 +47,7 @@ namespace KeplerConsoleApp
 			int ppMonth = Int32.Parse( part );
 
 			part = def.Substring( 22, 7 );
-			double ppDay = Double.Parse( part );
+			float ppDay = float.Parse( part );
 
 			DateTime dt = new DateTime( ppYear, ppMonth, 1);
 			PerihelionPassage = dt.AddDays( ppDay -1 );
@@ -58,27 +58,27 @@ namespace KeplerConsoleApp
 			// Extract Perihelion distance
 
 			part = def.Substring( 30, 9 );
-			PeriDistance = Double.Parse( part );
+			PeriDistance = float.Parse( part );
 
 			// Extract Orbital Eccentricity
 
 			part = def.Substring( 41, 8 );
-			OrbitalEccentricity = Double.Parse( part );
+			OrbitalEccentricity = float.Parse( part );
 
 			// Extract Argument of perihelion, J2000.0 degrees
 
 			part = def.Substring( 51, 8 );
-			ArgOfPerihelion = Double.Parse( part );
+			ArgOfPerihelion = float.Parse( part );
 
 			// Extract the longitude of the ascending node, J2000
 
 			part = def.Substring( 61, 8 );
-			LongitudeOfAscNode = Double.Parse( part );
+			LongitudeOfAscNode = float.Parse( part );
 
 			// Extract the Inclination
 
 			part = def.Substring( 71, 8 );
-			Inclination = Double.Parse( part );
+			Inclination = float.Parse( part );
 }
 
 		public override string ToString()

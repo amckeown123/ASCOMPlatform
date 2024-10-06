@@ -77,7 +77,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IFocuserV4.Temperature):
                             try
                             {
-                                Temperature = (double)stateValue.Value;
+                                Temperature = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -123,7 +123,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Focuser temperature
         /// </summary>
-        public double? Temperature { get; set; } = null;
+        public float? Temperature { get; set; } = null;
 
         /// <summary>
         /// The time at which the state was recorded

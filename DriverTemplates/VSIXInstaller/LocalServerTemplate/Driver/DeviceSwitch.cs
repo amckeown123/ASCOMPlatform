@@ -224,13 +224,13 @@ class DeviceSwitch
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <returns>The maximum value to which this device can be set or which a read only sensor will return.</returns>
-    public double MaxSwitchValue(short id)
+    public float MaxSwitchValue(short id)
     {
         try
         {
             CheckConnected("MaxSwitchValue");
             LogMessage("MaxSwitchValue", $"Calling method.");
-            double maxSwitchValue = SwitchHardware.MaxSwitchValue(id);
+            float maxSwitchValue = SwitchHardware.MaxSwitchValue(id);
             LogMessage("MaxSwitchValue", maxSwitchValue.ToString());
             return maxSwitchValue;
         }
@@ -246,13 +246,13 @@ class DeviceSwitch
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <returns>The minimum value to which this device can be set or which a read only sensor will return.</returns>
-    public double MinSwitchValue(short id)
+    public float MinSwitchValue(short id)
     {
         try
         {
             CheckConnected("MinSwitchValue");
             LogMessage("MinSwitchValue", $"Calling method.");
-            double maxSwitchValue = SwitchHardware.MinSwitchValue(id);
+            float maxSwitchValue = SwitchHardware.MinSwitchValue(id);
             LogMessage("MinSwitchValue", maxSwitchValue.ToString());
             return maxSwitchValue;
         }
@@ -268,13 +268,13 @@ class DeviceSwitch
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <returns>The step size for this device.</returns>
-    public double SwitchStep(short id)
+    public float SwitchStep(short id)
     {
         try
         {
             CheckConnected("SwitchStep");
             LogMessage("SwitchStep", $"Calling method.");
-            double switchStep = SwitchHardware.SwitchStep(id);
+            float switchStep = SwitchHardware.SwitchStep(id);
             LogMessage("SwitchStep", switchStep.ToString());
             return switchStep;
         }
@@ -286,18 +286,18 @@ class DeviceSwitch
     }
 
     /// <summary>
-    /// Returns the value for switch device id as a double
+    /// Returns the value for switch device id as a float
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <returns>The value for this switch, this is expected to be between <see cref="MinSwitchValue"/> and
     /// <see cref="MaxSwitchValue"/>.</returns>
-    public double GetSwitchValue(short id)
+    public float GetSwitchValue(short id)
     {
         try
         {
             CheckConnected("GetSwitchValue");
             LogMessage("GetSwitchValue", $"Calling method.");
-            double switchValue = SwitchHardware.GetSwitchValue(id);
+            float switchValue = SwitchHardware.GetSwitchValue(id);
             LogMessage("GetSwitchValue", switchValue.ToString());
             return switchValue;
         }
@@ -309,11 +309,11 @@ class DeviceSwitch
     }
 
     /// <summary>
-    /// Set the value for this device as a double.
+    /// Set the value for this device as a float.
     /// </summary>
     /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
     /// <param name="value">The value to be set, between <see cref="MinSwitchValue"/> and <see cref="MaxSwitchValue"/></param>
-    public void SetSwitchValue(short id, double value)
+    public void SetSwitchValue(short id, float value)
     {
         try
         {
@@ -362,13 +362,13 @@ class DeviceSwitch
     /// Set a switch's value asynchronously
     /// </summary>
     /// <param name="id">Switch number.</param>
-    /// <param name="value">New double value.</param>
+    /// <param name="value">New float value.</param>
     /// <p style="color:red"><b>This is an optional method and can throw a <see cref="MethodNotImplementedException"/> when <see cref="CanAsync(short)"/> is <see langword="false"/>.</b></p>
     /// <exception cref="MethodNotImplementedException">When CanAsync(id) is false.</exception>
     /// <remarks>
     /// <p style="color:red"><b>This is an optional method and can throw a <see cref="MethodNotImplementedException"/> when <see cref="CanAsync(short)"/> is <see langword="false"/>.</b></p>
     /// </remarks>
-    public void SetAsyncValue(short id, double value)
+    public void SetAsyncValue(short id, float value)
     {
         try
         {

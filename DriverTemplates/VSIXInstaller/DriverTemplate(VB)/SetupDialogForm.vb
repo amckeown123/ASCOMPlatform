@@ -23,7 +23,7 @@ Public Class SetupDialogForm
         Me.Close()
     End Sub
 
-    Private Sub ShowAscomWebPage(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.DoubleClick, PictureBox1.Click
+    Private Sub ShowAscomWebPage(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.floatClick, PictureBox1.Click
         ' Click on ASCOM logo event handler
         Try
             System.Diagnostics.Process.Start("https://ascom-standards.org/")

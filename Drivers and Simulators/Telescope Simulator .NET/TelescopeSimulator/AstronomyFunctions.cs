@@ -17,18 +17,19 @@
 //
 
 using System;
+using System.Numerics;
 using System.Windows;
 
 namespace ASCOM.Simulator
 {
     public static class AstronomyFunctions
     {
-        private const double DEG_RAD = 0.01745329251994329;
-        private const double RAD_DEG = 57.29577951308232;
-        private const double HRS_RAD = 0.2617993877991494;
-        private const double RAD_HRS = 3.819718634205; // DO NOT USE 12.0 / Math.Pi FOR THIS CONSTANT! IT CAUSES THE SIMULATOR TO LOCK UP ON WINDOWS 7 64BIT UGGGHHHH!!!!!
-        private const double HOURS_TO_DEGREES = 15.0;
-        private const double SIDEREAL_SECONDS_TO_SI_SECONDS = 0.99726956631945; // Based on earth sidereal rotation period of 23 hours 56 minutes 4.09053 seconds
+        private const float DEG_RAD = 0.01745329251994329f;
+        private const float RAD_DEG = 57.29577951308232f;
+        private const float HRS_RAD = 0.2617993877991494f;
+        private const float RAD_HRS = 3.819718634205f; // DO NOT USE 12.0 / Math.Pi FOR THIS CONSTANT! IT CAUSES THE SIMULATOR TO LOCK UP ON WINDOWS 7 64BIT UGGGHHHH!!!!!
+        private const float HOURS_TO_DEGREES = 15.0f;
+        private const float SIDEREAL_SECONDS_TO_SI_SECONDS = 0.99726956631945f; // Based on earth sidereal rotation period of 23 hours 56 minutes 4.09053 seconds
 
         private static Utilities.Util util = new ASCOM.Utilities.Util();
 
@@ -36,7 +37,7 @@ namespace ASCOM.Simulator
         // Calculate Precession
         //----------------------------------------------------------------------------------------
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Precess")]
-        public static double Precess(DateTime dateTime)
+        public static float Precess(DateTime dateTime)
         {
             int y = dateTime.Year + 1900;
             if (y >= 3900) { y = y - 1900; }
@@ -44,8 +45,8 @@ namespace ASCOM.Simulator
             int r = p / 1000;
             int s = 2 - r + r / 4;
             int t = (int)Math.Truncate(365.25 * p);
-            double r1 = (s + t - 693597.5) / 36525;
-            double s1 = 6.646 + 2400.051 * r1;
+            float r1 = (float)((s + t - 693597.5) / 36525);
+            float s1 = (float)(6.646 + 2400.051 * r1);
 
             return 24 - s1 + (24 * (y - 1900));
         }
@@ -56,7 +57,7 @@ namespace ASCOM.Simulator
         /// <param name="rightAscension"></param>
         /// <param name="longitude"></param>
         /// <returns></returns>
-        public static double HourAngle(double rightAscension, double longitude)
+        public static float HourAngle(float rightAscension, float longitude)
         {
             return RangeHA(TelescopeHardware.SiderealTime - rightAscension);  // Hours
         }
@@ -66,97 +67,97 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="longitude">degrees</param>
         /// <returns></returns>
-        public static double LocalSiderealTime(double longitude)
+        public static float LocalSiderealTime(float longitude)
         {
-            double days_since_j_2000 = util.JulianDate - 2451545.0;
-            double t = days_since_j_2000 / 36525;
-            double l1mst = 280.46061837 + 360.98564736629 * days_since_j_2000 + longitude;
+            float days_since_j_2000 = (float)(util.JulianDate - 2451545.0);
+            float t = days_since_j_2000 / 36525;
+            float l1mst = (float)(280.46061837 + 360.98564736629 * days_since_j_2000 + longitude);
             if (l1mst < 0.0)
             {
                 while (l1mst < 0.0)
                 {
-                    l1mst = l1mst + 360.0;
+                    l1mst = (float)(l1mst + 360.0);
                 }
             }
             else
             {
                 while (l1mst > 360.0)
                 {
-                    l1mst = l1mst - 360.0;
+                    l1mst = (float)(l1mst - 360.0);
                 }
             }
             //calculate OM
-            double om1 = 125.04452 - 1934.136261 * t;
+            float om1 = (float)(125.04452 - 1934.136261 * t);
             if (om1 < 0.0)
             {
                 while (om1 < 0.0)
                 {
-                    om1 = om1 + 360.0;
+                    om1 = (float)(om1 + 360.0);
                 }
             }
             else
             {
                 while (om1 > 360.0)
                 {
-                    om1 = om1 - 360.0;
+                    om1 = (float)(om1 - 360.0);
                 }
             }
             //calculat L
-            double La = 280.4665 + 36000.7698 * t;
+            float La = (float)(280.4665 + 36000.7698 * t);
             if (La < 0.0)
             {
                 while (La < 0.0)
                 {
-                    La = La + 360.0;
+                    La = (float)(La + 360.0);
                 }
             }
             else
             {
                 while (La > 360.0)
                 {
-                    La = La - 360.0;
+                    La = (float)(La - 360.0);
                 }
             }
             //calculate L1
-            double L11 = 218.3165 + 481267.8813 * t;
+            float L11 = (float)(218.3165 + 481267.8813 * t);
             if (L11 < 0.0)
             {
                 while (L11 < 0)
                 {
-                    L11 = L11 + 360.0;
+                    L11 = (float)(L11 + 360.0);
                 }
             }
             else
             {
                 while (L11 > 360.0)
                 {
-                    L11 = L11 - 360.0;
+                    L11 = (float)(L11 - 360.0);
                 }
             }
             //calculate e
-            double ea1 = 23.439 - 0.0000004 * t;
+            float ea1 = (float)(23.439 - 0.0000004 * t);
             if (ea1 < 0.0)
             {
                 while (ea1 < 0.0)
                 {
-                    ea1 = ea1 + 360.0;
+                    ea1 = (float)(ea1 + 360.0);
                 }
             }
             else
             {
                 while (ea1 > 360.0)
                 {
-                    ea1 = ea1 - 360.0;
+                    ea1 = (float)(ea1 - 360.0);
                 }
             }
 
-            double dp1 = (-17.2 * Math.Sin(om1)) - (1.32 * Math.Sin(2 * La)) - (0.23 * Math.Sin(2 * L11)) + (0.21 * Math.Sin(2 * om1));
-            //double de1 = (9.2 * Math.Cos(om1)) + (0.57 * Math.Cos(2 * La)) + (0.1 * Math.Cos(2 * L11)) - (0.09 * Math.Cos(2 * om1));
-            //double eps1 = ea1 + de1;
-            double correction1 = (dp1 * Math.Cos(ea1)) / 3600;
+            float dp1 = (float)((-17.2 * Math.Sin(om1)) - (1.32 * Math.Sin(2 * La)) - (0.23 * Math.Sin(2 * L11)) + (0.21 * Math.Sin(2 * om1)));
+            //float de1 = (9.2 * Math.Cos(om1)) + (0.57 * Math.Cos(2 * La)) + (0.1 * Math.Cos(2 * L11)) - (0.09 * Math.Cos(2 * om1));
+            //float eps1 = ea1 + de1;
+            float correction1 = (float)((dp1 * Math.Cos(ea1)) / 3600);
             l1mst = l1mst + correction1;
 
-            return RangeRA(l1mst * 24.0 / 360.0);
+            return RangeRA((float)(l1mst * 24.0 / 360.0));
         }
 
         /// <summary>
@@ -166,14 +167,14 @@ namespace ASCOM.Simulator
         /// <param name="azimuth"></param>
         /// <param name="latitude"></param>
         /// <returns></returns>
-        public static double CalculateRA(double altitude, double azimuth, double latitude)
+        public static float CalculateRA(float altitude, float azimuth, float latitude)
         {
             var alt = altitude * DEG_RAD;
             var azm = azimuth * DEG_RAD;
             var lat = latitude * DEG_RAD;
-            double hourAngle = Math.Atan2(-Math.Sin(azm) * Math.Cos(alt),
+            float hourAngle = (float)(Math.Atan2(-Math.Sin(azm) * Math.Cos(alt),
                                           -Math.Cos(azm) * Math.Sin(lat) * Math.Cos(alt) + Math.Sin(alt) * Math.Cos(lat))
-                                          * RAD_HRS;
+                                          * RAD_HRS);
 
             return RangeRA(TelescopeHardware.SiderealTime - hourAngle);
         }
@@ -185,13 +186,13 @@ namespace ASCOM.Simulator
         /// <param name="azimuth"></param>
         /// <param name="latitude"></param>
         /// <returns></returns>
-        public static double CalculateDec(double altitude, double azimuth, double latitude)
+        public static float CalculateDec(float altitude, float azimuth, float latitude)
         {
             var alt = altitude * DEG_RAD;
             var azm = azimuth * DEG_RAD;
             var lat = latitude * DEG_RAD;
             var dec = Math.Asin(Math.Cos(azm) * Math.Cos(lat) * Math.Cos(alt) + Math.Sin(lat) * Math.Sin(alt)) * RAD_DEG;
-            return RangeDec(dec);
+            return RangeDec((float)dec);
         }
 
 
@@ -203,47 +204,47 @@ namespace ASCOM.Simulator
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
         /// <returns></returns>
-        //private static double CalculateAltitude(double rightAscension, double declination, double latitude, double longitude)
+        //private static float CalculateAltitude(float rightAscension, float declination, float latitude, float longitude)
         //{
-        //    double azimuth;
+        //    float azimuth;
         //    return CalculateAltAzm(rightAscension, declination, latitude, longitude, out azimuth);
 
-        //    //double lst = LocalSiderealTime(longitude * SharedResources.RAD_DEG); // Hours
-        //    //double ha = (lst - rightAscension * SharedResources.RAD_HRS) * SharedResources.HRS_RAD; //Radians
+        //    //float lst = LocalSiderealTime(longitude * SharedResources.RAD_DEG); // Hours
+        //    //float ha = (lst - rightAscension * SharedResources.RAD_HRS) * SharedResources.HRS_RAD; //Radians
 
-        //    //double sh = Math.Sin(ha);
-        //    //double ch = Math.Cos(ha);
-        //    //double sd = Math.Sin(declination);
-        //    //double cd = Math.Cos(declination);
-        //    //double sl = Math.Sin(latitude);
-        //    //double cl = Math.Cos(latitude);
+        //    //float sh = Math.Sin(ha);
+        //    //float ch = Math.Cos(ha);
+        //    //float sd = Math.Sin(declination);
+        //    //float cd = Math.Cos(declination);
+        //    //float sl = Math.Sin(latitude);
+        //    //float cl = Math.Cos(latitude);
 
-        //    //double x = (sd * cl) - (ch * cd * sl);
-        //    //double y = -(sh * cd);
-        //    //double z = (ch * cd * cl) + (sd * sl);
-        //    //double r = Math.Sqrt((x * x) + (y * y));
+        //    //float x = (sd * cl) - (ch * cd * sl);
+        //    //float y = -(sh * cd);
+        //    //float z = (ch * cd * cl) + (sd * sl);
+        //    //float r = Math.Sqrt((x * x) + (y * y));
 
         //    //return RangeAlt(Math.Atan2(z, r) * SharedResources.RAD_DEG);
         //}
 
-        //private static double CalculateAzimuth(double rightAscension, double declination, double latitude, double longitude)
+        //private static float CalculateAzimuth(float rightAscension, float declination, float latitude, float longitude)
         //{
-        //    double azimuth;
+        //    float azimuth;
         //    CalculateAltAzm(rightAscension, declination, latitude, longitude, out azimuth);
         //    return azimuth;
 
-        //    //double lst = LocalSiderealTime(longitude * SharedResources.RAD_DEG); // Hours
-        //    //double ha = (lst - rightAscension * SharedResources.RAD_HRS) * SharedResources.HRS_RAD;  // Radians
+        //    //float lst = LocalSiderealTime(longitude * SharedResources.RAD_DEG); // Hours
+        //    //float ha = (lst - rightAscension * SharedResources.RAD_HRS) * SharedResources.HRS_RAD;  // Radians
 
-        //    //double sh = Math.Sin(ha);
-        //    //double ch = Math.Cos(ha);
-        //    //double sd = Math.Sin(declination);
-        //    //double cd = Math.Cos(declination);
-        //    //double sl = Math.Sin(latitude);
-        //    //double cl = Math.Cos(latitude);
+        //    //float sh = Math.Sin(ha);
+        //    //float ch = Math.Cos(ha);
+        //    //float sd = Math.Sin(declination);
+        //    //float cd = Math.Cos(declination);
+        //    //float sl = Math.Sin(latitude);
+        //    //float cl = Math.Cos(latitude);
 
-        //    //double x =  (sd * cl) - (ch * cd * sl);
-        //    //double y = -(sh * cd);
+        //    //float x =  (sd * cl) - (ch * cd * sl);
+        //    //float y = -(sh * cd);
 
         //    //return RangeAzimuth(Math.Atan2(y, x) * SharedResources.RAD_DEG);
         //}
@@ -257,26 +258,26 @@ namespace ASCOM.Simulator
         /// <param name="longitude">degrees</param>
         /// <param name="azimuth">out degrees</param>
         /// <returns></returns>
-        public static double CalculateAltAzm(double rightAscension, double declination, double latitude, double longitude, out double azimuth)
+        public static float CalculateAltAzm(float rightAscension, float declination, float latitude, float longitude, out float azimuth)
         {
-            double ha = (TelescopeHardware.SiderealTime - rightAscension) * HRS_RAD;  // Radians
-            double dec = declination * DEG_RAD;
-            double lat = latitude * DEG_RAD;
+            float ha = (TelescopeHardware.SiderealTime - rightAscension) * HRS_RAD;  // Radians
+            float dec = declination * DEG_RAD;
+            float lat = latitude * DEG_RAD;
 
-            double sh = Math.Sin(ha);
-            double ch = Math.Cos(ha);
-            double sd = Math.Sin(dec);
-            double cd = Math.Cos(dec);
-            double sl = Math.Sin(lat);
-            double cl = Math.Cos(lat);
+            float sh = (float)Math.Sin(ha);
+            float ch = (float)Math.Cos(ha);
+            float sd = (float)Math.Sin(dec);
+            float cd = (float)Math.Cos(dec);
+            float sl = (float)Math.Sin(lat);
+            float cl = (float)Math.Cos(lat);
 
-            double x = (sd * cl) - (ch * cd * sl);
-            double y = -(sh * cd);
-            double z = (ch * cd * cl) + (sd * sl);
-            double r = Math.Sqrt((x * x) + (y * y));
+            float x = (sd * cl) - (ch * cd * sl);
+            float y = -(sh * cd);
+            float z = (ch * cd * cl) + (sd * sl);
+            float r = (float)Math.Sqrt((x * x) + (y * y));
 
-            azimuth = RangeAzimuth(Math.Atan2(y, x) * RAD_DEG);
-            return RangeAlt(Math.Atan2(z, r) * RAD_DEG);
+            azimuth = RangeAzimuth((float)(Math.Atan2(y, x) * RAD_DEG));
+            return RangeAlt((float)(Math.Atan2(z, r) * RAD_DEG));
         }
 
         /// <summary>
@@ -286,27 +287,27 @@ namespace ASCOM.Simulator
         /// <param name="declination"></param>
         /// <param name="latitude"></param>
         /// <returns></returns>
-        public static Vector CalculateAltAzm(double rightAscension, double declination, double latitude)
+        public static Vector2 CalculateAltAzm(float rightAscension, float declination, float latitude)
         {
 
-            double lst = TelescopeHardware.SiderealTime;      // Hours
-            double ha = (lst - rightAscension) * HRS_RAD;  // Radians
-            double dec = declination * DEG_RAD;
-            double lat = latitude * DEG_RAD;
+            float lst = TelescopeHardware.SiderealTime;      // Hours
+            float ha = (lst - rightAscension) * HRS_RAD;  // Radians
+            float dec = declination * DEG_RAD;
+            float lat = latitude * DEG_RAD;
 
-            double sh = Math.Sin(ha);
-            double ch = Math.Cos(ha);
-            double sd = Math.Sin(dec);
-            double cd = Math.Cos(dec);
-            double sl = Math.Sin(lat);
-            double cl = Math.Cos(lat);
+            float sh = (float)Math.Sin(ha);
+            float ch = (float)Math.Cos(ha);
+            float sd = (float)Math.Sin(dec);
+            float cd = (float)Math.Cos(dec);
+            float sl = (float)Math.Sin(lat);
+            float cl = (float)Math.Cos(lat);
 
-            double x = (sd * cl) - (ch * cd * sl);
-            double y = -(sh * cd);
-            double z = (ch * cd * cl) + (sd * sl);
-            double r = Math.Sqrt((x * x) + (y * y));
+            float x = (sd * cl) - (ch * cd * sl);
+            float y = -(sh * cd);
+            float z = (ch * cd * cl) + (sd * sl);
+            float r = (float)Math.Sqrt((x * x) + (y * y));
 
-            return new Vector(RangeAzimuth(Math.Atan2(y, x) * RAD_DEG), RangeAlt(Math.Atan2(z, r) * RAD_DEG));
+            return new Vector2(RangeAzimuth((float)(Math.Atan2(y, x) * RAD_DEG)), RangeAlt((float)(Math.Atan2(z, r) * RAD_DEG)));
         }
 
         /// <summary>
@@ -314,12 +315,12 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="hourAngle">Value to range</param>
         /// <returns>Hour angle in the range -12 to +12 hours</returns>
-        public static double RangeHA(double hourAngle)
+        public static float RangeHA(float hourAngle)
         {
             while ((hourAngle >= 12.0) || (hourAngle <= -12.0))
             {
-                if (hourAngle <= -12.0) hourAngle += 24.0;
-                if (hourAngle >= 12.0) hourAngle -= 24.0;
+                if (hourAngle <= -12.0) hourAngle += 24.0f;
+                if (hourAngle >= 12.0) hourAngle -= 24.0f;
             }
 
             return hourAngle;
@@ -334,12 +335,12 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="rightAscension">The right ascension.</param>
         /// <returns></returns>
-        public static double RangeRA(double rightAscension)
+        public static float RangeRA(float rightAscension)
         {
             while ((rightAscension >= 24.0) || (rightAscension < 0.0))
             {
-                if (rightAscension < 0.0) rightAscension += 24.0;
-                if (rightAscension >= 24.0) rightAscension -= 24.0;
+                if (rightAscension < 0.0) rightAscension += 24.0f;
+                if (rightAscension >= 24.0) rightAscension -= 24.0f;
             }
 
             return rightAscension;
@@ -350,43 +351,43 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="declination">The declination.</param>
         /// <returns></returns>
-        public static double RangeDec(double declination)
+        public static float RangeDec(float declination)
         {
             while ((declination > 90.0) || (declination < -90.0))
             {
-                if (declination < -90.0) declination += 180.0;
-                if (declination > 90.0) declination = 180.0 - declination;
+                if (declination < -90.0) declination += 180.0f;
+                if (declination > 90.0) declination = (float)(180.0 - declination);
             }
             return declination;
         }
 
-        public static double RangeAlt(double altitude)
+        public static float RangeAlt(float altitude)
         {
             return RangeDec(altitude);
         }
 
-        public static double RangeAzimuth(double azimuth)
+        public static float RangeAzimuth(float azimuth)
         {
             while ((azimuth >= 360.0) || (azimuth < 0.0))
             {
-                if (azimuth < 0.0) azimuth += 360.0;
-                if (azimuth >= 360.0) azimuth -= 360.0;
+                if (azimuth < 0.0) azimuth += 360.0f;
+                if (azimuth >= 360.0) azimuth -= 360.0f;
             }
 
             return azimuth;
         }
 
         /// <summary>
-        /// Calculate RA/Dec vector from AltAz vector - Return RA and Dec in degrees
+        /// Calculate RA/Dec Vector2 from AltAz Vector2 - Return RA and Dec in degrees
         /// </summary>
         /// <param name="targetAltAzm"></param>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
-        /// <returns>RA/Dec vector in degrees</returns>
-        internal static Vector CalculateRaDec(Vector targetAltAzm, double latitude)
+        /// <returns>RA/Dec Vector2 in degrees</returns>
+        internal static Vector2 CalculateRaDec(Vector2 targetAltAzm, float latitude)
         {
-            Vector raDec = new Vector();
-            double ra = AstronomyFunctions.CalculateRA(targetAltAzm.Y, targetAltAzm.X, latitude);  // Returned hour angle is in sidereal hours
+            Vector2 raDec = new Vector2();
+            float ra = AstronomyFunctions.CalculateRA(targetAltAzm.Y, targetAltAzm.X, latitude);  // Returned hour angle is in sidereal hours
 
             // Convert RA in sidereal hours to degrees
             raDec.X = ra * HOURS_TO_DEGREES; // Degrees per SI second
@@ -396,16 +397,16 @@ namespace ASCOM.Simulator
         }
 
         /// <summary>
-        /// Calculate HA/Dec vector from AltAz vector - Return RA and Dec in degrees
+        /// Calculate HA/Dec Vector2 from AltAz Vector2 - Return RA and Dec in degrees
         /// </summary>
         /// <param name="targetAltAzm"></param>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
-        /// <returns>HA/Dec vector in degrees</returns>
-        internal static Vector CalculateHaDec(Vector targetAltAzm, double latitude, double longitude)
+        /// <returns>HA/Dec Vector2 in degrees</returns>
+        internal static Vector2 CalculateHaDec(Vector2 targetAltAzm, float latitude, float longitude)
         {
-            Vector raDec = new Vector();
-            double ra = AstronomyFunctions.CalculateRA(targetAltAzm.Y, targetAltAzm.X, latitude);
+            Vector2 raDec = new Vector2();
+            float ra = AstronomyFunctions.CalculateRA(targetAltAzm.Y, targetAltAzm.X, latitude);
 
             raDec.X = AstronomyFunctions.HourAngle(ra, longitude) * HOURS_TO_DEGREES * SIDEREAL_SECONDS_TO_SI_SECONDS;
 

@@ -47,14 +47,5 @@ namespace ASCOM
         public SlavedException(string message, Exception inner) : base(message, ErrorCodes.InvalidWhileSlaved, inner)
         {
         }
-
-        /// <summary>
-        /// Create a new exception
-        /// </summary>
-        /// <param name = "info">Information required to serialise the exception</param>
-        /// <param name = "context">Information of the serialising stream context.</param>
-        protected SlavedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

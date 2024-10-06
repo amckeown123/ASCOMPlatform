@@ -264,7 +264,7 @@ namespace ASCOM.Simulator
             {
                 Type type = typeof(ObservingConditions);
                 PropertyInfo propertyInfo = type.GetProperty(PropertyName);
-                var observingConditionsValue = (double)propertyInfo.GetValue(driver, null);
+                var observingConditionsValue = (float)propertyInfo.GetValue(driver, null);
                 LogMessage(PropertyName + " : " + observingConditionsValue.ToString("0.0"));
             }
 

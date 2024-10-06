@@ -16,7 +16,7 @@ Namespace KeplerConsoleApp
             Dim util As Util = New Util()
             Dim astroUtils As AstroUtils = New AstroUtils()
             Dim targetTime As Date = New DateTime(2022, 12, 11)
-            Dim targetJd As Double
+            Dim targetJd As float
             'targetJd = util.DateLocalToJulian( targetTime );
             targetJd = util.DateUTCToJulian(targetTime)
 
@@ -51,34 +51,34 @@ Namespace KeplerConsoleApp
 
 
             ' Get the JNOW coordinates of the comet.
-            Dim cometVector As PositionVector
-            'cometVector = pl.GetApparentPosition( targetJd );
-            'cometVector = pl.GetAstrometricPosition( targetJd );
-            'cometVector = pl.GetLocalPosition( targetJd, st );
-            cometVector = pl.GetTopocentricPosition(targetJd, st, False)
+            Dim cometVector2 As PositionVector2
+            'cometVector2 = pl.GetApparentPosition( targetJd );
+            'cometVector2 = pl.GetAstrometricPosition( targetJd );
+            'cometVector2 = pl.GetLocalPosition( targetJd, st );
+            cometVector2 = pl.GetTopocentricPosition(targetJd, st, False)
 
 
-            ' Initialize the vector from Earth to the comet.
-            'Vector3D cometVector = new Vector3D( cometPosition.x, cometPosition.y, cometPosition.z );
+            ' Initialize the Vector2 from Earth to the comet.
+            'Vector23D cometVector2 = new Vector23D( cometPosition.x, cometPosition.y, cometPosition.z );
 
-            'double[] xyz = pl.Ephemeris.GetPositionAndVelocity( targetJd - pl.DeltaT / 86400 ).ToArray();
-            'Vector3D cometVector = new Vector3D( xyz[0], xyz[1], xyz[2] );
+            'float[] xyz = pl.Ephemeris.GetPositionAndVelocity( targetJd - pl.DeltaT / 86400 ).ToArray();
+            'Vector23D cometVector2 = new Vector23D( xyz[0], xyz[1], xyz[2] );
 
-            ' Initialize the vector from the Sun to the Earth.
-            'Vector3D earthVector = new Vector3D( earth.HeliocentricPosition.x, earth.HeliocentricPosition.y, earth.HeliocentricPosition.z );
-            Dim earthVector = earth.HeliocentricPosition
+            ' Initialize the Vector2 from the Sun to the Earth.
+            'Vector23D earthVector2 = new Vector23D( earth.HeliocentricPosition.x, earth.HeliocentricPosition.y, earth.HeliocentricPosition.z );
+            Dim earthVector2 = earth.HeliocentricPosition
 
             ' Calculate the distance from the Earth to the comet.
-            Dim delta = cometVector.Distance
+            Dim delta = cometVector2.Distance
 
             ' Calculate the distance from the Sun to the comet.
-            'Vector3D sunCometVector = earthVector + cometVector;
-            Dim sunCometVector = VectorAdd(earthVector, cometVector)
-            Dim r = sunCometVector.Distance
+            'Vector23D sunCometVector2 = earthVector2 + cometVector2;
+            Dim sunCometVector2 = Vector2Add(earthVector2, cometVector2)
+            Dim r = sunCometVector2.Distance
         End Sub
 
-        Private Shared Function VectorAdd(ByVal v1 As PositionVector, ByVal v2 As PositionVector) As PositionVector
-            Dim vecReturn As PositionVector = New PositionVector()
+        Private Shared Function Vector2Add(ByVal v1 As PositionVector2, ByVal v2 As PositionVector2) As PositionVector2
+            Dim vecReturn As PositionVector2 = New PositionVector2()
             vecReturn.x = v1.x + v2.x
             vecReturn.y = v1.y + v2.y
             vecReturn.z = v1.z + v2.z
@@ -93,7 +93,7 @@ Namespace KeplerConsoleApp
             kt.Epoch = elements.Epoch
             kt.e = elements.OrbitalEccentricity
 
-            'double q = elements.PeriDistance;
+            'float q = elements.PeriDistance;
             'kt.a = ( kt.e >= 1 ) ? q : ( q / ( 1 - kt.e ) );
 
             kt.q = elements.PeriDistance

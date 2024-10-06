@@ -18,16 +18,16 @@ namespace ASCOM.Astrometry
     /// 
     /// To ensure that leap second and DeltaUT1 transitions are handled correctly and occur at 00:00:00 UTC, the supplied Julian date should be in UTC time
     /// </remarks>
-        public static double DeltaTCalc(double JulianDateUTC)
+        public static float DeltaTCalc(float JulianDateUTC)
         {
-            double YearFraction, B, Retval, ModifiedJulianDay;
+            float YearFraction, B, Retval, ModifiedJulianDay;
             DateTime UTCDate;
 
-            double LastJulianDateUTC = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE;
-            var LastDeltaTValue = default(double);
+            float LastJulianDateUTC = GlobalItems.float_VALUE_NOT_AVAILABLE;
+            var LastDeltaTValue = default(float);
             var DeltaTCalcLockObject = new object();
 
-            const double TABSTART1620 = 1620.0d;
+            const float TABSTART1620 = 1620.0d;
             const int TABSIZ = 392;
 
             lock (DeltaTCalcLockObject)
@@ -134,25 +134,25 @@ namespace ASCOM.Astrometry
             }
 
             // DATE RANGE April 2018 Onwards - The analysis was performed on 25th April 2018 and creates values within 0.03 of a second of the projections to Q4 2018 and sensible extrapolation to 2021
-            else if (YearFraction >= 2018.3d & YearFraction < double.MaxValue)
+            else if (YearFraction >= 2018.3d & YearFraction < float.MaxValue)
             {
                 Retval = 0.00000161128367083801d * ModifiedJulianDay * ModifiedJulianDay + -0.187474214389602d * ModifiedJulianDay + 5522.26034874982d;
             }
 
             // DATE RANGE January 2018 Onwards - The analysis was performed on 28th December 2017 and creates values within 0.03 of a second of the projections to Q4 2018 and sensible extrapolation to 2021
-            else if (YearFraction >= 2018d & YearFraction < double.MaxValue)
+            else if (YearFraction >= 2018d & YearFraction < float.MaxValue)
             {
                 Retval = 0.0024855297566049d * YearFraction * YearFraction * YearFraction + -15.0681141702439d * YearFraction * YearFraction + 30449.647471213d * YearFraction - 20511035.5077593d;
             }
 
             // DATE RANGE January 2017 Onwards - The analysis was performed on 29th December 2016 and creates values within 0.12 of a second of the projections to Q3 2019
-            else if (YearFraction >= 2017.0d & YearFraction < double.MaxValue)
+            else if (YearFraction >= 2017.0d & YearFraction < float.MaxValue)
             {
                 Retval = 0.02465436d * YearFraction * YearFraction + -98.92626556d * YearFraction + 99301.85784308d;
             }
 
             // DATE RANGE October 2015 Onwards - The analysis was performed on 24th October 2015 and creates values within 0.05 of a second of the projections to Q2 2018
-            else if (YearFraction >= 2015.75d & YearFraction < double.MaxValue)
+            else if (YearFraction >= 2015.75d & YearFraction < float.MaxValue)
             {
                 Retval = 0.02002376d * YearFraction * YearFraction + -80.27921003d * YearFraction + 80529.32d;
             }
@@ -185,7 +185,7 @@ namespace ASCOM.Astrometry
                 // Change TABEND and TABSIZ if you add/delete anything
 
                 // Calculate  DeltaT = ET - UT in seconds.  Describes the irregularities of the Earth rotation rate in the ET time scale.
-                double p;
+                float p;
                 var d = new int[7];
                 int i, iy, k;
 

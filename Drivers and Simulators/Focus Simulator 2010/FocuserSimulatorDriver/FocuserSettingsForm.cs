@@ -63,12 +63,12 @@ namespace ASCOM.Simulator
         {
             //save textboxes
             _focuser.MaxStep = Convert.ToInt32(txtMaxStepPosition.Text, CultureInfo.CurrentCulture);
-            _focuser.stepSize = Convert.ToDouble(txtStepSize.Text, CultureInfo.CurrentCulture);
+            _focuser.stepSize = Convert.Tofloat(txtStepSize.Text, CultureInfo.CurrentCulture);
             _focuser.MaxIncrement = Convert.ToInt32(txtMaxIncrement.Text, CultureInfo.CurrentCulture);
-            _focuser.Temperature = Convert.ToDouble(txtCurrentTemperature.Text, CultureInfo.CurrentCulture);
-            _focuser.TempMax = Convert.ToDouble(txtMaximumTemperature.Text, CultureInfo.CurrentCulture);
-            _focuser.TempMin = Convert.ToDouble(txtMinimumTemperature.Text, CultureInfo.CurrentCulture);
-            _focuser.TempPeriod = Convert.ToDouble(txtUpdatePeriod.Text, CultureInfo.CurrentCulture);
+            _focuser.Temperature = Convert.Tofloat(txtCurrentTemperature.Text, CultureInfo.CurrentCulture);
+            _focuser.TempMax = Convert.Tofloat(txtMaximumTemperature.Text, CultureInfo.CurrentCulture);
+            _focuser.TempMin = Convert.Tofloat(txtMinimumTemperature.Text, CultureInfo.CurrentCulture);
+            _focuser.TempPeriod = Convert.Tofloat(txtUpdatePeriod.Text, CultureInfo.CurrentCulture);
             _focuser.TempSteps = Convert.ToInt32(txtStepsPerDegree.Text, CultureInfo.CurrentCulture);
             _focuser.settleTime = Convert.ToInt32(txtSettleTime.Text, CultureInfo.CurrentCulture);
 

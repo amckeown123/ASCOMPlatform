@@ -33,8 +33,8 @@ namespace ASCOM.Simulator
 
         public void InitUI(string property)
         {
-            double fromValue = OCSimulator.OverrideFromValues[property];
-            double toValue = OCSimulator.OverrideToValues[property];
+            float fromValue = OCSimulator.OverrideFromValues[property];
+            float toValue = OCSimulator.OverrideToValues[property];
             lblFrom.Text = fromValue.ToString();
             Point trkOverideLocation = trkOverride.Location;
             Point lblFromLocation = lblFrom.Location;
@@ -53,7 +53,7 @@ namespace ASCOM.Simulator
         {
             OCSimulator.TL.LogMessage("SaveUI", "property: " + property + " " + chkOverride.Name + " " + chkOverride.Checked + " " + trkOverride.Value.ToString());
             OCSimulator.Sensors[property].Override = chkOverride.Checked;
-            OCSimulator.Sensors[property].OverrideValue = (double)trkOverride.Value;
+            OCSimulator.Sensors[property].OverrideValue = (float)trkOverride.Value;
         }
 
         private void SetEnabledButton()

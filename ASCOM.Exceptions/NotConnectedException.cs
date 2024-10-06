@@ -52,14 +52,5 @@ namespace ASCOM
         public NotConnectedException(string message, Exception innerException) : base(message, ErrorCodes.NotConnected, innerException)
         {
         }
-
-        /// <summary>
-        /// Added to keep Code Analysis happy
-        /// </summary>
-        /// <param name = "info">Serialisation information</param>
-        /// <param name = "context">Streaming context.</param>
-        protected NotConnectedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

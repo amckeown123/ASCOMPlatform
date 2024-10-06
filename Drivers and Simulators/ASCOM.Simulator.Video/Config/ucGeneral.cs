@@ -93,8 +93,8 @@ namespace ASCOM.Simulator.Config
 
 			Properties.Settings.Default.SensorName = tbxSensorName.Text;
 			Properties.Settings.Default.SensorType = (SensorType)cbxSensorType.SelectedIndex;
-			Properties.Settings.Default.PixelSizeX = (double)nudPixelSizeX.Value;
-			Properties.Settings.Default.PixelSizeY = (double)nudPixelSizeY.Value;
+			Properties.Settings.Default.PixelSizeX = (float)nudPixelSizeX.Value;
+			Properties.Settings.Default.PixelSizeY = (float)nudPixelSizeY.Value;
 			Properties.Settings.Default.BitDepth = GetBitDepthSelection();
 			if (bcxTraceLevel.SelectedIndex == -1)
 				Properties.Settings.Default.TraceLevel = TraceLevel.Off;

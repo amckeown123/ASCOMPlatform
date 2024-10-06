@@ -19,20 +19,18 @@
 //
 // Ignore Spelling: Dialog
 
+using ASCOM.DeviceInterface;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using ASCOM.DeviceInterface;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ASCOM.Utilities.Global;
-using ASCOM.DriverAccess;
-using System.Collections.Generic;
 
 namespace ASCOM.Simulator
 {
@@ -73,8 +71,8 @@ namespace ASCOM.Simulator
 
         // Local copies of the guide rates are kept here because the TelescopeHardware GuideRateRightAscension and GuideRateDeclination values
         // can have their direction signs changed during PulseGuide operations.
-        private double currentGuideRateRightAscension;
-        private double currentGuideRateDeclination;
+        private float currentGuideRateRightAscension;
+        private float currentGuideRateDeclination;
 
         // Constructor - Must be public for COM registration!
         public Telescope()
@@ -244,9 +242,9 @@ namespace ASCOM.Simulator
                 case SLEW_TO_HA_UPPER:
                     //Assume that we have just been supplied with an HA
                     //Let errors just go straight back to the caller
-                    double HA = double.Parse(ActionParameters, CultureInfo.InvariantCulture);
-                    double RA = this.SiderealTime - HA;
-                    this.SlewToCoordinates(RA, 0.0);
+                    float HA = float.Parse(ActionParameters, CultureInfo.InvariantCulture);
+                    float RA = this.SiderealTime - HA;
+                    this.SlewToCoordinates(RA, 0.0f);
                     Response = "Slew successful!";
                     break;
                 case AVAILABLE_TIME_IN_THIS_POINTING_STATE:
@@ -313,7 +311,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double Altitude
+        public float Altitude
         {
             get
             {
@@ -329,7 +327,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double ApertureArea
+        public float ApertureArea
         {
             get
             {
@@ -340,7 +338,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double ApertureDiameter
+        public float ApertureDiameter
         {
             get
             {
@@ -389,7 +387,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double Azimuth
+        public float Azimuth
         {
             get
             {
@@ -625,7 +623,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double Declination
+        public float Declination
         {
             get
             {
@@ -643,7 +641,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double DeclinationRate
+        public float DeclinationRate
         {
             get
             {
@@ -668,7 +666,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public PierSide DestinationSideOfPier(double RightAscension, double Declination)
+        public PierSide DestinationSideOfPier(float RightAscension, float Declination)
         {
             SharedResources.TrafficStart(SharedResources.MessageType.Other, "DestinationSideOfPier: ");
             CheckVersionOne("DestinationSideOfPier");
@@ -786,7 +784,7 @@ namespace ASCOM.Simulator
             SharedResources.TrafficEnd(SharedResources.MessageType.Slew, "(done)");
         }
 
-        public double FocalLength
+        public float FocalLength
         {
             get
             {
@@ -798,7 +796,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double GuideRateDeclination
+        public float GuideRateDeclination
         {
             get
             {
@@ -817,7 +815,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double GuideRateRightAscension
+        public float GuideRateRightAscension
         {
             get
             {
@@ -859,7 +857,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public void MoveAxis(TelescopeAxes Axis, double Rate)
+        public void MoveAxis(TelescopeAxes Axis, float Rate)
         {
             SharedResources.TrafficStart(SharedResources.MessageType.Slew, string.Format(CultureInfo.CurrentCulture, "MoveAxis {0} {1}:  ", Axis.ToString(), Rate));
             CheckVersionOne("MoveAxis");
@@ -1055,26 +1053,26 @@ namespace ASCOM.Simulator
                             case GuideDirections.guideNorth:
                                 TelescopeHardware.guideRate.Y = Math.Abs(TelescopeHardware.guideRate.Y);
                                 TelescopeHardware.isPulseGuidingDec = true;
-                                TelescopeHardware.guideDuration.Y = Duration / 1000.0;
+                                TelescopeHardware.guideDuration.Y = (float)(Duration / 1000.0);
                                 break;
                             case GuideDirections.guideSouth:
                                 TelescopeHardware.guideRate.Y = -Math.Abs(TelescopeHardware.guideRate.Y);
                                 //TelescopeHardware.pulseGuideDecEndTime = endTime;
                                 TelescopeHardware.isPulseGuidingDec = true;
-                                TelescopeHardware.guideDuration.Y = Duration / 1000.0;
+                                TelescopeHardware.guideDuration.Y = (float)(Duration / 1000.0);
                                 break;
 
                             case GuideDirections.guideEast:
                                 TelescopeHardware.guideRate.X = -Math.Abs(TelescopeHardware.guideRate.X);
                                 //TelescopeHardware.pulseGuideRaEndTime = endTime;
                                 TelescopeHardware.isPulseGuidingRa = true;
-                                TelescopeHardware.guideDuration.X = Duration / 1000.0;
+                                TelescopeHardware.guideDuration.X = (float)(Duration / 1000.0);
                                 break;
                             case GuideDirections.guideWest:
                                 TelescopeHardware.guideRate.X = Math.Abs(TelescopeHardware.guideRate.X);
                                 //TelescopeHardware.pulseGuideRaEndTime = endTime;
                                 TelescopeHardware.isPulseGuidingRa = true;
-                                TelescopeHardware.guideDuration.X = Duration / 1000.0;
+                                TelescopeHardware.guideDuration.X = (float)(Duration / 1000.0);
                                 break;
                         }
                     }
@@ -1093,7 +1091,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double RightAscension
+        public float RightAscension
         {
             get
             {
@@ -1111,7 +1109,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double RightAscensionRate
+        public float RightAscensionRate
         {
             get
             {
@@ -1184,7 +1182,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double SiderealTime
+        public float SiderealTime
         {
             get
             {
@@ -1195,7 +1193,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double SiteElevation
+        public float SiteElevation
         {
             get
             {
@@ -1215,7 +1213,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double SiteLatitude
+        public float SiteLatitude
         {
             get
             {
@@ -1235,7 +1233,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double SiteLongitude
+        public float SiteLongitude
         {
             get
             {
@@ -1270,7 +1268,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public void SlewToAltAz(double Azimuth, double Altitude)
+        public void SlewToAltAz(float Azimuth, float Altitude)
         {
             SharedResources.TrafficStart(SharedResources.MessageType.Slew, "SlewToAltAz: ");
             CheckCapability(TelescopeHardware.CanSlewAltAz, "SlewToAltAz");
@@ -1292,7 +1290,7 @@ namespace ASCOM.Simulator
             SharedResources.TrafficEnd(" done");
         }
 
-        public void SlewToAltAzAsync(double Azimuth, double Altitude)
+        public void SlewToAltAzAsync(float Azimuth, float Altitude)
         {
             SharedResources.TrafficStart(SharedResources.MessageType.Slew, "SlewToAltAzAsync: ");
             CheckCapability(TelescopeHardware.CanSlewAltAzAsync, "SlewToAltAzAsync");
@@ -1308,7 +1306,7 @@ namespace ASCOM.Simulator
             SharedResources.TrafficEnd(" started");
         }
 
-        public void SlewToCoordinates(double RightAscension, double Declination)
+        public void SlewToCoordinates(float RightAscension, float Declination)
         {
             SharedResources.TrafficStart(SharedResources.MessageType.Slew, "SlewToCoordinates: ");
             CheckCapability(TelescopeHardware.CanSlew, "SlewToCoordinates");
@@ -1334,7 +1332,7 @@ namespace ASCOM.Simulator
             SharedResources.TrafficEnd("done");
         }
 
-        public void SlewToCoordinatesAsync(double RightAscension, double Declination)
+        public void SlewToCoordinatesAsync(float RightAscension, float Declination)
         {
             SharedResources.TrafficStart(SharedResources.MessageType.Slew, "SlewToCoordinatesAsync: ");
             CheckCapability(TelescopeHardware.CanSlewAsync, "SlewToCoordinatesAsync");
@@ -1395,7 +1393,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public void SyncToAltAz(double Azimuth, double Altitude)
+        public void SyncToAltAz(float Azimuth, float Altitude)
         {
             SharedResources.TrafficStart(SharedResources.MessageType.Slew, "SyncToAltAz: ");
             CheckCapability(TelescopeHardware.CanSyncAltAz, "SyncToAltAz");
@@ -1418,7 +1416,7 @@ namespace ASCOM.Simulator
             SharedResources.TrafficEnd("done");
         }
 
-        public void SyncToCoordinates(double RightAscension, double Declination)
+        public void SyncToCoordinates(float RightAscension, float Declination)
         {
             SharedResources.TrafficStart(SharedResources.MessageType.Slew, "SyncToCoordinates: ");
             CheckCapability(TelescopeHardware.CanSync, "SyncToCoordinates");
@@ -1460,7 +1458,7 @@ namespace ASCOM.Simulator
             SharedResources.TrafficEnd("done");
         }
 
-        public double TargetDeclination
+        public float TargetDeclination
         {
             get
             {
@@ -1480,7 +1478,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double TargetRightAscension
+        public float TargetRightAscension
         {
             get
             {
@@ -1565,8 +1563,8 @@ namespace ASCOM.Simulator
         {
             get
             {
-                SharedResources.TrafficLine(SharedResources.MessageType.Time, "UTCDate: " + DateTime.UtcNow.AddSeconds((double)TelescopeHardware.DateDelta).ToString());
-                return DateTime.UtcNow.AddSeconds((double)TelescopeHardware.DateDelta);
+                SharedResources.TrafficLine(SharedResources.MessageType.Time, "UTCDate: " + DateTime.UtcNow.AddSeconds((float)TelescopeHardware.DateDelta).ToString());
+                return DateTime.UtcNow.AddSeconds((float)TelescopeHardware.DateDelta);
             }
             set
             {
@@ -1574,6 +1572,10 @@ namespace ASCOM.Simulator
                 TelescopeHardware.DateDelta = (int)value.Subtract(DateTime.UtcNow).TotalSeconds;
             }
         }
+
+        ArrayList ITelescopeV4.SupportedActions => throw new System.NotImplementedException();
+
+        System.DateTime ITelescopeV4.UTCDate { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public void Unpark()
         {
@@ -1631,7 +1633,7 @@ namespace ASCOM.Simulator
 
         #region New pier side properties 
 
-        //public double AvailableTimeInThisPointingState
+        //public float AvailableTimeInThisPointingState
         //{
         //    get
         //    {
@@ -1643,7 +1645,7 @@ namespace ASCOM.Simulator
         //    }
         //}
 
-        //public double TimeUntilPointingStateCanChange
+        //public float TimeUntilPointingStateCanChange
         //{
         //    get
         //    {
@@ -1673,7 +1675,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        private void CheckRate(TelescopeAxes axis, double rate)
+        private void CheckRate(TelescopeAxes axis, float rate)
         {
             IAxisRates rates = AxisRates(axis);
             string ratesStr = string.Empty;
@@ -1688,9 +1690,9 @@ namespace ASCOM.Simulator
             throw new InvalidValueException("MoveAxis", rate.ToString(CultureInfo.InvariantCulture), ratesStr);
         }
 
-        private static void CheckRange(double value, double min, double max, string propertyOrMethod, string valueName)
+        private static void CheckRange(float value, float min, float max, string propertyOrMethod, string valueName)
         {
-            if (double.IsNaN(value))
+            if (float.IsNaN(value))
             {
                 SharedResources.TrafficEnd(string.Format(CultureInfo.CurrentCulture, "{0}:{1} value has not been set", propertyOrMethod, valueName));
                 throw new ValueNotSetException(propertyOrMethod + ":" + valueName);
@@ -1702,9 +1704,9 @@ namespace ASCOM.Simulator
             }
         }
 
-        private static void CheckRange(double value, double min, double max, string propertyOrMethod)
+        private static void CheckRange(float value, float min, float max, string propertyOrMethod)
         {
-            if (double.IsNaN(value))
+            if (float.IsNaN(value))
             {
                 SharedResources.TrafficEnd(string.Format(CultureInfo.CurrentCulture, "{0} value has not been set", propertyOrMethod));
                 throw new ValueNotSetException(propertyOrMethod);
@@ -1817,14 +1819,14 @@ namespace ASCOM.Simulator
     [ClassInterface(ClassInterfaceType.None), ComVisible(true)]
     public class Rate : IRate, IDisposable
     {
-        private double m_dMaximum = 0;
-        private double m_dMinimum = 0;
+        private float m_dMaximum = 0;
+        private float m_dMinimum = 0;
 
         //
         // Default constructor - Internal prevents public creation
         // of instances. These are values for AxisRates.
         //
-        internal Rate(double Minimum, double Maximum)
+        internal Rate(float Minimum, float Maximum)
         {
             m_dMaximum = Maximum;
             m_dMinimum = Minimum;
@@ -1837,13 +1839,13 @@ namespace ASCOM.Simulator
             return null;
         }
 
-        public double Maximum
+        public float Maximum
         {
             get { return m_dMaximum; }
             set { m_dMaximum = value; }
         }
 
-        public double Minimum
+        public float Minimum
         {
             get { return m_dMinimum; }
             set { m_dMinimum = value; }
@@ -1901,21 +1903,21 @@ namespace ASCOM.Simulator
             // to the constructor. Thus we switch() below, and each case should 
             // initialize the array for the rate for the selected axis.
             //
-            double maxRate = TelescopeHardware.MaximumSlewRate;
+            float maxRate = TelescopeHardware.MaximumSlewRate;
             switch (m_axis)
             {
                 case TelescopeAxes.axisPrimary:
                     // TODO Initialize this array with any Primary axis rates that your driver may provide
                     // Example: m_Rates = new Rate[] { new Rate(10.5, 30.2), new Rate(54.0, 43.6) }
-                    m_Rates = new Rate[] { new Rate(0.0, maxRate / 3), new Rate(maxRate / 2, maxRate) };
+                    m_Rates = new Rate[] { new Rate(0.0f, maxRate / 3), new Rate(maxRate / 2, maxRate) };
                     break;
                 case TelescopeAxes.axisSecondary:
                     // TODO Initialize this array with any Secondary axis rates that your driver may provide
-                    m_Rates = new Rate[] { new Rate(0.0, maxRate / 3), new Rate(maxRate / 2, maxRate) };
+                    m_Rates = new Rate[] { new Rate(0.0f, maxRate / 3), new Rate(maxRate / 2, maxRate) };
                     break;
                 case TelescopeAxes.axisTertiary:
                     // TODO Initialize this array with any Tertiary axis rates that your driver may provide
-                    m_Rates = new Rate[] { new Rate(0.0, maxRate / 3), new Rate(maxRate / 2, maxRate) };
+                    m_Rates = new Rate[] { new Rate(0.0f, maxRate / 3), new Rate(maxRate / 2, maxRate) };
                     break;
             }
             pos = -1;

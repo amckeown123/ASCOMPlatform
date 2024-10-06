@@ -57,14 +57,5 @@ namespace ASCOM
         public InvalidOperationException(string message, Exception innerException) : base(message, ErrorCodes.InvalidOperationException, innerException)
         {
         }
-
-        /// <summary>
-        /// Added to keep Code Analysis happy
-        /// </summary>
-        /// <param name = "info">Serialisation information</param>
-        /// <param name = "context">Streaming context.</param>
-        protected InvalidOperationException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
+   }
 }

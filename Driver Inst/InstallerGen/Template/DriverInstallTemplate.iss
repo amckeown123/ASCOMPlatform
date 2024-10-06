@@ -140,9 +140,9 @@ const
    REQUIRED_PLATFORM_VERSION = 6.2;    // Set this to the minimum required ASCOM Platform version for this application
 
 //
-// Function to return the ASCOM Platform's version number as a double.
+// Function to return the ASCOM Platform's version number as a float.
 //
-function PlatformVersion(): Double;
+function PlatformVersion(): float;
 var
    PlatVerString : String;
 begin
@@ -150,7 +150,7 @@ begin
    try
       if RegQueryStringValue(HKEY_LOCAL_MACHINE_32, 'Software\ASCOM','PlatformVersion', PlatVerString) then 
       begin // Successfully read the value from the registry
-         Result := StrToFloat(PlatVerString); // Create a double from the X.Y Platform version string
+         Result := StrToFloat(PlatVerString); // Create a float from the X.Y Platform version string
       end;
    except                                                                   
       ShowExceptionMessage;
@@ -163,10 +163,10 @@ end;
 //
 function InitializeSetup(): Boolean;
 var
-   PlatformVersionNumber : double;
+   PlatformVersionNumber : float;
  begin
    Result := FALSE;  // Assume failure
-   PlatformVersionNumber := PlatformVersion(); // Get the installed Platform version as a double
+   PlatformVersionNumber := PlatformVersion(); // Get the installed Platform version as a float
    If PlatformVersionNumber >= REQUIRED_PLATFORM_VERSION then	// Check whether we have the minimum required Platform or newer
       Result := TRUE
    else

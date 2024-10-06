@@ -1,39 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>../ASCOM.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
-    <PackageProjectUrl>https://ascom-standards.org/</PackageProjectUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>The ASCOM Initiative</Authors>
-    <Copyright>(c) ASCOM Initiative 2024</Copyright>
-    <PackageIcon>ASCOMBoarderless.png</PackageIcon>
-    <PackageId>ASCOM.Exception.Library</PackageId>
-    <Description>Exception definitions common to both COM and Alpaca devices.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <Platforms>AnyCPU</Platforms>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <DocumentationFile>ASCOM.Exceptions.xml</DocumentationFile>
-    <NoWarn>1701;1702;NU5105</NoWarn>
-    <Title>ASCOM Exception Library</Title>
-    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/ASCOMInitiative/ASCOMPlatform</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>ASCOM;Exceptions</PackageTags>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="ASCOMExceptions.suo" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\AssemblyVersionInfo.cs" Link="Properties\AssemblyVersionInfo.cs" />
-    <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
-  </ItemGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="ASCOMBoarderless.png">
       <Pack>True</Pack>
@@ -41,11 +24,7 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="$(ProjectDir)bin\release\net472\ASCOM.Exceptions.xml" Pack="true" PackagePath="File"></None>
-    <None Include="build\ASCOM.Exception.Library.props" Pack="true" PackagePath="build"></None>
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Folder Include="build\" />
   </ItemGroup>

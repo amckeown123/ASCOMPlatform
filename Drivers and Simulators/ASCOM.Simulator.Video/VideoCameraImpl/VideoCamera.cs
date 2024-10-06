@@ -29,7 +29,7 @@ namespace Simulator.VideoCameraImpl
 		public byte[] PreviewBitmapBytes;
 		public long? FrameNumber;
 		public DateTime? ExposureStartTime;
-		public double? ExposureDuration;
+		public float? ExposureDuration;
 		public string ImageInfo;
 	}
 
@@ -249,7 +249,7 @@ namespace Simulator.VideoCameraImpl
 		{
 			selectedDiscreteGammaIndex = newGammaIndex;
 
-			double gammaVal = GetCurrentGammaValue();
+			float gammaVal = GetCurrentGammaValue();
             aviTools.SetNewGamma(gammaVal);
 		}
 
@@ -267,20 +267,20 @@ namespace Simulator.VideoCameraImpl
 			if (selectedDiscreteGammaIndex != -1)
 			{
 				freeRangeGammaValue = short.MinValue;
-				double gammaVal = GetCurrentGammaValue();
+				float gammaVal = GetCurrentGammaValue();
                 aviTools.SetNewGamma(gammaVal);
 			}
 		}
 
 		private static Regex GAMMA_REGEX = new Regex("\\((?<InBracketsValue>[^\\)]+)\\)");
 
-		public double GetCurrentGammaValue()
+		public float GetCurrentGammaValue()
 		{
 
             if (selectedDiscreteGammaIndex >= 0 && selectedDiscreteGammaIndex < supportedGammas.Count)
             {
                 string gamma = supportedGammas[selectedDiscreteGammaIndex];
-                if (double.TryParse(gamma, NumberStyles.Number, CultureInfo.InvariantCulture, out double gammaVal))
+                if (float.TryParse(gamma, NumberStyles.Number, CultureInfo.InvariantCulture, out float gammaVal))
                     return gammaVal;
 
                 if (gamma != null)
@@ -296,7 +296,7 @@ namespace Simulator.VideoCameraImpl
                     if (regexMatch.Success &&
                         regexMatch.Groups["InBracketsValue"].Success)
                     {
-                        if (double.TryParse(regexMatch.Groups["InBracketsValue"].Value, NumberStyles.Number, CultureInfo.InvariantCulture, out gammaVal))
+                        if (float.TryParse(regexMatch.Groups["InBracketsValue"].Value, NumberStyles.Number, CultureInfo.InvariantCulture, out gammaVal))
                             return gammaVal;
                     }
                 }
@@ -406,12 +406,12 @@ namespace Simulator.VideoCameraImpl
 				throw new NotSupportedException();
 		}
 
-		public double ExposureMin
+		public float ExposureMin
 		{
 			get { return Settings.Default.ExposureMin; }
 		}
 
-		public double ExposureMax
+		public float ExposureMax
 		{
 			get { return Settings.Default.ExposureMax; }
 		}
@@ -506,12 +506,12 @@ namespace Simulator.VideoCameraImpl
                 bitmapPlayer.GetCurrentImage(out int[,] currentFrame, out long currentFrameNo, out byte[] previewBitmapBytes);
 
                 short currentGain = GetCurrentGain();
-				double currentGamma = GetCurrentGammaValue();
+				float currentGamma = GetCurrentGammaValue();
 				int currentWhiteBalance = GetWhiteBalance();
 
 				if (currentGain != 0 || currentGamma != 1.0 || currentWhiteBalance > 0)
 				{
-					short brightness = (short)Math.Round(150 * ((double)currentGain / GetMaxGain()));
+					short brightness = (short)Math.Round(150 * ((float)currentGain / GetMaxGain()));
 
 					aviTools.ApplyGammaBrightness(currentFrame, alteredPixels, bitmapPlayer.Width, bitmapPlayer.Height, brightness);
 					cameraImage.SetImageArray(alteredPixels, bitmapPlayer.Width, bitmapPlayer.Height, SensorType.Monochrome);
@@ -543,7 +543,7 @@ namespace Simulator.VideoCameraImpl
 		{
 			if (cameraState == VideoCameraState.videoCameraRunning)
 			{
-                double fps;
+                float fps;
                 switch (FrameRate)
 				{
 					case VideoCameraFrameRate.PAL:

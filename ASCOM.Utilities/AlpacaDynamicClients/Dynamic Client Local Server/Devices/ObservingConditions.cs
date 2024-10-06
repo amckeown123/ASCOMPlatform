@@ -603,7 +603,7 @@ namespace ASCOM.DynamicClients
 
         #region IObservingConditions Implementation
 
-        public double TimeSinceLastUpdate(string PropertyName)
+        public float TimeSinceLastUpdate(string PropertyName)
         {
             return client.TimeSinceLastUpdate(PropertyName);
         }
@@ -618,7 +618,7 @@ namespace ASCOM.DynamicClients
             client.Refresh();
         }
 
-        public double AveragePeriod
+        public float AveragePeriod
         {
             get
             {
@@ -631,7 +631,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double CloudCover
+        public float CloudCover
         {
             get
             {
@@ -639,7 +639,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double DewPoint
+        public float DewPoint
         {
             get
             {
@@ -647,7 +647,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double Humidity
+        public float Humidity
         {
             get
             {
@@ -655,7 +655,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double Pressure
+        public float Pressure
         {
             get
             {
@@ -663,7 +663,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double RainRate
+        public float RainRate
         {
             get
             {
@@ -671,7 +671,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SkyBrightness
+        public float SkyBrightness
         {
             get
             {
@@ -679,7 +679,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SkyQuality
+        public float SkyQuality
         {
             get
             {
@@ -687,7 +687,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double StarFWHM
+        public float StarFWHM
         {
             get
             {
@@ -695,7 +695,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SkyTemperature
+        public float SkyTemperature
         {
             get
             {
@@ -703,7 +703,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double Temperature
+        public float Temperature
         {
             get
             {
@@ -711,7 +711,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double WindDirection
+        public float WindDirection
         {
             get
             {
@@ -719,7 +719,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double WindGust
+        public float WindGust
         {
             get
             {
@@ -727,7 +727,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double WindSpeed
+        public float WindSpeed
         {
             get
             {

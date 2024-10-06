@@ -200,8 +200,8 @@ namespace ASCOM.Simulator
                 case "colStep":
                 case "colValue":
                 case "colAsyncDuration":
-                    double d;
-                    if (!double.TryParse(e.FormattedValue.ToString(), out d))
+                    float d;
+                    if (!float.TryParse(e.FormattedValue.ToString(), out d))
                     {
                         e.Cancel = true;
                     }

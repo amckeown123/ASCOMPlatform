@@ -51,7 +51,7 @@ namespace ASCOM
         /// </summary>
         /// <param name = "info">Serialisation information</param>
         /// <param name = "context">Streaming context.</param>
-        protected ValueNotSetException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected ValueNotSetException(SerializationInfo info, int context) : base(info.ToString(), context)
         {
         }
 

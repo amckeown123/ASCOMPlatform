@@ -89,7 +89,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// FilterWheel position
         /// </summary>
-        public double? Position { get; set; } = null;
+        public float? Position { get; set; } = null;
 
         /// <summary>
         /// The time at which the state was recorded

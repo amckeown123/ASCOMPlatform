@@ -83,7 +83,7 @@ namespace ASCOM.Controls
         ///   Gets a reference to the Singleton.
         ///   If the Singleton has not yet be instantiated, this causes the object
         ///   to be created and the constructor to execute (lazy loading).
-        ///   This operation uses the double-checked locking pattern to ensure thread-safety.
+        ///   This operation uses the float-checked locking pattern to ensure thread-safety.
         /// </summary>
         public static CadenceManager Instance
         {
@@ -93,10 +93,10 @@ namespace ASCOM.Controls
                 {
                     lock (SyncRoot)             // lock
                     {
-                        if (instance == null)   // double-check
+                        if (instance == null)   // float-check
                         {
                             instance = new CadenceManager();
-                            System.Threading.Thread.MemoryBarrier();    // memory fence (see http://en.wikipedia.org/wiki/Double-checked_locking#Usage_in_Microsoft_.NET_.28Visual_Basic.2C_C.23.29)
+                            System.Threading.Thread.MemoryBarrier();    // memory fence (see http://en.wikipedia.org/wiki/float-checked_locking#Usage_in_Microsoft_.NET_.28Visual_Basic.2C_C.23.29)
                         }
                     }
                 }

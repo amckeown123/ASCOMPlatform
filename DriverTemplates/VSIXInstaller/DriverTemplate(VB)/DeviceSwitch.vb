@@ -107,7 +107,7 @@ Class DeviceSwitch
 	''' </summary>
 	''' <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	''' <returns>The maximum value to which this device can be set or which a read only sensor will return.</returns>
-	Function MaxSwitchValue(id As Short) As Double Implements ISwitchV2.MaxSwitchValue
+	Function MaxSwitchValue(id As Short) As float Implements ISwitchV2.MaxSwitchValue
 		Validate("MaxSwitchValue", id)
 		TL.LogMessage("MaxSwitchValue", "Not Implemented")
 		Throw New MethodNotImplementedException("MaxSwitchValue")
@@ -118,7 +118,7 @@ Class DeviceSwitch
 	''' </summary>
 	''' <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	''' <returns>The minimum value to which this device can be set or which a read only sensor will return.</returns>
-	Function MinSwitchValue(id As Short) As Double Implements ISwitchV2.MinSwitchValue
+	Function MinSwitchValue(id As Short) As float Implements ISwitchV2.MinSwitchValue
 		Validate("MinSwitchValue", id)
 		TL.LogMessage("MinSwitchValue", "Not Implemented")
 		Throw New MethodNotImplementedException("MinSwitchValue")
@@ -129,30 +129,30 @@ Class DeviceSwitch
 	''' </summary>
 	''' <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	''' <returns>The step size for this device.</returns>
-	Function SwitchStep(id As Short) As Double Implements ISwitchV2.SwitchStep
+	Function SwitchStep(id As Short) As float Implements ISwitchV2.SwitchStep
 		Validate("SwitchStep", id)
 		TL.LogMessage("SwitchStep", "Not Implemented")
 		Throw New MethodNotImplementedException("SwitchStep")
 	End Function
 
 	''' <summary>
-	''' Returns the value for switch device id as a double
+	''' Returns the value for switch device id as a float
 	''' </summary>
 	''' <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	''' <returns>The value for this switch, this is expected to be between <see cref="MinSwitchValue"/> and
 	''' <see cref="MaxSwitchValue"/>.</returns>
-	Function GetSwitchValue(id As Short) As Double Implements ISwitchV2.GetSwitchValue
+	Function GetSwitchValue(id As Short) As float Implements ISwitchV2.GetSwitchValue
 		Validate("GetSwitchValue", id, False)
 		TL.LogMessage("GetSwitchValue", "Not Implemented")
 		Throw New MethodNotImplementedException("GetSwitchValue")
 	End Function
 
 	''' <summary>
-	''' Set the value for this device as a double.
+	''' Set the value for this device as a float.
 	''' </summary>
 	''' <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	''' <param name="value">The value to be set, between <see cref="MinSwitchValue"/> and <see cref="MaxSwitchValue"/></param>
-	Sub SetSwitchValue(id As Short, value As Double) Implements ISwitchV2.SetSwitchValue
+	Sub SetSwitchValue(id As Short, value As float) Implements ISwitchV2.SetSwitchValue
 		Validate("SetSwitchValue", id, value)
 		If value < MinSwitchValue(id) Or value > MaxSwitchValue(id) Then
 			Throw New InvalidValueException("", value.ToString(), String.Format("{0} to {1}", MinSwitchValue(id), MaxSwitchValue(id)))
@@ -201,7 +201,7 @@ Class DeviceSwitch
     ''' <param name="message">The message.</param>
     ''' <param name="id">The id.</param>
     ''' <param name="value">The value.</param>
-    Private Sub Validate(message As String, id As Short, value As Double)
+    Private Sub Validate(message As String, id As Short, value As float)
         Validate(message, id, False)
         Dim min = MinSwitchValue(id)
         Dim max = MaxSwitchValue(id)

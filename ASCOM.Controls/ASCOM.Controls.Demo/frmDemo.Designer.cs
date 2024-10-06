@@ -1,8 +1,10 @@
-﻿
+﻿using ASCOM.Controls;
+using System.Windows.Forms;
+using TA.WinFormsControls;
 
 namespace ASCOM.Controls.Demo
 	{
-    using TA.WinFormsControls;
+
 	partial class frmDemo
 		{
 		/// <summary>
@@ -347,8 +349,8 @@ namespace ASCOM.Controls.Demo
 
 		private System.Windows.Forms.Button btnOK;
 		private System.Windows.Forms.Button btnCancel;
-		private TA.WinFormsControls.AnnunciatorPanel anunciatorPanel1;
-		private TA.WinFormsControls.Annunciator anunciator1;
+		private AnnunciatorPanel anunciatorPanel1;
+		private Annunciator anunciator1;
 		private Annunciator anunciator2;
 		private Annunciator anunciator3;
 		private Annunciator anunciator4;
@@ -356,8 +358,8 @@ namespace ASCOM.Controls.Demo
 		private Annunciator anunciator6;
 		private Annunciator anunciator7;
         private Annunciator anunciator8;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private Label label1;
+        private Label label2;
         private LedIndicator ledIndicator1;
         private LedIndicator ledIndicator2;
         private LedIndicator ledIndicator4;

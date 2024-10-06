@@ -120,7 +120,7 @@ namespace ASCOM.Simulator.Utils
 			return ticks;
 		}
 
-		public static double TranslateTicksToMilliseconds(long ticksDifference)
+		public static float TranslateTicksToMilliseconds(long ticksDifference)
 		{
 			return ticksDifference * 1000.0 / clockFrequency;
 		}
@@ -162,11 +162,11 @@ namespace ASCOM.Simulator.Utils
 			timerData.Add(ticks);
 		}
 
-		public static double GetElapsedMillisecondsForTimer(long timerId)
+		public static float GetElapsedMillisecondsForTimer(long timerId)
 		{
 			List<long> timerData = EnsureTimerData(timerId);
 
-			double totalTicks = 0;
+			float totalTicks = 0;
 
 			for (int i = 0; i < timerData.Count / 2; i++)
 			{
@@ -178,7 +178,7 @@ namespace ASCOM.Simulator.Utils
 			return totalTicks * 1000 / clockFrequency;
 		}
 
-		public static void AddExternallyTimedInterval(long timerId, double timedMilliseconds)
+		public static void AddExternallyTimedInterval(long timerId, float timedMilliseconds)
 		{
 			List<long> timerData = EnsureTimerData(timerId);
 			long totalTicks = (long)((timedMilliseconds * clockFrequency / 1000));

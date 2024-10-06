@@ -48,14 +48,5 @@ namespace ASCOM
         public OperationCancelledException(string message, Exception inner) : base(message, ErrorCodes.OperationCancelled, inner)
         {
         }
-
-        /// <summary>
-        /// Serialisation constructor
-        /// </summary>
-        /// <param name = "info">Serialisation information</param>
-        /// <param name = "context">Streaming context.</param>
-        protected OperationCancelledException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

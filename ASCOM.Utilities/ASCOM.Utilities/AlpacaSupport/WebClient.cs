@@ -1,20 +1,27 @@
-﻿using System;
+﻿
+
+using System;
 using System.Net;
+using System.Net.Http;
+using System.Net.Sockets;
 
 namespace ASCOM.Utilities
 {
 
-    internal class WebClientWithTimeOut : WebClient
+    internal class WebClientWithTimeOut
+
+        
     {
 
-        public int Timeout { get; set; }
+        public  int Timeout { get; set; }
 
-        protected override WebRequest GetWebRequest(Uri uri)
+        protected  WebRequest GetWebRequest(Uri uri)
         {
-            var webRequest = base.GetWebRequest(uri);
-            webRequest.Timeout = Timeout;
-            ((HttpWebRequest)webRequest).ReadWriteTimeout = Timeout;
-            return webRequest;
+
+            WebRequest client = GetWebRequest(uri);
+            client.Timeout = Timeout;
+ 
+            return client;
         }
     }
 }

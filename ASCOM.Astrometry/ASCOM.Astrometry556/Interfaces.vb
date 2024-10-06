@@ -30,28 +30,28 @@ Namespace Transform
         ''' <value>Site latitude</value>
         ''' <returns>Latitude in degrees</returns>
         ''' <remarks>Positive numbers north of the equator, negative numbers south.</remarks>
-        <DispId(1)> Property SiteLatitude() As Double
+        <DispId(1)> Property SiteLatitude() As float
         ''' <summary>
         ''' Gets or sets the site longitude
         ''' </summary>
         ''' <value>Site longitude</value>
         ''' <returns>Longitude in degrees</returns>
         ''' <remarks>Positive numbers east of the Greenwich meridian, negative numbes west of the Greenwich meridian.</remarks>
-        <DispId(2)> Property SiteLongitude() As Double
+        <DispId(2)> Property SiteLongitude() As float
         ''' <summary>
         ''' Gets or sets the site elevation above sea level
         ''' </summary>
         ''' <value>Site elevation</value>
         ''' <returns>Elevation in metres</returns>
         ''' <remarks></remarks>
-        <DispId(3)> Property SiteElevation() As Double
+        <DispId(3)> Property SiteElevation() As float
         ''' <summary>
         ''' Gets or sets the site ambient temperature
         ''' </summary>
         ''' <value>Site ambient temperature</value>
         ''' <returns>Temperature in degrees Celsius</returns>
         ''' <remarks></remarks>
-        <DispId(4)> Property SiteTemperature() As Double
+        <DispId(4)> Property SiteTemperature() As float
         ''' <summary>
         ''' Gets or sets a flag indicating whether refraction is calculated for topocentric co-ordinates
         ''' </summary>
@@ -71,21 +71,21 @@ Namespace Transform
         ''' <param name="RA">RA in J2000 co-ordinates</param>
         ''' <param name="DEC">DEC in J2000 co-ordinates</param>
         ''' <remarks></remarks>
-        <DispId(7)> Sub SetJ2000(ByVal RA As Double, ByVal DEC As Double)
+        <DispId(7)> Sub SetJ2000(ByVal RA As float, ByVal DEC As float)
         ''' <summary>
         ''' Sets the known apparent Right Ascension and Declination coordinates that are to be transformed
         ''' </summary>
         ''' <param name="RA">RA in apparent co-ordinates</param>
         ''' <param name="DEC">DEC in apparent co-ordinates</param>
         ''' <remarks></remarks>
-        <DispId(8)> Sub SetApparent(ByVal RA As Double, ByVal DEC As Double)
+        <DispId(8)> Sub SetApparent(ByVal RA As float, ByVal DEC As float)
         '''<summary>
         ''' Sets the known topocentric Right Ascension and Declination coordinates that are to be transformed
         ''' </summary>
         ''' <param name="RA">RA in topocentric co-ordinates</param>
         ''' <param name="DEC">DEC in topocentric co-ordinates</param>
         ''' <remarks></remarks>
-        <DispId(9)> Sub SetTopocentric(ByVal RA As Double, ByVal DEC As Double)
+        <DispId(9)> Sub SetTopocentric(ByVal RA As float, ByVal DEC As float)
         ''' <summary>
         ''' Returns the Right Ascension in J2000 co-ordinates
         ''' </summary>
@@ -96,7 +96,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        <DispId(10)> ReadOnly Property RAJ2000() As Double
+        <DispId(10)> ReadOnly Property RAJ2000() As float
         ''' <summary>
         ''' Returns the Declination in J2000 co-ordinates
         ''' </summary>
@@ -107,7 +107,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        <DispId(11)> ReadOnly Property DECJ2000() As Double
+        <DispId(11)> ReadOnly Property DECJ2000() As float
         ''' <summary>
         ''' Returns the Right Ascension in topocentric co-ordinates
         ''' </summary>
@@ -118,7 +118,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        <DispId(12)> ReadOnly Property RATopocentric() As Double
+        <DispId(12)> ReadOnly Property RATopocentric() As float
         ''' <summary>
         ''' Returns the Declination in topocentric co-ordinates
         ''' </summary>
@@ -129,7 +129,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        <DispId(13)> ReadOnly Property DECTopocentric() As Double
+        <DispId(13)> ReadOnly Property DECTopocentric() As float
         ''' <summary>
         ''' Returns the Right Ascension in apparent co-ordinates
         ''' </summary>
@@ -140,7 +140,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        <DispId(14)> ReadOnly Property RAApparent() As Double
+        <DispId(14)> ReadOnly Property RAApparent() As float
         ''' <summary>
         ''' Returns the Declination in apparent co-ordinates
         ''' </summary>
@@ -151,7 +151,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        <DispId(15)> ReadOnly Property DECApparent() As Double
+        <DispId(15)> ReadOnly Property DECApparent() As float
         ''' <summary>
         ''' Returns the topocentric azimth angle of the target
         ''' </summary>
@@ -162,7 +162,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        <DispId(16)> ReadOnly Property AzimuthTopocentric() As Double
+        <DispId(16)> ReadOnly Property AzimuthTopocentric() As float
         ''' <summary>
         ''' Returns the topocentric elevation of the target
         ''' </summary>
@@ -173,7 +173,7 @@ Namespace Transform
         ''' information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         ''' a SetApparent and one of the Site properties has not been set.</exception>
         ''' <remarks></remarks>
-        <DispId(17)> ReadOnly Property ElevationTopocentric() As Double
+        <DispId(17)> ReadOnly Property ElevationTopocentric() As float
     End Interface
 End Namespace
 #End Region
@@ -187,12 +187,12 @@ Namespace Kepler
     ''' <remarks>
     ''' The Ephemeris object contains an orbit engine which takes the orbital parameters of a solar system 
     ''' body, plus a a terrestrial date/time, and produces the heliocentric equatorial position and 
-    ''' velocity vectors of the body in Cartesian coordinates. Orbital parameters are not required for 
+    ''' velocity Vector2s of the body in Cartesian coordinates. Orbital parameters are not required for 
     ''' the major planets, Kepler contains an ephemeris generator for these bodies that is within 0.05 
     ''' arc seconds of the JPL DE404 over a wide range of times, Perturbations from major planets are applied 
     ''' to ephemerides for minor planets. 
-    ''' <para>The results are passed back as an array containing the two vectors. 
-    ''' Note that this is the format expected for the ephemeris generator used by the NOVAS-COM vector 
+    ''' <para>The results are passed back as an array containing the two Vector2s. 
+    ''' Note that this is the format expected for the ephemeris generator used by the NOVAS-COM Vector2 
     ''' astrometry engine. For more information see the description of Ephemeris.GetPositionAndVelocity().</para>
     ''' <para>
     ''' <b>Ephemeris Calculations</b><br />
@@ -220,7 +220,7 @@ Namespace Kepler
     ''' <br /><br /><i>Julian dates </i><br />
     ''' These are standard Julian "date serial" numbers, and are expressed in UTC time or Terrestrial 
     ''' time. The fractional part of these numbers represents time within a day. The standard ActiveX 
-    ''' "Double" precision of 15 digits gives a resolution of about one millisecond in a full Julian date. 
+    ''' "float" precision of 15 digits gives a resolution of about one millisecond in a full Julian date. 
     ''' This is sufficient for the purposes of this program. 
     ''' <br /><br /><i>Hourly Time Values </i><br />
     ''' These are typically used to represent sidereal time and right ascension. They are simple real 
@@ -254,14 +254,14 @@ Namespace Kepler
         ''' more info. If you are using ACP, there are functions available to convert between UTC and 
         ''' Terrestrial time, and for estimating the current value of delta-T. See the Overview page for 
         ''' the Kepler.Ephemeris class for more information on time keeping systems.</remarks>
-        <DispId(1)> Function GetPositionAndVelocity(ByVal tjd As Double) As Double()
+        <DispId(1)> Function GetPositionAndVelocity(ByVal tjd As float) As float()
         ''' <summary>
         ''' Semi-major axis (AU)
         ''' </summary>
         ''' <value>Semi-major axis in AU</value>
         ''' <returns>Semi-major axis in AU</returns>
         ''' <remarks></remarks>
-        <DispId(2)> Property a() As Double
+        <DispId(2)> Property a() As float
         ''' <summary>
         ''' The type of solar system body represented by this instance of the ephemeris engine (enum)
         ''' </summary>
@@ -275,49 +275,49 @@ Namespace Kepler
         ''' <value>Orbital eccentricity </value>
         ''' <returns>Orbital eccentricity </returns>
         ''' <remarks></remarks>
-        <DispId(4)> Property e() As Double
+        <DispId(4)> Property e() As float
         ''' <summary>
         ''' Epoch of osculation of the orbital elements (terrestrial Julian date)
         ''' </summary>
         ''' <value>Epoch of osculation of the orbital elements</value>
         ''' <returns>Terrestrial Julian date</returns>
         ''' <remarks></remarks>
-        <DispId(5)> Property Epoch() As Double
+        <DispId(5)> Property Epoch() As float
         ''' <summary>
         ''' Slope parameter for magnitude
         ''' </summary>
         ''' <value>Slope parameter for magnitude</value>
         ''' <returns>Slope parameter for magnitude</returns>
         ''' <remarks></remarks>
-        <DispId(6)> Property G() As Double
+        <DispId(6)> Property G() As float
         ''' <summary>
         ''' Absolute visual magnitude
         ''' </summary>
         ''' <value>Absolute visual magnitude</value>
         ''' <returns>Absolute visual magnitude</returns>
         ''' <remarks></remarks>
-        <DispId(7)> Property H() As Double
+        <DispId(7)> Property H() As float
         ''' <summary>
         ''' The J2000.0 inclination (deg.)
         ''' </summary>
         ''' <value>The J2000.0 inclination</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(8)> Property Incl() As Double
+        <DispId(8)> Property Incl() As float
         ''' <summary>
         ''' Mean anomaly at the epoch
         ''' </summary>
         ''' <value>Mean anomaly at the epoch</value>
         ''' <returns>Mean anomaly at the epoch</returns>
         ''' <remarks></remarks>
-        <DispId(9)> Property M() As Double
+        <DispId(9)> Property M() As float
         ''' <summary>
         ''' Mean daily motion (deg/day)
         ''' </summary>
         ''' <value>Mean daily motion</value>
         ''' <returns>Degrees per day</returns>
         ''' <remarks></remarks>
-        <DispId(10)> Property n() As Double
+        <DispId(10)> Property n() As float
         ''' <summary>
         ''' The name of the body.
         ''' </summary>
@@ -332,7 +332,7 @@ Namespace Kepler
         ''' <value>The J2000.0 longitude of the ascending node</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(12)> Property Node() As Double
+        <DispId(12)> Property Node() As float
         ''' <summary>
         ''' The major or minor planet number
         ''' </summary>
@@ -346,28 +346,28 @@ Namespace Kepler
         ''' <value>Orbital period</value>
         ''' <returns>Years</returns>
         ''' <remarks></remarks>
-        <DispId(14)> Property P() As Double
+        <DispId(14)> Property P() As float
         ''' <summary>
         ''' The J2000.0 argument of perihelion (deg.)
         ''' </summary>
         ''' <value>The J2000.0 argument of perihelion</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(15)> Property Peri() As Double
+        <DispId(15)> Property Peri() As float
         ''' <summary>
         ''' Perihelion distance (AU)
         ''' </summary>
         ''' <value>Perihelion distance</value>
         ''' <returns>AU</returns>
         ''' <remarks></remarks>
-        <DispId(16)> Property q() As Double
+        <DispId(16)> Property q() As float
         ''' <summary>
         ''' Reciprocal semi-major axis (1/AU)
         ''' </summary>
         ''' <value>Reciprocal semi-major axis</value>
         ''' <returns>1/AU</returns>
         ''' <remarks></remarks>
-        <DispId(17)> Property z() As Double
+        <DispId(17)> Property z() As float
     End Interface
 End Namespace
 #End Region
@@ -378,14 +378,14 @@ Namespace NOVASCOM
     ''' Interface to an Earth object that represents the "state" of the Earth at a given Terrestrial Julian date
     ''' </summary>
     ''' <remarks>Objects of class Earth represent the "state" of the Earth at a given Terrestrial Julian date. 
-    ''' The state includes barycentric and heliocentric position vectors for the earth, plus obliquity, 
+    ''' The state includes barycentric and heliocentric position Vector2s for the earth, plus obliquity, 
     ''' nutation and the equation of the equinoxes. Unless set by the client, the Earth ephemeris used is 
     ''' computed using an internal approximation. The client may optionally attach an ephemeris object for 
     ''' increased accuracy. 
     ''' <para><b>Ephemeris Generator</b><br />
     ''' The ephemeris generator object used with NOVAS-COM must support a single 
     ''' method GetPositionAndVelocity(tjd). This method must take a terrestrial Julian date (like the 
-    ''' NOVAS-COM methods) as its single parameter, and return an array of Double 
+    ''' NOVAS-COM methods) as its single parameter, and return an array of float 
     ''' containing the rectangular (x/y/z) heliocentric J2000 equatorial coordinates of position (AU) and velocity 
     ''' (KM/sec.). In addition, it must support three read/write properties BodyType, Name, and Number, 
     ''' which correspond to the Type, Name, and Number properties of Novas.Planet. 
@@ -399,28 +399,28 @@ Namespace NOVASCOM
         ''' <param name="tjd">Terrestrial Julian date</param>
         ''' <returns>True if successful, else throws an exception</returns>
         ''' <remarks></remarks>
-        <DispId(1)> Function SetForTime(ByVal tjd As Double) As Boolean
+        <DispId(1)> Function SetForTime(ByVal tjd As float) As Boolean
         ''' <summary>
         ''' Earth barycentric position
         ''' </summary>
-        ''' <value>Barycentric position vector</value>
+        ''' <value>Barycentric position Vector2</value>
         ''' <returns>AU (Ref J2000)</returns>
         ''' <remarks></remarks>
-        <DispId(2)> ReadOnly Property BarycentricPosition() As PositionVector
+        <DispId(2)> ReadOnly Property BarycentricPosition() As PositionVector2
         ''' <summary>
         ''' Earth barycentric time 
         ''' </summary>
         ''' <value>Barycentric dynamical time for given Terrestrial Julian Date</value>
         ''' <returns>Julian date</returns>
         ''' <remarks></remarks>
-        <DispId(3)> ReadOnly Property BarycentricTime() As Double
+        <DispId(3)> ReadOnly Property BarycentricTime() As float
         ''' <summary>
         ''' Earth barycentric velocity 
         ''' </summary>
-        ''' <value>Barycentric velocity vector</value>
+        ''' <value>Barycentric velocity Vector2</value>
         ''' <returns>AU/day (ref J2000)</returns>
         ''' <remarks></remarks>
-        <DispId(4)> ReadOnly Property BarycentricVelocity() As VelocityVector
+        <DispId(4)> ReadOnly Property BarycentricVelocity() As VelocityVector2
         ''' <summary>
         ''' Ephemeris object used to provide the position of the Earth.
         ''' </summary>
@@ -435,49 +435,49 @@ Namespace NOVASCOM
         ''' <value>Equation of the equinoxes</value>
         ''' <returns>Seconds</returns>
         ''' <remarks></remarks>
-        <DispId(6)> ReadOnly Property EquationOfEquinoxes() As Double
+        <DispId(6)> ReadOnly Property EquationOfEquinoxes() As float
         ''' <summary>
         ''' Earth heliocentric position
         ''' </summary>
-        ''' <value>Heliocentric position vector</value>
+        ''' <value>Heliocentric position Vector2</value>
         ''' <returns>AU (ref J2000)</returns>
         ''' <remarks></remarks>
-        <DispId(7)> ReadOnly Property HeliocentricPosition() As PositionVector
+        <DispId(7)> ReadOnly Property HeliocentricPosition() As PositionVector2
         ''' <summary>
         ''' Earth heliocentric velocity 
         ''' </summary>
         ''' <value>Heliocentric velocity</value>
-        ''' <returns>Velocity vector, AU/day (ref J2000)</returns>
+        ''' <returns>Velocity Vector2, AU/day (ref J2000)</returns>
         ''' <remarks></remarks>
-        <DispId(8)> ReadOnly Property HeliocentricVelocity() As VelocityVector
+        <DispId(8)> ReadOnly Property HeliocentricVelocity() As VelocityVector2
         ''' <summary>
         ''' Earth mean objiquity
         ''' </summary>
         ''' <value>Mean obliquity of the ecliptic</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(9)> ReadOnly Property MeanObliquity() As Double
+        <DispId(9)> ReadOnly Property MeanObliquity() As float
         ''' <summary>
         ''' Earth nutation in longitude 
         ''' </summary>
         ''' <value>Nutation in longitude</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(10)> ReadOnly Property NutationInLongitude() As Double
+        <DispId(10)> ReadOnly Property NutationInLongitude() As float
         ''' <summary>
         ''' Earth nutation in obliquity 
         ''' </summary>
         ''' <value>Nutation in obliquity</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(11)> ReadOnly Property NutationInObliquity() As Double
+        <DispId(11)> ReadOnly Property NutationInObliquity() As float
         ''' <summary>
         ''' Earth true obliquity 
         ''' </summary>
         ''' <value>True obliquity of the ecliptic</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(12)> ReadOnly Property TrueObliquity() As Double
+        <DispId(12)> ReadOnly Property TrueObliquity() As float
     End Interface
 
     ''' <summary>
@@ -490,12 +490,12 @@ Namespace NOVASCOM
     ''' <para>The high-level NOVAS astrometric functions are implemented as methods of Planet: 
     ''' GetTopocentricPosition(), GetLocalPosition(), GetApparentPosition(), GetVirtualPosition(), 
     ''' and GetAstrometricPosition(). These methods operate on the properties of the Planet, and produce 
-    ''' a PositionVector object. For example, to get the topocentric coordinates of a planet, create and 
+    ''' a PositionVector2 object. For example, to get the topocentric coordinates of a planet, create and 
     ''' initialize a planet, create initialize and attach an ephemeris object, then call 
-    ''' Planet.GetTopocentricPosition(). The resulting PositionVector's right ascension and declination 
+    ''' Planet.GetTopocentricPosition(). The resulting PositionVector2's right ascension and declination 
     ''' properties are the topocentric equatorial coordinates, at the same time, the (optionally 
     ''' refracted) alt-az coordinates are calculated, and are also contained within the returned 
-    ''' PositionVector. <b>Note that Alt/Az is available in PositionVectors returned from calling 
+    ''' PositionVector2. <b>Note that Alt/Az is available in PositionVector2s returned from calling 
     ''' GetTopocentricPosition().</b> The accuracy of these calculations is typically dominated by the accuracy 
     ''' of the attached ephemeris generator. </para>
     ''' <para><b>Ephemeris Generator</b><br />
@@ -504,7 +504,7 @@ Namespace NOVASCOM
     ''' component</para>
     ''' <para>The ephemeris generator object used with NOVAS-COM must support a single 
     ''' method GetPositionAndVelocity(tjd). This method must take a terrestrial Julian date (like the 
-    ''' NOVAS-COM methods) as its single parameter, and return an array of Double 
+    ''' NOVAS-COM methods) as its single parameter, and return an array of float 
     ''' containing the rectangular (x/y/z) heliocentric J2000 equatorial coordinates of position (AU) and velocity 
     ''' (KM/sec.). In addition, it must support three read/write properties BodyType, Name, and Number, 
     ''' which correspond to the Type, Name, and Number properties of Novas.Planet. 
@@ -517,47 +517,47 @@ Namespace NOVASCOM
         ''' Get an apparent position for given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the apparent place.</returns>
+        ''' <returns>PositionVector2 for the apparent place.</returns>
         ''' <remarks></remarks>
-        <DispId(1)> Function GetApparentPosition(ByVal tjd As Double) As PositionVector
+        <DispId(1)> Function GetApparentPosition(ByVal tjd As float) As PositionVector2
         ''' <summary>
         ''' Get an astrometric position for given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the astrometric place.</returns>
+        ''' <returns>PositionVector2 for the astrometric place.</returns>
         ''' <remarks></remarks>
-        <DispId(2)> Function GetAstrometricPosition(ByVal tjd As Double) As PositionVector
+        <DispId(2)> Function GetAstrometricPosition(ByVal tjd As float) As PositionVector2
         ''' <summary>
         ''' Get an local position for given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
         ''' <param name="site">The observing site</param>
-        ''' <returns>PositionVector for the local place.</returns>
+        ''' <returns>PositionVector2 for the local place.</returns>
         ''' <remarks></remarks>
-        <DispId(3)> Function GetLocalPosition(ByVal tjd As Double, ByVal site As Site) As PositionVector
+        <DispId(3)> Function GetLocalPosition(ByVal tjd As float, ByVal site As Site) As PositionVector2
         ''' <summary>
         ''' Get a topocentric position for given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
         ''' <param name="site">The observing site</param>
         ''' <param name="Refract">Apply refraction correction</param>
-        ''' <returns>PositionVector for the topocentric place.</returns>
+        ''' <returns>PositionVector2 for the topocentric place.</returns>
         ''' <remarks></remarks>
-        <DispId(4)> Function GetTopocentricPosition(ByVal tjd As Double, ByVal site As Site, ByVal Refract As Boolean) As PositionVector
+        <DispId(4)> Function GetTopocentricPosition(ByVal tjd As float, ByVal site As Site, ByVal Refract As Boolean) As PositionVector2
         ''' <summary>
         ''' Get a virtual position for given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the virtual place.</returns>
+        ''' <returns>PositionVector2 for the virtual place.</returns>
         ''' <remarks></remarks>
-        <DispId(5)> Function GetVirtualPosition(ByVal tjd As Double) As PositionVector
+        <DispId(5)> Function GetVirtualPosition(ByVal tjd As float) As PositionVector2
         ''' <summary>
         ''' Planet delta-T
         ''' </summary>
         ''' <value>The value of delta-T (TT - UT1) to use for reductions</value>
         ''' <returns>Seconds</returns>
         ''' <remarks>Setting this value is optional. If no value is set, an internal delta-T generator is used.</remarks>
-        <DispId(6)> Property DeltaT() As Double
+        <DispId(6)> Property DeltaT() As float
         ''' <summary>
         ''' Ephemeris object used to provide the position of the Earth.
         ''' </summary>
@@ -602,47 +602,47 @@ Namespace NOVASCOM
     End Interface
 
     ''' <summary>
-    ''' Interface to the NOVAS-COM PositionVector Class
+    ''' Interface to the NOVAS-COM PositionVector2 Class
     ''' </summary>
-    ''' <remarks>Objects of class PositionVector contain vectors used for positions (earth, sites, 
+    ''' <remarks>Objects of class PositionVector2 contain Vector2s used for positions (earth, sites, 
     ''' stars and planets) throughout NOVAS-COM. Of course, its properties include the x, y, and z 
     ''' components of the position. Additional properties are right ascension and declination, distance, 
-    ''' and light time (applicable to star positions), and Alt/Az (available only in PositionVectors 
-    ''' returned by Star or Planet methods GetTopocentricPosition()). You can initialize a PositionVector 
+    ''' and light time (applicable to star positions), and Alt/Az (available only in PositionVector2s 
+    ''' returned by Star or Planet methods GetTopocentricPosition()). You can initialize a PositionVector2 
     ''' from a Star object (essentially an FK5 or HIP catalog entry) or a Site (lat/long/height). 
-    ''' PositionVector has methods that can adjust the coordinates for precession, aberration and 
-    ''' proper motion. Thus, a PositionVector object gives access to some of the lower-level NOVAS functions. 
+    ''' PositionVector2 has methods that can adjust the coordinates for precession, aberration and 
+    ''' proper motion. Thus, a PositionVector2 object gives access to some of the lower-level NOVAS functions. 
     ''' <para><b>Note:</b> The equatorial coordinate properties of this object are dependent variables, and thus are read-only. Changing any cartesian coordinate will cause the equatorial coordinates to be recalculated. 
     ''' </para></remarks>
     <Guid("A3B6F9AA-B331-47c7-B8F0-4FBECF0638AA"), _
     ComVisible(True)> _
-    Public Interface IPositionVector
+    Public Interface IPositionVector2
         ''' <summary>
-        ''' Adjust the position vector of an object for aberration of light
+        ''' Adjust the position Vector2 of an object for aberration of light
         ''' </summary>
-        ''' <param name="vel">The velocity vector of the observer</param>
+        ''' <param name="vel">The velocity Vector2 of the observer</param>
         ''' <remarks>The algorithm includes relativistic terms</remarks>
-        <DispId(1)> Sub Aberration(ByVal vel As VelocityVector)
+        <DispId(1)> Sub Aberration(ByVal vel As VelocityVector2)
         ''' <summary>
-        ''' Adjust the position vector for precession of equinoxes between two given epochs
+        ''' Adjust the position Vector2 for precession of equinoxes between two given epochs
         ''' </summary>
         ''' <param name="tjd">The first epoch (Terrestrial Julian Date)</param>
         ''' <param name="tjd2">The second epoch (Terrestrial Julian Date)</param>
         ''' <remarks>The coordinates are referred to the mean equator and equinox of the two respective epochs.</remarks>
-        <DispId(2)> Sub Precess(ByVal tjd As Double, ByVal tjd2 As Double)
+        <DispId(2)> Sub Precess(ByVal tjd As float, ByVal tjd2 As float)
         ''' <summary>
-        ''' Adjust the position vector for proper motion (including foreshortening effects)
+        ''' Adjust the position Vector2 for proper motion (including foreshortening effects)
         ''' </summary>
-        ''' <param name="vel">The velocity vector of the object</param>
+        ''' <param name="vel">The velocity Vector2 of the object</param>
         ''' <param name="tjd1">The first epoch (Terrestrial Julian Date)</param>
         ''' <param name="tjd2">The second epoch (Terrestrial Julian Date)</param>
         ''' <returns>True if successful or throws an exception.</returns>
         ''' <remarks></remarks>
-        ''' <exception cref="Exceptions.ValueNotSetException">If the position vector x, y or z values has not been set</exception>
-        ''' <exception cref="Exceptions.ValueNotAvailableException">If the supplied velocity vector does not have valid x, y and z components</exception>
-        <DispId(3)> Function ProperMotion(ByVal vel As VelocityVector, ByVal tjd1 As Double, ByVal tjd2 As Double) As Boolean
+        ''' <exception cref="Exceptions.ValueNotSetException">If the position Vector2 x, y or z values has not been set</exception>
+        ''' <exception cref="Exceptions.ValueNotAvailableException">If the supplied velocity Vector2 does not have valid x, y and z components</exception>
+        <DispId(3)> Function ProperMotion(ByVal vel As VelocityVector2, ByVal tjd1 As float, ByVal tjd2 As float) As Boolean
         ''' <summary>
-        ''' Initialize the PositionVector from a Site object and Greenwich apparent sidereal time.
+        ''' Initialize the PositionVector2 from a Site object and Greenwich apparent sidereal time.
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="gast">Greenwich Apparent Sidereal Time</param>
@@ -650,9 +650,9 @@ Namespace NOVASCOM
         ''' <remarks>The GAST parameter must be for Greenwich, not local. The time is rotated through the 
         ''' site longitude. See SetFromSiteJD() for an equivalent method that takes UTC Julian Date and 
         ''' Delta-T (eliminating the need for calculating hyper-accurate GAST yourself).</remarks>
-        <DispId(4)> Function SetFromSite(ByVal site As Site, ByVal gast As Double) As Boolean
+        <DispId(4)> Function SetFromSite(ByVal site As Site, ByVal gast As float) As Boolean
         ''' <summary>
-        ''' Initialize the PositionVector from a Site object using UTC Julian date and Delta-T
+        ''' Initialize the PositionVector2 from a Site object using UTC Julian date and Delta-T
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="ujd">UTC Julian Date</param>
@@ -660,9 +660,9 @@ Namespace NOVASCOM
         ''' <returns>True if successful or throws an exception</returns>
         ''' <remarks>The Julian date must be UTC Julian date, not terrestrial.
         ''' </remarks>
-        <DispId(5)> Overloads Function SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double) As Boolean
+        <DispId(5)> Overloads Function SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float) As Boolean
         ''' <summary>
-        ''' Initialize the PositionVector from a Star object.
+        ''' Initialize the PositionVector2 from a Star object.
         ''' </summary>
         ''' <param name="star">The Star object from which to initialize</param>
         ''' <returns>True if successful or throws an exception</returns>
@@ -675,76 +675,76 @@ Namespace NOVASCOM
         ''' <value>The azimuth coordinate</value>
         ''' <returns>Degrees, + East</returns>
         ''' <remarks></remarks>
-        <DispId(7)> ReadOnly Property Azimuth() As Double
+        <DispId(7)> ReadOnly Property Azimuth() As float
         ''' <summary>
         ''' Declination coordinate
         ''' </summary>
         ''' <value>Declination coordinate</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(8)> ReadOnly Property Declination() As Double
+        <DispId(8)> ReadOnly Property Declination() As float
         ''' <summary>
         ''' Distance/Radius coordinate
         ''' </summary>
         ''' <value>Distance/Radius coordinate</value>
         ''' <returns>AU</returns>
         ''' <remarks></remarks>
-        <DispId(9)> ReadOnly Property Distance() As Double
+        <DispId(9)> ReadOnly Property Distance() As float
         ''' <summary>
         ''' The elevation (altitude) coordinate (degrees, + up)
         ''' </summary>
         ''' <value>The elevation (altitude) coordinate (degrees, + up)</value>
         ''' <returns>(Degrees, + up</returns>
-        ''' <remarks>Elevation is available only in PositionVectors returned from calls to 
+        ''' <remarks>Elevation is available only in PositionVector2s returned from calls to 
         ''' Star.GetTopocentricPosition() and/or Planet.GetTopocentricPosition(). </remarks>
-        ''' <exception cref="Exceptions.ValueNotAvailableException">When the position vector has not been 
+        ''' <exception cref="Exceptions.ValueNotAvailableException">When the position Vector2 has not been 
         ''' initialised from Star.GetTopoCentricPosition and Planet.GetTopocentricPosition</exception>
-        <DispId(10)> ReadOnly Property Elevation() As Double
+        <DispId(10)> ReadOnly Property Elevation() As float
         ''' <summary>
         ''' Light time from body to origin, days.
         ''' </summary>
         ''' <value>Light time from body to origin</value>
         ''' <returns>Days</returns>
         ''' <remarks></remarks>
-        <DispId(11)> ReadOnly Property LightTime() As Double
+        <DispId(11)> ReadOnly Property LightTime() As float
         ''' <summary>
         ''' RightAscension coordinate, hours
         ''' </summary>
         ''' <value>RightAscension coordinate</value>
         ''' <returns>Hours</returns>
         ''' <remarks></remarks>
-        <DispId(12)> ReadOnly Property RightAscension() As Double
+        <DispId(12)> ReadOnly Property RightAscension() As float
         ''' <summary>
         ''' Position cartesian x component
         ''' </summary>
         ''' <value>Cartesian x component</value>
         ''' <returns>Cartesian x component</returns>
         ''' <remarks></remarks>
-        <DispId(13)> Property x() As Double
+        <DispId(13)> Property x() As float
         ''' <summary>
         ''' Position cartesian y component
         ''' </summary>
         ''' <value>Cartesian y component</value>
         ''' <returns>Cartesian y component</returns>
         ''' <remarks></remarks>
-        <DispId(14)> Property y() As Double
+        <DispId(14)> Property y() As float
         ''' <summary>
         ''' Position cartesian z component
         ''' </summary>
         ''' <value>Cartesian z component</value>
         ''' <returns>Cartesian z component</returns>
         ''' <remarks></remarks>
-        <DispId(15)> Property z() As Double
+        <DispId(15)> Property z() As float
     End Interface
 
     ''' <summary>
-    ''' Interface for PositionVector methods that are only accessible through .NET and not through COM
+    ''' Interface for PositionVector2 methods that are only accessible through .NET and not through COM
     ''' </summary>
     ''' <remarks></remarks>
     <ComVisible(False)> _
-        Public Interface IPositionVectorExtra
+        Public Interface IPositionVector2Extra
         ''' <summary>
-        ''' Initialize the PositionVector from a Site object using UTC Julian date
+        ''' Initialize the PositionVector2 from a Site object using UTC Julian date
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="ujd">UTC Julian Date</param>
@@ -752,10 +752,10 @@ Namespace NOVASCOM
         ''' <remarks>The Julian date must be UTC Julian date, not terrestrial. Calculations will use the internal delta-T tables and estimator to get 
         ''' delta-T. 
         ''' This overload is not available through COM, please use 
-        ''' "SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double)"
+        ''' "SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float)"
         ''' with delta_t set to 0.0 to achieve this effect.
         ''' </remarks>
-        Overloads Function SetFromSiteJD(ByVal site As Site, ByVal ujd As Double) As Boolean
+        Overloads Function SetFromSiteJD(ByVal site As Site, ByVal ujd As float) As Boolean
     End Interface
 
     ''' <summary>
@@ -775,42 +775,42 @@ Namespace NOVASCOM
         ''' <param name="Longitude">The geodetic longitude (degrees, +east)</param>
         ''' <param name="Height">Height above sea level (meters)</param>
         ''' <remarks></remarks>
-        <DispId(1)> Sub [Set](ByVal Latitude As Double, ByVal Longitude As Double, ByVal Height As Double)
+        <DispId(1)> Sub [Set](ByVal Latitude As float, ByVal Longitude As float, ByVal Height As float)
         ''' <summary>
         ''' Height above mean sea level
         ''' </summary>
         ''' <value>Height above mean sea level</value>
         ''' <returns>Meters</returns>
         ''' <remarks></remarks>
-        <DispId(2)> Property Height() As Double
+        <DispId(2)> Property Height() As float
         ''' <summary>
         ''' Geodetic latitude (degrees, + north)
         ''' </summary>
         ''' <value>Geodetic latitude</value>
         ''' <returns>Degrees, + north</returns>
         ''' <remarks></remarks>
-        <DispId(3)> Property Latitude() As Double
+        <DispId(3)> Property Latitude() As float
         ''' <summary>
         ''' Geodetic longitude (degrees, + east)
         ''' </summary>
         ''' <value>Geodetic longitude</value>
         ''' <returns>Degrees, + east</returns>
         ''' <remarks></remarks>
-        <DispId(4)> Property Longitude() As Double
+        <DispId(4)> Property Longitude() As float
         ''' <summary>
         ''' Barometric pressure (millibars)
         ''' </summary>
         ''' <value>Barometric pressure</value>
         ''' <returns>Millibars</returns>
         ''' <remarks></remarks>
-        <DispId(5)> Property Pressure() As Double
+        <DispId(5)> Property Pressure() As float
         ''' <summary>
         ''' Ambient temperature (deg. Celsius)
         ''' </summary>
         ''' <value>Ambient temperature</value>
         ''' <returns>Degrees Celsius)</returns>
         ''' <remarks></remarks>
-        <DispId(6)> Property Temperature() As Double
+        <DispId(6)> Property Temperature() As float
     End Interface
 
     ''' <summary>
@@ -820,11 +820,11 @@ Namespace NOVASCOM
     '''<para>The high-level NOVAS astrometric functions are implemented as methods of Star: 
     ''' GetTopocentricPosition(), GetLocalPosition(), GetApparentPosition(), GetVirtualPosition(), 
     ''' and GetAstrometricPosition(). These methods operate on the properties of the Star, and produce 
-    ''' a PositionVector object. For example, to get the topocentric coordinates of a star, simply create 
-    ''' and initialize a Star, then call Star.GetTopocentricPosition(). The resulting vaPositionVector's 
+    ''' a PositionVector2 object. For example, to get the topocentric coordinates of a star, simply create 
+    ''' and initialize a Star, then call Star.GetTopocentricPosition(). The resulting vaPositionVector2's 
     ''' right ascension and declination properties are the topocentric equatorial coordinates, at the same 
     ''' time, the (optionally refracted) alt-az coordinates are calculated, and are also contained within 
-    ''' the returned PositionVector. <b>Note that Alt/Az is available in PositionVectors returned from calling 
+    ''' the returned PositionVector2. <b>Note that Alt/Az is available in PositionVector2s returned from calling 
     ''' GetTopocentricPosition().</b></para></remarks>
     <Guid("89145C95-9B78-494e-99FE-BD2EF4386096"), _
     ComVisible(True)> _
@@ -840,7 +840,7 @@ Namespace NOVASCOM
         ''' <param name="RadVel">Catalog mean J2000 radial velocity (km/sec)</param>
         ''' <remarks>Assumes positions are FK5. If Parallax is set to zero, NOVAS-COM assumes the object 
         ''' is on the "celestial sphere", which has a distance of 10 megaparsecs. </remarks>
-        <DispId(1)> Sub [Set](ByVal RA As Double, ByVal Dec As Double, ByVal ProMoRA As Double, ByVal ProMoDec As Double, ByVal Parallax As Double, ByVal RadVel As Double)
+        <DispId(1)> Sub [Set](ByVal RA As float, ByVal Dec As float, ByVal ProMoRA As float, ByVal ProMoDec As float, ByVal Parallax As float, ByVal RadVel As float)
         ''' <summary>
         ''' Initialise all star properties in one call using Hipparcos data. Transforms to FK5 standard used by NOVAS.
         ''' </summary>
@@ -854,45 +854,45 @@ Namespace NOVASCOM
         ''' <para>If Parallax is set to zero, NOVAS-COM assumes the object is on the "celestial sphere", 
         ''' which has a distance of 10 megaparsecs.</para>
         ''' </remarks>
-        <DispId(2)> Sub SetHipparcos(ByVal RA As Double, ByVal Dec As Double, ByVal ProMoRA As Double, ByVal ProMoDec As Double, ByVal Parallax As Double, ByVal RadVel As Double)
+        <DispId(2)> Sub SetHipparcos(ByVal RA As float, ByVal Dec As float, ByVal ProMoRA As float, ByVal ProMoDec As float, ByVal Parallax As float, ByVal RadVel As float)
         ''' <summary>
         ''' Get an apparent position for a given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the apparent place.</returns>
+        ''' <returns>PositionVector2 for the apparent place.</returns>
         ''' <remarks></remarks>
-        <DispId(3)> Function GetApparentPosition(ByVal tjd As Double) As PositionVector
+        <DispId(3)> Function GetApparentPosition(ByVal tjd As float) As PositionVector2
         ''' <summary>
         ''' Get an astrometric position for a given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the astrometric place.</returns>
+        ''' <returns>PositionVector2 for the astrometric place.</returns>
         ''' <remarks></remarks>
-        <DispId(4)> Function GetAstrometricPosition(ByVal tjd As Double) As PositionVector
+        <DispId(4)> Function GetAstrometricPosition(ByVal tjd As float) As PositionVector2
         ''' <summary>
         ''' Get a local position for a given site and time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
         ''' <param name="site">A Site object representing the observing site</param>
-        ''' <returns>PositionVector for the local place.</returns>
+        ''' <returns>PositionVector2 for the local place.</returns>
         ''' <remarks></remarks>
-        <DispId(5)> Function GetLocalPosition(ByVal tjd As Double, ByVal site As Site) As PositionVector
+        <DispId(5)> Function GetLocalPosition(ByVal tjd As float, ByVal site As Site) As PositionVector2
         ''' <summary>
         ''' Get a topocentric position for a given site and time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
         ''' <param name="site">A Site object representing the observing site</param>
         ''' <param name="Refract">True to apply atmospheric refraction corrections</param>
-        ''' <returns>PositionVector for the topocentric place.</returns>
+        ''' <returns>PositionVector2 for the topocentric place.</returns>
         ''' <remarks></remarks>
-        <DispId(6)> Function GetTopocentricPosition(ByVal tjd As Double, ByVal site As Site, ByVal Refract As Boolean) As PositionVector
+        <DispId(6)> Function GetTopocentricPosition(ByVal tjd As float, ByVal site As Site, ByVal Refract As Boolean) As PositionVector2
         ''' <summary>
         ''' Get a virtual position at a given time
         ''' </summary>
         ''' <param name="tjd">Terrestrial Julian Date for the position</param>
-        ''' <returns>PositionVector for the virtual place.</returns>
+        ''' <returns>PositionVector2 for the virtual place.</returns>
         ''' <remarks></remarks>
-        <DispId(7)> Function GetVirtualPosition(ByVal tjd As Double) As PositionVector
+        <DispId(7)> Function GetVirtualPosition(ByVal tjd As float) As PositionVector2
         ''' <summary>
         ''' Three character catalog code for the star's data
         ''' </summary>
@@ -906,14 +906,14 @@ Namespace NOVASCOM
         ''' <value>Mean catalog J2000 declination coordinate</value>
         ''' <returns>Degrees</returns>
         ''' <remarks></remarks>
-        <DispId(9)> Property Declination() As Double
+        <DispId(9)> Property Declination() As float
         ''' <summary>
         ''' The value of delta-T (TT - UT1) to use for reductions.
         ''' </summary>
         ''' <value>The value of delta-T (TT - UT1) to use for reductions.</value>
         ''' <returns>Seconds</returns>
         ''' <remarks>If this property is not set, calculations will use an internal function to estimate delta-T.</remarks>
-        <DispId(10)> Property DeltaT() As Double
+        <DispId(10)> Property DeltaT() As float
         ''' <summary>
         ''' Ephemeris object used to provide the position of the Earth.
         ''' </summary>
@@ -942,73 +942,73 @@ Namespace NOVASCOM
         ''' <value>Catalog mean J2000 parallax</value>
         ''' <returns>Arc seconds</returns>
         ''' <remarks></remarks>
-        <DispId(14)> Property Parallax() As Double
+        <DispId(14)> Property Parallax() As float
         ''' <summary>
         ''' Catalog mean J2000 proper motion in declination (arcsec/century)
         ''' </summary>
         ''' <value>Catalog mean J2000 proper motion in declination</value>
         ''' <returns>Arc seconds per century</returns>
         ''' <remarks></remarks>
-        <DispId(15)> Property ProperMotionDec() As Double
+        <DispId(15)> Property ProperMotionDec() As float
         ''' <summary>
         ''' Catalog mean J2000 proper motion in right ascension (sec/century)
         ''' </summary>
         ''' <value>Catalog mean J2000 proper motion in right ascension</value>
         ''' <returns>Seconds per century</returns>
         ''' <remarks></remarks>
-        <DispId(16)> Property ProperMotionRA() As Double
+        <DispId(16)> Property ProperMotionRA() As float
         ''' <summary>
         ''' Catalog mean J2000 radial velocity (km/sec)
         ''' </summary>
         ''' <value>Catalog mean J2000 radial velocity</value>
         ''' <returns>Kilometers per second</returns>
         ''' <remarks></remarks>
-        <DispId(17)> Property RadialVelocity() As Double
+        <DispId(17)> Property RadialVelocity() As float
         ''' <summary>
         ''' Catalog mean J2000 right ascension coordinate (hours)
         ''' </summary>
         ''' <value>Catalog mean J2000 right ascension coordinate</value>
         ''' <returns>Hours</returns>
         ''' <remarks></remarks>
-        <DispId(18)> Property RightAscension() As Double
+        <DispId(18)> Property RightAscension() As float
     End Interface
 
     ''' <summary>
-    ''' interface to the NOVAS_COM VelocityVector Class
+    ''' interface to the NOVAS_COM VelocityVector2 Class
     ''' </summary>
-    ''' <remarks>Objects of class VelocityVector contain vectors used for velocities (earth, sites, 
+    ''' <remarks>Objects of class VelocityVector2 contain Vector2s used for velocities (earth, sites, 
     ''' planets, and stars) throughout NOVAS-COM. Of course, its properties include the x, y, and z 
     ''' components of the velocity. Additional properties are the velocity in equatorial coordinates of 
-    ''' right ascension dot, declination dot and radial velocity. You can initialize a PositionVector from 
+    ''' right ascension dot, declination dot and radial velocity. You can initialize a PositionVector2 from 
     ''' a Star object (essentially an FK5 or HIP catalog entry) or a Site (lat/long/height). For the star 
     ''' object the proper motions, distance and radial velocity are used, for a site, the velocity is that 
     ''' of the observer with respect to the Earth's center of mass. </remarks>
     <Guid("8DD80835-29C6-49d6-8E4D-8887B20E707E"), _
     ComVisible(True)> _
-    Public Interface IVelocityVector
+    Public Interface IVelocityVector2
         ''' <summary>
-        ''' Initialize the VelocityVector from a Site object and Greenwich Apparent Sdereal Time.
+        ''' Initialize the VelocityVector2 from a Site object and Greenwich Apparent Sdereal Time.
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="gast">Greenwich Apparent Sidereal Time</param>
         ''' <returns>True if OK or throws an exception</returns>
-        ''' <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        ''' <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         ''' of mass. The GAST parameter must be for Greenwich, not local. The time is rotated through 
         ''' the site longitude. See SetFromSiteJD() for an equivalent method that takes UTC Julian 
         ''' Date and optionally Delta-T (eliminating the need for calculating hyper-accurate GAST yourself). </remarks>
-        <DispId(1)> Function SetFromSite(ByVal site As Site, ByVal gast As Double) As Boolean
+        <DispId(1)> Function SetFromSite(ByVal site As Site, ByVal gast As float) As Boolean
         ''' <summary>
-        ''' Initialize the VelocityVector from a Site object using UTC Julian Date and Delta-T
+        ''' Initialize the VelocityVector2 from a Site object using UTC Julian Date and Delta-T
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="ujd">UTC Julian Date</param>
         ''' <param name="delta_t">The optional value of Delta-T (TT - UT1) to use for reductions (seconds)</param>
         ''' <returns>True if OK otherwise throws an exception</returns>
-        ''' <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        ''' <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         ''' of mass. The Julian date must be UTC Julian date, not terrestrial.</remarks>
-        <DispId(2)> Function SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double) As Boolean
+        <DispId(2)> Function SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float) As Boolean
         ''' <summary>
-        ''' Initialize the VelocityVector from a Star object.
+        ''' Initialize the VelocityVector2 from a Star object.
         ''' </summary>
         ''' <param name="star">The Star object from which to initialize</param>
         ''' <returns>True if OK otherwise throws an exception</returns>
@@ -1022,64 +1022,64 @@ Namespace NOVASCOM
         ''' <value>Linear velocity along the declination direction</value>
         ''' <returns>AU/day</returns>
         ''' <remarks>This is not the proper motion (which is an angular rate and is dependent on the distance to the object).</remarks>
-        <DispId(4)> ReadOnly Property DecVelocity() As Double
+        <DispId(4)> ReadOnly Property DecVelocity() As float
         ''' <summary>
         ''' Linear velocity along the radial direction (AU/day)
         ''' </summary>
         ''' <value>Linear velocity along the radial direction</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        <DispId(5)> ReadOnly Property RadialVelocity() As Double
+        <DispId(5)> ReadOnly Property RadialVelocity() As float
         ''' <summary>
         ''' Linear velocity along the right ascension direction (AU/day)
         ''' </summary>
         ''' <value>Linear velocity along the right ascension direction</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        <DispId(6)> ReadOnly Property RAVelocity() As Double
+        <DispId(6)> ReadOnly Property RAVelocity() As float
         ''' <summary>
         ''' Cartesian x component of velocity (AU/day)
         ''' </summary>
         ''' <value>Cartesian x component of velocity</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        <DispId(7)> Property x() As Double
+        <DispId(7)> Property x() As float
         ''' <summary>
         ''' Cartesian y component of velocity (AU/day)
         ''' </summary>
         ''' <value>Cartesian y component of velocity</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        <DispId(8)> Property y() As Double
+        <DispId(8)> Property y() As float
         ''' <summary>
         ''' Cartesian z component of velocity (AU/day)
         ''' </summary>
         ''' <value>Cartesian z component of velocity</value>
         ''' <returns>AU/day</returns>
         ''' <remarks></remarks>
-        <DispId(9)> Property z() As Double
+        <DispId(9)> Property z() As float
     End Interface
 
     ''' <summary>
-    ''' Interface for VelocityVector methods that are only accessible through .NET and not through COM
+    ''' Interface for VelocityVector2 methods that are only accessible through .NET and not through COM
     ''' </summary>
     ''' <remarks></remarks>
     <ComVisible(False)> _
-        Public Interface IVelocityVectorExtra
+        Public Interface IVelocityVector2Extra
         ''' <summary>
-        ''' Initialize the VelocityVector from a Site object using UTC Julian Date
+        ''' Initialize the VelocityVector2 from a Site object using UTC Julian Date
         ''' </summary>
         ''' <param name="site">The Site object from which to initialize</param>
         ''' <param name="ujd">UTC Julian Date</param>
         ''' <returns>True if OK otherwise throws an exception</returns>
-        ''' <remarks>The velocity vector is that of the observer with respect to the Earth's center 
+        ''' <remarks>The velocity Vector2 is that of the observer with respect to the Earth's center 
         ''' of mass. The Julian date must be UTC Julian date, not terrestrial. This call will use 
         ''' the internal tables and estimator to get delta-T.
         ''' This overload is not available through COM, please use 
-        ''' "SetFromSiteJD(ByVal site As Site, ByVal ujd As Double, ByVal delta_t As Double)"
+        ''' "SetFromSiteJD(ByVal site As Site, ByVal ujd As float, ByVal delta_t As float)"
         ''' with delta_t set to 0.0 to achieve this effect.
         ''' </remarks>
-        Function SetFromSiteJD(ByVal site As Site, ByVal ujd As Double) As Boolean
+        Function SetFromSiteJD(ByVal site As Site, ByVal ujd As float) As Boolean
     End Interface
 
 End Namespace
@@ -1107,11 +1107,11 @@ Namespace NOVAS
         '''  0...Everything OK
         ''' >0...Error code from function 'solarsystem'.</pre></returns>
         ''' <remarks></remarks>
-        <DispId(1)> Function AppStar(ByVal tjd As Double, _
+        <DispId(1)> Function AppStar(ByVal tjd As float, _
                                             ByRef earth As BodyDescription, _
                                             ByRef star As CatEntry, _
-                                            ByRef ra As Double, _
-                                            ByRef dec As Double) As Short
+                                            ByRef ra As float, _
+                                            ByRef dec As float) As Short
         ''' <summary>
         ''' Computes the topocentric place of a star
         ''' </summary>
@@ -1126,13 +1126,13 @@ Namespace NOVAS
         '''  0...Everything OK.
         ''' >0...Error code from function 'solarsystem'.</pre></returns>
         ''' <remarks></remarks>
-        <DispId(2)> Function TopoStar(ByVal tjd As Double, _
+        <DispId(2)> Function TopoStar(ByVal tjd As float, _
                                          ByRef earth As BodyDescription, _
-                                         ByVal deltat As Double, _
+                                         ByVal deltat As float, _
                                          ByRef star As CatEntry, _
                                          ByRef location As SiteInfo, _
-                                         ByRef ra As Double, _
-                                         ByRef dec As Double) As Short
+                                         ByRef ra As float, _
+                                         ByRef dec As float) As Short
 
         ''' <summary>
         ''' Compute the apparent place of a planet or other solar system body.
@@ -1148,12 +1148,12 @@ Namespace NOVAS
         ''' >0...See error description in function 'ephemeris'.
         ''' </pre></returns>
         ''' <remarks></remarks>
-        <DispId(3)> Function AppPlanet(ByVal tjd As Double, _
+        <DispId(3)> Function AppPlanet(ByVal tjd As float, _
                                           ByRef ss_object As BodyDescription, _
                                           ByRef earth As BodyDescription, _
-                                          ByRef ra As Double, _
-                                          ByRef dec As Double, _
-                                          ByRef dis As Double) As Short
+                                          ByRef ra As float, _
+                                          ByRef dec As float, _
+                                          ByRef dis As float) As Short
 
         ''' <summary>
         ''' Computes the topocentric place of a planet, given the location of the observer.
@@ -1171,14 +1171,14 @@ Namespace NOVAS
         ''' >0...See error description in function 'ephemeris'.
         ''' </pre></returns>
         ''' <remarks></remarks>
-        <DispId(4)> Function TopoPlanet(ByVal tjd As Double, _
+        <DispId(4)> Function TopoPlanet(ByVal tjd As float, _
                                            ByRef ss_object As BodyDescription, _
                                            ByRef earth As BodyDescription, _
-                                           ByVal deltat As Double, _
+                                           ByVal deltat As float, _
                                            ByRef location As SiteInfo, _
-                                           ByRef ra As Double, _
-                                           ByRef dec As Double, _
-                                           ByRef dis As Double) As Short
+                                           ByRef ra As float, _
+                                           ByRef dec As float, _
+                                           ByRef dis As float) As Short
 
         ''' <summary>
         '''  Computes the virtual place of a star
@@ -1195,11 +1195,11 @@ Namespace NOVAS
         ''' <remarks>
         ''' Computes the virtual place of a star at date 'tjd', given its 
         ''' mean place, proper motion, parallax, and radial velocity for J2000.0.</remarks>
-        <DispId(5)> Function VirtualStar(ByVal tjd As Double, _
+        <DispId(5)> Function VirtualStar(ByVal tjd As float, _
                                                 ByRef earth As BodyDescription, _
                                                 ByRef star As CatEntry, _
-                                                ByRef ra As Double, _
-                                                ByRef dec As Double) As Short
+                                                ByRef ra As float, _
+                                                ByRef dec As float) As Short
 
         ''' <summary>
         '''  Computes the local place of a star
@@ -1216,13 +1216,13 @@ Namespace NOVAS
         ''' >0...Error code from function 'solarsystem'.
         '''</pre></returns>
         ''' <remarks></remarks>
-        <DispId(6)> Function LocalStar(ByVal tjd As Double, _
+        <DispId(6)> Function LocalStar(ByVal tjd As float, _
                                               ByRef earth As BodyDescription, _
-                                              ByVal deltat As Double, _
+                                              ByVal deltat As float, _
                                               ByRef star As CatEntry, _
                                               ByRef location As SiteInfo, _
-                                              ByRef ra As Double, _
-                                              ByRef dec As Double) As Short
+                                              ByRef ra As float, _
+                                              ByRef dec As float) As Short
 
         ''' <summary>
         ''' Computes the virtual place of a planet or other solar system body.
@@ -1238,12 +1238,12 @@ Namespace NOVAS
         ''' >0...See error description in function 'ephemeris'.
         ''' </pre></returns>
         ''' <remarks></remarks>
-        <DispId(7)> Function VirtualPlanet(ByVal tjd As Double, _
+        <DispId(7)> Function VirtualPlanet(ByVal tjd As float, _
                                                   ByRef ss_object As BodyDescription, _
                                                   ByRef earth As BodyDescription, _
-                                                  ByRef ra As Double, _
-                                                  ByRef dec As Double, _
-                                                  ByRef dis As Double) As Short
+                                                  ByRef ra As float, _
+                                                  ByRef dec As float, _
+                                                  ByRef dis As float) As Short
 
         ''' <summary>
         '''  Computes the local place of a planet or other solar system body, given the location of the observer.
@@ -1261,14 +1261,14 @@ Namespace NOVAS
         ''' >0...See error description in function 'ephemeris'.
         ''' </pre></returns>
         ''' <remarks></remarks>
-        <DispId(8)> Function LocalPlanet(ByVal tjd As Double, _
+        <DispId(8)> Function LocalPlanet(ByVal tjd As float, _
                                                 ByRef ss_object As BodyDescription, _
                                                 ByRef earth As BodyDescription, _
-                                                ByVal deltat As Double, _
+                                                ByVal deltat As float, _
                                                 ByRef location As SiteInfo, _
-                                                ByRef ra As Double, _
-                                                ByRef dec As Double, _
-                                                ByRef dis As Double) As Short
+                                                ByRef ra As float, _
+                                                ByRef dec As float, _
+                                                ByRef dis As float) As Short
 
         ''' <summary>
         ''' Computes the astrometric place of a star
@@ -1283,11 +1283,11 @@ Namespace NOVAS
         ''' >0...Error code from function 'solarsystem'.
         ''' </pre></returns>
         ''' <remarks>     Computes the astrometric place of a star, given its mean place, proper motion, parallax, and radial velocity for J2000.0.</remarks>
-        <DispId(9)> Function AstroStar(ByVal tjd As Double, _
+        <DispId(9)> Function AstroStar(ByVal tjd As float, _
                                               ByRef earth As BodyDescription, _
                                               ByRef star As CatEntry, _
-                                              ByRef ra As Double, _
-                                              ByRef dec As Double) As Short
+                                              ByRef ra As float, _
+                                              ByRef dec As float) As Short
 
         ''' <summary>
         ''' Computes the astrometric place of a planet or other solar system body.
@@ -1302,12 +1302,12 @@ Namespace NOVAS
         '''  0...Everything OK.
         ''' >0...See error description in function 'ephemeris'.</pre></returns>
         ''' <remarks></remarks>
-        <DispId(10)> Function AstroPlanet(ByVal tjd As Double, _
+        <DispId(10)> Function AstroPlanet(ByVal tjd As float, _
                                                 ByRef ss_object As BodyDescription, _
                                                 ByRef earth As BodyDescription, _
-                                                ByRef ra As Double, _
-                                                ByRef dec As Double, _
-                                                ByRef dis As Double) As Short
+                                                ByRef ra As float, _
+                                                ByRef dec As float, _
+                                                ByRef dis As float) As Short
 
         ''' <summary>
         ''' Transform apparent equatorial coordinates to horizon coordinates
@@ -1330,18 +1330,18 @@ Namespace NOVAS
         ''' for polar motion, which is significant at the sub-arcsecond 
         ''' level.  This function can also adjust coordinates for atmospheric 
         ''' refraction.</remarks>
-        <DispId(11)> Sub Equ2Hor(ByVal tjd As Double, _
-                                      ByVal deltat As Double, _
-                                      ByVal x As Double, _
-                                      ByVal y As Double, _
+        <DispId(11)> Sub Equ2Hor(ByVal tjd As float, _
+                                      ByVal deltat As float, _
+                                      ByVal x As float, _
+                                      ByVal y As float, _
                                       ByRef location As SiteInfo, _
-                                      ByVal ra As Double, _
-                                      ByVal dec As Double, _
+                                      ByVal ra As float, _
+                                      ByVal dec As float, _
                                       ByVal ref_option As RefractionOption, _
-                                      ByRef zd As Double, _
-                                      ByRef az As Double, _
-                                      ByRef rar As Double, _
-                                      ByRef decr As Double)
+                                      ByRef zd As float, _
+                                      ByRef az As float, _
+                                      ByRef rar As float, _
+                                      ByRef decr As float)
 
         ''' <summary>
         '''  To convert Hipparcos data at epoch J1991.25 to epoch J2000.0 and FK5-style units.
@@ -1404,9 +1404,9 @@ Namespace NOVAS
         '''    distinction between TDB and TT is necessary.
         '''</pre></remarks>
         <DispId(13)> Sub TransformCat(ByVal [option] As TransformationOption, _
-                                            ByVal date_incat As Double, _
+                                            ByVal date_incat As float, _
                                             ByRef incat As CatEntry, _
-                                            ByVal date_newcat As Double, _
+                                            ByVal date_newcat As float, _
                                             ByRef newcat_id As Byte(), _
                                             ByRef newcat As CatEntry)
 
@@ -1418,20 +1418,20 @@ Namespace NOVAS
         ''' <param name="ee"> Equation of the equinoxes (seconds of time). [Note: this  quantity is computed by function 'earthtilt'.]</param>
         ''' <param name="gst">Greenwich apparent sidereal time, in hours.</param>
         ''' <remarks></remarks>
-        <DispId(14)> Sub SiderealTime(ByVal jd_high As Double, _
-                                            ByVal jd_low As Double, _
-                                            ByVal ee As Double, _
-                                            ByRef gst As Double)
+        <DispId(14)> Sub SiderealTime(ByVal jd_high As float, _
+                                            ByVal jd_low As float, _
+                                            ByVal ee As float, _
+                                            ByRef gst As float)
 
         ''' <summary>
         ''' Precesses equatorial rectangular coordinates from one epoch to another.
         ''' </summary>
         ''' <param name="tjd1">TDB Julian date of first epoch.</param>
-        ''' <param name="pos">Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of first epoch.</param>
+        ''' <param name="pos">Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of first epoch.</param>
         ''' <param name="tjd2">TDB Julian date of second epoch.</param>
-        ''' <param name="pos2">OUT: Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of second epoch.</param>
+        ''' <param name="pos2">OUT: Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of second epoch.</param>
         ''' <remarks>The coordinates are referred to the mean equator and equinox of the two respective epochs.</remarks>
-        <DispId(15)> Sub Precession(ByVal tjd1 As Double, ByVal pos As Double(), ByVal tjd2 As Double, ByRef pos2 As Double())
+        <DispId(15)> Sub Precession(ByVal tjd1 As float, ByVal pos As float(), ByVal tjd2 As float, ByRef pos2 As float())
 
         ''' <summary>
         '''  Computes quantities related to the orientation of the Earth's rotation axis at Julian date 'tjd'.
@@ -1443,12 +1443,12 @@ Namespace NOVAS
         ''' <param name="dpsi">OUT: Nutation in longitude in arcseconds at 'tjd'.</param>
         ''' <param name="deps">OUT: Nutation in obliquity in arcseconds at 'tjd'.</param>
         ''' <remarks></remarks>
-        <DispId(16)> Sub EarthTilt(ByVal tjd As Double, _
-                                        ByRef mobl As Double, _
-                                        ByRef tobl As Double, _
-                                        ByRef eq As Double, _
-                                        ByRef dpsi As Double, _
-                                        ByRef deps As Double)
+        <DispId(16)> Sub EarthTilt(ByVal tjd As float, _
+                                        ByRef mobl As float, _
+                                        ByRef tobl As float, _
+                                        ByRef eq As float, _
+                                        ByRef dpsi As float, _
+                                        ByRef deps As float)
 
         ''' <summary>
         ''' This function allows for the specification of celestial pole offsets for high-precision applications.  
@@ -1461,8 +1461,8 @@ Namespace NOVAS
         ''' <para>3. Daily values of the offsets are published, for example, in IERS Bulletins A and B.</para>
         ''' <para>4. This function is the "C" version of Fortran NOVAS routine "celpol".</para>
         ''' </remarks>
-        <DispId(17)> Sub CelPole(ByVal del_dpsi As Double, _
-                                      ByVal del_deps As Double)
+        <DispId(17)> Sub CelPole(ByVal del_dpsi As float, _
+                                      ByVal del_deps As float)
 
         ''' <summary>
         ''' Retrieves the position and velocity of a body from a fundamental ephemeris.
@@ -1470,8 +1470,8 @@ Namespace NOVAS
         ''' <param name="tjd">TDB Julian date.</param>
         ''' <param name="cel_obj">Structure containing the designation of the body of interest</param>
         ''' <param name="origin">Origin point (solar system barycentre or centre of mass of the Sun</param>
-        ''' <param name="pos">OUT: Position vector of 'body' at tjd; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        ''' <param name="vel">OUT: Velocity vector of 'body' at tjd; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        ''' <param name="pos">OUT: Position Vector2 of 'body' at tjd; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        ''' <param name="vel">OUT: Velocity Vector2 of 'body' at tjd; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         ''' <returns><pre>
         ''' 0    ... Everything OK.
         ''' 1    ... Invalid value of 'origin'.
@@ -1480,11 +1480,11 @@ Namespace NOVAS
         ''' 10+n ... where n is the error code from 'solarsystem'.
         ''' 20+n ... where n is the error code from 'readeph'.</pre></returns>
         ''' <remarks></remarks>
-        <DispId(18)> Function Ephemeris(ByVal tjd As Double, _
+        <DispId(18)> Function Ephemeris(ByVal tjd As float, _
                                         ByRef cel_obj As BodyDescription, _
                                         ByVal origin As Origin, _
-                                        ByRef pos As Double(), _
-                                        ByRef vel As Double()) As Short
+                                        ByRef pos As float(), _
+                                        ByRef vel As float()) As Short
 
         ''' <summary>
         ''' Provides the position and velocity of the Earth
@@ -1496,57 +1496,57 @@ Namespace NOVAS
         ''' Set 'body' = 2 or 'body' = 3 for the Earth.
         '''</pre></param>
         ''' <param name="origin">Required origin: solar system barycenter or center of mass of the Sun</param>
-        ''' <param name="pos">OUT: Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        ''' <param name="vel">OUT: Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        ''' <param name="pos">OUT: Position Vector2 of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        ''' <param name="vel">OUT: Velocity Vector2 of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         ''' <returns><pre>
         ''' 0...Everything OK.
         ''' 1...Input Julian date ('tjd') out of range.
         ''' 2...Invalid value of 'body'.
         '''</pre></returns>
         ''' <remarks> Provides the position and velocity of the Earth at epoch 'tjd' by evaluating a closed-form theory without reference to an  external file.  This function can also provide the position and velocity of the Sun.</remarks>
-        <DispId(19)> Function SolarSystem(ByVal tjd As Double, _
+        <DispId(19)> Function SolarSystem(ByVal tjd As float, _
                                                ByVal body As Body, _
                                                ByVal origin As Origin, _
-                                               ByRef pos As Double(), _
-                                               ByRef vel As Double()) As Short
+                                               ByRef pos As float(), _
+                                               ByRef vel As float()) As Short
 
         ''' <summary>
-        ''' Converts an vector in equatorial rectangular coordinates to equatorial spherical coordinates.
+        ''' Converts an Vector2 in equatorial rectangular coordinates to equatorial spherical coordinates.
         ''' </summary>
-        ''' <param name="pos">Position vector, equatorial rectangular coordinates.</param>
+        ''' <param name="pos">Position Vector2, equatorial rectangular coordinates.</param>
         ''' <param name="ra">OUT: Right ascension in hours.</param>
         ''' <param name="dec">OUT: Declination in degrees.</param>
         ''' <returns><pre>
         ''' 0...Everything OK.
-        ''' 1...All vector components are zero; 'ra' and 'dec' are indeterminate.
+        ''' 1...All Vector2 components are zero; 'ra' and 'dec' are indeterminate.
         ''' 2...Both vec[0] and vec[1] are zero, but vec[2] is nonzero; 'ra' is indeterminate.</pre>
         ''' </returns>
         ''' <remarks></remarks>
-        <DispId(20)> Function Vector2RADec(ByVal pos As Double(), _
-                                                ByRef ra As Double, _
-                                                ByRef dec As Double) As Short
+        <DispId(20)> Function Vector2RADec(ByVal pos As float(), _
+                                                ByRef ra As float, _
+                                                ByRef dec As float) As Short
 
         ''' <summary>
-        ''' Converts angular quanities for stars to vectors.
+        ''' Converts angular quanities for stars to Vector2s.
         ''' </summary>
         ''' <param name="star">Catalog entry structure containing J2000.0 catalog data with FK5-style units </param>
-        ''' <param name="pos">Position vector, equatorial rectangular coordinates, components in AU.</param>
-        ''' <param name="vel">Velocity vector, equatorial rectangular coordinates, components in AU/Day.</param>
+        ''' <param name="pos">Position Vector2, equatorial rectangular coordinates, components in AU.</param>
+        ''' <param name="vel">Velocity Vector2, equatorial rectangular coordinates, components in AU/Day.</param>
         ''' <remarks></remarks>
-        <DispId(21)> Sub StarVectors(ByVal star As CatEntry, ByRef pos As Double(), ByRef vel As Double())
+        <DispId(21)> Sub StarVector2s(ByVal star As CatEntry, ByRef pos As float(), ByRef vel As float())
 
         ''' <summary>
-        ''' Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates).
+        ''' Converts equatorial spherical coordinates to a Vector2 (equatorial rectangular coordinates).
         ''' </summary>
         ''' <param name="ra">Right ascension (hours).</param>
         ''' <param name="dec">Declination (degrees).</param>
         ''' <param name="dist">Distance</param>
-        ''' <param name="pos">Position vector, equatorial rectangular coordinates (AU).</param>
+        ''' <param name="pos">Position Vector2, equatorial rectangular coordinates (AU).</param>
         ''' <remarks></remarks>
-        <DispId(22)> Sub RADec2Vector(ByVal ra As Double, _
-                                              ByVal dec As Double, _
-                                              ByVal dist As Double, _
-                                              ByRef pos As Double())
+        <DispId(22)> Sub RADec2Vector2(ByVal ra As float, _
+                                              ByVal dec As float, _
+                                              ByVal dist As float, _
+                                              ByRef pos As float())
 
 
         ''' <summary>
@@ -1555,22 +1555,22 @@ Namespace NOVAS
         ''' <param name="tjd">TT (or TDT) Julian date.</param>
         ''' <param name="earth">Structure containing the body designation for the Earth.</param>
         ''' <param name="tdb">OUT: TDB Julian date corresponding to 'tjd'.</param>
-        ''' <param name="bary_earthp">OUT: Barycentric position vector of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        ''' <param name="bary_earthv">OUT: Barycentric velocity vector of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox  of J2000.0, in AU/Day.</param>
-        ''' <param name="helio_earthp">OUT: Heliocentric position vector of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        ''' <param name="helio_earthv">OUT: Heliocentric velocity vector of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        ''' <param name="bary_earthp">OUT: Barycentric position Vector2 of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        ''' <param name="bary_earthv">OUT: Barycentric velocity Vector2 of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox  of J2000.0, in AU/Day.</param>
+        ''' <param name="helio_earthp">OUT: Heliocentric position Vector2 of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        ''' <param name="helio_earthv">OUT: Heliocentric velocity Vector2 of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         ''' <returns><pre>
         '''  0...Everything OK.
         ''' >0...Error code from function 'solarsystem'.</pre>
         ''' </returns>
         ''' <remarks></remarks>
-        <DispId(23)> Function GetEarth(ByVal tjd As Double, _
+        <DispId(23)> Function GetEarth(ByVal tjd As float, _
                                             ByRef earth As BodyDescription, _
-                                            ByRef tdb As Double, _
-                                            ByRef bary_earthp As Double(), _
-                                            ByRef bary_earthv As Double(), _
-                                            ByRef helio_earthp As Double(), _
-                                            ByRef helio_earthv As Double()) As Short
+                                            ByRef tdb As float, _
+                                            ByRef bary_earthp As float(), _
+                                            ByRef bary_earthv As float(), _
+                                            ByRef helio_earthp As float(), _
+                                            ByRef helio_earthv As float()) As Short
 
         '
         'START OF NEW
@@ -1592,40 +1592,40 @@ Namespace NOVAS
         ''' place at date 'tjd'.  Proper motion, parallax and radial velocity 
         ''' are assumed to be zero.
         '''</remarks>
-        <DispId(24)> Function MeanStar(ByVal tjd As Double, _
+        <DispId(24)> Function MeanStar(ByVal tjd As float, _
                                                 ByRef earth As BodyDescription, _
-                                                ByVal ra As Double, _
-                                                ByVal dec As Double, _
-                                                ByRef mra As Double, _
-                                                ByRef mdec As Double) As Short
+                                                ByVal ra As float, _
+                                                ByVal dec As float, _
+                                                ByRef mra As float, _
+                                                ByRef mdec As float) As Short
 
         ''' <summary>
-        ''' Transforms a vector from an Earth-fixed geographic system to a space-fixed system
+        ''' Transforms a Vector2 from an Earth-fixed geographic system to a space-fixed system
         ''' </summary>
         ''' <param name="tjd">TT (or TDT) Julian date</param>
         ''' <param name="gast">Greenwich apparent sidereal time, in hours.</param>
         ''' <param name="x"> Conventionally-defined X coordinate of rotational pole with respect to CIO, in arcseconds.</param>
         ''' <param name="y">Conventionally-defined Y coordinate of rotational pole with respect to CIO, in arcseconds.</param>
-        ''' <param name="vece"> Vector in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
-        ''' <param name="vecs">OUT: Vector in geocentric rectangular space-fixed system, referred to mean equator and equinox of J2000.0.</param>
-        ''' <remarks>Transforms a vector from an Earth-fixed geographic system to a space-fixed system based on mean equator and equinox of J2000.0; applies rotations for wobble, spin, nutation, and precession.</remarks>
-        <DispId(25)> Sub Pnsw(ByVal tjd As Double, _
-                                   ByVal gast As Double, _
-                                   ByVal x As Double, _
-                                   ByVal y As Double, _
-                                   ByVal vece As Double(), _
-                                   ByRef vecs As Double())
+        ''' <param name="vece"> Vector2 in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
+        ''' <param name="vecs">OUT: Vector2 in geocentric rectangular space-fixed system, referred to mean equator and equinox of J2000.0.</param>
+        ''' <remarks>Transforms a Vector2 from an Earth-fixed geographic system to a space-fixed system based on mean equator and equinox of J2000.0; applies rotations for wobble, spin, nutation, and precession.</remarks>
+        <DispId(25)> Sub Pnsw(ByVal tjd As float, _
+                                   ByVal gast As float, _
+                                   ByVal x As float, _
+                                   ByVal y As float, _
+                                   ByVal vece As float(), _
+                                   ByRef vecs As float())
 
         ''' <summary>
         ''' Transforms geocentric rectangular coordinates from rotating system to non-rotating system
         ''' </summary>
         ''' <param name="st">Local apparent sidereal time at reference meridian, in hours.</param>
-        ''' <param name="pos1">Vector in geocentric rectangular rotating system, referred to rotational equator and orthogonal reference meridian.</param>
-        ''' <param name="pos2">OUT: Vector in geocentric rectangular non-rotating system, referred to true equator and equinox of date.</param>
+        ''' <param name="pos1">Vector2 in geocentric rectangular rotating system, referred to rotational equator and orthogonal reference meridian.</param>
+        ''' <param name="pos2">OUT: Vector2 in geocentric rectangular non-rotating system, referred to true equator and equinox of date.</param>
         ''' <remarks>Transforms geocentric rectangular coordinates from rotating system based on rotational equator and orthogonal reference meridian to  non-rotating system based on true equator and equinox of date.</remarks>
-        <DispId(26)> Sub Spin(ByVal st As Double, _
-                                   ByVal pos1 As Double(), _
-                                   ByRef pos2 As Double())
+        <DispId(26)> Sub Spin(ByVal st As float, _
+                                   ByVal pos1 As float(), _
+                                   ByRef pos2 As float())
 
 
         ''' <summary>
@@ -1633,81 +1633,81 @@ Namespace NOVAS
         ''' </summary>
         ''' <param name="x"> Conventionally-defined X coordinate of rotational pole with respect to CIO, in arcseconds.</param>
         ''' <param name="y">Conventionally-defined Y coordinate of rotational pole with respect to CIO, in arcseconds.</param>
-        ''' <param name="pos1">Vector in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
-        ''' <param name="pos2">OUT: Vector in geocentric rectangular rotating system, referred to rotational equator and orthogonal Greenwich meridian</param>
-        ''' <remarks>Corrects Earth-fixed geocentric rectangular coordinates for polar motion.  Transforms a vector from Earth-fixed geographic system to rotating system based on rotational equator and orthogonal Greenwich meridian through axis of rotation.</remarks>
-        <DispId(27)> Sub Wobble(ByVal x As Double, _
-                                        ByVal y As Double, _
-                                        ByVal pos1 As Double(), _
-                                        ByRef pos2 As Double())
+        ''' <param name="pos1">Vector2 in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
+        ''' <param name="pos2">OUT: Vector2 in geocentric rectangular rotating system, referred to rotational equator and orthogonal Greenwich meridian</param>
+        ''' <remarks>Corrects Earth-fixed geocentric rectangular coordinates for polar motion.  Transforms a Vector2 from Earth-fixed geographic system to rotating system based on rotational equator and orthogonal Greenwich meridian through axis of rotation.</remarks>
+        <DispId(27)> Sub Wobble(ByVal x As float, _
+                                        ByVal y As float, _
+                                        ByVal pos1 As float(), _
+                                        ByRef pos2 As float())
 
         ''' <summary>
-        ''' Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth.
+        ''' Computes the position and velocity Vector2s of a terrestrial observer with respect to the center of the Earth.
         ''' </summary>
         ''' <param name="locale">Longitude, latitude and height of the observer (in a SiteInfoStruct)</param>
         ''' <param name="st">Local apparent sidereal time at reference meridian in hours.</param>
-        ''' <param name="pos"> Position vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU.</param>
-        ''' <param name="vel"> Velocity vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/Day.</param>
+        ''' <param name="pos"> Position Vector2 of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU.</param>
+        ''' <param name="vel"> Velocity Vector2 of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/Day.</param>
         ''' <remarks></remarks>
         <DispId(28)> Sub Terra(ByRef locale As SiteInfo, _
-                                       ByVal st As Double, _
-                                       ByRef pos As Double(), _
-                                       ByRef vel As Double())
+                                       ByVal st As float, _
+                                       ByRef pos As float(), _
+                                       ByRef vel As float())
 
 
         ''' <summary>
         ''' Applies proper motion, including foreshortening effects, to a star's position.
         ''' </summary>
         ''' <param name="tjd1">TDB Julian date of first epoch.</param>
-        ''' <param name="pos">Position vector at first epoch.</param>
-        ''' <param name="vel">Velocity vector at first epoch.</param>
+        ''' <param name="pos">Position Vector2 at first epoch.</param>
+        ''' <param name="vel">Velocity Vector2 at first epoch.</param>
         ''' <param name="tjd2">TDB Julian date of second epoch.</param>
-        ''' <param name="pos2">OUT: Position vector at second epoch.</param>
+        ''' <param name="pos2">OUT: Position Vector2 at second epoch.</param>
         ''' <remarks></remarks>
-        <DispId(29)> Sub ProperMotion(ByVal tjd1 As Double, _
-                                            ByVal pos As Double(), _
-                                            ByVal vel As Double(), _
-                                            ByVal tjd2 As Double, _
-                                            ByRef pos2 As Double())
+        <DispId(29)> Sub ProperMotion(ByVal tjd1 As float, _
+                                            ByVal pos As float(), _
+                                            ByVal vel As float(), _
+                                            ByVal tjd2 As float, _
+                                            ByRef pos2 As float())
 
         ''' <summary>
         ''' Moves the origin of coordinates from the barycenter of the solar system to the center of mass of the Earth
         ''' </summary>
-        ''' <param name="pos">Position vector, referred to origin at solar system barycenter, components in AU.</param>
-        ''' <param name="earthvector">Position vector of center of mass of the Earth, referred to origin at solar system barycenter, components in AU.</param>
-        ''' <param name="pos2">OUT: Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
+        ''' <param name="pos">Position Vector2, referred to origin at solar system barycenter, components in AU.</param>
+        ''' <param name="earthVector2">Position Vector2 of center of mass of the Earth, referred to origin at solar system barycenter, components in AU.</param>
+        ''' <param name="pos2">OUT: Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
         ''' <param name="lighttime">OUT: Light time from body to Earth in days.</param>
         ''' <remarks>This corrects for parallax.</remarks>
-        <DispId(30)> Sub BaryToGeo(ByVal pos As Double(), _
-                                          ByVal earthvector As Double(), _
-                                          ByRef pos2 As Double(), _
-                                          ByRef lighttime As Double)
+        <DispId(30)> Sub BaryToGeo(ByVal pos As float(), _
+                                          ByVal earthVector2 As float(), _
+                                          ByRef pos2 As float(), _
+                                          ByRef lighttime As float)
 
         ''' <summary>
-        ''' Corrects position vector for the deflection of light in the gravitational field of the Sun. 
+        ''' Corrects position Vector2 for the deflection of light in the gravitational field of the Sun. 
         ''' </summary>
-        ''' <param name="pos">Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
-        ''' <param name="earthvector">Position vector of center of mass of the Earth, referred to origin at center of mass of the Sun, components in AU.</param>
-        ''' <param name="pos2">Position vector, referred to origin at center of mass of the Earth, corrected for gravitational deflection, components in AU.</param>
+        ''' <param name="pos">Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
+        ''' <param name="earthVector2">Position Vector2 of center of mass of the Earth, referred to origin at center of mass of the Sun, components in AU.</param>
+        ''' <param name="pos2">Position Vector2, referred to origin at center of mass of the Earth, corrected for gravitational deflection, components in AU.</param>
         ''' <returns>0...Everything OK.</returns>
         ''' <remarks>This function is valid for bodies within the solar system as well as for stars.</remarks>
-        <DispId(31)> Function SunField(ByVal pos As Double(), _
-                                             ByVal earthvector As Double(), _
-                                             ByRef pos2 As Double()) As Short
+        <DispId(31)> Function SunField(ByVal pos As float(), _
+                                             ByVal earthVector2 As float(), _
+                                             ByRef pos2 As float()) As Short
 
         ''' <summary>
-        ''' Corrects position vector for aberration of light.
+        ''' Corrects position Vector2 for aberration of light.
         ''' </summary>
-        ''' <param name="pos">Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
-        ''' <param name="vel">Velocity vector of center of mass of the Earth, referred to origin at solar system barycenter, components in AU/day.</param>
+        ''' <param name="pos">Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
+        ''' <param name="vel">Velocity Vector2 of center of mass of the Earth, referred to origin at solar system barycenter, components in AU/day.</param>
         ''' <param name="lighttime">Light time from body to Earth in days.</param>
-        ''' <param name="pos2">OUT: Position vector, referred to origin at center of mass of the Earth, corrected for aberration, components in AU</param>
+        ''' <param name="pos2">OUT: Position Vector2, referred to origin at center of mass of the Earth, corrected for aberration, components in AU</param>
         ''' <returns>0...Everything OK.</returns>
         ''' <remarks>Algorithm includes relativistic terms.</remarks>
-        <DispId(32)> Function Aberration(ByVal pos As Double(), _
-                                              ByVal vel As Double(), _
-                                              ByVal lighttime As Double, _
-                                              ByRef pos2 As Double()) As Short
+        <DispId(32)> Function Aberration(ByVal pos As float(), _
+                                              ByVal vel As float(), _
+                                              ByVal lighttime As float, _
+                                              ByRef pos2 As float()) As Short
 
         ''' <summary>
         ''' Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and equinox of epoch.
@@ -1716,14 +1716,14 @@ Namespace NOVAS
         ''' <param name="fn">Flag determining 'direction' of transformation;<pre>
         '''    fn  = 0 transformation applied, mean to true.
         '''    fn != 0 inverse transformation applied, true to mean.</pre></param>
-        ''' <param name="pos">Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of epoch.</param>
-        ''' <param name="pos2">OUT: Position vector, geocentric equatorial rectangular coordinates, referred to true equator and equinox of epoch.</param>
+        ''' <param name="pos">Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of epoch.</param>
+        ''' <param name="pos2">OUT: Position Vector2, geocentric equatorial rectangular coordinates, referred to true equator and equinox of epoch.</param>
         ''' <returns>0...Everything OK.</returns>
         ''' <remarks>Inverse transformation may be applied by setting flag 'fn'.</remarks>
-        <DispId(33)> Function Nutate(ByVal tjd As Double, _
+        <DispId(33)> Function Nutate(ByVal tjd As float, _
                                           ByVal fn As NutationDirection, _
-                                          ByVal pos As Double(), _
-                                          ByRef pos2 As Double()) As Short
+                                          ByVal pos As float(), _
+                                          ByRef pos2 As float()) As Short
 
         ''' <summary>
         ''' Provides fast evaluation of the nutation components according to the 1980 IAU Theory of Nutation.
@@ -1733,9 +1733,9 @@ Namespace NOVAS
         ''' <param name="obliqnutation">OUT: Nutation in obliquity in arcseconds.</param>
         ''' <returns>0...Everything OK.</returns>
         ''' <remarks></remarks>
-        <DispId(34)> Function NutationAngles(ByVal tdbtime As Double, _
-                                                   ByRef longnutation As Double, _
-                                                   ByRef obliqnutation As Double) As Short
+        <DispId(34)> Function NutationAngles(ByVal tdbtime As float, _
+                                                   ByRef longnutation As float, _
+                                                   ByRef obliqnutation As float) As Short
 
         ''' <summary>
         ''' To compute the fundamental arguments.
@@ -1748,8 +1748,8 @@ Namespace NOVAS
         '''   a[3] = D (mean elongation of the Moon from the Sun)
         '''   a[4] = omega (mean longitude of the Moon's ascending node)</pre></param>
         ''' <remarks></remarks>
-        <DispId(35)> Sub FundArgs(ByVal t As Double, _
-                                        ByRef a As Double())
+        <DispId(35)> Sub FundArgs(ByVal t As float, _
+                                        ByRef a As float())
 
         ''' <summary>
         ''' Converts TDB to TT or TDT
@@ -1758,9 +1758,9 @@ Namespace NOVAS
         ''' <param name="tdtjd">OUT: TT (or TDT) Julian date.</param>
         ''' <param name="secdiff">OUT: Difference tdbjd-tdtjd, in seconds.</param>
         ''' <remarks>Computes the terrestrial time (TT) or terrestrial dynamical time (TDT) Julian date corresponding to a barycentric dynamical time (TDB) Julian date.</remarks>
-        <DispId(36)> Sub Tdb2Tdt(ByVal tdb As Double, _
-                                      ByRef tdtjd As Double, _
-                                      ByRef secdiff As Double)
+        <DispId(36)> Sub Tdb2Tdt(ByVal tdb As float, _
+                                      ByRef tdtjd As float, _
+                                      ByRef secdiff As float)
 
         ''' <summary>
         ''' Sets up a structure of type 'body' - defining a celestial object- based on the input parameters.
@@ -1782,8 +1782,8 @@ Namespace NOVAS
 
         'Public Shared Function readeph(ByVal mp As Integer, _
         '                               ByVal name As System.IntPtr, _
-        '                               ByVal jd As Double, _
-        '                               ByRef err As Integer) As posvector
+        '                               ByVal jd As float, _
+        '                               ByRef err As Integer) As posVector2
         'End Function
 
         ''' <summary>
@@ -1803,12 +1803,12 @@ Namespace NOVAS
         <DispId(38)> Sub MakeCatEntry(ByVal catalog As String, _
                                              ByVal star_name As String, _
                                              ByVal star_num As Integer, _
-                                             ByVal ra As Double, _
-                                             ByVal dec As Double, _
-                                             ByVal pm_ra As Double, _
-                                             ByVal pm_dec As Double, _
-                                             ByVal parallax As Double, _
-                                             ByVal rad_vel As Double, _
+                                             ByVal ra As float, _
+                                             ByVal dec As float, _
+                                             ByVal pm_ra As float, _
+                                             ByVal pm_dec As float, _
+                                             ByVal parallax As float, _
+                                             ByVal rad_vel As float, _
                                              ByRef star As CatEntry)
 
         ''' <summary>
@@ -1821,7 +1821,7 @@ Namespace NOVAS
         ''' <remarks>This version computes approximate refraction for optical wavelengths.</remarks>
         <DispId(39)> Function Refract(ByRef location As SiteInfo, _
                                            ByVal ref_option As Short, _
-                                           ByVal zd_obs As Double) As Double
+                                           ByVal zd_obs As float) As float
 
         ''' <summary>
         ''' This function will compute the Julian date for a given calendar date (year, month, day, hour).
@@ -1835,7 +1835,7 @@ Namespace NOVAS
         <DispId(40)> Function JulianDate(ByVal year As Short, _
                                                ByVal month As Short, _
                                                ByVal day As Short, _
-                                               ByVal hour As Double) As Double
+                                               ByVal hour As float) As float
 
         ''' <summary>
         ''' Compute a date on the Gregorian calendar given the Julian date.
@@ -1846,11 +1846,11 @@ Namespace NOVAS
         ''' <param name="day">OUT: Day number</param>
         ''' <param name="hour">OUT: Time in hours</param>
         ''' <remarks></remarks>
-        <DispId(41)> Sub CalDate(ByVal tjd As Double, _
+        <DispId(41)> Sub CalDate(ByVal tjd As float, _
                                        ByRef year As Short, _
                                        ByRef month As Short, _
                                        ByRef day As Short, _
-                                       ByRef hour As Double)
+                                       ByRef hour As float)
 
         ''' <summary>
         ''' Compute equatorial spherical coordinates of Sun referred to the mean equator and equinox of date.
@@ -1860,17 +1860,17 @@ Namespace NOVAS
         ''' <param name="dec">OUT: Declination referred to mean equator and equinox of date  (degrees).</param>
         ''' <param name="dis">OUT: Geocentric distance (AU).</param>
         ''' <remarks></remarks>
-        <DispId(42)> Sub SunEph(ByVal jd As Double, _
-                                           ByRef ra As Double, _
-                                           ByRef dec As Double, _
-                                           ByRef dis As Double)
+        <DispId(42)> Sub SunEph(ByVal jd As float, _
+                                           ByRef ra As float, _
+                                           ByRef dec As float, _
+                                           ByRef dis As float)
 
-        'Public Shared Function solarsystem(ByVal tjd As Double, _
+        'Public Shared Function solarsystem(ByVal tjd As float, _
         '                                      ByVal body As Body, _
         '                                      ByRef origin As Origin, _
-        '                                      ByRef pos As Double(), _
-        '                                      ByRef vel As Double()) As Short
-        'Dim vpos As New posvector, vvel As New velvector
+        '                                      ByRef pos As float(), _
+        '                                      ByRef vel As float()) As Short
+        'Dim vpos As New posVector2, vvel As New velVector2
         'Dim rc As Short
         '    If Is64Bit() Then
         '        rc = solarsystem64(tjd, body, origin, vpos, vvel)

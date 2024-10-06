@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using ASCOM.Utilities.Exceptions;
 using ASCOM.Utilities.Interfaces;
 using Microsoft.VisualBasic;
+using static ASCOM.Utilities.Exceptions.DriverNotRegisteredException;
 using static ASCOM.Utilities.Global;
 
 namespace ASCOM.Utilities

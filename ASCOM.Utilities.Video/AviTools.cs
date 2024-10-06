@@ -25,7 +25,7 @@ namespace ASCOM.Utilities.Video
             nativeHelpers = new NativeHelpers();
         }
 
-        public  void SetNewGamma(double newGamma)
+        public  void SetNewGamma(float newGamma)
         {
             nativeHelpers.SetGamma(newGamma);
         }
@@ -96,7 +96,7 @@ namespace ASCOM.Utilities.Video
             Trace.WriteLine(error, "VideoNativeException");
         }
 
-        public  void StartNewAviFile(string fileName, int width, int height, int bpp, double fps, bool showCompressionDialog)
+        public  void StartNewAviFile(string fileName, int width, int height, int bpp, float fps, bool showCompressionDialog)
         {
             if (nativeHelpers.CreateNewAviFile(fileName, width, height, bpp, fps, showCompressionDialog) != 0)
             {

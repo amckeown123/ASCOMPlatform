@@ -613,7 +613,7 @@ namespace ASCOM.DynamicClients
             client.PulseGuide((Common.DeviceInterfaces.GuideDirection)Direction, Duration);
         }
 
-        public void StartExposure(double Duration, bool Light)
+        public void StartExposure(float Duration, bool Light)
         {
             client.StartExposure(Duration, Light);
         }
@@ -721,7 +721,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double CCDTemperature
+        public float CCDTemperature
         {
             get
             {
@@ -742,7 +742,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double CoolerPower
+        public float CoolerPower
         {
             get
             {
@@ -750,7 +750,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double ElectronsPerADU
+        public float ElectronsPerADU
         {
             get
             {
@@ -758,7 +758,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double FullWellCapacity
+        public float FullWellCapacity
         {
             get
             {
@@ -774,7 +774,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double HeatSinkTemperature
+        public float HeatSinkTemperature
         {
             get
             {
@@ -814,7 +814,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double LastExposureDuration
+        public float LastExposureDuration
         {
             get
             {
@@ -880,7 +880,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double PixelSizeX
+        public float PixelSizeX
         {
             get
             {
@@ -888,7 +888,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double PixelSizeY
+        public float PixelSizeY
         {
             get
             {
@@ -896,7 +896,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SetCCDTemperature
+        public float SetCCDTemperature
         {
             get
             {
@@ -959,7 +959,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double ExposureMax
+        public float ExposureMax
         {
             get
             {
@@ -967,7 +967,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double ExposureMin
+        public float ExposureMin
         {
             get
             {
@@ -975,7 +975,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double ExposureResolution
+        public float ExposureResolution
         {
             get
             {
@@ -1148,7 +1148,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SubExposureDuration
+        public float SubExposureDuration
         {
             get
             {

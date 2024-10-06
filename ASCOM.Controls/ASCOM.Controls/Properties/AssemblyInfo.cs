@@ -8,13 +8,3 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("ASCOM.Controls")]
-[assembly: AssemblyDescription("Windows Forms controls for ASCOM clients and drivers")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCopyright("Copyright © 2004-9 Timothy P. Long and TiGra Astronomy")]
-[assembly: ComVisible(false)]
-
-// AssemblyFileVersion is set globally (do not add an AssemblyFileVersion here).
-
-[assembly: AssemblyVersion("6.0.0.0")]
-[assembly: CLSCompliant(true)]

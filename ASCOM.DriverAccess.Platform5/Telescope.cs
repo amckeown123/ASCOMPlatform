@@ -89,25 +89,25 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// The Altitude above the local horizon of the telescope's current position (degrees, positive up)
         /// </summary>
-        public double Altitude
+        public float Altitude
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Altitude", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "Altitude", new Type[] { }, new object[] { })); }
         }
 
         /// <summary>
         /// The area of the telescope's aperture, taking into account any obstructions (square meters)
         /// </summary>
-        public double ApertureArea
+        public float ApertureArea
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ApertureArea", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ApertureArea", new Type[] { }, new object[] { })); }
         }
 
         /// <summary>
         /// The telescope's effective aperture diameter (meters)
         /// </summary>
-        public double ApertureDiameter
+        public float ApertureDiameter
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "ApertureDiameter", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "ApertureDiameter", new Type[] { }, new object[] { })); }
         }
 
         /// <summary>
@@ -167,9 +167,9 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// The azimuth at the local horizon of the telescope's current position (degrees, North-referenced, positive East/clockwise).
         /// </summary>
-        public double Azimuth
+        public float Azimuth
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Azimuth", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "Azimuth", new Type[] { }, new object[] { })); }
         }
         /// <summary>
         /// True if this telescope is capable of programmed finding its home position (FindHome() method).
@@ -437,9 +437,9 @@ namespace ASCOM.DriverAccess
         /// The declination (degrees) of the telescope's current equatorial coordinates, in the coordinate system given by the EquatorialSystem property.
         /// Reading the property will raise an error if the value is unavailable. 
         /// </summary>
-        public double Declination
+        public float Declination
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Declination", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "Declination", new Type[] { }, new object[] { })); }
         }
 
         /// <summary>
@@ -458,9 +458,9 @@ namespace ASCOM.DriverAccess
         /// When the slew completes, the TargetRightAscension and TargetDeclination properties should reflect the final (adjusted) destination.
         /// This is not a required feature of this specification, however it is desirable. 
         /// </summary>
-        public double DeclinationRate
+        public float DeclinationRate
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "DeclinationRate", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "DeclinationRate", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "DeclinationRate", new Type[] { }, new object[] { value }); }
         }
 
@@ -485,9 +485,9 @@ namespace ASCOM.DriverAccess
         /// <param name="rightAscension">The destination right ascension (hours).</param>
         /// <param name="declination">The destination declination (degrees, positive North).</param>
         /// <returns>The side of the pier on which the telescope would be on if a slew to the given equatorial coordinates is performed at the current instant of time.</returns>
-        public PierSide DestinationSideOfPier(double rightAscension, double declination)
+        public PierSide DestinationSideOfPier(float rightAscension, float declination)
         {
-            return (PierSide)_memberFactory.CallMember(3, "DestinationSideOfPier", new[] { typeof(double), typeof(double) }, new object[] { rightAscension, declination });
+            return (PierSide)_memberFactory.CallMember(3, "DestinationSideOfPier", new[] { typeof(float), typeof(float) }, new object[] { rightAscension, declination });
         }
 
         /// <summary>
@@ -566,9 +566,9 @@ namespace ASCOM.DriverAccess
 		/// The telescope's focal length, meters
 		/// This property may be used by clients to calculate telescope field of view and plate scale when combined with detector pixel size and geometry. 
         /// </summary>
-        public double FocalLength
+        public float FocalLength
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "FocalLength", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "FocalLength", new Type[] { }, new object[] { })); }
         }
 
         /// <summary>
@@ -585,9 +585,9 @@ namespace ASCOM.DriverAccess
         /// Mounts must start up with a known or default declination guide rate,
         /// and this property must return that known/default guide rate until changed. 
         /// </summary>
-        public double GuideRateDeclination
+        public float GuideRateDeclination
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "GuideRateDeclination", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "GuideRateDeclination", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "GuideRateDeclination", new Type[] { }, new object[] { value }); }
         }
 
@@ -605,9 +605,9 @@ namespace ASCOM.DriverAccess
         /// Mounts must start up with a known or default right ascension guide rate,
         /// and this property must return that known/default guide rate until changed. 
         /// </summary>
-        public double GuideRateRightAscension
+        public float GuideRateRightAscension
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "GuideRateRightAscension", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "GuideRateRightAscension", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "GuideRateRightAscension", new Type[] { }, new object[] { value }); }
         }
 
@@ -654,9 +654,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="axis">The physical axis about which movement is desired</param>
         /// <param name="rate">The rate of motion (deg/sec) about the specified axis</param>
-        public void MoveAxis(TelescopeAxes axis, double rate)
+        public void MoveAxis(TelescopeAxes axis, float rate)
         {
-            _memberFactory.CallMember(3, "MoveAxis", new[] { typeof(TelescopeAxes), typeof(double) }, new object[] { axis, rate });
+            _memberFactory.CallMember(3, "MoveAxis", new[] { typeof(TelescopeAxes), typeof(float) }, new object[] { axis, rate });
         }
 
         /// <summary>
@@ -708,9 +708,9 @@ namespace ASCOM.DriverAccess
         /// in the coordinate system given by the EquatorialSystem property
         /// Reading the property will raise an error if the value is unavailable. 
         /// </summary>
-        public double RightAscension
+        public float RightAscension
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "RightAscension", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "RightAscension", new Type[] { }, new object[] { })); }
         }
 
         /// <summary>
@@ -746,14 +746,14 @@ namespace ASCOM.DriverAccess
         /// 
         /// Use the Tracking property to enable and disable sidereal tracking (if supported). 
         /// </summary>
-        public double RightAscensionRate
+        public float RightAscensionRate
         {
             /*get
             {
 				if (ITelescope != null)
 					return ITelescope.RightAscensionRate;
 				else
-					return (double)objTypeScope.InvokeMember("RightAscensionRate", 
+					return (float)objTypeScope.InvokeMember("RightAscensionRate", 
 						BindingFlags.Default | BindingFlags.GetProperty,
 						null, objScopeLateBound, new object[] { });
             }
@@ -766,7 +766,7 @@ namespace ASCOM.DriverAccess
 						BindingFlags.Default | BindingFlags.SetProperty,
 						null, objScopeLateBound, new object[] { value });
             }*/
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "RightAscensionRate", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "RightAscensionRate", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "RightAscensionRate", new Type[] { }, new object[] { value }); }
         }
 
@@ -811,9 +811,9 @@ namespace ASCOM.DriverAccess
         /// time used for pointing telescopes, and thus must be calculated from the Greenwich Mean
         /// Sidereal time, longitude, nutation in longitude and true ecliptic obliquity. 
         /// </summary>
-        public double SiderealTime
+        public float SiderealTime
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "SiderealTime", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "SiderealTime", new Type[] { }, new object[] { })); }
         }
         
         /// <summary>
@@ -821,9 +821,9 @@ namespace ASCOM.DriverAccess
         /// Setting this property will raise an error if the given value is outside the range -300 through +10000 metres.
         /// Reading the property will raise an error if the value has never been set or is otherwise unavailable. 
         /// </summary>
-        public double SiteElevation
+        public float SiteElevation
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "SiteElevation", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "SiteElevation", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "SiteElevation", new Type[] { }, new object[] { value }); }
         }
 
@@ -832,9 +832,9 @@ namespace ASCOM.DriverAccess
         /// Setting this property will raise an error if the given value is outside the range -90 to +90 degrees.
         /// Reading the property will raise an error if the value has never been set or is otherwise unavailable. 
         /// </summary>
-        public double SiteLatitude
+        public float SiteLatitude
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "SiteLatitude", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "SiteLatitude", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "SiteLatitude", new Type[] { }, new object[] { value }); }
         }
 
@@ -844,9 +844,9 @@ namespace ASCOM.DriverAccess
         /// Reading the property will raise an error if the value has never been set or is otherwise unavailable.
         /// Note that West is negative! 
         /// </summary>
-        public double SiteLongitude
+        public float SiteLongitude
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "SiteLongitude", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "SiteLongitude", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "SiteLongitude", new Type[] { }, new object[] { value }); }
         }
 
@@ -874,9 +874,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="azimuth">Target azimuth (degrees, North-referenced, positive East/clockwise).</param>
         /// <param name="altitude">Target altitude (degrees, positive up)</param>
-        public void SlewToAltAz(double azimuth, double altitude)
+        public void SlewToAltAz(float azimuth, float altitude)
         {
-            _memberFactory.CallMember(3, "SlewToAltAz", new[] { typeof(double), typeof(double) }, new object[] { azimuth, altitude });
+            _memberFactory.CallMember(3, "SlewToAltAz", new[] { typeof(float), typeof(float) }, new object[] { azimuth, altitude });
         }
 
         /// <summary>
@@ -894,9 +894,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="azimuth"></param>
         /// <param name="altitude"></param>
-        public void SlewToAltAzAsync(double azimuth, double altitude)
+        public void SlewToAltAzAsync(float azimuth, float altitude)
         {
-            _memberFactory.CallMember(3, "SlewToAltAzAsync", new[] { typeof(double), typeof(double) }, new object[] { azimuth, altitude });
+            _memberFactory.CallMember(3, "SlewToAltAzAsync", new[] { typeof(float), typeof(float) }, new object[] { azimuth, altitude });
         }
 
         /// <summary>
@@ -910,9 +910,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="rightAscension">The destination right ascension (hours). Copied to Telescope.TargetRightAscension.</param>
         /// <param name="declination">The destination declination (degrees, positive North). Copied to Telescope.TargetDeclination.</param>
-        public void SlewToCoordinates(double rightAscension, double declination)
+        public void SlewToCoordinates(float rightAscension, float declination)
         {
-            _memberFactory.CallMember(3, "SlewToCoordinates", new[] { typeof(double), typeof(double) }, new object[] { rightAscension, declination });
+            _memberFactory.CallMember(3, "SlewToCoordinates", new[] { typeof(float), typeof(float) }, new object[] { rightAscension, declination });
         }
 
         /// <summary>
@@ -929,9 +929,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="rightAscension">The destination right ascension (hours). Copied to Telescope.TargetRightAscension.</param>
         /// <param name="declination">The destination declination (degrees, positive North). Copied to Telescope.TargetDeclination.</param>
-        public void SlewToCoordinatesAsync(double rightAscension, double declination)
+        public void SlewToCoordinatesAsync(float rightAscension, float declination)
         {
-            _memberFactory.CallMember(3, "SlewToCoordinatesAsync", new[] { typeof(double), typeof(double) }, new object[] { rightAscension, declination });
+            _memberFactory.CallMember(3, "SlewToCoordinatesAsync", new[] { typeof(float), typeof(float) }, new object[] { rightAscension, declination });
         }
 
         /// <summary>
@@ -988,9 +988,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="azimuth">Target azimuth (degrees, North-referenced, positive East/clockwise)</param>
         /// <param name="altitude">Target altitude (degrees, positive up)</param>
-        public void SyncToAltAz(double azimuth, double altitude)
+        public void SyncToAltAz(float azimuth, float altitude)
         {
-            _memberFactory.CallMember(3, "SyncToAltAz", new[] { typeof(double), typeof(double) }, new object[] { azimuth, altitude });
+            _memberFactory.CallMember(3, "SyncToAltAz", new[] { typeof(float), typeof(float) }, new object[] { azimuth, altitude });
         }
 
         /// <summary>
@@ -998,9 +998,9 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="rightAscension">The corrected right ascension (hours). Copied to the TargetRightAscension property.</param>
         /// <param name="declination">The corrected declination (degrees, positive North). Copied to the TargetDeclination property.</param>
-        public void SyncToCoordinates(double rightAscension, double declination)
+        public void SyncToCoordinates(float rightAscension, float declination)
         {
-            _memberFactory.CallMember(3, "SyncToCoordinates", new[] { typeof(double), typeof(double) }, new object[] { rightAscension, declination });
+            _memberFactory.CallMember(3, "SyncToCoordinates", new[] { typeof(float), typeof(float) }, new object[] { rightAscension, declination });
         }
 
         /// <summary>
@@ -1018,9 +1018,9 @@ namespace ASCOM.DriverAccess
         /// Setting this property will raise an error if the given value is outside the range -90 to +90 degrees.
         /// Reading the property will raise an error if the value has never been set or is otherwise unavailable. 
         /// </summary>
-        public double TargetDeclination
+        public float TargetDeclination
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "TargetDeclination", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "TargetDeclination", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "TargetDeclination", new Type[] { }, new object[] { value }); }
         }
 
@@ -1029,9 +1029,9 @@ namespace ASCOM.DriverAccess
         /// Setting this property will raise an error if the given value is outside the range 0 to 24 hours.
         /// Reading the property will raise an error if the value has never been set or is otherwise unavailable. 
         /// </summary>
-        public double TargetRightAscension
+        public float TargetRightAscension
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "TargetRightAscension", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "TargetRightAscension", new Type[] { }, new object[] { })); }
             set { _memberFactory.CallMember(2, "TargetRightAscension", new Type[] { }, new object[] { value }); }
         }
 
@@ -1187,11 +1187,11 @@ namespace ASCOM.DriverAccess
 		/// The maximum rate (degrees per second)
 		/// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
 		/// </summary>
-		public double Maximum
+		public float Maximum
 		{
 			get
 			{
-				return (double)_objTypeRate.InvokeMember("Maximum",
+				return (float)_objTypeRate.InvokeMember("Maximum",
 							BindingFlags.Default | BindingFlags.GetProperty,
 							null, _objRateLateBound, new object[] { });
 			}
@@ -1207,11 +1207,11 @@ namespace ASCOM.DriverAccess
 		/// The minimum rate (degrees per second)
 		/// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
 		/// </summary>
-		public double Minimum
+		public float Minimum
 		{
 			get
 			{
-				return (double)_objTypeRate.InvokeMember("Minimum",
+				return (float)_objTypeRate.InvokeMember("Minimum",
 							BindingFlags.Default | BindingFlags.GetProperty,
 							null, _objRateLateBound, new object[] { });
 			}
@@ -1455,7 +1455,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="minimum">The lowest value in the rate range</param>
         /// <param name="maximum">The highest value in the rate range</param>
-        public void Add(double minimum, double maximum)
+        public void Add(float minimum, float maximum)
         {
             m_Rates.Add(new Rate(minimum, maximum));
         }
@@ -1471,14 +1471,14 @@ namespace ASCOM.DriverAccess
     public class Rate : IRate
     {
 
-        double _mDMaximumR = 0;
-        double _mDMinimumR = 0;
+        float _mDMaximumR = 0;
+        float _mDMinimumR = 0;
 
         //'
         //' Default constructor - Internal prevents public creation
         //' of instances. These are values for AxisRates.
 
-        internal Rate(double minimum, double maximum)
+        internal Rate(float minimum, float maximum)
         {
             _mDMaximumR = maximum;
             _mDMinimumR = minimum;
@@ -1489,7 +1489,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Returns the maximum rate value
         /// </summary>
-        public double Maximum
+        public float Maximum
         {
             get { return _mDMaximumR; }
             set { _mDMaximumR = value; }
@@ -1498,7 +1498,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Returns the minimum rate value
         /// </summary>
-        public double Minimum
+        public float Minimum
         {
             get { return _mDMinimumR; }
             set { _mDMinimumR = value; }

@@ -174,7 +174,7 @@ Public Interface IVideoFrame
     ''' </remarks>
     ''' <value>The duration of the frame exposure.</value>
     ''' <exception cref="PropertyNotImplementedException">Must throw an exception if not implemented.</exception>
-    ReadOnly Property ExposureDuration() As Double
+    ReadOnly Property ExposureDuration() As float
 
     ''' <summary>
     ''' Returns the actual exposure start time in the FITS-standard CCYY-MM-DDThh:mm:ss[.sss...] format, if supported.
@@ -370,7 +370,7 @@ Public Interface IVideo
     ''' <p style="color:red"><b>Must be implemented, must not throw an ASCOM.PropertyNotImplementedException.</b></p>
     ''' This value is for information purposes only. The exposure cannot be set directly in seconds, use <see cref="P:ASCOM.DeviceInterface.IVideo.IntegrationRate"/> property to change the exposure. 
     ''' </remarks>
-    ReadOnly Property ExposureMax() As Double
+    ReadOnly Property ExposureMax() As float
 
     ''' <summary>
     ''' The minimum supported exposure (integration time) in seconds.
@@ -379,7 +379,7 @@ Public Interface IVideo
     ''' <p style="color:red"><b>Must be implemented, must not throw an ASCOM.PropertyNotImplementedException.</b></p>
     ''' This value is for information purposes only. The exposure cannot be set directly in seconds, use <see cref="P:ASCOM.DeviceInterface.IVideo.IntegrationRate"/> property to change the exposure. 
     ''' </remarks>
-    ReadOnly Property ExposureMin() As Double
+    ReadOnly Property ExposureMin() As float
 
     ''' <summary>
     ''' The frame rate at which the camera is running. 
@@ -753,14 +753,14 @@ Public Interface IVideo
     '''	</summary>
     '''	<value>The pixel size X if known.</value>
     '''	<exception cref="PropertyNotImplementedException">Must throw exception if not implemented.</exception>
-    ReadOnly Property PixelSizeX() As Double
+    ReadOnly Property PixelSizeX() As float
 
     ''' <summary>
     '''	Returns the height of the CCD chip pixels in microns.
     '''	</summary>
     '''	<value>The pixel size Y if known.</value>
     '''	<exception cref="PropertyNotImplementedException">Must throw exception if not implemented.</exception>
-    ReadOnly Property PixelSizeY() As Double
+    ReadOnly Property PixelSizeY() As float
 
     ''' <summary>
     '''	Reports the bit depth the camera can produce.

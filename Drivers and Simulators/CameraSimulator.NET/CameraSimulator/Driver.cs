@@ -138,41 +138,41 @@ namespace ASCOM.Simulator
         internal List<string> coolerModes = new List<string>() { COOLERMODE_WELL_BEHAVED, COOLERMODE_SINGLE_OVERSHOOT, COOLERMODE_UNDERDAMPED, COOLERMODE_ALWAYS_AT_SETPOINT, COOLERMODE_NEVER_GETS_TO_SETPOINT }; // Collection containing all available cooler modes
 
         // Cooler default characteristics - See void coolerTimer_Elapsed(object sender, ElapsedEventArgs e) for a description of cooler operation
-        private const double COOLER_AMBIENT_TEMPERATURE_DEFAULT = 10; // Ambient temperature (C) when the camera is initially created  
-        private const double COOLER_CCD_SET_POINT_DEFAULT = -20; // Camera initial set point
-        private const double COOLER_DELTAT_MAX_DEFAULT = 40; // Maximum temperature (C) below ambient to which the camera cooler can cool when the cooler is running at 100%
-        private const double COOLER_TIME_TO_SETPOINT_DEFAULT = 30; // Time (seconds) to reach the CCD temperature set point when starting from ambient
-        private const double COOLER_FLUCTUATIONS_DEFAULT = 0.0; // +- Default Size of random CCD temperature fluctuations
-        private const double COOLER_OVERSHOOT_DEFAULT = 5.0; // Size of CCD temperature overshoot
+        private const float COOLER_AMBIENT_TEMPERATURE_DEFAULT = 10; // Ambient temperature (C) when the camera is initially created  
+        private const float COOLER_CCD_SET_POINT_DEFAULT = -20; // Camera initial set point
+        private const float COOLER_DELTAT_MAX_DEFAULT = 40; // Maximum temperature (C) below ambient to which the camera cooler can cool when the cooler is running at 100%
+        private const float COOLER_TIME_TO_SETPOINT_DEFAULT = 30; // Time (seconds) to reach the CCD temperature set point when starting from ambient
+        private const float COOLER_FLUCTUATIONS_DEFAULT = 0.0; // +- Default Size of random CCD temperature fluctuations
+        private const float COOLER_OVERSHOOT_DEFAULT = 5.0; // Size of CCD temperature overshoot
         private const string COOLER_COOLERMODE_DEFAULT = COOLERMODE_WELL_BEHAVED; // Default cooler mode on initial installation
         private const bool COOLER_RESET_TO_AMBIENT_DEFAULT = false; // Will the CCD temperature reset to ambient on connect or behave like a normal cooler where temperature depends on past cooling experience
         private const bool COOLER_POWER_UP_STATE_DEFAULT = false; // Default power up state for the cooler
-        private const double COOLER_UNDERDAMPED_CYCLES_DEFAULT = 5.0;
-        private const double COOLER_SETPOINT_MINIMUM_DEFAULT = -40.0;
+        private const float COOLER_UNDERDAMPED_CYCLES_DEFAULT = 5.0;
+        private const float COOLER_SETPOINT_MINIMUM_DEFAULT = -40.0;
         private const bool COOLER_GRAPH_RANGE_DEFAULT = false;
 
         // Cooler behavioural configuration
-        internal const double COOLER_NEVER_GETS_TO_SETPOINT_REDUCTION_FACTOR = 0.1; // Arbitrary factor to increase the returned CCD temperature so that it never reaches the setpoint. The achieved temperature will be (1.0 - REDUCTION_FACTOR) of the setpoint
-        private const double COOLER_USE_FULL_POWER = 0.75; // Fraction of the cooling curve temperature change above which cooler power will be reported as 100%. e.g. 0.95 means the first 95% of the temperature change will be reported as 100% cooler power and the last 5% as the calculated power.
-        internal const double COOLER_SETPOINT_REACHED_OFFSET = 0.1; // Temperature offset from the setpoint at which the cooler will deem that it has arrived at the setpoint. i.e. when the CCD is within +-COOLER_SETPOINT_REACHED_OFFSET of the setpoint
-        private const double OVERSHOOT_INCREASE_TO_TIME_FRACTION = 0.5; // Fraction of the cooling time during which the overshoot component increases to its configured value
-        private const double OVERSHOOT_DECREASE_TO_TIME_FRACTION = 0.7; // Fraction of the cooling time during which the overshoot diminishes to 0.0. In the remaining fraction of the cooling curve the temperature follows Newton's cooling equation
-        private const double COOLER_UNDERDAMPED_CYCLES_COMPLETE_FRACTION = 1.0;
+        internal const float COOLER_NEVER_GETS_TO_SETPOINT_REDUCTION_FACTOR = 0.1; // Arbitrary factor to increase the returned CCD temperature so that it never reaches the setpoint. The achieved temperature will be (1.0 - REDUCTION_FACTOR) of the setpoint
+        private const float COOLER_USE_FULL_POWER = 0.75; // Fraction of the cooling curve temperature change above which cooler power will be reported as 100%. e.g. 0.95 means the first 95% of the temperature change will be reported as 100% cooler power and the last 5% as the calculated power.
+        internal const float COOLER_SETPOINT_REACHED_OFFSET = 0.1; // Temperature offset from the setpoint at which the cooler will deem that it has arrived at the setpoint. i.e. when the CCD is within +-COOLER_SETPOINT_REACHED_OFFSET of the setpoint
+        private const float OVERSHOOT_INCREASE_TO_TIME_FRACTION = 0.5; // Fraction of the cooling time during which the overshoot component increases to its configured value
+        private const float OVERSHOOT_DECREASE_TO_TIME_FRACTION = 0.7; // Fraction of the cooling time during which the overshoot diminishes to 0.0. In the remaining fraction of the cooling curve the temperature follows Newton's cooling equation
+        private const float COOLER_UNDERDAMPED_CYCLES_COMPLETE_FRACTION = 1.0;
 
         // Cooler simulator variables
-        internal double coolerDeltaTMax; // Maximum difference between ambient temperature and the cooler setpoint
+        internal float coolerDeltaTMax; // Maximum difference between ambient temperature and the cooler setpoint
         internal string coolerMode; // Description of current cooler behaviour
-        internal double coolerTimeToSetPoint; // Length of time (seconds) that the cooler will take getting to the setpoint from ambient
+        internal float coolerTimeToSetPoint; // Length of time (seconds) that the cooler will take getting to the setpoint from ambient
         internal bool coolerResetToAmbient; // Flag to indicate whether the cooler should reset to ambient whenever cooling is set on
-        internal double coolerFluctuation; // Size of random fluctuations at setpoint
-        internal double coolerOvershoot; // Size of cooler overshoot when changing setpoint
+        internal float coolerFluctuation; // Size of random fluctuations at setpoint
+        internal float coolerOvershoot; // Size of cooler overshoot when changing setpoint
         internal bool coolerPowerUpState; // Initial state of the cooler when connected
-        internal double coolerUnderDampedCycles = COOLER_UNDERDAMPED_CYCLES_DEFAULT;
-        internal double coolerSetPointMinimum; // Setpoint below which an exception will be thrown
+        internal float coolerUnderDampedCycles = COOLER_UNDERDAMPED_CYCLES_DEFAULT;
+        internal float coolerSetPointMinimum; // Setpoint below which an exception will be thrown
         internal bool coolerGraphRange; // Flag that determines whether a cooling curve centric or full temperature range graph is displayed
 
-        internal double coolerConstant; // The current value of the Newton's cooling equation constant
-        internal double ccdStartTemperature; // CCD temperature at the start of this cooling cycle - depends on previous cooling history - will not be ambient if the CCD is still warming up from a previous cooling cycle
+        internal float coolerConstant; // The current value of the Newton's cooling equation constant
+        internal float ccdStartTemperature; // CCD temperature at the start of this cooling cycle - depends on previous cooling history - will not be ambient if the CCD is still warming up from a previous cooling cycle
         private DateTime coolerTargetChangedTime; // Time at which the cooler temperature target was last changed
         private bool coolerAtTemperature; // Flag indicating whether the cooler has reached its final temperature
         private static Random randomGenerator; // Ensure that there is only one of these for all camera instances so that fluctuations are not correlated between cameras
@@ -188,11 +188,11 @@ namespace ASCOM.Simulator
         internal short interfaceVersion;
 
         //Pixel
-        internal double pixelSizeX;
-        internal double pixelSizeY;
-        internal double fullWellCapacity;
+        internal float pixelSizeX;
+        internal float pixelSizeY;
+        internal float fullWellCapacity;
         internal int maxADU;
-        internal double electronsPerADU;
+        internal float electronsPerADU;
 
         //CCD
         internal int cameraXSize;
@@ -218,11 +218,11 @@ namespace ASCOM.Simulator
         private bool coolerOn;
         internal bool canSetCcdTemperature;
         internal bool canGetCoolerPower;
-        internal double coolerPower;
-        internal double ccdTemperature;
-        internal double heatSinkTemperature;
-        internal double targetCcdTemperature;
-        internal double setCcdTemperature;
+        internal float coolerPower;
+        internal float ccdTemperature;
+        internal float heatSinkTemperature;
+        internal float targetCcdTemperature;
+        internal float setCcdTemperature;
 
         // Gain
         internal ArrayList gains;
@@ -241,16 +241,16 @@ namespace ASCOM.Simulator
         // Exposure
         internal bool canAbortExposure;
         internal bool canStopExposure;
-        internal double exposureMax;
-        internal double exposureMin;
-        internal double exposureResolution;
-        private double lastExposureDuration;
+        internal float exposureMax;
+        internal float exposureMin;
+        internal float exposureResolution;
+        private float lastExposureDuration;
         private string lastExposureStartTime;
         internal bool hasSubExposure;
-        internal double subExposureInterval;
+        internal float subExposureInterval;
 
         private DateTime exposureStartTime;
-        private double exposureDuration;
+        private float exposureDuration;
         private bool imageReady = false;
 
         // readout
@@ -414,8 +414,8 @@ namespace ASCOM.Simulator
         {
             // Initialise some variables
             TimeSpan currentCoolingCycleTime = DateTime.Now.Subtract(coolerTargetChangedTime); // Calculate how long this cooling cycle has been running
-            double overallTimeToSetpointU = -(Math.Log(COOLER_SETPOINT_REACHED_OFFSET / Math.Abs(ccdStartTemperature - targetCcdTemperature))) / coolerConstant; // Calculate the time required to reach the setpoint from the starting CCD temperature
-            double currentCoolingTimeFractionU = currentCoolingCycleTime.TotalSeconds / overallTimeToSetpointU; // Calculate the current fraction of the cooling cycle based on current cycle time and expected overall cycle time
+            float overallTimeToSetpointU = -(Math.Log(COOLER_SETPOINT_REACHED_OFFSET / Math.Abs(ccdStartTemperature - targetCcdTemperature))) / coolerConstant; // Calculate the time required to reach the setpoint from the starting CCD temperature
+            float currentCoolingTimeFractionU = currentCoolingCycleTime.TotalSeconds / overallTimeToSetpointU; // Calculate the current fraction of the cooling cycle based on current cycle time and expected overall cycle time
             bool cooling = ccdStartTemperature >= targetCcdTemperature; // Determine whether we are cooling down or heating up
 
             if (coolerOn) // The cooler is on and we are cooling or warming to the setpoint or have just arrived at it
@@ -425,7 +425,7 @@ namespace ASCOM.Simulator
                 CalculateCoolerTemperature(currentCoolingTimeFractionU, overallTimeToSetpointU, ccdStartTemperature, targetCcdTemperature, coolerUnderDampedCycles, coolerOvershoot, heatSinkTemperature, coolerDeltaTMax, coolerConstant, coolerMode);
 
                 // Set the cooler power
-                double powerFractionAtSetPoint = (heatSinkTemperature - targetCcdTemperature) / coolerDeltaTMax; // Calculate the power used at the setpoint as a linear fraction of the maximum cooling that the cooler can achieve
+                float powerFractionAtSetPoint = (heatSinkTemperature - targetCcdTemperature) / coolerDeltaTMax; // Calculate the power used at the setpoint as a linear fraction of the maximum cooling that the cooler can achieve
 
                 if (targetCcdTemperature == heatSinkTemperature) // Deal with a special case where the equation below fails
                 {
@@ -448,7 +448,7 @@ namespace ASCOM.Simulator
             }
             else // Cooler is off and we are warning up or at ambient temperature
             {
-                double newtonsEquationTemperature = heatSinkTemperature + (ccdStartTemperature - heatSinkTemperature) * Math.Exp(-coolerConstant * currentCoolingCycleTime.TotalSeconds); // Calculate the "correct" new warmed CCD temperature
+                float newtonsEquationTemperature = heatSinkTemperature + (ccdStartTemperature - heatSinkTemperature) * Math.Exp(-coolerConstant * currentCoolingCycleTime.TotalSeconds); // Calculate the "correct" new warmed CCD temperature
 
                 ccdTemperature = newtonsEquationTemperature - -COOLER_SETPOINT_REACHED_OFFSET; // Set the correct value since we are warming up
                 ccdTemperature = ConstrainToTemperatureRange(ccdTemperature, ccdStartTemperature, heatSinkTemperature); // Constrain the CCD temperature to the required temperature range
@@ -486,16 +486,16 @@ namespace ASCOM.Simulator
         /// <param name="coolerConstant"></param>
         /// <param name="coolerMode"></param>
         /// <remarks>Results are returned in the ccdTemperature and coolerAtTemperature global variables.</remarks>
-        internal void CalculateCoolerTemperature(double currentCoolingTimeFraction, double overallTimeToSetpoint, double ccdStartTemperature, double targetCcdTemperature, double coolerUnderDampedCycles, double coolerOvershoot, double heatSinkTemperature, double coolerDeltaTMax, double coolerConstant, string coolerMode)
+        internal void CalculateCoolerTemperature(float currentCoolingTimeFraction, float overallTimeToSetpoint, float ccdStartTemperature, float targetCcdTemperature, float coolerUnderDampedCycles, float coolerOvershoot, float heatSinkTemperature, float coolerDeltaTMax, float coolerConstant, string coolerMode)
         {
-            double currentOvershootCorrection, currentOvershootFraction;
+            float currentOvershootCorrection, currentOvershootFraction;
 
             // From Newton's cooling equation: NewTemperature = SetPoint + (StartTemperature - SetPoint)*e^-Kt
-            double newtonsEquationTemperature = targetCcdTemperature + (ccdStartTemperature - targetCcdTemperature) * Math.Exp(-coolerConstant * currentCoolingTimeFraction * overallTimeToSetpoint); // Calculate the new CCD temperature from Newton's cooling equation
+            float newtonsEquationTemperature = targetCcdTemperature + (ccdStartTemperature - targetCcdTemperature) * Math.Exp(-coolerConstant * currentCoolingTimeFraction * overallTimeToSetpoint); // Calculate the new CCD temperature from Newton's cooling equation
 
             bool cooling = ccdStartTemperature >= targetCcdTemperature; // Determine whether we are cooling down or heating up
-            double coolerOffsetSigned = cooling ? COOLER_SETPOINT_REACHED_OFFSET : -COOLER_SETPOINT_REACHED_OFFSET; // Set the sign of the cooler offset depending on whether we are cooling or warming
-            double coolerOvershootSigned = cooling ? -coolerOvershoot : coolerOvershoot; // Set the overshoot direction sign correctly : negative when cooling, positive when warming
+            float coolerOffsetSigned = cooling ? COOLER_SETPOINT_REACHED_OFFSET : -COOLER_SETPOINT_REACHED_OFFSET; // Set the sign of the cooler offset depending on whether we are cooling or warming
+            float coolerOvershootSigned = cooling ? -coolerOvershoot : coolerOvershoot; // Set the overshoot direction sign correctly : negative when cooling, positive when warming
 
             // Deal with the special case where start and target temperatures are the same
             if (ccdStartTemperature == targetCcdTemperature)
@@ -533,7 +533,7 @@ namespace ASCOM.Simulator
 
                 case COOLERMODE_UNDERDAMPED:
 
-                    double sineValue = Math.Sin(currentCoolingTimeFraction / COOLER_UNDERDAMPED_CYCLES_COMPLETE_FRACTION * Math.PI * coolerUnderDampedCycles);
+                    float sineValue = Math.Sin(currentCoolingTimeFraction / COOLER_UNDERDAMPED_CYCLES_COMPLETE_FRACTION * Math.PI * coolerUnderDampedCycles);
 
                     // Calculate the fraction of the overshoot temperature that should be applied at this fraction of the cooling cycle
                     if (currentCoolingTimeFraction <= COOLER_UNDERDAMPED_CYCLES_COMPLETE_FRACTION)
@@ -588,9 +588,9 @@ namespace ASCOM.Simulator
                     }
                     else // Calculate the offset that needs to be added to the Newton's curve temperature to generate the configured overshoot at the time of maximum overshoot
                     {
-                        double newtonsTemperatureAtMaximumOvershoot = targetCcdTemperature + (ccdStartTemperature - targetCcdTemperature) * Math.Exp(-coolerConstant * overallTimeToSetpoint * OVERSHOOT_INCREASE_TO_TIME_FRACTION); // Calculate the Newton's curve temperature at the time of maximum overshoot
+                        float newtonsTemperatureAtMaximumOvershoot = targetCcdTemperature + (ccdStartTemperature - targetCcdTemperature) * Math.Exp(-coolerConstant * overallTimeToSetpoint * OVERSHOOT_INCREASE_TO_TIME_FRACTION); // Calculate the Newton's curve temperature at the time of maximum overshoot
 
-                        double offsetFromNewtonsTemperatureAtMaximumOvershoot = targetCcdTemperature + coolerOvershootSigned - newtonsTemperatureAtMaximumOvershoot; // Calculate the offset from Newton's temperature that will create the required overshoot at the time of maximum overshoot
+                        float offsetFromNewtonsTemperatureAtMaximumOvershoot = targetCcdTemperature + coolerOvershootSigned - newtonsTemperatureAtMaximumOvershoot; // Calculate the offset from Newton's temperature that will create the required overshoot at the time of maximum overshoot
 
                         // Calculate the fraction of the overshoot temperature that should be applied at this fraction of the cooling cycle
                         if (currentCoolingTimeFraction <= OVERSHOOT_INCREASE_TO_TIME_FRACTION)
@@ -629,8 +629,8 @@ namespace ASCOM.Simulator
                     break;
 
                 case COOLERMODE_NEVER_GETS_TO_SETPOINT: // Return a higher temperature than calculated from Newton's equation
-                    double adjustedSetpoint = ((targetCcdTemperature - heatSinkTemperature) * (1.0 - COOLER_NEVER_GETS_TO_SETPOINT_REDUCTION_FACTOR)) + heatSinkTemperature; // Calculate the adjusted setpoint temperature that misses the real setpoint by the COOLER_NEVER_GETS_TO_SETPOINT_REDUCTION_FACTOR
-                    double adjustedNewtonsEquationTemperature = adjustedSetpoint + (ccdStartTemperature - adjustedSetpoint) * Math.Exp(-coolerConstant * currentCoolingTimeFraction * overallTimeToSetpoint); // Calculate the "adjusted" Newton's equation temperature
+                    float adjustedSetpoint = ((targetCcdTemperature - heatSinkTemperature) * (1.0 - COOLER_NEVER_GETS_TO_SETPOINT_REDUCTION_FACTOR)) + heatSinkTemperature; // Calculate the adjusted setpoint temperature that misses the real setpoint by the COOLER_NEVER_GETS_TO_SETPOINT_REDUCTION_FACTOR
+                    float adjustedNewtonsEquationTemperature = adjustedSetpoint + (ccdStartTemperature - adjustedSetpoint) * Math.Exp(-coolerConstant * currentCoolingTimeFraction * overallTimeToSetpoint); // Calculate the "adjusted" Newton's equation temperature
 
                     ccdTemperature = adjustedNewtonsEquationTemperature - coolerOffsetSigned; // Calculate the adjusted CCD temperature
                     ccdTemperature = ConstrainToTemperatureRange(ccdTemperature, ccdStartTemperature, adjustedSetpoint);  // Constrain the CCD temperature to the required temperature range
@@ -826,12 +826,12 @@ namespace ASCOM.Simulator
         /// CanControlTemperature is True.
         /// </summary>
         /// <exception>Must throw exception if data unavailable.</exception>
-        public double CCDTemperature
+        public float CCDTemperature
         {
             get
             {
                 CheckConnected("Can't read the CCD temperature when not connected");
-                double returnValue = AddRandomFluctuation(ccdTemperature);
+                float returnValue = AddRandomFluctuation(ccdTemperature);
                 Log.LogMessage("CCDTemperature", "get {0}", returnValue);
                 return returnValue;
             }
@@ -1057,7 +1057,7 @@ namespace ASCOM.Simulator
                     coolerTimer.Elapsed += new ElapsedEventHandler(coolerTimer_Elapsed);
 
                     // Calculate the cooler timer period from the "time to temperature" ensuring at least 200 CCD temperature updates will occur during a full cooling cycle from ambient to maximum cooler temperature
-                    double coolerTimeInterval = Math.Min(coolerTimeToSetPoint * 5.0, 500);
+                    float coolerTimeInterval = Math.Min(coolerTimeToSetPoint * 5.0, 500);
                     coolerTimeInterval = Math.Max(1.0, coolerTimeInterval); // Ensure that the interval time is at least 1ms, 0 is an invalid value
                     coolerTimer.Interval = coolerTimeInterval; // Set the cooler timer interval
 
@@ -1158,7 +1158,7 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <exception cref=" System.Exception">not supported</exception>
         /// <exception cref=" System.Exception">an error condition such as link failure is present</exception>
-        public double CoolerPower
+        public float CoolerPower
         {
             get
             {
@@ -1199,7 +1199,7 @@ namespace ASCOM.Simulator
         /// static during a session.)
         /// </summary>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double ElectronsPerADU
+        public float ElectronsPerADU
         {
             get
             {
@@ -1214,7 +1214,7 @@ namespace ASCOM.Simulator
         /// settings (binning, SetupDialog settings, etc.)
         /// </summary>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double FullWellCapacity
+        public float FullWellCapacity
         {
             get
             {
@@ -1244,13 +1244,13 @@ namespace ASCOM.Simulator
         /// manufacturers) in degrees Celsius. Only valid if CanControlTemperature is True.
         /// </summary>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double HeatSinkTemperature
+        public float HeatSinkTemperature
         {
             get
             {
                 CheckConnected("Can't read HeatSinkTemperature when not connected");
                 CheckCapabilityEnabled("HeatSinkTemperature", canSetCcdTemperature);
-                double returnValue = AddRandomFluctuation(heatSinkTemperature);
+                float returnValue = AddRandomFluctuation(heatSinkTemperature);
                 Log.LogMessage("HeatSinkTemperature", "get {0}", returnValue);
                 return returnValue;
             }
@@ -1326,7 +1326,7 @@ namespace ASCOM.Simulator
         /// StartExposure it will have no effect on the size of this array. This property
         /// should only be used from scripts due to the extremely high memory utilization on
         /// large image arrays (26 bytes per pixel). Pixels values should be in Short, int,
-        /// or Double format.
+        /// or float format.
         ///
         /// For color or multispectral cameras, will produce an array of NumX * NumY *
         /// NumPlanes.  If the application cannot handle multispectral images, it should use
@@ -1418,7 +1418,7 @@ namespace ASCOM.Simulator
         /// precision, etc.
         /// </summary>
         /// <exception cref=" System.Exception">Must throw exception if not supported or no exposure has been taken</exception>
-        public double LastExposureDuration
+        public float LastExposureDuration
         {
             get
             {
@@ -1536,7 +1536,7 @@ namespace ASCOM.Simulator
         /// driver.
         /// </summary>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double PixelSizeX
+        public float PixelSizeX
         {
             get
             {
@@ -1551,7 +1551,7 @@ namespace ASCOM.Simulator
         /// driver.
         /// </summary>
         /// <exception cref=" System.Exception">Must throw exception if data unavailable.</exception>
-        public double PixelSizeY
+        public float PixelSizeY
         {
             get
             {
@@ -1641,7 +1641,7 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <exception cref=" System.Exception">Must throw exception if command not successful.</exception>
         /// <exception cref=" System.Exception">Must throw exception if CanSetCCDTemperature is False.</exception>
-        public double SetCCDTemperature
+        public float SetCCDTemperature
         {
             get
             {
@@ -1751,7 +1751,7 @@ namespace ASCOM.Simulator
         /// <exception cref=" System.Exception">NumX, NumY, XBin, YBin, StartX, StartY, or Duration parameters are invalid.</exception>
         /// <exception cref=" System.Exception">CanAsymmetricBin is False and BinX != BinY</exception>
         /// <exception cref=" System.Exception">the exposure cannot be started for any reason, such as a hardware or communications error</exception>
-        public void StartExposure(double Duration, bool Light)
+        public void StartExposure(float Duration, bool Light)
         {
             Log.LogMessage("StartExposure", "Duration {0}, Light {1}", Duration, Light);
             CheckConnected("Can't set StartExposure when not connected");
@@ -2080,7 +2080,7 @@ namespace ASCOM.Simulator
         /// Returns the maximum exposure time in seconds supported by <see cref="StartExposure"/>. 
         /// </summary>
         /// <value>The max exposure.</value>
-        public double ExposureMax
+        public float ExposureMax
         {
             get
             {
@@ -2095,7 +2095,7 @@ namespace ASCOM.Simulator
         /// Returns the minimum exposure time in seconds supported by <see cref="StartExposure"/>. 
         /// </summary>
         /// <value>The min exposure.</value>
-        public double ExposureMin
+        public float ExposureMin
         {
             get
             {
@@ -2110,7 +2110,7 @@ namespace ASCOM.Simulator
         /// Returns the smallest increment of exposure time supported by <see cref="StartExposure"/>.
         /// </summary>
         /// <value>The exposure resolution.</value>
-        public double ExposureResolution
+        public float ExposureResolution
         {
             get
             {
@@ -2489,7 +2489,7 @@ namespace ASCOM.Simulator
         /// Camera.SubExposureDuration can be used to specify that multiple exposures be aggregated by the camera into a single composite exposure
         /// </summary>
         /// <value>The sub exposure duration (s).</value>
-        public double SubExposureDuration
+        public float SubExposureDuration
         {
             get
             {
@@ -2505,7 +2505,7 @@ namespace ASCOM.Simulator
                 CheckConnected("SubExposureDuration");
                 CheckCapabilityEnabled("SubExposureDuration", hasSubExposure);
                 Log.LogMessage("SubExposureDuration", $"set {value}");
-                if (value < double.Epsilon) throw new InvalidValueException($"The sub exposure duration must not be negative or zero: {value}");
+                if (value < float.Epsilon) throw new InvalidValueException($"The sub exposure duration must not be negative or zero: {value}");
                 subExposureInterval = value;
             }
         }
@@ -2658,16 +2658,16 @@ namespace ASCOM.Simulator
                 profile.DeviceType = "Camera";
 
                 // Read cooler configuration properties
-                heatSinkTemperature = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_CoolerAmbientTemperature, "Cooler", COOLER_AMBIENT_TEMPERATURE_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
-                coolerDeltaTMax = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_CoolerDeltaTMax, "Cooler", COOLER_DELTAT_MAX_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                heatSinkTemperature = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_CoolerAmbientTemperature, "Cooler", COOLER_AMBIENT_TEMPERATURE_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                coolerDeltaTMax = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_CoolerDeltaTMax, "Cooler", COOLER_DELTAT_MAX_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
                 coolerMode = profile.GetValue(s_csDriverID, STR_CoolerMode, "Cooler", COOLER_COOLERMODE_DEFAULT.ToString(CultureInfo.InvariantCulture));
-                coolerTimeToSetPoint = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_CoolerTimeToSetPoint, "Cooler", COOLER_TIME_TO_SETPOINT_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                coolerTimeToSetPoint = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_CoolerTimeToSetPoint, "Cooler", COOLER_TIME_TO_SETPOINT_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
                 coolerResetToAmbient = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_CoolerResetToAmbient, "Cooler", COOLER_RESET_TO_AMBIENT_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
-                coolerFluctuation = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_CoolerFluctuations, "Cooler", COOLER_FLUCTUATIONS_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
-                coolerOvershoot = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_CoolerOvershoot, "Cooler", COOLER_OVERSHOOT_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                coolerFluctuation = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_CoolerFluctuations, "Cooler", COOLER_FLUCTUATIONS_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                coolerOvershoot = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_CoolerOvershoot, "Cooler", COOLER_OVERSHOOT_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
                 coolerPowerUpState = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_CoolerPowerUpState, "Cooler", COOLER_POWER_UP_STATE_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
-                coolerUnderDampedCycles = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_CoolerUnderDampedCycles, "Cooler", COOLER_UNDERDAMPED_CYCLES_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
-                coolerSetPointMinimum = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_CoolerSetPointMinimum, "Cooler", COOLER_SETPOINT_MINIMUM_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                coolerUnderDampedCycles = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_CoolerUnderDampedCycles, "Cooler", COOLER_UNDERDAMPED_CYCLES_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
+                coolerSetPointMinimum = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_CoolerSetPointMinimum, "Cooler", COOLER_SETPOINT_MINIMUM_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
                 coolerGraphRange = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_CoolerGraphRange, "Cooler", COOLER_GRAPH_RANGE_DEFAULT.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
 
                 // Read testing properties - not settable through the Setup GUI
@@ -2677,11 +2677,11 @@ namespace ASCOM.Simulator
                 Log.Enabled = Convert.ToBoolean(profile.GetValue(s_csDriverID, "Trace", string.Empty, "false"), CultureInfo.InvariantCulture);
                 interfaceVersion = Convert.ToInt16(profile.GetValue(s_csDriverID, STR_InterfaceVersion, string.Empty, "3"), CultureInfo.InvariantCulture);
                 startupDelay = Convert.ToDecimal(profile.GetValue(s_csDriverID, STR_StartupDelay, string.Empty, "0.0"), CultureInfo.InvariantCulture);
-                pixelSizeX = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_PixelSizeX, string.Empty, "5.6"), CultureInfo.InvariantCulture);
-                pixelSizeY = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_PixelSizeY, string.Empty, "5.6"), CultureInfo.InvariantCulture);
-                fullWellCapacity = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_FullWellCapacity, string.Empty, "30000"), CultureInfo.InvariantCulture);
+                pixelSizeX = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_PixelSizeX, string.Empty, "5.6"), CultureInfo.InvariantCulture);
+                pixelSizeY = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_PixelSizeY, string.Empty, "5.6"), CultureInfo.InvariantCulture);
+                fullWellCapacity = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_FullWellCapacity, string.Empty, "30000"), CultureInfo.InvariantCulture);
                 maxADU = Convert.ToInt32(profile.GetValue(s_csDriverID, STR_MaxADU, string.Empty, "65535"), CultureInfo.InvariantCulture);
-                electronsPerADU = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_ElectronsPerADU, string.Empty, "0.8"), CultureInfo.InvariantCulture);
+                electronsPerADU = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_ElectronsPerADU, string.Empty, "0.8"), CultureInfo.InvariantCulture);
 
                 cameraXSize = Convert.ToInt32(profile.GetValue(s_csDriverID, STR_CameraXSize, string.Empty, "800"), CultureInfo.InvariantCulture);
                 cameraYSize = Convert.ToInt32(profile.GetValue(s_csDriverID, STR_CameraYSize, string.Empty, "600"), CultureInfo.InvariantCulture);
@@ -2699,13 +2699,13 @@ namespace ASCOM.Simulator
                 hasCooler = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_HasCooler, string.Empty, "true"), CultureInfo.InvariantCulture);
                 canSetCcdTemperature = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_CanSetCCDTemperature, string.Empty, "false"), CultureInfo.InvariantCulture);
                 canGetCoolerPower = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_CanGetCoolerPower, string.Empty, "false"), CultureInfo.InvariantCulture);
-                setCcdTemperature = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_SetCCDTemperature, string.Empty, "-10"), CultureInfo.InvariantCulture);
+                setCcdTemperature = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_SetCCDTemperature, string.Empty, "-10"), CultureInfo.InvariantCulture);
 
                 canAbortExposure = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_CanAbortExposure, string.Empty, "true"), CultureInfo.InvariantCulture);
                 canStopExposure = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_CanStopExposure, string.Empty, "true"), CultureInfo.InvariantCulture);
-                exposureMax = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_MaxExposure, string.Empty, "3600"), CultureInfo.InvariantCulture);
-                exposureMin = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_MinExposure, string.Empty, "0.001"), CultureInfo.InvariantCulture);
-                exposureResolution = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_ExposureResolution, string.Empty, "0.001"), CultureInfo.InvariantCulture);
+                exposureMax = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_MaxExposure, string.Empty, "3600"), CultureInfo.InvariantCulture);
+                exposureMin = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_MinExposure, string.Empty, "0.001"), CultureInfo.InvariantCulture);
+                exposureResolution = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_ExposureResolution, string.Empty, "0.001"), CultureInfo.InvariantCulture);
 
                 string fullPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly((GetType())).Location);
                 imagePath = profile.GetValue(s_csDriverID, STR_ImagePath, string.Empty, Path.Combine(fullPath, @"m42-800x600.jpg"));
@@ -2734,7 +2734,7 @@ namespace ASCOM.Simulator
 
                 // Get sub exposure configuration
                 hasSubExposure = Convert.ToBoolean(profile.GetValue(s_csDriverID, STR_HasSubExposure, string.Empty, "false"), CultureInfo.InvariantCulture);
-                subExposureInterval = Convert.ToDouble(profile.GetValue(s_csDriverID, STR_SubExposureInterval, string.Empty, "1.5"), CultureInfo.InvariantCulture);
+                subExposureInterval = Convert.Tofloat(profile.GetValue(s_csDriverID, STR_SubExposureInterval, string.Empty, "1.5"), CultureInfo.InvariantCulture);
 
                 string[] offsetStringArray = profile.GetValue(s_csDriverID, STR_Offsets, string.Empty, "Offset for ISO 100,Offset for ISO 200,Offset for ISO 400,Offset for ISO 800,Offset for ISO 1600").Split(',');
                 offsets = new ArrayList();
@@ -2898,13 +2898,13 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="temperature">The temperature to which the random fluctuation must be applied</param>
         /// <returns>The supplied temperature ± a random fluctuation</returns>
-        private double AddRandomFluctuation(double temperature)
+        private float AddRandomFluctuation(float temperature)
         {
-            double returnValue = temperature; // Initialise the return value with the supplied temperature
+            float returnValue = temperature; // Initialise the return value with the supplied temperature
 
             if (coolerFluctuation != 0.0) // Some fluctuation in returned value is required
             {
-                double fluctuation = (randomGenerator.NextDouble() * 2.0 * coolerFluctuation) - coolerFluctuation; // Calculate the fluctuation by translating the Random.NextDouble() value (range 0.0 to +1.0) into the range -coolerFluctuation to +coolerFluctuation
+                float fluctuation = (randomGenerator.Nextfloat() * 2.0 * coolerFluctuation) - coolerFluctuation; // Calculate the fluctuation by translating the Random.Nextfloat() value (range 0.0 to +1.0) into the range -coolerFluctuation to +coolerFluctuation
                 returnValue = temperature + fluctuation; // Calculate the new temperature including the random fluctuation
             }
 
@@ -2946,7 +2946,7 @@ namespace ASCOM.Simulator
             Log.LogMessage("InitialiseSimulator", "Set camera temperature to ambient: {0} with cooler constant {1} - Cooler mode: {2}", heatSinkTemperature, coolerConstant, coolerMode);
         }
 
-        private delegate int PixelProcess(double value);
+        private delegate int PixelProcess(float value);
 
         private void FillImageArray()
         {
@@ -2963,9 +2963,9 @@ namespace ASCOM.Simulator
             if (HasShutter && darkFrame)
                 shutterProcess = new ShutterProcess(DarkData);
 
-            double readNoise = 3;
+            float readNoise = 3;
             // dark current 1 ADU/sec at 0C doubling for every 5C increase
-            double darkCurrent = Math.Pow(2, ccdTemperature / 5);
+            float darkCurrent = Math.Pow(2, ccdTemperature / 5);
             darkCurrent *= lastExposureDuration;
             // add read noise, should be in quadrature
             darkCurrent += readNoise;
@@ -3120,7 +3120,7 @@ namespace ASCOM.Simulator
                         {
                             for (int x = 0; x < numX; x++)
                             {
-                                double s;
+                                float s;
                                 s = shutterProcess((x + startX) * binX, (y + startY) * binY, 0);
                                 imageArrayColour[x, y, 0] = pixelProcess(s + darkCurrent);
                                 s = shutterProcess((x + startX) * binX, (y + startY) * binY, 1);
@@ -3136,7 +3136,7 @@ namespace ASCOM.Simulator
                         {
                             for (int y = 0; y < numY; y++)
                             {
-                                double s;
+                                float s;
                                 s = shutterProcess((x + startX) * binX, (y + startY) * binY, 0);
                                 imageArray[x, y] = pixelProcess(s + darkCurrent);
                             }
@@ -3148,20 +3148,20 @@ namespace ASCOM.Simulator
 
         private Random R = new Random();
 
-        private int Poisson(double lambda)
+        private int Poisson(float lambda)
         {
             // use normal distribution for large values
             // because Poisson falls over and gets slow
             if (lambda > 50)
                 return Math.Min((int)BoxMuller(lambda, Math.Sqrt(lambda)), maxADU);
 
-            double L = Math.Exp(-lambda);
-            double p = 1.0;
+            float L = Math.Exp(-lambda);
+            float p = 1.0;
             int k = 0;
             do
             {
                 k++;
-                p *= R.NextDouble();
+                p *= R.Nextfloat();
             }
             while (p > L);
             return Math.Min(k - 1, maxADU);
@@ -3173,13 +3173,13 @@ namespace ASCOM.Simulator
         /// <param name="m">mean</param>
         /// <param name="s">standard deviation</param>
         /// <returns></returns>
-        private double BoxMuller(double m, double s)
+        private float BoxMuller(float m, float s)
         {
-            double xa, xb, w, ya;
+            float xa, xb, w, ya;
             do
             {
-                xa = 2.0 * R.NextDouble() - 1.0;
-                xb = 2.0 * R.NextDouble() - 1.0;
+                xa = 2.0 * R.Nextfloat() - 1.0;
+                xb = 2.0 * R.Nextfloat() - 1.0;
                 w = xa * xa + xb * xb;
             } while (w >= 1.0);
 
@@ -3188,7 +3188,7 @@ namespace ASCOM.Simulator
             return (m + ya * s);
         }
 
-        private int NoNoise(double value)
+        private int NoNoise(float value)
         {
             return Convert.ToInt32(Math.Min(value, maxADU));
         }
@@ -3200,7 +3200,7 @@ namespace ASCOM.Simulator
         /// <param name="y"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        private delegate double ShutterProcess(int x, int y, int p);
+        private delegate float ShutterProcess(int x, int y, int p);
 
         /// <summary>
         /// returns the sum of the image data for binX x BinY pixels
@@ -3208,9 +3208,9 @@ namespace ASCOM.Simulator
         /// <param name="x">left of bin area</param>
         /// <param name="y">top of bin area</param>
         /// <returns></returns>
-        private double BinData(int x, int y, int p)
+        private float BinData(int x, int y, int p)
         {
-            double s = 0;
+            float s = 0;
             for (int k = 0; k < binY; k++)
             {
                 for (int l = 0; l < binX; l++)
@@ -3221,7 +3221,7 @@ namespace ASCOM.Simulator
             return s * lastExposureDuration;
         }
 
-        private double DarkData(int x, int y, int p)
+        private float DarkData(int x, int y, int p)
         {
             return 5.0 * binX * binY;
         }
@@ -3423,9 +3423,9 @@ namespace ASCOM.Simulator
         /// <param name="FirstBound">First temperature range bound</param>
         /// <param name="SecondBound">Second temperature range bound</param>
         /// <returns>Constrained temperature</returns>
-        private double ConstrainToTemperatureRange(double Temperature, double FirstBound, double SecondBound)
+        private float ConstrainToTemperatureRange(float Temperature, float FirstBound, float SecondBound)
         {
-            double retVal;
+            float retVal;
             retVal = Temperature; // Initialise the return value with the supplied temperature
 
             if (FirstBound == SecondBound) // The bounds are identical so only one possible valid value
@@ -3494,9 +3494,9 @@ namespace ASCOM.Simulator
         /// time spent inching towards the exact value. The value of 0.1sec has been determined experimentally to provide realistic behaviour.
         ///    
         ///</remarks>
-        internal double CalculateCoolerConstant(double TimeToSetpoint, double coolerDeltaTMax)
+        internal float CalculateCoolerConstant(float TimeToSetpoint, float coolerDeltaTMax)
         {
-            double coolingConstant = -Math.Log(COOLER_SETPOINT_REACHED_OFFSET / coolerDeltaTMax) / TimeToSetpoint;
+            float coolingConstant = -Math.Log(COOLER_SETPOINT_REACHED_OFFSET / coolerDeltaTMax) / TimeToSetpoint;
             Log.LogMessage("CoolingConstant", "Cooler setpoint offset: {0:0.0}, Maximum delta T: {1:+0.00;-0.00;' '0.00}, Time to setpoint: {2:0.0}, Cooling constant: {3}", COOLER_SETPOINT_REACHED_OFFSET, coolerDeltaTMax, TimeToSetpoint, coolingConstant);
 
             return coolingConstant;
@@ -3515,7 +3515,7 @@ namespace ASCOM.Simulator
             }
         }
 
-        private void CheckRange(string identifier, double min, double value, double max)
+        private void CheckRange(string identifier, float min, float value, float max)
         {
             if (value > max || value < min)
             {

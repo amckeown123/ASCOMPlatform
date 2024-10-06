@@ -49,18 +49,10 @@ namespace ASCOM
         /// <summary>
         /// Added to keep Code analysis happy, please don't use it.
         /// </summary>
-        public NotImplementedException() : base("Unspecified", ErrorCodes.NotImplemented)
+        public NotImplementedException(SerializationInfo info, StreamingContext context) : base("Unspecified", ErrorCodes.NotImplemented)
         {
         }
 
-        /// <summary>
-        /// Added to keep Code Analysis happy
-        /// </summary>
-        /// <param name = "info">Serialisation information</param>
-        /// <param name = "context">Streaming context.</param>
-        protected NotImplementedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
 
         /// <summary>
         /// Create an exception using the supplied message text

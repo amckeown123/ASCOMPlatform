@@ -253,10 +253,10 @@ Namespace Interfaces
         <DispId(1)> Sub WaitForMilliseconds(ByVal Milliseconds As Integer)
 
         ''' <summary>
-        ''' Convert sexagesimal degrees to binary double-precision degrees
+        ''' Convert sexagesimal degrees to binary float-precision degrees
         ''' </summary>
         ''' <param name="DMS">The sexagesimal input string (degrees)</param>
-        ''' <returns>The double-precision binary value (degrees) represented by the sexagesimal input</returns>
+        ''' <returns>The float-precision binary value (degrees) represented by the sexagesimal input</returns>
         ''' <remarks><para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just 
         ''' about anything that resembles sexagesimal. Thee way they operate is to first separate the input string 
         ''' into numeric "tokens", strings consisting only of the numerals 0-9, plus and minus, and period. All other 
@@ -270,13 +270,13 @@ Namespace Interfaces
         ''' would be legal. So 00:30.5:30 would convert to 1.0 unit. </para>
         ''' <para>Note that plain units, for example 23.128734523 are acceptable to the method. </para>
         ''' </remarks>
-        <DispId(2)> Function DMSToDegrees(ByVal DMS As String) As Double
+        <DispId(2)> Function DMSToDegrees(ByVal DMS As String) As float
 
         ''' <summary>
-        ''' Convert sexagesimal hours to binary double-precision hours
+        ''' Convert sexagesimal hours to binary float-precision hours
         ''' </summary>
         ''' <param name="HMS">The sexagesimal input string (hours)</param>
-        ''' <returns>The double-precision binary value (hours) represented by the sexagesimal input </returns>
+        ''' <returns>The float-precision binary value (hours) represented by the sexagesimal input </returns>
         ''' <remarks>
         ''' <para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just about 
         ''' anything that resembles sexagesimal. Thee way they operate is to first separate the input string into 
@@ -293,13 +293,13 @@ Namespace Interfaces
         ''' fractional parts, but it would be legal. So 00:30.5:30 would convert to 1.0 unit. Note that plain units, 
         ''' for example 23.128734523 are acceptable to the method. </para>
         ''' </remarks>
-        <DispId(3)> Function HMSToHours(ByVal HMS As String) As Double
+        <DispId(3)> Function HMSToHours(ByVal HMS As String) As float
 
         ''' <summary>
-        ''' Convert sexagesimal hours to binary double-precision hours
+        ''' Convert sexagesimal hours to binary float-precision hours
         ''' </summary>
         ''' <param name="HMS">The sexagesimal input string (hours)</param>
-        ''' <returns>The double-precision binary value (hours) represented by the sexagesimal input</returns>
+        ''' <returns>The float-precision binary value (hours) represented by the sexagesimal input</returns>
         ''' <remarks>
         ''' <para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just about 
         ''' anything that resembles sexagesimal. Thee way they operate is to first separate the input string into 
@@ -316,7 +316,7 @@ Namespace Interfaces
         ''' fractional parts, but it would be legal. So 00:30.5:30 would convert to 1.0 unit. Note that plain units, 
         ''' for example 23.128734523 are acceptable to the method. </para>
         ''' </remarks>
-        <DispId(4)> Function HMSToDegrees(ByVal HMS As String) As Double
+        <DispId(4)> Function HMSToDegrees(ByVal HMS As String) As float
 
         ''' <summary>
         '''  Convert degrees to sexagesimal degrees, minutes and seconds with specified second decimal places
@@ -329,10 +329,10 @@ Namespace Interfaces
         ''' <returns>Sexagesimal representation of degrees input value, degrees, minutes, and seconds</returns>
         ''' <remarks>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+        ''' "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        <DispId(5)> Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String
+        <DispId(5)> Overloads Function DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String
 
         ''' <summary>
         ''' Convert hours to sexagesimal hours, minutes, and seconds with specified number of second decimal places
@@ -346,7 +346,7 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' </remarks>
-        <DispId(6)> Overloads Function HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String
+        <DispId(6)> Overloads Function HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String
 
         ''' <summary>
         ''' Convert degrees to sexagesimal degrees and minutes with the specified number of minute decimal places
@@ -359,7 +359,7 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' </remarks>
-        <DispId(7)> Overloads Function DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String
+        <DispId(7)> Overloads Function DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String
 
         ''' <summary>
         ''' Convert hours to sexagesimal hours and minutes with supplied number of minute decimal places
@@ -372,7 +372,7 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' </remarks>
-        <DispId(8)> Overloads Function HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String
+        <DispId(8)> Overloads Function HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String
 
         ''' <summary>
         ''' Convert degrees to sexagesimal hours, minutes, and seconds with the specified number of second decimal places
@@ -386,7 +386,7 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
         ''' </remarks>
-        <DispId(9)> Overloads Function DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String
+        <DispId(9)> Overloads Function DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String
 
         ''' <summary>
         ''' Convert degrees to sexagesimal hours and minutes with supplied number of minute decimal places
@@ -399,7 +399,7 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
         ''' </remarks>
-        <DispId(10)> Overloads Function DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String
+        <DispId(10)> Overloads Function DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String
 
         ''' <summary>
         ''' Current Platform version in m.n form
@@ -439,7 +439,7 @@ Namespace Interfaces
         ''' <returns>UTC offset (hours) for the computer's clock</returns>
         ''' <remarks>The offset is in hours, such that UTC = local + offset. The offset includes any daylight/summer time that may be 
         ''' in effect.</remarks>
-        <DispId(15)> ReadOnly Property TimeZoneOffset() As Double
+        <DispId(15)> ReadOnly Property TimeZoneOffset() As float
 
         ''' <summary>
         ''' The current UTC Date
@@ -453,7 +453,7 @@ Namespace Interfaces
         ''' </summary>
         ''' <returns>Current Julian date</returns>
         ''' <remarks>This is quantised to the second in the COM component but to a small decimal fraction in the .NET component</remarks>
-        <DispId(17)> ReadOnly Property JulianDate() As Double
+        <DispId(17)> ReadOnly Property JulianDate() As float
 
         ''' <summary>
         ''' Convert local-time Date to Julian date
@@ -461,7 +461,7 @@ Namespace Interfaces
         ''' <param name="LocalDate">Date in local-time</param>
         ''' <returns>Julian date</returns>
         ''' <remarks>Julian dates are always in UTC </remarks>
-        <DispId(18)> Function DateLocalToJulian(ByVal LocalDate As Date) As Double
+        <DispId(18)> Function DateLocalToJulian(ByVal LocalDate As Date) As float
 
         ''' <summary>
         ''' Convert Julian date to local-time Date
@@ -469,7 +469,7 @@ Namespace Interfaces
         ''' <param name="JD">Julian date to convert</param>
         ''' <returns>Date in local-time for the given Julian date</returns>
         ''' <remarks>Julian dates are always in UTC</remarks>
-        <DispId(19)> Function DateJulianToLocal(ByVal JD As Double) As Date
+        <DispId(19)> Function DateJulianToLocal(ByVal JD As float) As Date
 
         ''' <summary>
         ''' Convert UTC Date to Julian date
@@ -477,7 +477,7 @@ Namespace Interfaces
         ''' <param name="UTCDate">UTC date to convert</param>
         ''' <returns>Julian date</returns>
         ''' <remarks>Julian dates are always in UTC </remarks>
-        <DispId(20)> Function DateUTCToJulian(ByVal UTCDate As Date) As Double
+        <DispId(20)> Function DateUTCToJulian(ByVal UTCDate As Date) As float
 
         ''' <summary>
         ''' Convert Julian date to UTC Date
@@ -485,7 +485,7 @@ Namespace Interfaces
         ''' <param name="JD">Julian date</param>
         ''' <returns>Date in UTC for the given Julian date</returns>
         ''' <remarks>Julian dates are always in UTC </remarks>
-        <DispId(21)> Function DateJulianToUTC(ByVal JD As Double) As Date
+        <DispId(21)> Function DateJulianToUTC(ByVal JD As float) As Date
 
         ''' <summary>
         ''' Convert UTC Date to local-time Date
@@ -542,7 +542,7 @@ Namespace Interfaces
         ''' <para>This overload is not available through COM, please use "Choose(ByVal DriverProgID As String)"
         ''' with an empty string parameter to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToDMS(ByVal Degrees As Double) As String
+        Overloads Function DegreesToDMS(ByVal Degrees As float) As String
         ''' <summary>
         '''  Convert degrees to sexagesimal degrees, minutes and seconds with with default minute and second delimiters MM' SS" 
         ''' </summary>
@@ -553,10 +553,10 @@ Namespace Interfaces
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
         ''' characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+        ''' "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String) As String
+        Overloads Function DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String) As String
         ''' <summary>
         '''  Convert degrees to sexagesimal degrees, minutes and seconds with default second delimiter SS" 
         ''' </summary>
@@ -568,10 +568,10 @@ Namespace Interfaces
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
         ''' characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+        ''' "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String) As String
+        Overloads Function DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String) As String
         ''' <summary>
         '''  Convert degrees to sexagesimal degrees, minutes and seconds
         ''' </summary>
@@ -584,10 +584,10 @@ Namespace Interfaces
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
         ''' characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+        ''' "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String
+        Overloads Function DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String
 
         ''' <summary>
         ''' Convert hours to sexagesimal hours, minutes, and seconds with default delimiters HH:MM:SS
@@ -597,10 +597,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        ''' "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function HoursToHMS(ByVal Hours As Double) As String
+        Overloads Function HoursToHMS(ByVal Hours As float) As String
         ''' <summary>
         ''' Convert hours to sexagesimal hours, minutes, and seconds with default minutes and seconds delimters MM:SS
         ''' </summary>
@@ -610,10 +610,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        ''' "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String) As String
+        Overloads Function HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String) As String
         ''' <summary>
         ''' Convert hours to sexagesimal hours, minutes, and seconds with default second delimiter of null string
         ''' </summary>
@@ -624,10 +624,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        ''' "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String) As String
+        Overloads Function HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String) As String
         ''' <summary>
         ''' Convert hours to sexagesimal hours, minutes, and seconds
         ''' </summary>
@@ -639,10 +639,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        ''' "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String
+        Overloads Function HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String
 
         ''' <summary>
         ''' Convert degrees to sexagesimal degrees and minutes with default delimiters DD° MM'
@@ -652,10 +652,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToDM(ByVal Degrees As Double) As String
+        Overloads Function DegreesToDM(ByVal Degrees As float) As String
         ''' <summary>
         ''' Convert degrees to sexagesimal degrees and minutes with the default minutes delimeter MM'
         ''' </summary>
@@ -665,10 +665,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String) As String
+        Overloads Function DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String) As String
         ''' <summary>
         ''' Convert degrees to sexagesimal degrees and minutes
         ''' </summary>
@@ -679,10 +679,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String) As String
+        Overloads Function DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String) As String
 
         ''' <summary>
         ''' Convert hours to sexagesimal hours and minutes with default delimiters HH:MM
@@ -692,10 +692,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with an suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function HoursToHM(ByVal Hours As Double) As String
+        Overloads Function HoursToHM(ByVal Hours As float) As String
         ''' <summary>
         ''' Convert hours to sexagesimal hours and minutes with default minutes delimiter MM (null string)
         ''' </summary>
@@ -705,10 +705,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with an suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String) As String
+        Overloads Function HoursToHM(ByVal Hours As float, ByVal HrsDelim As String) As String
         ''' <summary>
         ''' Convert hours to sexagesimal hours and minutes
         ''' </summary>
@@ -719,10 +719,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with an suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String) As String
+        Overloads Function HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String) As String
 
         ''' <summary>
         ''' Convert degrees to sexagesimal hours, minutes, and seconds with default delimters of HH:MM:SS
@@ -732,10 +732,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself.</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        ''' "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToHMS(ByVal Degrees As Double) As String
+        Overloads Function DegreesToHMS(ByVal Degrees As float) As String
         ''' <summary>
         ''' Convert degrees to sexagesimal hours, minutes, and seconds with the default second and minute delimiters of MM:SS
         ''' </summary>
@@ -745,10 +745,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        ''' "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String) As String
+        Overloads Function DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String) As String
         ''' <summary>
         ''' Convert degrees to sexagesimal hours, minutes, and seconds with the default second delimiter SS (null string)
         ''' </summary>
@@ -759,10 +759,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        ''' "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String) As String
+        Overloads Function DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String) As String
         ''' <summary>
         ''' Convert degrees to sexagesimal hours, minutes, and seconds
         ''' </summary>
@@ -774,10 +774,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+        ''' "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String
+        Overloads Function DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String
 
         ''' <summary>
         ''' Convert degrees to sexagesimal hours and minutes with default delimiters HH:MM
@@ -787,10 +787,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToHM(ByVal Degrees As Double) As String
+        Overloads Function DegreesToHM(ByVal Degrees As float) As String
         ''' <summary>
         ''' Convert degrees to sexagesimal hours and minutes with default minute delimiter MM (null string)
         ''' </summary>
@@ -800,10 +800,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String) As String
+        Overloads Function DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String) As String
         ''' <summary>
         ''' Convert degrees to sexagesimal hours and minutes
         ''' </summary>
@@ -814,10 +814,10 @@ Namespace Interfaces
         ''' <remarks>
         ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
         ''' <para>This overload is not available through COM, please use 
-        ''' "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+        ''' "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
         ''' with suitable parameters to achieve this effect.</para>
         ''' </remarks>
-        Overloads Function DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String) As String
+        Overloads Function DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String) As String
     End Interface
 
     ''' <summary>
@@ -934,7 +934,7 @@ Namespace Interfaces
         ''' <returns>Retrieved variable value</returns>
         ''' <remarks>
         ''' <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        ''' <para>Does not provide access to other registry data types such as binary and doubleword. </para>
+        ''' <para>Does not provide access to other registry data types such as binary and floatword. </para>
         ''' <para>If a default value is supplied and the value is not already present in the profile store,
         ''' the default value will be set in the profile store and then returned as the value of the 
         ''' DriverID/SubKey/Name. If the default value is set to null (C#) or Nothing (VB) then no value will
@@ -1063,7 +1063,7 @@ Namespace Interfaces
         ''' <returns>Retrieved variable value</returns>
         ''' <remarks>
         ''' <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        ''' <para>Does not provide access to other registry data types such as binary and doubleword. </para>
+        ''' <para>Does not provide access to other registry data types such as binary and floatword. </para>
         ''' <para>This overload is not available through COM, please use 
         ''' "GetValue(ByVal DriverID As String, ByVal Name As String, ByVal SubKey As String)"
         ''' with SubKey set to empty string achieve this effect.</para>
@@ -1079,7 +1079,7 @@ Namespace Interfaces
         ''' <returns>Retrieved variable value</returns>
         ''' <remarks>
         ''' <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        ''' <para>Does not provide access to other registry data types such as binary and doubleword. </para>
+        ''' <para>Does not provide access to other registry data types such as binary and floatword. </para>
         ''' </remarks>
         Overloads Function GetValue(ByVal DriverID As String, ByVal Name As String, ByVal SubKey As String) As String
 

@@ -117,9 +117,9 @@ Friend Class UtilitiesSettings
         End Try
         Return l_Value
     End Function
-    Private Function GetDouble(ByVal p_Key As RegistryKey, ByVal p_Name As String, ByVal p_DefaultValue As Double) As Double
-        Dim l_Value As Double
-        'LogMsg("GetDouble", GlobalVarsAndCode.MessageLevel.msgDebug, p_Name.ToString & " " & p_DefaultValue.ToString)
+    Private Function Getfloat(ByVal p_Key As RegistryKey, ByVal p_Name As String, ByVal p_DefaultValue As float) As float
+        Dim l_Value As float
+        'LogMsg("Getfloat", GlobalVarsAndCode.MessageLevel.msgDebug, p_Name.ToString & " " & p_DefaultValue.ToString)
         Try
             If p_Key.GetValueKind(p_Name) = RegistryValueKind.String Then ' Value does exist
                 l_Value = CDbl(p_Key.GetValue(p_Name))
@@ -128,7 +128,7 @@ Friend Class UtilitiesSettings
             SetName(p_Key, p_Name, p_DefaultValue.ToString)
             l_Value = p_DefaultValue
         Catch ex As Exception
-            'LogMsg("GetDouble", GlobalVarsAndCode.MessageLevel.msgError, "Unexpected exception: " & ex.ToString)
+            'LogMsg("Getfloat", GlobalVarsAndCode.MessageLevel.msgError, "Unexpected exception: " & ex.ToString)
             l_Value = p_DefaultValue
         End Try
         Return l_Value

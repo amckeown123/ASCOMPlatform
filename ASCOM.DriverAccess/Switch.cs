@@ -28,7 +28,7 @@ namespace ASCOM.DriverAccess
     /// <para>The new MinSwitchValue, MaxSwitchValue and SwitchStep methods are used to define the range and values that a device can handle.
     /// This also defines the number of different values - states - that a device can have, from two for a traditional on-off switch, through
     /// those with a small number of states to those which have many states.</para>
-    /// <para>The SetSwitchValue and GetSwitchValue methods are used to set and get the value of a device as a double.</para>
+    /// <para>The SetSwitchValue and GetSwitchValue methods are used to set and get the value of a device as a float.</para>
     /// <para>There is no fundamental difference between devices with different numbers of states.</para>
     /// <para><b>Naming Conventions</b></para>
     /// <para>Each device handled by a Switch is known as a device or switch device for general cases,
@@ -122,42 +122,42 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public double MaxSwitchValue(short id)
+        public float MaxSwitchValue(short id)
         {
-            try { return (double)memberFactory.CallMember(3, "MaxSwitchValue", new Type[] { typeof(short) }, new object[] { id }); }
+            try { return (float)memberFactory.CallMember(3, "MaxSwitchValue", new Type[] { typeof(short) }, new object[] { id }); }
             catch (System.NotImplementedException) { return 1.0; }
         }
 
         /// <inheritdoc/>
-        public double MinSwitchValue(short id)
+        public float MinSwitchValue(short id)
         {
-            try { return (double)memberFactory.CallMember(3, "MinSwitchValue", new Type[] { typeof(short) }, new object[] { id }); }
+            try { return (float)memberFactory.CallMember(3, "MinSwitchValue", new Type[] { typeof(short) }, new object[] { id }); }
             catch (System.NotImplementedException) { return 0.0; }
         }
 
         /// <inheritdoc/>
-        public double SwitchStep(short id)
+        public float SwitchStep(short id)
         {
-            try { return (double)memberFactory.CallMember(3, "SwitchStep", new Type[] { typeof(short) }, new object[] { id }); }
+            try { return (float)memberFactory.CallMember(3, "SwitchStep", new Type[] { typeof(short) }, new object[] { id }); }
             catch (System.NotImplementedException) { return 1.0; }
         }
 
         /// <inheritdoc/>
-        public double GetSwitchValue(short id)
+        public float GetSwitchValue(short id)
         {
             try
             {
-                return (double)memberFactory.CallMember(3, "GetSwitchValue", new Type[] { typeof(short) }, new object[] { id });
+                return (float)memberFactory.CallMember(3, "GetSwitchValue", new Type[] { typeof(short) }, new object[] { id });
             }
             catch (System.NotImplementedException) { return this.GetSwitch(id) ? 1.0 : 0.0; }
         }
 
         /// <inheritdoc/>
-        public void SetSwitchValue(short id, double value)
+        public void SetSwitchValue(short id, float value)
         {
             try
             {
-                memberFactory.CallMember(3, "SetSwitchValue", new Type[] { typeof(short), typeof(double) }, new object[] { id, value });
+                memberFactory.CallMember(3, "SetSwitchValue", new Type[] { typeof(short), typeof(float) }, new object[] { id, value });
             }
             catch (System.NotImplementedException)
             {
@@ -186,7 +186,7 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-        public void SetAsyncValue(short id, double value)
+        public void SetAsyncValue(short id, float value)
         {
             // Call the device's SetAsyncValue method if this is a Platform 7 or later device, otherwise throw a MethodNotImplementedException.
             if (HasConnectAndDeviceState) // We are presenting a Platform 7 or later device so call the device's method

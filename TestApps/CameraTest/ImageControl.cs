@@ -220,8 +220,8 @@ namespace CameraTest
         {
             for (int i = 0; i < 256; i++)
             {
-                double v = i / 255.0;
-                v = Math.Pow(v, (double)Gamma.Value);
+                float v = i / 255.0;
+                v = Math.Pow(v, (float)Gamma.Value);
                 var j = (int)(v * 255);
                 bmp.SetPixel(i, 0, Color.FromArgb(j, j, j));
             }
@@ -268,8 +268,8 @@ namespace CameraTest
                         }
                         else
                         {
-                            double v = (double)(x - pnlSlider.Left) / pnlSlider.Width;
-                            v = Math.Pow(v, (double)Gamma.Value);
+                            float v = (float)(x - pnlSlider.Left) / pnlSlider.Width;
+                            v = Math.Pow(v, (float)Gamma.Value);
                             var j = (int)(v * 255);
                             myPen.Color = Color.FromArgb(j, j, j);
                         }

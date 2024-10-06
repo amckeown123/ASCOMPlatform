@@ -1,17 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>KeplerConsoleApp</RootNamespace>
     <AssemblyName>KeplerConsoleApp</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <SupportedOSPlatformVersion>10.0.26100.0</SupportedOSPlatformVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <Configurations>Debug;Release</Configurations>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ASCOM.Astrometry\ASCOM.Astrometry\ASCOM.Astrometry.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ASCOM.Alpaca">
+      <HintPath>..\..\..\ASCOMLibrary\ASCOM.Alpaca\bin\Release\net6.0\ASCOM.Alpaca.dll</HintPath>
+    </Reference>
+    <Reference Include="ASCOM.Alpaca.Device">
+      <HintPath>..\..\..\ASCOMLibrary\ASCOM.Alpaca.Device\bin\Release\net6.0\ASCOM.Alpaca.Device.dll</HintPath>
+    </Reference>
+    <Reference Include="ASCOM.Common">
+      <HintPath>..\..\..\ASCOMLibrary\ASCOM.Alpaca.Device\bin\Release\net6.0\ASCOM.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ASCOM.Exceptions">
+      <HintPath>..\..\..\ASCOM.Exceptions\bin\Release\net6.0\ASCOM.Exceptions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

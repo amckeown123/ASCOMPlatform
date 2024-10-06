@@ -621,7 +621,7 @@ namespace ASCOM.DynamicClients
             return client.GetSwitchName(id);
         }
 
-        public double GetSwitchValue(short id)
+        public float GetSwitchValue(short id)
         {
             return client.GetSwitchValue(id);
         }
@@ -634,17 +634,17 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double MaxSwitchValue(short id)
+        public float MaxSwitchValue(short id)
         {
             return client.MaxSwitchValue(id);
         }
 
-        public double MinSwitchValue(short id)
+        public float MinSwitchValue(short id)
         {
             return client.MinSwitchValue(id);
         }
 
-        public double SwitchStep(short id)
+        public float SwitchStep(short id)
         {
             return client.SwitchStep(id);
         }
@@ -659,7 +659,7 @@ namespace ASCOM.DynamicClients
             client.SetSwitch(id, state);
         }
 
-        public void SetSwitchValue(short id, double value)
+        public void SetSwitchValue(short id, float value)
         {
             client.SetSwitchValue(id, value);
         }
@@ -682,7 +682,7 @@ namespace ASCOM.DynamicClients
             throw new MethodNotImplementedException($"DynamicClient.Switch - SetAsync is not supported by this device because it exposes interface ISwitchV{InterfaceVersion}.");
         }
 
-        public void SetAsyncValue(short id, double value)
+        public void SetAsyncValue(short id, float value)
         {
             // Call the device's SetAsyncValue method if this is a Platform 7 or later device, otherwise throw a MethodNotImplementedException.
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(deviceType, InterfaceVersion)) // We are presenting a Platform 7 or later device so call the device's method

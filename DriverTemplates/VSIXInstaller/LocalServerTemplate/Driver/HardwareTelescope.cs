@@ -41,7 +41,7 @@ static class TelescopeHardware
     /// <summary>
     /// The Altitude above the local horizon of the telescope's current position (degrees, positive up)
     /// </summary>
-    internal static double Altitude
+    internal static float Altitude
     {
         get
         {
@@ -53,7 +53,7 @@ static class TelescopeHardware
     /// <summary>
     /// The area of the telescope's aperture, taking into account any obstructions (square meters)
     /// </summary>
-    internal static double ApertureArea
+    internal static float ApertureArea
     {
         get
         {
@@ -65,7 +65,7 @@ static class TelescopeHardware
     /// <summary>
     /// The telescope's effective aperture diameter (meters)
     /// </summary>
-    internal static double ApertureDiameter
+    internal static float ApertureDiameter
     {
         get
         {
@@ -113,7 +113,7 @@ static class TelescopeHardware
     /// <summary>
     /// The azimuth at the local horizon of the telescope's current position (degrees, North-referenced, positive East/clockwise).
     /// </summary>
-    internal static double Azimuth
+    internal static float Azimuth
     {
         get
         {
@@ -333,11 +333,11 @@ static class TelescopeHardware
     /// The declination (degrees) of the telescope's current equatorial coordinates, in the coordinate system given by the <see cref="EquatorialSystem" /> property.
     /// Reading the property will raise an error if the value is unavailable.
     /// </summary>
-    internal static double Declination
+    internal static float Declination
     {
         get
         {
-            double declination = 0.0;
+            float declination = 0.0;
             LogMessage("Declination", "Get - " + utilities.DegreesToDMS(declination, ":", ":"));
             return declination;
         }
@@ -346,11 +346,11 @@ static class TelescopeHardware
     /// <summary>
     /// The declination tracking rate (arcseconds per SI second, default = 0.0)
     /// </summary>
-    internal static double DeclinationRate
+    internal static float DeclinationRate
     {
         get
         {
-            double declination = 0.0;
+            float declination = 0.0;
             LogMessage("DeclinationRate", "Get - " + declination.ToString());
             return declination;
         }
@@ -364,7 +364,7 @@ static class TelescopeHardware
     /// <summary>
     /// Predict side of pier for German equatorial mounts at the provided coordinates
     /// </summary>
-    internal static PierSide DestinationSideOfPier(double RightAscension, double Declination)
+    internal static PierSide DestinationSideOfPier(float RightAscension, float Declination)
     {
         LogMessage("DestinationSideOfPier Get", "Not implemented");
         throw new PropertyNotImplementedException("DestinationSideOfPier", false);
@@ -412,7 +412,7 @@ static class TelescopeHardware
     /// <summary>
     /// The telescope's focal length, meters
     /// </summary>
-    internal static double FocalLength
+    internal static float FocalLength
     {
         get
         {
@@ -424,7 +424,7 @@ static class TelescopeHardware
     /// <summary>
     /// The current Declination movement rate offset for telescope guiding (degrees/sec)
     /// </summary>
-    internal static double GuideRateDeclination
+    internal static float GuideRateDeclination
     {
         get
         {
@@ -441,7 +441,7 @@ static class TelescopeHardware
     /// <summary>
     /// The current Right Ascension movement rate offset for telescope guiding (degrees/sec)
     /// </summary>
-    internal static double GuideRateRightAscension
+    internal static float GuideRateRightAscension
     {
         get
         {
@@ -472,7 +472,7 @@ static class TelescopeHardware
     /// </summary>
     /// <param name="Axis">The physical axis about which movement is desired</param>
     /// <param name="Rate">The rate of motion (deg/sec) about the specified axis</param>
-    internal static void MoveAxis(TelescopeAxes Axis, double Rate)
+    internal static void MoveAxis(TelescopeAxes Axis, float Rate)
     {
         LogMessage("MoveAxis", "Not implemented");
         throw new MethodNotImplementedException("MoveAxis");
@@ -504,11 +504,11 @@ static class TelescopeHardware
     /// The right ascension (hours) of the telescope's current equatorial coordinates,
     /// in the coordinate system given by the EquatorialSystem property
     /// </summary>
-    internal static double RightAscension
+    internal static float RightAscension
     {
         get
         {
-            double rightAscension = 0.0;
+            float rightAscension = 0.0;
             LogMessage("RightAscension", "Get - " + utilities.HoursToHMS(rightAscension));
             return rightAscension;
         }
@@ -517,11 +517,11 @@ static class TelescopeHardware
     /// <summary>
     /// The right ascension tracking rate offset from sidereal (seconds per sidereal second, default = 0.0)
     /// </summary>
-    internal static double RightAscensionRate
+    internal static float RightAscensionRate
     {
         get
         {
-            double rightAscensionRate = 0.0;
+            float rightAscensionRate = 0.0;
             LogMessage("RightAscensionRate", "Get - " + rightAscensionRate.ToString());
             return rightAscensionRate;
         }
@@ -562,16 +562,16 @@ static class TelescopeHardware
     /// <summary>
     /// The local apparent sidereal time from the telescope's internal clock (hours, sidereal)
     /// </summary>
-    internal static double SiderealTime
+    internal static float SiderealTime
     {
         get
         {
-            double siderealTime = 0.0; // Sidereal time return value
+            float siderealTime = 0.0; // Sidereal time return value
 
             // Use NOVAS 3.1 to calculate the sidereal time
             using (var novas = new NOVAS31())
             {
-                double julianDate = utilities.DateUTCToJulian(DateTime.UtcNow);
+                float julianDate = utilities.DateUTCToJulian(DateTime.UtcNow);
                 novas.SiderealTime(julianDate, 0, novas.DeltaT(julianDate), GstType.GreenwichApparentSiderealTime, Method.EquinoxBased, Accuracy.Full, ref siderealTime);
             }
 
@@ -600,7 +600,7 @@ static class TelescopeHardware
     /// <summary>
     /// The elevation above mean sea level (meters) of the site at which the telescope is located
     /// </summary>
-    internal static double SiteElevation
+    internal static float SiteElevation
     {
         get
         {
@@ -617,7 +617,7 @@ static class TelescopeHardware
     /// <summary>
     /// The geodetic(map) latitude (degrees, positive North, WGS84) of the site at which the telescope is located.
     /// </summary>
-    internal static double SiteLatitude
+    internal static float SiteLatitude
     {
         get
         {
@@ -634,7 +634,7 @@ static class TelescopeHardware
     /// <summary>
     /// The longitude (degrees, positive East, WGS84) of the site at which the telescope is located.
     /// </summary>
-    internal static double SiteLongitude
+    internal static float SiteLongitude
     {
         get
         {
@@ -668,7 +668,7 @@ static class TelescopeHardware
     /// <summary>
     /// Move the telescope to the given local horizontal coordinates, return when slew is complete
     /// </summary>
-    internal static void SlewToAltAz(double Azimuth, double Altitude)
+    internal static void SlewToAltAz(float Azimuth, float Altitude)
     {
         LogMessage("SlewToAltAz", "Not implemented");
         throw new MethodNotImplementedException("SlewToAltAz");
@@ -682,7 +682,7 @@ static class TelescopeHardware
     /// <param name="Azimuth">Azimuth to which to move</param>
     /// <param name="Altitude">Altitude to which to move to</param>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "internal static method name used for many years.")]
-    internal static void SlewToAltAzAsync(double Azimuth, double Altitude)
+    internal static void SlewToAltAzAsync(float Azimuth, float Altitude)
     {
         LogMessage("SlewToAltAzAsync", "Not implemented");
         throw new MethodNotImplementedException("SlewToAltAzAsync");
@@ -692,7 +692,7 @@ static class TelescopeHardware
     /// This Method must be implemented if <see cref="CanSlewAltAzAsync" /> returns True.
     /// It does not return to the caller until the slew is complete.
     /// </summary>
-    internal static void SlewToCoordinates(double RightAscension, double Declination)
+    internal static void SlewToCoordinates(float RightAscension, float Declination)
     {
         LogMessage("SlewToCoordinates", "Not implemented");
         throw new MethodNotImplementedException("SlewToCoordinates");
@@ -702,7 +702,7 @@ static class TelescopeHardware
     /// Move the telescope to the given equatorial coordinates, return with Slewing set to True immediately after starting the slew.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "internal static method name used for many years.")]
-    internal static void SlewToCoordinatesAsync(double RightAscension, double Declination)
+    internal static void SlewToCoordinatesAsync(float RightAscension, float Declination)
     {
         LogMessage("SlewToCoordinatesAsync", "Not implemented");
         throw new MethodNotImplementedException("SlewToCoordinatesAsync");
@@ -744,7 +744,7 @@ static class TelescopeHardware
     /// <summary>
     /// Matches the scope's local horizontal coordinates to the given local horizontal coordinates.
     /// </summary>
-    internal static void SyncToAltAz(double Azimuth, double Altitude)
+    internal static void SyncToAltAz(float Azimuth, float Altitude)
     {
         LogMessage("SyncToAltAz", "Not implemented");
         throw new MethodNotImplementedException("SyncToAltAz");
@@ -753,7 +753,7 @@ static class TelescopeHardware
     /// <summary>
     /// Matches the scope's equatorial coordinates to the given equatorial coordinates.
     /// </summary>
-    internal static void SyncToCoordinates(double RightAscension, double Declination)
+    internal static void SyncToCoordinates(float RightAscension, float Declination)
     {
         LogMessage("SyncToCoordinates", "Not implemented");
         throw new MethodNotImplementedException("SyncToCoordinates");
@@ -771,7 +771,7 @@ static class TelescopeHardware
     /// <summary>
     /// The declination (degrees, positive North) for the target of an equatorial slew or sync operation
     /// </summary>
-    internal static double TargetDeclination
+    internal static float TargetDeclination
     {
         get
         {
@@ -788,7 +788,7 @@ static class TelescopeHardware
     /// <summary>
     /// The right ascension (hours) for the target of an equatorial slew or sync operation
     /// </summary>
-    internal static double TargetRightAscension
+    internal static float TargetRightAscension
     {
         get
         {

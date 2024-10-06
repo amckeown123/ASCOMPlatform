@@ -20,7 +20,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Gets and sets the time period over which observations will be averaged
     /// </summary>
-    public double AveragePeriod
+    public float AveragePeriod
     {
         get
         {
@@ -38,7 +38,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Amount of sky obscured by cloud
     /// </summary>
-    public double CloudCover
+    public float CloudCover
     {
         get
         {
@@ -50,7 +50,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Atmospheric dew point at the observatory in deg C
     /// </summary>
-    public double DewPoint
+    public float DewPoint
     {
         get
         {
@@ -62,7 +62,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Atmospheric relative humidity at the observatory in percent
     /// </summary>
-    public double Humidity
+    public float Humidity
     {
         get
         {
@@ -74,7 +74,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Atmospheric pressure at the observatory in hectoPascals (hPa)
     /// </summary>
-    public double Pressure
+    public float Pressure
     {
         get
         {
@@ -86,7 +86,7 @@ class DeviceObservingConditions
 	/// <summary>
 	/// Rain rate at the observatory, in millimeters per hour
 	/// </summary>
-	public double RainRate
+	public float RainRate
     {
         get
         {
@@ -140,7 +140,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Sky brightness at the observatory, in Lux (lumens per square meter)
     /// </summary>
-    public double SkyBrightness
+    public float SkyBrightness
     {
         get
         {
@@ -152,7 +152,7 @@ class DeviceObservingConditions
 	/// <summary>
 	/// Sky quality at the observatory, in magnitudes per square arc-second
 	/// </summary>
-	public double SkyQuality
+	public float SkyQuality
     {
         get
         {
@@ -165,7 +165,7 @@ class DeviceObservingConditions
 	/// Seeing at the observatory, measured as the average star full width half maximum (FWHM in arc secs) 
 	/// within a star field
 	/// </summary>
-	public double StarFWHM
+	public float StarFWHM
     {
         get
         {
@@ -177,7 +177,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Sky temperature at the observatory in deg C
     /// </summary>
-    public double SkyTemperature
+    public float SkyTemperature
     {
         get
         {
@@ -189,7 +189,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Temperature at the observatory in deg C
     /// </summary>
-    public double Temperature
+    public float Temperature
     {
         get
         {
@@ -203,7 +203,7 @@ class DeviceObservingConditions
     /// </summary>
     /// <param name="propertyName">Name of the property whose time since last update Is required</param>
     /// <returns>Time in seconds since the last sensor update for this property</returns>
-    public double TimeSinceLastUpdate(string propertyName)
+    public float TimeSinceLastUpdate(string propertyName)
     {
         // Test for an empty property name, if found, return the time since the most recent update to any sensor
         if (!string.IsNullOrEmpty(propertyName))
@@ -242,7 +242,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Wind direction at the observatory in degrees
     /// </summary>
-    public double WindDirection
+    public float WindDirection
     {
         get
         {
@@ -254,7 +254,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Peak 3 second wind gust at the observatory over the last 2 minutes in m/s
     /// </summary>
-    public double WindGust
+    public float WindGust
     {
         get
         {
@@ -266,7 +266,7 @@ class DeviceObservingConditions
     /// <summary>
     /// Wind speed at the observatory in m/s
     /// </summary>
-    public double WindSpeed
+    public float WindSpeed
     {
         get
         {
@@ -282,13 +282,13 @@ class DeviceObservingConditions
     #region calculate the gust strength as the largest wind recorded over the last two minutes
 
     // save the time and wind speed values
-    private Dictionary<DateTime, double> winds = new Dictionary<DateTime, double>();
+    private Dictionary<DateTime, float> winds = new Dictionary<DateTime, float>();
 
-    private double gustStrength;
+    private float gustStrength;
 
-    private void UpdateGusts(double speed)
+    private void UpdateGusts(float speed)
     {
-        Dictionary<DateTime, double> newWinds = new Dictionary<DateTime, double>();
+        Dictionary<DateTime, float> newWinds = new Dictionary<DateTime, float>();
         var last = DateTime.Now - TimeSpan.FromMinutes(2);
         winds.Add(DateTime.Now, speed);
         var gust = 0.0;

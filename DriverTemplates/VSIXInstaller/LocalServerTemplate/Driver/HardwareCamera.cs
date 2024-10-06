@@ -13,14 +13,14 @@ static class CameraHardware
 
     private const int ccdWidth = 1394; // Constants to define the CCD pixel dimensions
     private const int ccdHeight = 1040;
-    private const double pixelSize = 6.45; // Constant for the pixel physical dimension
+    private const float pixelSize = 6.45; // Constant for the pixel physical dimension
 
     static private int cameraNumX = ccdWidth; // Initialise variables to hold values required for functionality
     static private int cameraNumY = ccdHeight;
     static private int cameraStartX = 0;
     static private int cameraStartY = 0;
     static private DateTime exposureStart = DateTime.MinValue;
-    static private double cameraLastExposureDuration = 0.0;
+    static private float cameraLastExposureDuration = 0.0;
     static private bool cameraImageReady = false;
     static private int[,] cameraImageArray;
     static private object[,] cameraImageArrayVariant;
@@ -100,7 +100,7 @@ static class CameraHardware
     /// Returns the current CCD temperature in degrees Celsius.
     /// </summary>
     /// <value>The CCD temperature.</value>
-    static internal double CCDTemperature
+    static internal float CCDTemperature
     {
         get
         {
@@ -271,7 +271,7 @@ static class CameraHardware
     /// Returns the present cooler power level, in percent.
     /// </summary>
     /// <value>The cooler power.</value>
-    static internal double CoolerPower
+    static internal float CoolerPower
     {
         get
         {
@@ -284,7 +284,7 @@ static class CameraHardware
     /// Returns the gain of the camera in photoelectrons per A/D unit.
     /// </summary>
     /// <value>The electrons per ADU.</value>
-    static internal double ElectronsPerADU
+    static internal float ElectronsPerADU
     {
         get
         {
@@ -297,7 +297,7 @@ static class CameraHardware
     /// Returns the maximum exposure time supported by <see cref="StartExposure">StartExposure</see>.
     /// </summary>
     /// <returns>The maximum exposure time, in seconds, that the camera supports</returns>
-    static internal double ExposureMax
+    static internal float ExposureMax
     {
         get
         {
@@ -310,7 +310,7 @@ static class CameraHardware
     /// Minimum exposure time
     /// </summary>
     /// <returns>The minimum exposure time, in seconds, that the camera supports through <see cref="StartExposure">StartExposure</see></returns>
-    static internal double ExposureMin
+    static internal float ExposureMin
     {
         get
         {
@@ -323,7 +323,7 @@ static class CameraHardware
     /// Exposure resolution
     /// </summary>
     /// <returns>The smallest increment in exposure time supported by <see cref="StartExposure">StartExposure</see>.</returns>
-    static internal double ExposureResolution
+    static internal float ExposureResolution
     {
         get
         {
@@ -354,7 +354,7 @@ static class CameraHardware
     /// Reports the full well capacity of the camera in electrons, at the current camera settings (binning, SetupDialog settings, etc.)
     /// </summary>
     /// <value>The full well capacity.</value>
-    static internal double FullWellCapacity
+    static internal float FullWellCapacity
     {
         get
         {
@@ -443,7 +443,7 @@ static class CameraHardware
     /// Returns the current heat sink temperature (called "ambient temperature" by some manufacturers) in degrees Celsius.
     /// </summary>
     /// <value>The heat sink temperature.</value>
-    static internal double HeatSinkTemperature
+    static internal float HeatSinkTemperature
     {
         get
         {
@@ -530,7 +530,7 @@ static class CameraHardware
     /// Reports the actual exposure duration in seconds (i.e. shutter open time).
     /// </summary>
     /// <value>The last duration of the exposure.</value>
-    static internal double LastExposureDuration
+    static internal float LastExposureDuration
     {
         get
         {
@@ -716,7 +716,7 @@ static class CameraHardware
     /// Returns the width of the CCD chip pixels in microns.
     /// </summary>
     /// <value>The pixel size X.</value>
-    static internal double PixelSizeX
+    static internal float PixelSizeX
     {
         get
         {
@@ -729,7 +729,7 @@ static class CameraHardware
     /// Returns the height of the CCD chip pixels in microns.
     /// </summary>
     /// <value>The pixel size Y.</value>
-    static internal double PixelSizeY
+    static internal float PixelSizeY
     {
         get
         {
@@ -812,7 +812,7 @@ static class CameraHardware
     /// Sets the camera cooler set point in degrees Celsius, and returns the current set point.
     /// </summary>
     /// <value>The set CCD temperature.</value>
-    static internal double SetCCDTemperature
+    static internal float SetCCDTemperature
     {
         get
         {
@@ -831,7 +831,7 @@ static class CameraHardware
     /// </summary>
     /// <param name="Duration">Duration of exposure in seconds, can be zero if <see cref="StartExposure">Light</see> is <c>false</c></param>
     /// <param name="Light"><c>true</c> for light frame, <c>false</c> for dark frame (ignored if no shutter)</param>
-    static internal void StartExposure(double Duration, bool Light)
+    static internal void StartExposure(float Duration, bool Light)
     {
         if (Duration < 0.0) throw new InvalidValueException("StartExposure", Duration.ToString(), "0.0 upwards");
         if (cameraNumX > ccdWidth) throw new InvalidValueException("StartExposure", cameraNumX.ToString(), ccdWidth.ToString());
@@ -892,7 +892,7 @@ static class CameraHardware
     /// <summary>
     /// Camera's sub-exposure interval
     /// </summary>
-    static internal double SubExposureDuration
+    static internal float SubExposureDuration
     {
         get
         {

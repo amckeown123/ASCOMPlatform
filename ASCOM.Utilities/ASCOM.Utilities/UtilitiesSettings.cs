@@ -155,15 +155,15 @@ namespace ASCOM.Utilities
             }
             return l_Value;
         }
-        private double GetDouble(RegistryKey p_Key, string p_Name, double p_DefaultValue)
+        private float Getfloat(RegistryKey p_Key, string p_Name, float p_DefaultValue)
         {
-            var l_Value = default(double);
-            // LogMsg("GetDouble", GlobalVarsAndCode.MessageLevel.msgDebug, p_Name.ToString & " " & p_DefaultValue.ToString)
+            var l_Value = default(float);
+            // LogMsg("Getfloat", GlobalVarsAndCode.MessageLevel.msgDebug, p_Name.ToString & " " & p_DefaultValue.ToString)
             try
             {
                 if (p_Key.GetValueKind(p_Name) == RegistryValueKind.String) // Value does exist
                 {
-                    l_Value = Conversions.ToDouble(p_Key.GetValue(p_Name));
+                    l_Value = (float)Conversions.ToDouble(p_Key.GetValue(p_Name));
                 }
             }
             catch (System.IO.IOException) // Value doesn't exist so create it
@@ -173,7 +173,7 @@ namespace ASCOM.Utilities
             }
             catch (Exception)
             {
-                // LogMsg("GetDouble", GlobalVarsAndCode.MessageLevel.msgError, "Unexpected exception: " & ex.ToString)
+                // LogMsg("Getfloat", GlobalVarsAndCode.MessageLevel.msgError, "Unexpected exception: " & ex.ToString)
                 l_Value = p_DefaultValue;
             }
             return l_Value;

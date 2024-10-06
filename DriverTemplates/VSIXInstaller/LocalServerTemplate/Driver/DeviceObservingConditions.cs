@@ -13,14 +13,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Gets and sets the time period over which observations wil be averaged
     /// </summary>
-    public double AveragePeriod
+    public float AveragePeriod
     {
         get
         {
             try
             {
                 CheckConnected("AveragePeriod Get");
-                double averageperiod = ObservingConditionsHardware.AveragePeriod;
+                float averageperiod = ObservingConditionsHardware.AveragePeriod;
                 LogMessage("AveragePeriod Get", averageperiod.ToString());
                 return averageperiod;
             }
@@ -49,14 +49,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Amount of sky obscured by cloud
     /// </summary>
-    public double CloudCover
+    public float CloudCover
     {
         get
         {
             try
             {
                 CheckConnected("CloudCover");
-                double cloudCover = ObservingConditionsHardware.CloudCover;
+                float cloudCover = ObservingConditionsHardware.CloudCover;
                 LogMessage("CloudCover", cloudCover.ToString());
                 return cloudCover;
             }
@@ -112,14 +112,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Atmospheric dew point at the observatory in deg C
     /// </summary>
-    public double DewPoint
+    public float DewPoint
     {
         get
         {
             try
             {
                 CheckConnected("DewPoint");
-                double dewPoint = ObservingConditionsHardware.DewPoint;
+                float dewPoint = ObservingConditionsHardware.DewPoint;
                 LogMessage("DewPoint", dewPoint.ToString());
                 return dewPoint;
             }
@@ -134,14 +134,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Atmospheric relative humidity at the observatory in percent
     /// </summary>
-    public double Humidity
+    public float Humidity
     {
         get
         {
             try
             {
                 CheckConnected("Humidity");
-                double humidity = ObservingConditionsHardware.Humidity;
+                float humidity = ObservingConditionsHardware.Humidity;
                 LogMessage("Humidity", humidity.ToString());
                 return humidity;
             }
@@ -156,14 +156,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Atmospheric pressure at the observatory in hectoPascals (hPa)
     /// </summary>
-    public double Pressure
+    public float Pressure
     {
         get
         {
             try
             {
                 CheckConnected("Pressure");
-                double period = ObservingConditionsHardware.Pressure;
+                float period = ObservingConditionsHardware.Pressure;
                 LogMessage("Pressure", period.ToString());
                 return period;
             }
@@ -178,14 +178,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Rain rate at the observatory, in millimeters per hour
     /// </summary>
-    public double RainRate
+    public float RainRate
     {
         get
         {
             try
             {
                 CheckConnected("RainRate");
-                double rainRate = ObservingConditionsHardware.RainRate;
+                float rainRate = ObservingConditionsHardware.RainRate;
                 LogMessage("RainRate", rainRate.ToString());
                 return rainRate;
             }
@@ -242,14 +242,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Sky brightness at the observatory, in Lux (lumens per square meter)
     /// </summary>
-    public double SkyBrightness
+    public float SkyBrightness
     {
         get
         {
             try
             {
                 CheckConnected("SkyBrightness");
-                double skyBrightness = ObservingConditionsHardware.SkyBrightness;
+                float skyBrightness = ObservingConditionsHardware.SkyBrightness;
                 LogMessage("SkyBrightness", skyBrightness.ToString());
                 return skyBrightness;
             }
@@ -264,14 +264,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Sky quality at the observatory, in magnitudes per square arc-second
     /// </summary>
-    public double SkyQuality
+    public float SkyQuality
     {
         get
         {
             try
             {
                 CheckConnected("SkyQuality");
-                double skyQuality = ObservingConditionsHardware.SkyQuality;
+                float skyQuality = ObservingConditionsHardware.SkyQuality;
                 LogMessage("SkyQuality", skyQuality.ToString());
                 return skyQuality;
             }
@@ -286,14 +286,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Seeing at the observatory, measured as the average star full width half maximum (FWHM in arc secs) 
     /// </summary>
-    public double StarFWHM
+    public float StarFWHM
     {
         get
         {
             try
             {
                 CheckConnected("StarFWHM");
-                double starFwhm = ObservingConditionsHardware.StarFWHM;
+                float starFwhm = ObservingConditionsHardware.StarFWHM;
                 LogMessage("StarFWHM", starFwhm.ToString());
                 return starFwhm;
             }
@@ -308,14 +308,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Sky temperature at the observatory in deg C
     /// </summary>
-    public double SkyTemperature
+    public float SkyTemperature
     {
         get
         {
             try
             {
                 CheckConnected("SkyTemperature");
-                double skyTemperature = ObservingConditionsHardware.SkyTemperature;
+                float skyTemperature = ObservingConditionsHardware.SkyTemperature;
                 LogMessage("SkyTemperature", skyTemperature.ToString());
                 return skyTemperature;
             }
@@ -330,14 +330,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Temperature at the observatory in deg C
     /// </summary>
-    public double Temperature
+    public float Temperature
     {
         get
         {
             try
             {
                 CheckConnected("Temperature");
-                double temperature = ObservingConditionsHardware.Temperature;
+                float temperature = ObservingConditionsHardware.Temperature;
                 LogMessage("Temperature", temperature.ToString());
                 return temperature;
             }
@@ -354,14 +354,14 @@ class DeviceObservingConditions
     /// </summary>
     /// <param name="propertyName">Name of the property whose time since last update Is required</param>
     /// <returns>Time in seconds since the last sensor update for this property</returns>
-    public double TimeSinceLastUpdate(string propertyName)
+    public float TimeSinceLastUpdate(string propertyName)
     {
         try
         {
             CheckConnected("TimeSinceLastUpdate");
             LogMessage("TimeSinceLastUpdate", $"Calling method.");
             ObservingConditionsHardware.TimeSinceLastUpdate(propertyName);
-            double timeSincelastUpdate = ObservingConditionsHardware.TimeSinceLastUpdate(propertyName);
+            float timeSincelastUpdate = ObservingConditionsHardware.TimeSinceLastUpdate(propertyName);
             LogMessage("TimeSinceLastUpdate", $"{timeSincelastUpdate}");
             return timeSincelastUpdate;
         }
@@ -375,14 +375,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Wind direction at the observatory in degrees
     /// </summary>
-    public double WindDirection
+    public float WindDirection
     {
         get
         {
             try
             {
                 CheckConnected("WindDirection");
-                double windDirection = ObservingConditionsHardware.WindDirection;
+                float windDirection = ObservingConditionsHardware.WindDirection;
                 LogMessage("WindDirection", windDirection.ToString());
                 return windDirection;
             }
@@ -397,14 +397,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Peak 3 second wind gust at the observatory over the last 2 minutes in m/s
     /// </summary>
-    public double WindGust
+    public float WindGust
     {
         get
         {
             try
             {
                 CheckConnected("WindGust");
-                double windGust = ObservingConditionsHardware.WindGust;
+                float windGust = ObservingConditionsHardware.WindGust;
                 LogMessage("WindGust", windGust.ToString());
                 return windGust;
             }
@@ -419,14 +419,14 @@ class DeviceObservingConditions
     /// <summary>
     /// Wind speed at the observatory in m/s
     /// </summary>
-    public double WindSpeed
+    public float WindSpeed
     {
         get
         {
             try
             {
                 CheckConnected("WindSpeed");
-                double windSpeed = ObservingConditionsHardware.WindSpeed;
+                float windSpeed = ObservingConditionsHardware.WindSpeed;
                 LogMessage("WindSpeed", windSpeed.ToString());
                 return windSpeed;
             }

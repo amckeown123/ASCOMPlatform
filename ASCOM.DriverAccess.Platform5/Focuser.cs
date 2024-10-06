@@ -194,9 +194,9 @@ namespace ASCOM.DriverAccess
         /// Raises an exception if the focuser does not intrinsically know what the step size is. 
         /// 
         /// </summary>
-        public double StepSize
+        public float StepSize
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "StepSize", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "StepSize", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -227,9 +227,9 @@ namespace ASCOM.DriverAccess
         /// Raises an exception if ambient temperature is not available.
         /// Commonly available on focusers with a built-in temperature compensation mode. 
         /// </summary>
-        public double Temperature
+        public float Temperature
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Temperature", new Type[] {}, new object[] {})); }
+            get { return Convert.Tofloat(_memberFactory.CallMember(1, "Temperature", new Type[] {}, new object[] {})); }
         }
 
         public bool Connected { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

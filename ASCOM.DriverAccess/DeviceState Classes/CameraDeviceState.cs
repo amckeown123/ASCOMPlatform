@@ -63,7 +63,7 @@ namespace ASCOM.DriverAccess
                         case nameof(ICameraV4.CCDTemperature):
                             try
                             {
-                                CCDTemperature = (double)stateValue.Value;
+                                CCDTemperature = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -75,7 +75,7 @@ namespace ASCOM.DriverAccess
                         case nameof(ICameraV4.CoolerPower): 
                             try
                             {
-                                CoolerPower = (double)stateValue.Value;
+                                CoolerPower = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -87,7 +87,7 @@ namespace ASCOM.DriverAccess
                         case nameof(ICameraV4.HeatSinkTemperature):
                             try
                             {
-                                HeatSinkTemperature = (double)stateValue.Value;
+                                HeatSinkTemperature = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -164,17 +164,17 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// The device's CCDTemperature
         /// </summary>
-        public double? CCDTemperature { get; set; } = null;
+        public float? CCDTemperature { get; set; } = null;
 
         /// <summary>
         /// The device's CoolerPower
         /// </summary>
-        public double? CoolerPower { get; set; } = null;
+        public float? CoolerPower { get; set; } = null;
 
         /// <summary>
         /// The device's HeatSinkTemperature
         /// </summary>
-        public double? HeatSinkTemperature { get; set; } = null;
+        public float? HeatSinkTemperature { get; set; } = null;
 
         /// <summary>
         /// The device's ImageReady property
@@ -189,7 +189,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// The device's PercentCompleted property
         /// </summary>
-        public double? PercentCompleted { get; set; } = null;
+        public float? PercentCompleted { get; set; } = null;
 
         /// <summary>
         /// The time at which the state was recorded

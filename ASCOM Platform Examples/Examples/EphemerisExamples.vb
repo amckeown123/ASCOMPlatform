@@ -27,9 +27,9 @@ Public Class EphemerisExamples
 
         ' Set the year and geographical location for this run
         Const Year As Integer = 2012
-        Const Latitude As Double = 75.0 ' Positive to the North
-        Const Longitude As Double = -75.0 ' Positive to the East
-        Const TimeZone As Double = -5.0 ' Positive to the East
+        Const Latitude As float = 75.0 ' Positive to the North
+        Const Longitude As float = -75.0 ' Positive to the East
+        Const TimeZone As float = -5.0 ' Positive to the East
 
         ' Set the event for which the Almanac is required: Sunrise/set, Moonrise/set, Civil, Nautical, Amateur Astronomical or Astronomical twilight
         ' or planet rise/set
@@ -149,11 +149,11 @@ Public Class EphemerisExamples
     ''' </summary>
     ''' <param name="Moment">Time of day expressed in hours</param>
     ''' <returns>String in HH:mm format rounded to the neaest minute</returns>
-    ''' <remarks>.NET rounding, when going from doubles to HH:mm format, always rounds down to the nearest minute e.g. 11:32:58 will be
+    ''' <remarks>.NET rounding, when going from floats to HH:mm format, always rounds down to the nearest minute e.g. 11:32:58 will be
     ''' returned as 11:58 rather than 11:59. This function adds 30 seconds to the supplied date and rounds that value in order to 
     ''' achieve rounding where XX:YY:00 to XX:YY:29 becomes XX:YY and XX:YY:30 to XX:YY:59 becomes XX:YY+1.
     ''' <para>Rounding is omitted for minute 23:59 in order to prevent the value flipping over into the next day</para></remarks>
-    Private Function RoundHour(Moment As Double) As String
+    Private Function RoundHour(Moment As float) As String
         Dim Retval As String = "Unknown"
         Try
             If Moment >= 23.9833333 Then ' If we are at 23:59:XX then don't round the number to prevent it going over into the next day

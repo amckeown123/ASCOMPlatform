@@ -340,7 +340,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// <p style="color:red"><b>Can throw a not implemented exception</b></p> Must throw an exception if the focuser does not intrinsically know what the step size is.
         /// </remarks>
-        double StepSize { get; }
+        float StepSize { get; }
 
         /// <summary>
         /// The state of temperature compensation mode (if available), else always False.
@@ -390,7 +390,7 @@ namespace ASCOM.DeviceInterface
         /// <para>Historically no units were specified for this property. Henceforth, if applications need to process the supplied temperature, they should proceed on the basis that the
         /// units are degrees Celsius for consistency with <see cref="IObservingConditionsV2.Temperature"/>. Conversion to other temperature units can be achieved through the <see cref="Util.ConvertUnits"/> utility method.</para>
         /// </remarks>
-        double Temperature { get; }
+        float Temperature { get; }
 
         #endregion
 

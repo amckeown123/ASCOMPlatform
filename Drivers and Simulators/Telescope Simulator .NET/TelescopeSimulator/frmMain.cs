@@ -8,7 +8,7 @@ namespace ASCOM.Simulator
 {
     public partial class FrmMain : Form
     {
-        private const double guideRate = 15.0 / 3600.0;       // sidereal - more or less
+        private const float guideRate = 15.0 / 3600.0;       // sidereal - more or less
 
         delegate void SetTextCallback(string text);
 
@@ -167,7 +167,7 @@ namespace ASCOM.Simulator
         }
 
 
-        public void SiderealTime(double value)
+        public void SiderealTime(float value)
         {
             SetTextCallback setText = new SetTextCallback(SetLstText);
             string text = util.HoursToHMS(value);
@@ -175,7 +175,7 @@ namespace ASCOM.Simulator
             catch { }
         }
 
-        public void RightAscension(double value)
+        public void RightAscension(float value)
         {
             SetTextCallback setText = new SetTextCallback(SetRaText);
             string text = util.HoursToHMS(value);
@@ -183,7 +183,7 @@ namespace ASCOM.Simulator
             catch { }
         }
 
-        public void Declination(double value)
+        public void Declination(float value)
         {
             SetTextCallback setText = new SetTextCallback(SetDecText);
             string text = util.DegreesToDMS(value);
@@ -191,7 +191,7 @@ namespace ASCOM.Simulator
             catch { }
         }
 
-        public void Altitude(double value)
+        public void Altitude(float value)
         {
             SetTextCallback setText = new SetTextCallback(SetAltitudeText);
             string text = util.DegreesToDMS(value);
@@ -199,7 +199,7 @@ namespace ASCOM.Simulator
             catch { }
         }
 
-        public void Azimuth(double value)
+        public void Azimuth(float value)
         {
             SetTextCallback setText = new SetTextCallback(SetAzimuthText);
             string text = util.DegreesToDMS(value);
@@ -259,7 +259,7 @@ namespace ASCOM.Simulator
 
         #region slew/guide control using buttons
 
-        private void SetPulseGuideParms(double guideRateDec, double guideRateRa)
+        private void SetPulseGuideParms(float guideRateDec, float guideRateRa)
         {
             // stop an axis slew if that's what is enabled
             if (this.radioButtonMoveAxis.Checked)
@@ -288,9 +288,9 @@ namespace ASCOM.Simulator
             }
         }
 
-        private static double GuideDuration()
+        private static float GuideDuration()
         {
-            double duration = TelescopeHardware.GuideDurationShort;
+            float duration = TelescopeHardware.GuideDurationShort;
 
             if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {

@@ -10,6 +10,7 @@ using System.IO;
 using System.ServiceProcess;
 using System.Windows.Forms;
 
+
 namespace ASCOM.Astrometry
 {
     /// <summary>
@@ -21,22 +22,22 @@ namespace ASCOM.Astrometry
         #region Variables and constants
 
         private string UpdateTypeValue;
-        private double ManualDeltaUT1Value;
-        private double ManualLeapSecondsValue;
-        private double AutomaticLeapSecondsValue;
+        private float ManualDeltaUT1Value;
+        private float ManualLeapSecondsValue;
+        private float AutomaticLeapSecondsValue;
         private string AutomaticLeapSecondsStringValue;
-        private double NextLeapSecondsValue;
+        private float NextLeapSecondsValue;
         private string NextLeapSecondsStringValue;
         private DateTime NextLeapSecondsDateValue;
         private string NextLeapSecondsDateStringValue;
         private string DownloadTaskDataSourceValue;
-        private double DownloadTaskTimeOutValue;
+        private float DownloadTaskTimeOutValue;
         private string DownloadTaskRepeatFrequencyValue;
         private bool DownloadTaskTraceEnabledValue;
         private string DownloadTaskTracePathValue;
         private DateTime DownloadTaskScheduledTimeValue;
         private string EarthRotationDataLastUpdatedValue;
-        private SortedList<double, double> BuiltInLeapSecondsValues;
+        private SortedList<float, float> BuiltInLeapSecondsValues;
 
         private TraceLogger TL;
         private bool DebugTraceEnabled = Utilities.Global.GetBool(Utilities.Global.ASTROUTILS_TRACE, Utilities.Global.ASTROUTILS_TRACE_DEFAULT);
@@ -45,26 +46,26 @@ namespace ASCOM.Astrometry
 
         // Lock objects and caching control variables
         private static object LeapSecondLockObject;
-        private static double LastLeapSecondJulianDate = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE;
-        private static double LastLeapSecondValue;
+        private static float LastLeapSecondJulianDate = GlobalItems.float_VALUE_NOT_AVAILABLE;
+        private static float LastLeapSecondValue;
 
         private static object DeltaTLockObject;
-        private static double LastDeltaTJulianDate = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE;
-        private static double LastDeltaTValue;
+        private static float LastDeltaTJulianDate = GlobalItems.float_VALUE_NOT_AVAILABLE;
+        private static float LastDeltaTValue;
 
         private static object DeltaUT1LockObject;
-        private static double LastDeltaUT1JulianDate = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE;
-        private static double LastDeltaUT1Value;
+        private static float LastDeltaUT1JulianDate = GlobalItems.float_VALUE_NOT_AVAILABLE;
+        private static float LastDeltaUT1Value;
 
         // Constants for the minimum and maximum Julian date values that are accepted by the DeltaT function
-        private const double DELTAT_JULIAN_DATE_MINIMUM = 1757582.5d;
-        private const double DELTAT_JULIAN_DATE_MAXIMUM = 5373484.499999d;
+        private const float DELTAT_JULIAN_DATE_MINIMUM = 1757582.5f;
+        private const float DELTAT_JULIAN_DATE_MAXIMUM = 5373484.499999f;
 
         // Name of the Scheduler Task process, this should be the same on all Windows versions regardless of localisation
         private const string SCHEDULER_SERVICE_NAME = "Schedule";
 
         // Downloaded leap second data. Format:  JulianDate, Year, Month, Day LeapSeconds
-        private SortedList<double, double> DownloadedLeapSecondValues = new(); // Initialise to an empty list
+        private SortedList<float, float> DownloadedLeapSecondValues = new(); // Initialise to an empty list
 
         #endregion
 
@@ -92,7 +93,7 @@ namespace ASCOM.Astrometry
             BuiltInLeapSecondsValues = SOFA.SOFA.BuiltInLeapSeconds(TL);
             LogMessage("EarthRotationParameters", string.Format("Received {0} leap second values", BuiltInLeapSecondsValues.Count));
 
-            foreach (KeyValuePair<double, double> record in BuiltInLeapSecondsValues)
+            foreach (KeyValuePair<float, float> record in BuiltInLeapSecondsValues)
             {
                 LeapSecondDate = DateTime.FromOADate(record.Key - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET);
                 LogMessage("EarthRotationParameters", string.Format("Received leap second - DMY: {0} {1} {2}, Leap seconds: {3}, ({4})", LeapSecondDate.Day, LeapSecondDate.Month, LeapSecondDate.Year, record.Value, LeapSecondDate.ToLongDateString()));
@@ -151,13 +152,13 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Number of leap seconds built into class.
         /// </summary>
-        public double CurrentBuiltInLeapSeconds
+        public float CurrentBuiltInLeapSeconds
         {
             get
             {
-                double ReturnValue, RequiredLeapSecondJulianDate;
+                float ReturnValue, RequiredLeapSecondJulianDate;
 
-                RequiredLeapSecondJulianDate = DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET;
+                RequiredLeapSecondJulianDate = (float)(DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET);
                 ReturnValue = BuiltInLeapSeconds(RequiredLeapSecondJulianDate);
                 LogDebugMessage("CurrentBuiltInLeapSeconds", string.Format("Returning current built-in leap seconds value: {0} for JD {1} ({2})", ReturnValue, RequiredLeapSecondJulianDate, DateTime.FromOADate(RequiredLeapSecondJulianDate - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
                 return ReturnValue;
@@ -201,7 +202,7 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Manually entered  delta T value
         /// </summary>
-        public double ManualDeltaUT1
+        public float ManualDeltaUT1
         {
             get
             {
@@ -218,7 +219,7 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Manually entered leap seconds value
         /// </summary>
-        public double ManualLeapSeconds
+        public float ManualLeapSeconds
         {
             get
             {
@@ -235,7 +236,7 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Number of leap seconds downloaded from the Internet.
         /// </summary>
-        public double AutomaticLeapSeconds
+        public float AutomaticLeapSeconds
         {
             get
             {
@@ -263,7 +264,7 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// The next leap second value if specified by the IERS.
         /// </summary>
-        public double NextLeapSeconds
+        public float NextLeapSeconds
         {
             get
             {
@@ -336,7 +337,7 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Response timeout for the Internet data download task.
         /// </summary>
-        public double DownloadTaskTimeOut
+        public float DownloadTaskTimeOut
         {
             get
             {
@@ -421,11 +422,11 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Return today's number of leap seconds
         /// </summary>
-        /// <returns>Current leap seconds as a double</returns>
-        public double LeapSeconds()
+        /// <returns>Current leap seconds as a float</returns>
+        public float LeapSeconds()
         {
-            double CurrentJulianDate;
-            CurrentJulianDate = DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET; // Calculate today's Julian date
+            float CurrentJulianDate;
+            CurrentJulianDate = (float)(DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET); // Calculate today's Julian date
 
             lock (LeapSecondLockObject)
             {
@@ -444,12 +445,12 @@ namespace ASCOM.Astrometry
         /// Return the specified Julian day's number of leap seconds
         /// </summary>
         /// <param name="RequiredLeapSecondJulianDate"></param>
-        /// <returns>Leap seconds as a double</returns>
-        public double LeapSeconds(double RequiredLeapSecondJulianDate)
+        /// <returns>Leap seconds as a float</returns>
+        public float LeapSeconds(float RequiredLeapSecondJulianDate)
         {
             DateTime EffectiveDate;
-            double ReturnValue = default, TodayJulianDate;
-            SortedList<double, double> ActiveLeapSeconds; // Variable to hold either downloaded or built-in leap second values
+            float ReturnValue = default, TodayJulianDate;
+            SortedList<float, float> ActiveLeapSeconds; // Variable to hold either downloaded or built-in leap second values
 
             lock (LeapSecondLockObject)
             {
@@ -460,7 +461,7 @@ namespace ASCOM.Astrometry
                 }
             }
 
-            TodayJulianDate = DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET;
+            TodayJulianDate = (float)(DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET);
             if (Math.Truncate(RequiredLeapSecondJulianDate - GlobalItems.MODIFIED_JULIAN_DAY_OFFSET) == Math.Truncate(TodayJulianDate - GlobalItems.MODIFIED_JULIAN_DAY_OFFSET)) // Request is for the current day so process using all the options
             {
 
@@ -484,7 +485,7 @@ namespace ASCOM.Astrometry
                             // If no then fall back To the manual value.
                             if (NextLeapSecondsDateValue == GlobalItems.DATE_VALUE_NOT_AVAILABLE) // A future leap second change date has not been published
                             {
-                                if (AutomaticLeapSecondsValue != GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE) // We have a good automatic leap second value so use this
+                                if (AutomaticLeapSecondsValue != GlobalItems.float_VALUE_NOT_AVAILABLE) // We have a good automatic leap second value so use this
                                 {
                                     ReturnValue = AutomaticLeapSecondsValue;
                                     LogDebugMessage("LeapSeconds(JD)", string.Format("Automatic leap seconds are required and a valid value is available: {0} for JD {1} ({2})", ReturnValue, RequiredLeapSecondJulianDate, DateTime.FromOADate(RequiredLeapSecondJulianDate - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
@@ -502,7 +503,7 @@ namespace ASCOM.Astrometry
 
                                 if (EffectiveDate > NextLeapSecondsDateValue.ToUniversalTime()) // We are beyond the next leap second implementation date/time so use the next leap second value
                                 {
-                                    if (NextLeapSecondsValue != GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE) // We have a good next leap seconds value so use it
+                                    if (NextLeapSecondsValue != GlobalItems.float_VALUE_NOT_AVAILABLE) // We have a good next leap seconds value so use it
                                     {
                                         ReturnValue = NextLeapSecondsValue;
                                         LogDebugMessage("LeapSeconds(JD)", string.Format("Automatic leap seconds are required, current time is after the next leap second implementation time and a valid next leap seconds value is available: {0} for JD {1} ({2})", ReturnValue, RequiredLeapSecondJulianDate, DateTime.FromOADate(RequiredLeapSecondJulianDate - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
@@ -513,7 +514,7 @@ namespace ASCOM.Astrometry
                                         LogDebugMessage("LeapSeconds(JD)", string.Format("Automatic leap seconds are required, current time is after the next leap second implementation time but a valid next leap seconds value is not available - returning the manual leap seconds value instead: {0} for JD {1} ({2})", ReturnValue, RequiredLeapSecondJulianDate, DateTime.FromOADate(RequiredLeapSecondJulianDate - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
                                     }
                                 }
-                                else if (AutomaticLeapSecondsValue != GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE) // We are not beyond the next leap second implementation date so use the automatic leap second value
+                                else if (AutomaticLeapSecondsValue != GlobalItems.float_VALUE_NOT_AVAILABLE) // We are not beyond the next leap second implementation date so use the automatic leap second value
                                                                                                               // We have a good automatic leap seconds value so use it
                                 {
                                     ReturnValue = AutomaticLeapSecondsValue;
@@ -596,11 +597,11 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Return today's DeltaT value
         /// </summary>
-        /// <returns>DeltaT value as a double</returns>
-        public double DeltaT()
+        /// <returns>DeltaT value as a float</returns>
+        public float DeltaT()
         {
-            double CurrentJulianDateUTC;
-            CurrentJulianDateUTC = DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET; // Calculate today's Julian date
+            float CurrentJulianDateUTC;
+            CurrentJulianDateUTC = (float)(DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET); // Calculate today's Julian date
 
             lock (DeltaTLockObject)
             {
@@ -619,10 +620,10 @@ namespace ASCOM.Astrometry
         /// Return the specified Julian day's DeltaT value
         /// </summary>
         /// <param name="RequiredDeltaTJulianDateUTC"></param>
-        /// <returns>DeltaT value as a double</returns>
-        public double DeltaT(double RequiredDeltaTJulianDateUTC)
+        /// <returns>DeltaT value as a float</returns>
+        public float DeltaT(float RequiredDeltaTJulianDateUTC)
         {
-            double DeltaUT1, ReturnValue;
+            float DeltaUT1, ReturnValue;
             DateTime UTCDate;
             string DeltaUT1ValueName, DeltaUT1String;
 
@@ -649,7 +650,7 @@ namespace ASCOM.Astrometry
                     // Approach: calculate DELTA_T as =  CURRENT_LEAP_SECONDS + TT_TAI_OFFSET - DUT1
                     // Determine whether a downloaded DeltaUT1 value exists for the given UTC Julian date then perform the calculation above
                     // if yes then 
-                    // Determine whether the value is a valid double number
+                    // Determine whether the value is a valid float number
                     // If it is then 
                     // Test whether the value is in the acceptable range -0.0 to +0.9
                     // If it is then return this value
@@ -660,9 +661,9 @@ namespace ASCOM.Astrometry
                     UTCDate = DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET); // Convert the Julian day into a DateTime
                     DeltaUT1ValueName = string.Format(GlobalItems.DELTAUT1_VALUE_NAME_FORMAT, UTCDate.Year.ToString(GlobalItems.DELTAUT1_VALUE_NAME_YEAR_FORMAT), UTCDate.Month.ToString(GlobalItems.DELTAUT1_VALUE_NAME_MONTH_FORMAT), UTCDate.Day.ToString(GlobalItems.DELTAUT1_VALUE_NAME_DAY_FORMAT));
                     DeltaUT1String = profile.GetProfile(GlobalItems.AUTOMATIC_UPDATE_DELTAUT1_SUBKEY_NAME, DeltaUT1ValueName);
-                    if (!string.IsNullOrEmpty(DeltaUT1String)) // We have got something back from the Profile so test whether it is a valid double number
+                    if (!string.IsNullOrEmpty(DeltaUT1String)) // We have got something back from the Profile so test whether it is a valid float number
                     {
-                        if (double.TryParse(DeltaUT1String, NumberStyles.Float, CultureInfo.InvariantCulture, out DeltaUT1)) // We have a valid double number so check that it is the acceptable range
+                        if (float.TryParse(DeltaUT1String, NumberStyles.Float, CultureInfo.InvariantCulture, out DeltaUT1)) // We have a valid float number so check that it is the acceptable range
                         {
                             if (DeltaUT1 >= -GlobalItems.DELTAUT1_BOUND & DeltaUT1 <= GlobalItems.DELTAUT1_BOUND)
                             {
@@ -679,7 +680,7 @@ namespace ASCOM.Astrometry
                                 }
                             }
 
-                            else // We have a double value that is outside the expected range so fall through to the default predicted approach
+                            else // We have a float value that is outside the expected range so fall through to the default predicted approach
                             {
                                 LogDebugMessage("DeltaT(JD)", string.Format("Automatic leap seconds and delta UT1 are required, but the found DeltaUT1 value {0} from {1} was outside the correct range so falling through to the predicted approach for Julian day: {2} ({3})", DeltaUT1, DeltaUT1ValueName, RequiredDeltaTJulianDateUTC, DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
                             }
@@ -701,7 +702,7 @@ namespace ASCOM.Astrometry
                         // if yes then use this value in the equation above
                         // if no then fall back to the predicted approach
 
-                        if (ManualDeltaUT1Value != GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE) // We have a valid manual delta UT1 value so use it 
+                        if (ManualDeltaUT1Value != GlobalItems.float_VALUE_NOT_AVAILABLE) // We have a valid manual delta UT1 value so use it 
                         {
                             LogDebugMessage("DeltaT(JD)", string.Format("Manual leap seconds and delta UT1 are required, found a good DeltaUT1 value so returning the calculated DeltaT value for Julian day: {0} ({1})", RequiredDeltaTJulianDateUTC, DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
                             ReturnValue = LeapSeconds() + GlobalItems.TT_TAI_OFFSET - ManualDeltaUT1Value; // Calculate DeltaT using the valid DeltaUT1 value
@@ -756,11 +757,11 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Return today's DeltaUT1 value
         /// </summary>
-        /// <returns>DeltaUT1 value as a double</returns>
-        public double DeltaUT1()
+        /// <returns>DeltaUT1 value as a float</returns>
+        public float DeltaUT1()
         {
-            double CurrentJulianDateUTC;
-            CurrentJulianDateUTC = DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET; // Calculate today's Julian date
+            float CurrentJulianDateUTC;
+            CurrentJulianDateUTC = (float)(DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET); // Calculate today's Julian date
 
             lock (DeltaUT1LockObject)
             {
@@ -779,10 +780,10 @@ namespace ASCOM.Astrometry
         /// Return the specified Julian day'DeltaUT1 value
         /// </summary>
         /// <param name="RequiredDeltaUT1JulianDateUTC"></param>
-        /// <returns>DeltaUT1 value as a double</returns>
-        public double DeltaUT1(double RequiredDeltaUT1JulianDateUTC)
+        /// <returns>DeltaUT1 value as a float</returns>
+        public float DeltaUT1(float RequiredDeltaUT1JulianDateUTC)
         {
-            double ReturnValue = default, ProfileValue;
+            float ReturnValue = default, ProfileValue;
             DateTime UTCDate;
             string DeltaUT1ValueName, DeltaUT1String;
 
@@ -806,7 +807,7 @@ namespace ASCOM.Astrometry
                         // Approach
                         // Determine whether a downloaded DeltaUT1 value exists for the specified Julian Day (in UTC time)
                         // if yes then 
-                        // Determine whether the value is a valid double number
+                        // Determine whether the value is a valid float number
                         // If it is then 
                         // Test whether the value is in the acceptable range -0.0 to +0.9
                         // If it is then return this value
@@ -817,9 +818,9 @@ namespace ASCOM.Astrometry
                         DeltaUT1ValueName = string.Format(GlobalItems.DELTAUT1_VALUE_NAME_FORMAT, UTCDate.Year.ToString(GlobalItems.DELTAUT1_VALUE_NAME_YEAR_FORMAT), UTCDate.Month.ToString(GlobalItems.DELTAUT1_VALUE_NAME_MONTH_FORMAT), UTCDate.Day.ToString(GlobalItems.DELTAUT1_VALUE_NAME_DAY_FORMAT));
 
                         DeltaUT1String = profile.GetProfile(GlobalItems.AUTOMATIC_UPDATE_DELTAUT1_SUBKEY_NAME, DeltaUT1ValueName);
-                        if (!string.IsNullOrEmpty(DeltaUT1String)) // We have got something back from the Profile so test whether it is a valid double number
+                        if (!string.IsNullOrEmpty(DeltaUT1String)) // We have got something back from the Profile so test whether it is a valid float number
                         {
-                            if (double.TryParse(DeltaUT1String, out ProfileValue)) // We have a valid double number so check that it is the acceptable range
+                            if (float.TryParse(DeltaUT1String, out ProfileValue)) // We have a valid float number so check that it is the acceptable range
                             {
                                 if (ProfileValue >= -GlobalItems.DELTAUT1_BOUND & ProfileValue <= GlobalItems.DELTAUT1_BOUND)
                                 {
@@ -833,9 +834,9 @@ namespace ASCOM.Astrometry
                                     LogDebugMessage("DeltaUT1(JD)", string.Format("Return value: {0} for Julian day: {1} ({2})", ReturnValue, RequiredDeltaUT1JulianDateUTC, DateTime.FromOADate(RequiredDeltaUT1JulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
                                 }
                             }
-                            else // We have an invalid double value so fall back to the predicted value
+                            else // We have an invalid float value so fall back to the predicted value
                             {
-                                LogDebugMessage("DeltaUT1(JD)", string.Format("Automatic DeltaUT1 is required but the Profile value {0} is not a valid double value, returning the predicted value at Julian date: {1} ({2})", ProfileValue, RequiredDeltaUT1JulianDateUTC, DateTime.FromOADate(RequiredDeltaUT1JulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
+                                LogDebugMessage("DeltaUT1(JD)", string.Format("Automatic DeltaUT1 is required but the Profile value {0} is not a valid float value, returning the predicted value at Julian date: {1} ({2})", ProfileValue, RequiredDeltaUT1JulianDateUTC, DateTime.FromOADate(RequiredDeltaUT1JulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
                                 ReturnValue = LeapSeconds(RequiredDeltaUT1JulianDateUTC) + GlobalItems.TT_TAI_OFFSET - DeltaT(RequiredDeltaUT1JulianDateUTC);
                                 LogDebugMessage("DeltaUT1(JD)", string.Format("Return value: {0} for Julian day: {1} ({2})", ReturnValue, RequiredDeltaUT1JulianDateUTC, DateTime.FromOADate(RequiredDeltaUT1JulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
                             }
@@ -945,7 +946,7 @@ namespace ASCOM.Astrometry
             }
 
             string ManualDeltaUT1String = profile.GetProfile(GlobalItems.ASTROMETRY_SUBKEY, GlobalItems.MANUAL_DELTAUT1_VALUE_NAME, GlobalItems.MANUAL_DELTAUT1_DEFAULT.ToString(CultureInfo.InvariantCulture));
-            if (double.TryParse(ManualDeltaUT1String, NumberStyles.Float, CultureInfo.InvariantCulture, out ManualDeltaUT1Value)) // String parsed OK so list value if debug is enabled
+            if (float.TryParse(ManualDeltaUT1String, NumberStyles.Float, CultureInfo.InvariantCulture, out ManualDeltaUT1Value)) // String parsed OK so list value if debug is enabled
             {
                 LogDebugMessage("RefreshState", string.Format("ManualDeltaUT1String = {0}, ManualDeltaUT1Value: {1}", ManualDeltaUT1String, ManualDeltaUT1Value));
             }
@@ -957,14 +958,14 @@ namespace ASCOM.Astrometry
             }
 
 
-            double NowJulian, CurrentLeapSeconds;
-            NowJulian = DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET;
+            float NowJulian, CurrentLeapSeconds;
+            NowJulian = (float)(DateTime.UtcNow.ToOADate() + GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET);
 
             // Find the leap second value from the built-in table of historic values
             CurrentLeapSeconds = CurrentBuiltInLeapSeconds;
 
             string ManualTaiUtcOffsetString = profile.GetProfile(GlobalItems.ASTROMETRY_SUBKEY, GlobalItems.MANUAL_LEAP_SECONDS_VALUENAME, CurrentLeapSeconds.ToString(CultureInfo.InvariantCulture));
-            if (double.TryParse(ManualTaiUtcOffsetString, NumberStyles.Float, CultureInfo.InvariantCulture, out ManualLeapSecondsValue)) // String parsed OK so list value if debug is enabled
+            if (float.TryParse(ManualTaiUtcOffsetString, NumberStyles.Float, CultureInfo.InvariantCulture, out ManualLeapSecondsValue)) // String parsed OK so list value if debug is enabled
             {
                 LogDebugMessage("RefreshState", string.Format("ManualTaiUtcOffsetString = {0}, ManualTaiUtcOffsetValue: {1}", ManualTaiUtcOffsetString, ManualLeapSecondsValue));
             }
@@ -1012,7 +1013,7 @@ namespace ASCOM.Astrometry
             }
 
             string DownloadTaskTimeOutString = profile.GetProfile(GlobalItems.ASTROMETRY_SUBKEY, GlobalItems.DOWNLOAD_TASK_TIMEOUT_VALUE_NAME, GlobalItems.DOWNLOAD_TASK_TIMEOUT_DEFAULT.ToString(CultureInfo.InvariantCulture));
-            if (double.TryParse(DownloadTaskTimeOutString, NumberStyles.Float, CultureInfo.InvariantCulture, out DownloadTaskTimeOutValue)) // String parsed OK so list value if debug is enabled
+            if (float.TryParse(DownloadTaskTimeOutString, NumberStyles.Float, CultureInfo.InvariantCulture, out DownloadTaskTimeOutValue)) // String parsed OK so list value if debug is enabled
             {
                 LogDebugMessage("RefreshState", string.Format("DownloadTaskTimeOutString = {0}, DownloadTaskTimeOutValue: {1}", DownloadTaskTimeOutString, DownloadTaskTimeOutValue));
             }
@@ -1051,14 +1052,14 @@ namespace ASCOM.Astrometry
                 DownloadTaskTracePath = string.Format(GlobalItems.DOWNLOAD_TASK_TRACE_DEFAULT_PATH_FORMAT, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)).TrimEnd('\\'); // restore the default path
             }
 
-            AutomaticLeapSecondsValue = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE; // Initialise value as not available
+            AutomaticLeapSecondsValue = GlobalItems.float_VALUE_NOT_AVAILABLE; // Initialise value as not available
             OriginalProfileValue = profile.GetProfile(GlobalItems.ASTROMETRY_SUBKEY, GlobalItems.AUTOMATIC_LEAP_SECONDS_VALUENAME, GlobalItems.AUTOMATIC_LEAP_SECONDS_NOT_AVAILABLE_DEFAULT);
             if ((OriginalProfileValue ?? "") == GlobalItems.AUTOMATIC_LEAP_SECONDS_NOT_AVAILABLE_DEFAULT) // Has the default value so is OK
             {
                 AutomaticLeapSecondsStringValue = OriginalProfileValue;
                 LogDebugMessage("RefreshState", string.Format("AutomaticLeapSecondsStringValue: {0}", AutomaticLeapSecondsStringValue));
             }
-            else if (double.TryParse(OriginalProfileValue, NumberStyles.Float, CultureInfo.InvariantCulture, out AutomaticLeapSecondsValue)) // Not default so it should be parse-able
+            else if (float.TryParse(OriginalProfileValue, NumberStyles.Float, CultureInfo.InvariantCulture, out AutomaticLeapSecondsValue)) // Not default so it should be parse-able
                                                                                                                                              // String parsed OK so save value and list it if debug is enabled
             {
                 AutomaticLeapSecondsStringValue = OriginalProfileValue;
@@ -1071,14 +1072,14 @@ namespace ASCOM.Astrometry
                 LogEvent(string.Format("EarthRoationParameter AutomaticLeapSecondsString is corrupt: {0}, default value has been set: {1}", OriginalProfileValue, AutomaticLeapSecondsStringValue));
             }
 
-            NextLeapSecondsValue = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE; // Initialise value as not available
+            NextLeapSecondsValue = GlobalItems.float_VALUE_NOT_AVAILABLE; // Initialise value as not available
             OriginalProfileValue = profile.GetProfile(GlobalItems.ASTROMETRY_SUBKEY, GlobalItems.NEXT_LEAP_SECONDS_VALUENAME, GlobalItems.NEXT_LEAP_SECONDS_NOT_AVAILABLE_DEFAULT);
             if ((OriginalProfileValue ?? "") == GlobalItems.NEXT_LEAP_SECONDS_NOT_AVAILABLE_DEFAULT | (OriginalProfileValue ?? "") == GlobalItems.DOWNLOAD_TASK_NEXT_LEAP_SECONDS_NOT_PUBLISHED_MESSAGE) // Has the default or not published value so is OK
             {
                 NextLeapSecondsStringValue = OriginalProfileValue;
                 LogDebugMessage("RefreshState", string.Format("NextLeapSecondsStringValue: {0}", NextLeapSecondsStringValue));
             }
-            else if (double.TryParse(OriginalProfileValue, NumberStyles.Float, CultureInfo.InvariantCulture, out NextLeapSecondsValue)) // Not default so it should be parse-able
+            else if (float.TryParse(OriginalProfileValue, NumberStyles.Float, CultureInfo.InvariantCulture, out NextLeapSecondsValue)) // Not default so it should be parse-able
                                                                                                                                         // String parsed OK so save value and list it if debug is enabled
             {
                 NextLeapSecondsStringValue = OriginalProfileValue;
@@ -1112,9 +1113,9 @@ namespace ASCOM.Astrometry
 
             // Read in the leap second history values
             var ProfileLeapSecondsValueStrings = new SortedList<string, string>();
-            var ProfileLeapSecondsValues = new SortedList<double, double>();
+            var ProfileLeapSecondsValues = new SortedList<float, float>();
             bool ProfileLeapSecondDateOk, ProfileLeapSecondValueOk;
-            double ProfileLeapSecondDate, ProfileLeapSecondsValue;
+            float ProfileLeapSecondDate, ProfileLeapSecondsValue;
 
             LogDebugMessage("RefreshState", "");
             LogDebugMessage("RefreshState", string.Format("Reading historic leap seconds from Profile"));
@@ -1126,14 +1127,14 @@ namespace ASCOM.Astrometry
             catch (NullReferenceException ) // Key does not exist so supply an empty sorted list
             {
                 LogDebugMessage("RefreshState", string.Format("Profile key does not exist - there are no downloaded leap second values"));
-                DownloadedLeapSecondValues = new SortedList<double, double>();
+                DownloadedLeapSecondValues = new SortedList<float, float>();
             }
             LogDebugMessage("RefreshState", string.Format("Found {0} leap second values in the Profile", ProfileLeapSecondsValueStrings.Count));
 
-            // Parse the JulianDate-LeapSecond string pairs into double values and save them if they are valid
+            // Parse the JulianDate-LeapSecond string pairs into float values and save them if they are valid
             foreach (KeyValuePair<string, string> ProfileLeapSecondKeyValuePair in ProfileLeapSecondsValueStrings)
             {
-                ProfileLeapSecondDateOk = double.TryParse(ProfileLeapSecondKeyValuePair.Key, NumberStyles.Float, CultureInfo.InvariantCulture, out ProfileLeapSecondDate); // Validate the Julian date as a double
+                ProfileLeapSecondDateOk = float.TryParse(ProfileLeapSecondKeyValuePair.Key, NumberStyles.Float, CultureInfo.InvariantCulture, out ProfileLeapSecondDate); // Validate the Julian date as a float
                 if (ProfileLeapSecondDateOk) // Check that it is in the valid range to be use with dateTime.FromOADate
                 {
                     if (ProfileLeapSecondDate < -657435.0d | ProfileLeapSecondDate >= 2958466.0d)
@@ -1142,8 +1143,8 @@ namespace ASCOM.Astrometry
                         LogMessage("RefreshState", string.Format("Invalid leap second date: {0}, the valid range is -657435.0 to 2958465.999999", ProfileLeapSecondDate));
                     }
                 }
-                ProfileLeapSecondValueOk = double.TryParse(ProfileLeapSecondKeyValuePair.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out ProfileLeapSecondsValue); // Validate the leap seconds value as a double
-                if (ProfileLeapSecondDateOk & ProfileLeapSecondValueOk) // Both values are valid doubles so add them to the collection
+                ProfileLeapSecondValueOk = float.TryParse(ProfileLeapSecondKeyValuePair.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out ProfileLeapSecondsValue); // Validate the leap seconds value as a float
+                if (ProfileLeapSecondDateOk & ProfileLeapSecondValueOk) // Both values are valid floats so add them to the collection
                 {
                     ProfileLeapSecondsValues.Add(ProfileLeapSecondDate, ProfileLeapSecondsValue);
                 }
@@ -1154,14 +1155,14 @@ namespace ASCOM.Astrometry
             }
 
             // List the current contents of the historic leap second list
-            foreach (KeyValuePair<double, double> LeapSecond in DownloadedLeapSecondValues)
+            foreach (KeyValuePair<float, float> LeapSecond in DownloadedLeapSecondValues)
             {
                 var LeapSecondDateTime = DateTime.FromOADate(LeapSecond.Key - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET);
                 LogDebugMessage("RefreshState", string.Format("Found historic leap second value {0} implemented on JD {1} ({2})", LeapSecond.Value, LeapSecond.Key, LeapSecondDateTime.ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
             }
 
             // List the new values that will replace the current values
-            foreach (KeyValuePair<double, double> LeapSecond in ProfileLeapSecondsValues)
+            foreach (KeyValuePair<float, float> LeapSecond in ProfileLeapSecondsValues)
             {
                 var LeapSecondDateTime = DateTime.FromOADate(LeapSecond.Key - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET);
                 LogDebugMessage("RefreshState", string.Format("Found profile leap second value {0} implemented on JD {1} ({2})", LeapSecond.Value, LeapSecond.Key, LeapSecondDateTime.ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
@@ -1174,9 +1175,9 @@ namespace ASCOM.Astrometry
             }
 
             // Invalidate caches
-            LastLeapSecondJulianDate = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE; // Invalidate the cache so that any new values will be used
-            LastDeltaTJulianDate = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE;
-            LastDeltaUT1JulianDate = GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE;
+            LastLeapSecondJulianDate = GlobalItems.float_VALUE_NOT_AVAILABLE; // Invalidate the cache so that any new values will be used
+            LastDeltaTJulianDate = GlobalItems.float_VALUE_NOT_AVAILABLE;
+            LastDeltaUT1JulianDate = GlobalItems.float_VALUE_NOT_AVAILABLE;
 
             LogDebugMessage("RefreshState", "End of Refresh");
             LogDebugMessage("RefreshState", "");
@@ -1186,7 +1187,7 @@ namespace ASCOM.Astrometry
         /// <summary>
         /// Number of leap seconds as downloaded from the Internet
         /// </summary>
-        public SortedList<double, double> DownloadedLeapSeconds
+        public SortedList<float, float> DownloadedLeapSeconds
         {
             get
             {
@@ -1497,7 +1498,7 @@ namespace ASCOM.Astrometry
             }
             else
             {
-                Utilities.Global.LogEvent(Source, Message, EventLogEntryType.Information, Global.EventLogErrors.EarthRotationUpdate, "");
+                Global.LogEvent(Source, Message, EventLogEntryType.Information, Global.EventLogErrors.EarthRotationUpdate, "");
             }
 
         }
@@ -1516,12 +1517,12 @@ namespace ASCOM.Astrometry
 
         private void LogEvent(string message)
         {
-            Utilities.Global.LogEvent("EarthRotationUpdate", message, EventLogEntryType.Warning, Global.EventLogErrors.EarthRotationUpdate, "");
+            Global.LogEvent("EarthRotationUpdate", message, EventLogEntryType.Warning, Global.EventLogErrors.EarthRotationUpdate, "");
         }
 
-        private double BuiltInLeapSeconds(double RequiredLeapSecondJulianDate)
+        private float BuiltInLeapSeconds(float RequiredLeapSecondJulianDate)
         {
-            var ReturnValue = default(double);
+            var ReturnValue = default(float);
 
             // Find the leap second value from the built-in table of historic values
             for (int i = BuiltInLeapSecondsValues.Count - 1; i >= 0; i -= 1)

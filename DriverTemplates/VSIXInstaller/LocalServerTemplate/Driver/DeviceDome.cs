@@ -32,14 +32,14 @@ class DeviceDome
     /// <summary>
     /// The altitude (degrees, horizon zero and increasing positive to 90 zenith) of the part of the sky that the observer wishes to observe.
     /// </summary>
-    public double Altitude
+    public float Altitude
     {
         get
         {
             try
             {
                 CheckConnected("Altitude");
-                double altitude = DomeHardware.Altitude;
+                float altitude = DomeHardware.Altitude;
                 LogMessage("Altitude", altitude.ToString());
                 return altitude;
             }
@@ -108,14 +108,14 @@ class DeviceDome
     /// <summary>
     /// The dome azimuth (degrees, North zero and increasing clockwise, i.e., 90 East, 180 South, 270 West). North is true north and not magnetic north.
     /// </summary>
-    public double Azimuth
+    public float Azimuth
     {
         get
         {
             try
             {
                 CheckConnected("Azimuth");
-                double azimuth = DomeHardware.Azimuth;
+                float azimuth = DomeHardware.Azimuth;
                 LogMessage("Azimuth", azimuth.ToString());
                 return azimuth;
             }
@@ -496,7 +496,7 @@ class DeviceDome
     /// <param name="altitude">
     /// The desired viewing altitude (degrees, horizon zero and increasing positive to 90 degrees at the zenith)
     /// </param>
-    public void SlewToAltitude(double altitude)
+    public void SlewToAltitude(float altitude)
     {
         try
         {
@@ -520,7 +520,7 @@ class DeviceDome
     /// Desired viewing azimuth (degrees, North zero and increasing clockwise. i.e., 90 East,
     /// 180 South, 270 West)
     /// </param>
-    public void SlewToAzimuth(double azimuth)
+    public void SlewToAzimuth(float azimuth)
     {
         try
         {
@@ -567,7 +567,7 @@ class DeviceDome
     /// Target azimuth (degrees, North zero and increasing clockwise. i.e., 90 East,
     /// 180 South, 270 West)
     /// </param>
-    public void SyncToAzimuth(double azimuth)
+    public void SyncToAzimuth(float azimuth)
     {
         try
         {

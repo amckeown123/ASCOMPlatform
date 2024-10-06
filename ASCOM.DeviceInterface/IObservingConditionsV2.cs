@@ -232,7 +232,7 @@ namespace ASCOM.DeviceInterface
         /// <para>Please resist the temptation to throw exceptions when clients query sensor properties when insufficient time has passed to get a true average reading.
         /// A best estimate of the average sensor value should be returned in these situations. </para>
         /// </remarks>
-        double AveragePeriod { get; set; }
+        float AveragePeriod { get; set; }
 
         /// <summary>
         /// Amount of sky obscured by cloud
@@ -245,7 +245,7 @@ namespace ASCOM.DeviceInterface
         /// <p style="color:red"><b>Optional property, can throw a PropertyNotImplementedException</b></p>
         /// This property should return a value between 0.0 and 100.0 where 0.0 = clear sky and 100.0 = 100% cloud coverage
         /// </remarks>
-        double CloudCover { get; }
+        float CloudCover { get; }
 
         /// <summary>
         /// Atmospheric dew point at the observatory
@@ -263,7 +263,7 @@ namespace ASCOM.DeviceInterface
         /// one to be implemented and the other to throw a PropertyNotImplementedException. The Utilities component contains methods (<see cref="Util.DewPoint2Humidity"/> and
         /// <see cref="Util.Humidity2DewPoint"/>) to convert DewPoint to Humidity and vice versa given the ambient temperature.</para>
         /// </remarks>
-        double DewPoint { get; }
+        float DewPoint { get; }
 
         /// <summary>
         /// Atmospheric humidity at the observatory
@@ -280,7 +280,7 @@ namespace ASCOM.DeviceInterface
         /// <see cref="Util.Humidity2DewPoint"/>) to convert DewPoint to Humidity and vice versa given the ambient temperature.</para>
         /// <para>This property should return a value between 0.0 and 100.0 where 0.0 = 0% relative humidity and 100.0 = 100% relative humidity.</para>
         /// </remarks>
-        double Humidity { get; }
+        float Humidity { get; }
 
         /// <summary>
         /// Atmospheric pressure at the observatory
@@ -299,7 +299,7 @@ namespace ASCOM.DeviceInterface
         /// The <see cref="Util.ConvertPressure"/> method can be used to effect this adjustment.
         /// </para>
         /// </remarks>
-        double Pressure { get; }
+        float Pressure { get; }
 
         /// <summary>
         /// Rain rate at the observatory
@@ -321,7 +321,7 @@ namespace ASCOM.DeviceInterface
         /// <item><description>Violent rain — when the precipitation rate is &gt; 50 mm (2.0 in) per hour</description></item>
         /// </list>
         /// </remarks>
-        double RainRate { get; }
+        float RainRate { get; }
 
         /// <summary>
         /// Sky brightness at the observatory
@@ -352,7 +352,7 @@ namespace ASCOM.DeviceInterface
         /// <item><description>32000–100000 lux</description><description>Direct sunlight</description></item>
         /// </list>
         /// </remarks>
-        double SkyBrightness { get; }
+        float SkyBrightness { get; }
 
         /// <summary>
         /// Sky quality at the observatory
@@ -504,7 +504,7 @@ namespace ASCOM.DeviceInterface
         /// </table>
         /// </para>
         /// </remarks>
-        double SkyQuality { get; }
+        float SkyQuality { get; }
 
         /// <summary>
         /// Seeing at the observatory measured as star full width half maximum (FWHM) in arc secs.
@@ -516,7 +516,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// <p style="color:red"><b>Optional property, can throw a PropertyNotImplementedException</b></p>
         /// </remarks>
-        double StarFWHM { get; }
+        float StarFWHM { get; }
 
         /// <summary>
         /// Sky temperature at the observatory
@@ -531,7 +531,7 @@ namespace ASCOM.DeviceInterface
         /// to convert these units to and from degrees Fahrenheit.</para>
         /// <para>This is expected to be returned by an infra-red sensor looking at the sky. The lower the temperature the more the sky is likely to be clear.</para>
         /// </remarks>
-        double SkyTemperature { get; }
+        float SkyTemperature { get; }
 
         /// <summary>
         /// Temperature at the observatory
@@ -546,7 +546,7 @@ namespace ASCOM.DeviceInterface
         /// to convert these units to and from degrees Fahrenheit.</para>
         /// <para>This is expected to be the ambient temperature at the observatory.</para>
         /// </remarks>
-        double Temperature { get; }
+        float Temperature { get; }
 
         /// <summary>
         /// Wind direction at the observatory
@@ -560,7 +560,7 @@ namespace ASCOM.DeviceInterface
         /// The returned value must be between 0.0 and 360.0, interpreted according to the meteorological standard, where a special value of 0.0 is returned when the wind speed is 0.0.
         /// Wind direction is measured clockwise from north, through east, where East=90.0, South=180.0, West=270.0 and North=360.0.
         /// </remarks>
-        double WindDirection { get; }
+        float WindDirection { get; }
 
         /// <summary>
         /// Peak 3 second wind gust at the observatory over the last 2 minutes
@@ -574,7 +574,7 @@ namespace ASCOM.DeviceInterface
         /// The units of this property are metres per second. Driver and application authors can use the <see cref="Util.ConvertUnits"/> method
         /// to convert these units to and from miles per hour or knots.
         /// </remarks>
-        double WindGust { get; }
+        float WindGust { get; }
 
         /// <summary>
         /// Wind speed at the observatory
@@ -588,7 +588,7 @@ namespace ASCOM.DeviceInterface
         /// The units of this property are metres per second. Driver and application authors can use the <see cref="Util.ConvertUnits"/> method
         /// to convert these units to and from miles per hour or knots.
         /// </remarks>
-        double WindSpeed { get; }
+        float WindSpeed { get; }
 
         /// <summary>
         /// Provides the time since the sensor value was last updated
@@ -605,7 +605,7 @@ namespace ASCOM.DeviceInterface
         /// <para>Return a negative value to indicate that no valid value has ever been received from the hardware.</para>
         /// <para>If an empty string is supplied as the PropertyName, the driver must return the time since the most recent update of any sensor. A MethodNotImplementedException must not be thrown in this circumstance.</para>
         /// </remarks>
-        double TimeSinceLastUpdate(string PropertyName);
+        float TimeSinceLastUpdate(string PropertyName);
 
         /// <summary>
         /// Provides a description of the sensor providing the requested property

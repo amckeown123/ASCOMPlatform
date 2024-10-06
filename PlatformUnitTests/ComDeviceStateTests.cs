@@ -1,7 +1,6 @@
 ﻿using ASCOM.DeviceInterface;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ASCOM.DriverAccess;
-using System.Collections.Generic;
 using Xunit.Abstractions;
 using Xunit;
 
@@ -25,7 +24,7 @@ namespace PlatformUnitTests
             const string STATE_NAME_0 = "State name 1";
             const string STATE_NAME_1 = "State name 2";
             const int STATE_VALUE_0 = 1;
-            const double STATE_VALUE_1 = 3.14159;
+            const float STATE_VALUE_1 = 3.14159;
 
             StateValueCollection collection = new StateValueCollection
             {
@@ -59,7 +58,7 @@ namespace PlatformUnitTests
             const string STATE_NAME_0 = "State name 1";
             const string STATE_NAME_1 = "State name 2";
             const int STATE_VALUE_0 = 1;
-            const double STATE_VALUE_1 = 3.14159;
+            const float STATE_VALUE_1 = 3.14159;
 
             StateValueCollection collection = new StateValueCollection
             {
@@ -97,7 +96,7 @@ namespace PlatformUnitTests
             const string STATE_NAME_0 = "State name 1";
             const string STATE_NAME_1 = "State name 2";
             const int STATE_VALUE_0 = 1;
-            const double STATE_VALUE_1 = 3.14159;
+            const float STATE_VALUE_1 = 3.14159;
 
             output.WriteLine($"Using test");
 

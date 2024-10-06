@@ -4,8 +4,6 @@ using System.Runtime.InteropServices;
 using ASCOM.DeviceInterface;
 using System.Globalization;
 using System.Threading.Tasks;
-using System.Threading;
-using ASCOM.DynamicClients;
 
 namespace ASCOM.Simulator
 {
@@ -296,7 +294,7 @@ namespace ASCOM.Simulator
 
         #region ObservingConditions Implementation
 
-        public double AveragePeriod
+        public float AveragePeriod
         {
             get
             {
@@ -313,27 +311,27 @@ namespace ASCOM.Simulator
             set { Hub.AveragePeriodSet(clientNumber, value); }
         }
 
-        public double CloudCover
+        public float CloudCover
         {
             get { return Hub.CloudCover(clientNumber); }
         }
 
-        public double DewPoint
+        public float DewPoint
         {
             get { return Hub.DewPoint(clientNumber); }
         }
 
-        public double Humidity
+        public float Humidity
         {
             get { return Hub.Humidity(clientNumber); }
         }
 
-        public double Pressure
+        public float Pressure
         {
             get { return Hub.Pressure(clientNumber); }
         }
 
-        public double RainRate
+        public float RainRate
         {
             get { return Hub.RainRate(clientNumber); }
         }
@@ -348,32 +346,32 @@ namespace ASCOM.Simulator
             return Hub.SensorDescription(clientNumber, PropertyName);
         }
 
-        public double SkyBrightness
+        public float SkyBrightness
         {
             get { return Hub.SkyBrightness(clientNumber); }
         }
 
-        public double SkyQuality
+        public float SkyQuality
         {
             get { return Hub.SkyQuality(clientNumber); }
         }
 
-        public double StarFWHM
+        public float StarFWHM
         {
             get { return Hub.StarFWHM(clientNumber); }
         }
 
-        public double SkyTemperature
+        public float SkyTemperature
         {
             get { return Hub.SkyTemperature(clientNumber); }
         }
 
-        public double Temperature
+        public float Temperature
         {
             get { return Hub.Temperature(clientNumber); }
         }
 
-        public double TimeSinceLastUpdate(string PropertyName)
+        public float TimeSinceLastUpdate(string PropertyName)
         {
             if (testMode)
             {
@@ -386,17 +384,17 @@ namespace ASCOM.Simulator
             }
         }
 
-        public double WindDirection
+        public float WindDirection
         {
             get { return Hub.WindDirection(clientNumber); }
         }
 
-        public double WindGust
+        public float WindGust
         {
             get { return Hub.WindGust(clientNumber); }
         }
 
-        public double WindSpeed
+        public float WindSpeed
         {
             get { return Hub.WindSpeed(clientNumber); }
         }

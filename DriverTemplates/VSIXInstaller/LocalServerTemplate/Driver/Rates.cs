@@ -20,14 +20,14 @@ namespace TEMPLATENAMESPACE
     [ComVisible(true)]
     public class Rate : IRate
     {
-        private double maximum = 0;
-        private double minimum = 0;
+        private float maximum = 0;
+        private float minimum = 0;
 
         //
         // Default constructor - Internal prevents public creation
         // of instances. These are values for AxisRates.
         //
-        internal Rate(double minimum, double maximum)
+        internal Rate(float minimum, float maximum)
         {
             this.maximum = maximum;
             this.minimum = minimum;
@@ -40,13 +40,13 @@ namespace TEMPLATENAMESPACE
             // TODO Add any required object clean-up here
         }
 
-        public double Maximum
+        public float Maximum
         {
             get { return this.maximum; }
             set { this.maximum = value; }
         }
 
-        public double Minimum
+        public float Minimum
         {
             get { return this.minimum; }
             set { this.minimum = value; }

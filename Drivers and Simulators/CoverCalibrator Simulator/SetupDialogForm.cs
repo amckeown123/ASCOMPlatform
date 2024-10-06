@@ -37,8 +37,8 @@ namespace ASCOM.Simulator
             // Update the state variables with results from the dialogue
             TL.Enabled = chkTrace.Checked;
             CoverCalibrator.MaxBrightnessValue = Decimal.ToInt32(NumMaxBrightness.Value);
-            CoverCalibrator.CalibratorStablisationTimeValue = Decimal.ToDouble(NumCalibratorStablisationTime.Value);
-            CoverCalibrator.CoverOpeningTimeValue = Decimal.ToDouble(NumCoverOpeningTime.Value);
+            CoverCalibrator.CalibratorStablisationTimeValue = Decimal.Tofloat(NumCalibratorStablisationTime.Value);
+            CoverCalibrator.CoverOpeningTimeValue = Decimal.Tofloat(NumCoverOpeningTime.Value);
             Enum.TryParse<CalibratorStatus>(CmbCalibratorInitialisationState.SelectedItem.ToString(), out CoverCalibrator.CalibratorStateInitialisationValue);
             Enum.TryParse<CoverStatus>(CmbCoverInitialisationState.SelectedItem.ToString(), out CoverCalibrator.CoverStateInitialisationValue);
         }

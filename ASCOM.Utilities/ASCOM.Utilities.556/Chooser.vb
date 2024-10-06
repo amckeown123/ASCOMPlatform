@@ -136,6 +136,51 @@ Public Class Chooser
         End Set
     End Property
 
+    Private Property IChooser_DeviceType As String Implements IChooser.DeviceType
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+        Set(value As String)
+            Throw New System.NotImplementedException()
+        End Set
+    End Property
+
+    Private Property IChooser_DeviceType1 As String Implements IChooser.DeviceType
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+        Set(value As String)
+            Throw New System.NotImplementedException()
+        End Set
+    End Property
+
+    Private Property IChooser_DeviceType2 As String Implements IChooser.DeviceType
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+        Set(value As String)
+            Throw New System.NotImplementedException()
+        End Set
+    End Property
+
+    Private Property IChooser_DeviceType3 As String Implements IChooser.DeviceType
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+        Set(value As String)
+            Throw New System.NotImplementedException()
+        End Set
+    End Property
+
+    Private Property IChooser_DeviceType4 As String Implements IChooser.DeviceType
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+        Set(value As String)
+            Throw New System.NotImplementedException()
+        End Set
+    End Property
+
     ''' <summary>
     ''' Select ASCOM driver to use including pre-selecting one in the dropdown list
     ''' </summary>
@@ -200,10 +245,15 @@ Public Class Chooser
     ''' <para>This overload is not available through COM, please use "Choose(ByVal DriverProgID As String)"
     ''' with an empty string parameter to achieve this effect.</para>
     ''' </remarks>
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Public Overloads Function Choose() As String Implements IChooserExtra.Choose
         Return Me.Choose("")
     End Function
+
+    Private Function IChooser_Choose() As String Implements IChooser.Choose
+        Throw New System.NotImplementedException()
+    End Function
+
 #End Region
 
 End Class

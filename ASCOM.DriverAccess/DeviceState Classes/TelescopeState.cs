@@ -53,7 +53,7 @@ namespace ASCOM.DriverAccess
                         case nameof(ITelescopeV4.Altitude):
                             try
                             {
-                                Altitude = (double)stateValue.Value;
+                                Altitude = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -89,7 +89,7 @@ namespace ASCOM.DriverAccess
                         case nameof(ITelescopeV4.Azimuth):
                             try
                             {
-                                Azimuth = (double)stateValue.Value;
+                                Azimuth = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -101,7 +101,7 @@ namespace ASCOM.DriverAccess
                         case nameof(ITelescopeV4.Declination):
                             try
                             {
-                                Declination = (double)stateValue.Value;
+                                Declination = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -125,7 +125,7 @@ namespace ASCOM.DriverAccess
                         case nameof(ITelescopeV4.RightAscension):
                             try
                             {
-                                RightAscension = (double)stateValue.Value;
+                                RightAscension = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -149,7 +149,7 @@ namespace ASCOM.DriverAccess
                         case nameof(ITelescopeV4.SiderealTime):
                             try
                             {
-                                SiderealTime = (double)stateValue.Value;
+                                SiderealTime = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -221,7 +221,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Telescope altitude
         /// </summary>
-        public double? Altitude { get; set; } = null;
+        public float? Altitude { get; set; } = null;
 
         /// <summary>
         /// Telescope is at home
@@ -236,12 +236,12 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Telescope azimuth
         /// </summary>
-        public double? Azimuth { get; set; } = null;
+        public float? Azimuth { get; set; } = null;
 
         /// <summary>
         /// Telescope declination
         /// </summary>
-        public double? Declination { get; set; } = null;
+        public float? Declination { get; set; } = null;
 
         /// <summary>
         /// Telescope is pulse guiding
@@ -251,7 +251,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Telescope right ascension
         /// </summary>
-        public double? RightAscension { get; set; } = null;
+        public float? RightAscension { get; set; } = null;
 
         /// <summary>
         /// Telescope pointing state
@@ -261,7 +261,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Telescope sidereal time
         /// </summary>
-        public double? SiderealTime { get; set; } = null;
+        public float? SiderealTime { get; set; } = null;
 
         /// <summary>
         /// Telescope is slewing

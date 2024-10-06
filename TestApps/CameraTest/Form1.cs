@@ -277,7 +277,7 @@ namespace CameraTest
             {
                 oCamera.CoolerOn = chkCoolerOn.Checked;
                 if (oCamera.CoolerOn)
-                    oCamera.SetCCDTemperature = (double)numericUpDownSetCCDTemperature.Value;
+                    oCamera.SetCCDTemperature = (float)numericUpDownSetCCDTemperature.Value;
             }
             catch (Exception ex)
             {
@@ -347,7 +347,7 @@ namespace CameraTest
                     oCamera.Gain = (short)numGain.Value;
                     Thread.Sleep(1000);
                 }
-                oCamera.StartExposure((double)numExposure.Value, light);
+                oCamera.StartExposure((float)numExposure.Value, light);
                 ExposureTimer.Enabled = true;
                 imageControl.Change += imageControl_Change;
             }
@@ -365,7 +365,7 @@ namespace CameraTest
 
             // generate gamma LUT
             gamma = new int[256];
-            var g = (double)imageControl.Gamma.Value;
+            var g = (float)imageControl.Gamma.Value;
             for (int i = 0; i < 256; i++)
             {
                 gamma[i] = (byte)(Math.Pow(i / 256.0, g) * 256.0);
@@ -686,7 +686,7 @@ namespace CameraTest
                     toolStripStatusLabel1.Text = string.Format("ImageArray(Variant) failed {0}", ex.Message);
                 }
                 int max = 0, min = 0;
-                double mean = 0;
+                float mean = 0;
                 ImageParameters(ref min, ref max, ref mean);
                 if (chkAuto.Checked)
                 {
@@ -720,7 +720,7 @@ namespace CameraTest
             }
         }
 
-        private void ImageParameters(ref int min, ref int max, ref double mean)
+        private void ImageParameters(ref int min, ref int max, ref float mean)
         {
             if (iarr == null) return;
 
@@ -772,7 +772,7 @@ namespace CameraTest
                 }
             }
             //decimal var = (sumsq - (sum * sum) / num) / num;
-            //double sd = Math.Sqrt((double)var);
+            //float sd = Math.Sqrt((float)var);
             if (min < 0) min = 0;
             if (max > oCamera.MaxADU) max = oCamera.MaxADU;
             mean = (int)(sum / num);
@@ -784,7 +784,7 @@ namespace CameraTest
         private void MakeHistogram(int min, int max)
         {
             histogram = new int[256];
-            double s = (double)255 / (max - min);
+            float s = (float)255 / (max - min);
             if (max <= min) s = 1;
             unsafe
             {
@@ -1047,7 +1047,7 @@ namespace CameraTest
         {
             if (CheckConnected)
             {
-                oCamera.SetCCDTemperature = (Double)numericUpDownSetCCDTemperature.Value;
+                oCamera.SetCCDTemperature = (float)numericUpDownSetCCDTemperature.Value;
             }
         }
 
@@ -1060,8 +1060,8 @@ namespace CameraTest
         {
             // get the data in the right form
             var imageData = (Array)ArrayFuncs.Flatten(oCamera.ImageArray);
-            const double bZero = 0;
-            const double bScale = 1.0;
+            const float bZero = 0;
+            const float bScale = 1.0;
             if (oCamera.MaxADU <= 65535)
             {
                 //bZero = 32768;
@@ -1089,8 +1089,8 @@ namespace CameraTest
             imageHdu.AddValue("YORGSUBF", oCamera.StartY, "subframe origin on Y axis in binned pixels");
             //imageHdu.AddValue("XPOSSUBF", oCamera.StartX, "");
             //imageHdu.AddValue("YPOSSUBF", oCamera.StartY, "");
-            imageHdu.AddValue("CBLACK", (double)imageControl.Minimum, "");
-            imageHdu.AddValue("CWHITE", (double)imageControl.Maximum, "");
+            imageHdu.AddValue("CBLACK", (float)imageControl.Minimum, "");
+            imageHdu.AddValue("CWHITE", (float)imageControl.Maximum, "");
             imageHdu.AddValue("SWCREATE", "ASCOM Camera Test", "string indicating the software used to create the file");
             // extensions as specified by SBIG
             try

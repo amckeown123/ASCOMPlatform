@@ -358,7 +358,7 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public double MaxSwitchValue(short id)
+        public float MaxSwitchValue(short id)
         {
             Validate("MaxSwitchValue", id);
             return switches[id].Maximum;
@@ -370,7 +370,7 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public double MinSwitchValue(short id)
+        public float MinSwitchValue(short id)
         {
             Validate("MinSwitchValue", id);
             return switches[id].Minimum;
@@ -384,7 +384,7 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public double SwitchStep(short id)
+        public float SwitchStep(short id)
         {
             Validate("SwitchStep", id);
             return switches[id].StepSize;
@@ -396,7 +396,7 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public double GetSwitchValue(short id)
+        public float GetSwitchValue(short id)
         {
             Validate("GetSwitchValue", id);
             return switches[id].Value;
@@ -410,7 +410,7 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
-        public void SetSwitchValue(short id, double value)
+        public void SetSwitchValue(short id, float value)
         {
             Validate("SetSwitchValue", id, value);
             switches[id].SetValue(value, "SetSwitchValue");
@@ -470,11 +470,11 @@ namespace ASCOM.Simulator
             // Validate the id parameter
             Validate("SetAsync", id);
 
-            // Convert the bool value to an appropriate double value representing true or false
+            // Convert the bool value to an appropriate float value representing true or false
             SetAsyncValue(id, state ? switches[id].Maximum : switches[id].Minimum);
         }
 
-        public void SetAsyncValue(short id, double value)
+        public void SetAsyncValue(short id, float value)
         {
             // Validate the id parameter
             Validate("SetAsyncValue", id);
@@ -638,7 +638,7 @@ namespace ASCOM.Simulator
         /// <param name="message"></param>
         /// <param name="id"></param>
         /// <param name="value"></param>
-        private void Validate(string message, short id, double value)
+        private void Validate(string message, short id, float value)
         {
             Validate(message, id);
             var sw = switches[id];

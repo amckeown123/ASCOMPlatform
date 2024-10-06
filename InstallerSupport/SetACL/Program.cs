@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using Utilities;
+using ASCOM.Utilities;
 
 namespace SetACL
 {
@@ -37,7 +37,7 @@ namespace SetACL
 
                     // Create the Profile key if required and set its access rights
                     LogMessage("SetRegistryACL", "Creating RegistryAccess object");
-                    using (regAccess = new RegistryAccess(TL))
+                    regAccess = new RegistryAccess(TL);
                     {
                         LogMessage("SetRegistryACL", "Setting Profile registry ACL");
                         regAccess.SetRegistryACL();

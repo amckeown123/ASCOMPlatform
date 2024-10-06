@@ -103,25 +103,25 @@ namespace ASCOM.Simulator
             get { return int.Parse(comboBoxEquatorialSystem.SelectedValue.ToString(), CultureInfo.CurrentCulture); }
             set { comboBoxEquatorialSystem.SelectedValue = value.ToString(CultureInfo.CurrentCulture); }
         }
-        public double Elevation
+        public float Elevation
         {
             get
             {
-                if (!double.TryParse(textBoxElevation.Text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out double elevation))
-                    elevation = double.NaN;
+                if (!float.TryParse(textBoxElevation.Text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out float elevation))
+                    elevation = float.NaN;
                 return elevation;
 
             }
             set { textBoxElevation.Text = value.ToString(CultureInfo.CurrentCulture); }
         }
-        public double Latitude
+        public float Latitude
         {
             get
             {
-                double lat = 0;
+                float lat = 0;
                 try
                 {
-                    lat = double.Parse(textBoxLatitudeDegrees.Text, CultureInfo.CurrentCulture) + double.Parse(textBoxLatitudeMinutes.Text, CultureInfo.CurrentCulture) / 60;
+                    lat = float.Parse(textBoxLatitudeDegrees.Text, CultureInfo.CurrentCulture) + float.Parse(textBoxLatitudeMinutes.Text, CultureInfo.CurrentCulture) / 60;
                     if (comboBoxLatitude.SelectedItem.ToString() == "S") { lat = -lat; }
                 }
                 catch { }
@@ -143,14 +143,14 @@ namespace ASCOM.Simulator
                 textBoxLatitudeMinutes.Text = ((value - (int)value) * 60).ToString("00.00", CultureInfo.CurrentCulture);
             }
         }
-        public double Longitude
+        public float Longitude
         {
             get
             {
-                double log = 0;
+                float log = 0;
                 try
                 {
-                    log = double.Parse(textBoxLongitudeDegrees.Text, CultureInfo.CurrentCulture) + double.Parse(textBoxLongitudeMinutes.Text, CultureInfo.CurrentCulture) / 60;
+                    log = float.Parse(textBoxLongitudeDegrees.Text, CultureInfo.CurrentCulture) + float.Parse(textBoxLongitudeMinutes.Text, CultureInfo.CurrentCulture) / 60;
                     if (comboBoxLongitude.SelectedItem.ToString().ToUpperInvariant() == "W") { log = -log; }
                 }
                 catch { }
@@ -374,33 +374,33 @@ namespace ASCOM.Simulator
             set { checkBoxCanSiderealTime.Checked = value; }
         }
 
-        public double ApertureArea
+        public float ApertureArea
         {
             get
             {
-                if (!double.TryParse(textBoxApertureArea.Text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out double area))
+                if (!float.TryParse(textBoxApertureArea.Text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out float area))
                     area = -1;  // indicates an error - for now
                 return area;
             }
             set { textBoxApertureArea.Text = value.ToString(CultureInfo.CurrentCulture); }
         }
 
-        public double ApertureDiameter
+        public float ApertureDiameter
         {
             get
             {
-                if (!double.TryParse(textBoxAperture.Text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out double aperture))
+                if (!float.TryParse(textBoxAperture.Text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out float aperture))
                     aperture = -1;
                 return aperture;
             }
             set { textBoxAperture.Text = value.ToString(CultureInfo.CurrentCulture); }
         }
 
-        public double FocalLength
+        public float FocalLength
         {
             get
             {
-                if (!double.TryParse(textBoxFocalLength.Text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out double focal))
+                if (!float.TryParse(textBoxFocalLength.Text, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out float focal))
                     focal = -1;
                 return focal;
             }

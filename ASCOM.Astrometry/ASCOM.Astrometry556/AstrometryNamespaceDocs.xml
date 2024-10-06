@@ -64,14 +64,14 @@
 
     <member name="N:ASCOM.Astrometry.NOVAS">
       <summary>
-        <h2>NOVAS-C: Naval Observatory Vector Astrometry Subroutines
+        <h2>NOVAS-C: Naval Observatory Vector2 Astrometry Subroutines
         </h2>
         <h3>Introduction</h3>
         <p>This component is a .NET presentation of the subroutines and function in the US Naval Observatory 
         NOVAS 2 library. The following is extracted from its accompanying pdf document, which is also included 
         in the ASCOM distribution</p>
         <p>
-          The Naval Observatory Vector Astrometry Subroutines, NOVAS, is an integrated
+          The Naval Observatory Vector2 Astrometry Subroutines, NOVAS, is an integrated
           package of source-code modules for computing a wide variety of common astrometric
           quantities and transformations. The package can provide, in one function call, the
           instantaneous coordinates (apparent, topocentric, or astrometric place) of any star or
@@ -89,10 +89,10 @@
           International Earth Rotation Service (IERS).
         </p>
         <p>
-          The algorithms used by the NOVAS-C functions are based on a vector and matrix
+          The algorithms used by the NOVAS-C functions are based on a Vector2 and matrix
           formulation that is rigorous, consistent with recent IAU resolutions, and does not use
           spherical trigonometry or form “day numbers” at any point. Objects within and outside
-          the solar system are treated similarly and the position vectors formed and operated on by
+          the solar system are treated similarly and the position Vector2s formed and operated on by
           these functions place each relevant object at its actual distance (in AU) from the solar
           system barycenter. Objects at unknown distance (parallax zero or undetermined) are
           placed on the “celestial sphere” herein defined to be at a radius of 10 megaparsecs (2.06
@@ -116,7 +116,7 @@
             American Astronomical Society, Vol. 22, pp. 930-931.
           </li>
           <li>
-            Creation of a C equivalent of the FORTAN Code - John Bangert, USNO - Naval Observatory Vector 
+            Creation of a C equivalent of the FORTAN Code - John Bangert, USNO - Naval Observatory Vector2 
             Astrometry Subroutines C Language Version 2.0
           </li>
           <li>Presentation of the C routines as a .NET assembly - Peter Simpson and Tim Long, ASCOM (July, 2009)</li>
@@ -131,7 +131,7 @@
           underscore characters and use of camelcase. There are also a few 
           new structures and enums but these should be self explanatory. 
           One significant parameter difference 
-          is that position and velocity vectors are returned as structures rather than double arrays. This was done
+          is that position and velocity Vector2s are returned as structures rather than float arrays. This was done
           to make type checking more effective.</p>
         <p>Testing of the high level supervisory functions has been carried out using real-time star data from
            the USNO web site. Values provided by this NOVAS2 implementation agree on average to about 50 milli
@@ -164,7 +164,7 @@
         
         <h3>NOVAS-COM Release Notes - V2.1 (July 2007)</h3>
 
-        <p>NOVAS-COM V2.1 is the third production release of a Component Object Model (COM) implementation of the U. S. Naval Observatory Vector Astrometry Subroutines (NOVAS) package. By encapsulating NOVAS within a COM component, the functions of NOVAS become available to most Windows scripting and programming environments. This component may be used by Visual Basic programs, scripts in any ActiveX Scripting language such as VBScript, JScript, Perl, Python, even an Excel spreadsheet. Thus, the proven accuracy of these USNO algorithms is accessible to end-user observatory automation and data reduction script writers.</p>
+        <p>NOVAS-COM V2.1 is the third production release of a Component Object Model (COM) implementation of the U. S. Naval Observatory Vector2 Astrometry Subroutines (NOVAS) package. By encapsulating NOVAS within a COM component, the functions of NOVAS become available to most Windows scripting and programming environments. This component may be used by Visual Basic programs, scripts in any ActiveX Scripting language such as VBScript, JScript, Perl, Python, even an Excel spreadsheet. Thus, the proven accuracy of these USNO algorithms is accessible to end-user observatory automation and data reduction script writers.</p>
 
         <h3>Credits</h3>
         <ul>
@@ -179,7 +179,7 @@
         <p>NOVAS-COM was developed according to the ASCOM Initiative's quality and behavior guidelines. Every effort has been taken to provide a quality stable component. Errors are signaled via automation exceptions with clear error messages. The component has a dual interface, and thus can be used in demanding high performance applications without the speed penalty of the dispatch interface. For more information on the ASCOM Initiative and the logo requirements, see the ASCOM Initiative Web Site.</p>
         <p>NOVAS-COM provides for the computation of a wide variety of common astrometric quantities and transformations. The component can provide, in one or two method calls, the instantaneous coordinates (apparent, topocentric, or astrometric place) of any star. With the addition of acompatible ephemeris component such as the Kepler Orbit Engine, NOVAS-COM can also compute the instantaneous coordinates of major and minor planets. Ignoring ephememeris approximations, the computations provided are precise to better than one milliarcsecond. The NOVAS-COM component is an easy-to-use facility that can be incorporated into data reduction programs, telescope control systems, and simulations. The internal NOVAS subroutines are, in fact, identical to those now used in the production of the Astronomical Almanac. The internally used subroutines are available in ANSI standard Fortran and C versions.</p>
 
-        <p>The algorithms used by the NOVAS-COM routines are based on a vector and matrix formulation which is rigorous, consistent with recent IAU resolutions, and does not use spherical trigonometry or form "day numbers" at any point. Objects within and outside the solar system are treated similarly and the position vectors formed and operated on by these routines place each relevant object at its actual distance (in AU) from the solar system barycenter. Objects at unknown distance (parallax zero or undetermined) are placed on the "celestial sphere" herein defined to be at a radius of 10 megaparsecs (2.06E12 AU). A description of the algorithms used, along with definitions of terms and related information, can be found in Kaplan, et al. (1989) Astron. J. 97, 1197.</p>
+        <p>The algorithms used by the NOVAS-COM routines are based on a Vector2 and matrix formulation which is rigorous, consistent with recent IAU resolutions, and does not use spherical trigonometry or form "day numbers" at any point. Objects within and outside the solar system are treated similarly and the position Vector2s formed and operated on by these routines place each relevant object at its actual distance (in AU) from the solar system barycenter. Objects at unknown distance (parallax zero or undetermined) are placed on the "celestial sphere" herein defined to be at a radius of 10 megaparsecs (2.06E12 AU). A description of the algorithms used, along with definitions of terms and related information, can be found in Kaplan, et al. (1989) Astron. J. 97, 1197.</p>
 
         <p>NOVAS-COM uses as input astrometric reference data that is expressed in the IAU J2000.0 system. In particular, NOVAS supports (but is not limited to) data that conforms to the International Celestial Reference System (ICRS). ICRS-compatible data includes the Hipparcos and Tycho Catalogues, the ACT Reference Catalog (obsolete, use Tycho-2), the International Celestial Reference Frame (ICRF), the Jet Propulsion Laboratory DE405 planetary ephemeris, and Earth orientation measurements from the International Earth Rotation Service (IERS). The list of ICRS-compatible data of various types is continually expanding. NOVAS-COM can also be used with data conforming to the FK5 system.</p>
 
@@ -193,7 +193,7 @@
         <h2>Kepler Ephemeris Engine Programmer's Reference</h2>
 
         <h3>Introduction</h3>
-        <p>This document describes the first production release of the Kepler Ephemeris Engine, an ASCOM component which provides ephemerides for solar system bodies, given their orbital elements. It was written as a companion to the NOVAS-COM vector astrometry engine, providing the ephemerides needed for planetary astrometric calculations, and for high-precision aberration calculations. It provides heliocentric J2000 equatorial cartesian vectors for position and velocity given a set of orbital elements and a terrestrial time. NOVAS-COM can be used to transform these coordinates to Earth-centered ("astrometric") or topocentric coordinates for observational use. You can download NOVAS-COM from the ASCOM Downloads Page.</p>
+        <p>This document describes the first production release of the Kepler Ephemeris Engine, an ASCOM component which provides ephemerides for solar system bodies, given their orbital elements. It was written as a companion to the NOVAS-COM Vector2 astrometry engine, providing the ephemerides needed for planetary astrometric calculations, and for high-precision aberration calculations. It provides heliocentric J2000 equatorial cartesian Vector2s for position and velocity given a set of orbital elements and a terrestrial time. NOVAS-COM can be used to transform these coordinates to Earth-centered ("astrometric") or topocentric coordinates for observational use. You can download NOVAS-COM from the ASCOM Downloads Page.</p>
 
         <h3>Credits</h3>
         <ul>
@@ -210,7 +210,7 @@
         <p>For a detailed explanation of astronomical timekeeping systems, see A Time Tutorial on the NASA Goddard Spaceflight Center site, and the USNO Systems of Time site.</p>
         <p>
           <b>Julian dates</b><br />
-          These are standard Julian "date serial" numbers, and are expressed in UTC time or Terrestrial time. The fractional part of these numbers represents time within a day. The standard ActiveX "Double" precision of 15 digits gives a resolution of about one millisecond in a full Julian dates. This is sufficient for the purposes of this program.
+          These are standard Julian "date serial" numbers, and are expressed in UTC time or Terrestrial time. The fractional part of these numbers represents time within a day. The standard ActiveX "float" precision of 15 digits gives a resolution of about one millisecond in a full Julian dates. This is sufficient for the purposes of this program.
         </p>
         <p>
           <b>Hourly Time Values</b><br />

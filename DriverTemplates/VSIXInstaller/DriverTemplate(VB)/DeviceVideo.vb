@@ -63,10 +63,10 @@ Class DeviceVideo
 	''' <summary>
 	''' The maximum supported exposure (integration time) in seconds.
 	''' </summary>
-	Public ReadOnly Property ExposureMax As Double Implements IVideo.ExposureMax
+	Public ReadOnly Property ExposureMax As float Implements IVideo.ExposureMax
 		Get
 			' Standard NTSC frame duration
-			Dim retval As Double = 0.03337
+			Dim retval As float = 0.03337
 			TL.LogMessage("ExposureMax Get", $"{retval:f5}")
 			Return retval
 		End Get
@@ -75,10 +75,10 @@ Class DeviceVideo
 	''' <summary>
 	''' The minimum supported exposure (integration time) in seconds.
 	''' </summary>
-	Public ReadOnly Property ExposureMin As Double Implements IVideo.ExposureMin
+	Public ReadOnly Property ExposureMin As float Implements IVideo.ExposureMin
 		Get
 			' Standard NTSC frame duration
-			Dim retval As Double = 0.03337
+			Dim retval As float = 0.03337
 			TL.LogMessage("ExposureMin Get", $"{retval:f5}")
 			Return retval
 		End Get
@@ -235,7 +235,7 @@ Class DeviceVideo
 	''' <summary>
 	''' Returns the width of the CCD chip pixels in microns.
 	''' </summary>
-	Public ReadOnly Property PixelSizeX As Double Implements IVideo.PixelSizeX
+	Public ReadOnly Property PixelSizeX As float Implements IVideo.PixelSizeX
 		Get
 			TL.LogMessage("PixelSizeX Get", "Not implemented")
 			Throw New PropertyNotImplementedException("PixelSizeX", False)
@@ -246,7 +246,7 @@ Class DeviceVideo
 	''' Returns the height of the CCD chip pixels in microns.
 	''' </summary>
 	''' <value>The pixel size Y if known.</value>
-	Public ReadOnly Property PixelSizeY As Double Implements IVideo.PixelSizeY
+	Public ReadOnly Property PixelSizeY As float Implements IVideo.PixelSizeY
 		Get
 			TL.LogMessage("PixelSizeY Get", "Not implemented")
 			Throw New PropertyNotImplementedException("PixelSizeY", False)

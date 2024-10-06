@@ -38,7 +38,7 @@ namespace ASCOM.Simulator
             m_arrColourPicBox = new PictureBoxArray(this);
 
             // Populate the time combo with localised values
-            for (double j = 0.5; j <= 4; j += 0.5)
+            for (float j = 0.5; j <= 4; j += 0.5)
                 cmbTime.Items.Add(j.ToString("F1"));
 
             // Create the textbox and picture controls on the form
@@ -228,11 +228,11 @@ namespace ASCOM.Simulator
 
         private void cmbTime_Validating(object sender, CancelEventArgs e)
         {
-            double i = 99;      // force error if conversion fails
+            float i = 99;      // force error if conversion fails
 
             try
             {
-                i = Convert.ToDouble("0" + cmbTime.Text);        // Make blanks = 0
+                i = Convert.Tofloat("0" + cmbTime.Text);        // Make blanks = 0
             }
             catch { }
             if (i < 0.1 || i >= 9)

@@ -25,11 +25,11 @@ Public Interface IRate '221C0BC0-110B-4129-85A0-18BB28579290
     ''' The maximum rate (degrees per second)
     ''' This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
     ''' </summary>
-    Property Maximum() As Double
+    Property Maximum() As float
 
     ''' <summary>
     ''' The minimum rate (degrees per second)
     ''' This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
     ''' </summary>
-    Property Minimum() As Double
+    Property Minimum() As float
 End Interface

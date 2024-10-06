@@ -135,7 +135,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// The device's Brightness
         /// </summary>
-        public double? Brightness { get; set; } = null;
+        public float? Brightness { get; set; } = null;
 
         /// <summary>
         /// The device's CalibratorState

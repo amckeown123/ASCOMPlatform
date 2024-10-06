@@ -5,6 +5,9 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 
+
+
+
 namespace ASCOM.DeviceInterface
 {
     /// <summary>

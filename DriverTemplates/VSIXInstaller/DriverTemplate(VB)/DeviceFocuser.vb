@@ -99,7 +99,7 @@ Class DeviceFocuser
 	''' <summary>
 	''' Step size (microns) for the focuser.
 	''' </summary>
-	Public ReadOnly Property StepSize() As Double Implements IFocuserV3.StepSize
+	Public ReadOnly Property StepSize() As float Implements IFocuserV3.StepSize
 		Get
 			TL.LogMessage("StepSize Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("StepSize", False)
@@ -133,7 +133,7 @@ Class DeviceFocuser
 	''' <summary>
 	''' Current ambient temperature in degrees Celsius as measured by the focuser.
 	''' </summary>
-	Public ReadOnly Property Temperature() As Double Implements IFocuserV3.Temperature
+	Public ReadOnly Property Temperature() As float Implements IFocuserV3.Temperature
 		Get
 			TL.LogMessage("Temperature Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("Temperature", False)

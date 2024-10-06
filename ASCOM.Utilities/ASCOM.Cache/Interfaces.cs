@@ -32,7 +32,7 @@ namespace ASCOM.Utilities
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
         /// <param name="MaximumCallFrequency"></param>
-        [DispId(4)] void Set(string Key, object Value, double CacheTime, double MaximumCallFrequency);
+        [DispId(4)] void Set(string Key, object Value, float CacheTime, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -40,7 +40,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="MaximumCallFrequency"></param>
         /// <returns></returns>
-        [DispId(5)] object Get(string Key, double MaximumCallFrequency);
+        [DispId(5)] object Get(string Key, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -49,7 +49,7 @@ namespace ASCOM.Utilities
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
         /// <param name="MaximumCallFrequency"></param>
-        [DispId(6)] void SetDouble(string Key, double Value, double CacheTime, double MaximumCallFrequency);
+        [DispId(6)] void Setfloat(string Key, float Value, float CacheTime, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -57,7 +57,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="MaximumCallFrequency"></param>
         /// <returns></returns>
-        [DispId(7)] double GetDouble(string Key, double MaximumCallFrequency);
+        [DispId(7)] float Getfloat(string Key, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -66,7 +66,7 @@ namespace ASCOM.Utilities
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
         /// <param name="MaximumCallFrequency"></param>
-        [DispId(8)] void SetInt(string Key, int Value, double CacheTime, double MaximumCallFrequency);
+        [DispId(8)] void SetInt(string Key, int Value, float CacheTime, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -74,7 +74,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="MaximumCallFrequency"></param>
         /// <returns></returns>
-        [DispId(9)] int GetInt(string Key, double MaximumCallFrequency);
+        [DispId(9)] int GetInt(string Key, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -83,7 +83,7 @@ namespace ASCOM.Utilities
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
         /// <param name="MaximumCallFrequency"></param>
-        [DispId(10)] void SetString(string Key, string Value, double CacheTime, double MaximumCallFrequency);
+        [DispId(10)] void SetString(string Key, string Value, float CacheTime, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -91,7 +91,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="MaximumCallFrequency"></param>
         /// <returns></returns>
-        [DispId(11)] string GetString(string Key, double MaximumCallFrequency);
+        [DispId(11)] string GetString(string Key, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -100,7 +100,7 @@ namespace ASCOM.Utilities
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
         /// <param name="MaximumCallFrequency"></param>
-        [DispId(12)] void SetBool(string Key, bool Value, double CacheTime, double MaximumCallFrequency);
+        [DispId(12)] void SetBool(string Key, bool Value, float CacheTime, float MaximumCallFrequency);
 
         /// <summary>
         /// 
@@ -108,7 +108,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="MaximumCallFrequency"></param>
         /// <returns></returns>
-        [DispId(13)] bool GetBool(string Key, double MaximumCallFrequency);
+        [DispId(13)] bool GetBool(string Key, float MaximumCallFrequency);
 
     }
 
@@ -130,7 +130,7 @@ namespace ASCOM.Utilities
         /// </summary>
         /// <param name="Key"></param>
         /// <returns></returns>
-        double GetDouble(string Key);
+        float Getfloat(string Key);
 
         /// <summary>
         /// 
@@ -159,7 +159,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
-        void Set(string Key, object Value, double CacheTime);
+        void Set(string Key, object Value, float CacheTime);
 
         /// <summary>
         /// 
@@ -167,7 +167,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
-        void SetDouble(string Key, double Value, double CacheTime);
+        void Setfloat(string Key, float Value, float CacheTime);
 
         /// <summary>
         /// 
@@ -175,7 +175,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
-        void SetInt(string Key, int Value, double CacheTime);
+        void SetInt(string Key, int Value, float CacheTime);
 
         /// <summary>
         /// 
@@ -183,7 +183,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
-        void SetString(string Key, string Value, double CacheTime);
+        void SetString(string Key, string Value, float CacheTime);
 
         /// <summary>
         /// 
@@ -191,7 +191,7 @@ namespace ASCOM.Utilities
         /// <param name="Key"></param>
         /// <param name="Value"></param>
         /// <param name="CacheTime"></param>
-        void SetBool(string Key, bool Value, double CacheTime);
+        void SetBool(string Key, bool Value, float CacheTime);
 
     }
 }

@@ -49,15 +49,15 @@ Public Class SetupDialogForm
     End Sub
 
 #Region "Properties"
-    Public Property Home() As Double
+    Public Property Home() As float
         Get
             Home = 0.0
-            If Double.TryParse(txtHome.Text, Home) Then
+            If float.TryParse(txtHome.Text, Home) Then
                 Home = AzScale(Home)
             End If
         End Get
 
-        Set(ByVal value As Double)
+        Set(ByVal value As float)
             If value < -360 Or value > 360 Then
                 txtHome.Text = "000.0"
             Else
@@ -67,16 +67,16 @@ Public Class SetupDialogForm
         End Set
     End Property
 
-    Public Property OCDelay() As Double
+    Public Property OCDelay() As float
         Get
             OCDelay = 0
-            If Double.TryParse(txtOCDelay.Text, OCDelay) Then
+            If float.TryParse(txtOCDelay.Text, OCDelay) Then
                 If OCDelay > 30 Then _
                     OCDelay = 30
             End If
         End Get
 
-        Set(ByVal value As Double)
+        Set(ByVal value As float)
             If value < 0 Then
                 txtOCDelay.Text = "0"
             Else
@@ -84,15 +84,15 @@ Public Class SetupDialogForm
             End If
         End Set
     End Property
-    Public Property Park() As Double
+    Public Property Park() As float
         Get
             Park = 180
-            If Double.TryParse(txtPark.Text, NumberStyles.Number, CultureInfo.CurrentCulture, Park) Then
+            If float.TryParse(txtPark.Text, NumberStyles.Number, CultureInfo.CurrentCulture, Park) Then
                 Park = AzScale(Park)
             End If
         End Get
 
-        Set(ByVal value As Double)
+        Set(ByVal value As float)
             If value < -360 Or value > 360 Then
                 txtPark.Text = "000.0"
             Else
@@ -103,25 +103,25 @@ Public Class SetupDialogForm
     End Property
 
 
-    Public Property AltRate() As Double
+    Public Property AltRate() As float
         Get
             AltRate = 10
-            If Double.TryParse(txtAltRate.Text, NumberStyles.Number, CultureInfo.CurrentCulture, AltRate) Then
+            If float.TryParse(txtAltRate.Text, NumberStyles.Number, CultureInfo.CurrentCulture, AltRate) Then
                 If AltRate < 1 Then _
                     AltRate = 1
                 If AltRate > 90 Then _
                     AltRate = 90
             End If
         End Get
-        Set(ByVal value As Double)
+        Set(ByVal value As float)
             txtAltRate.Text = Format$(value, "0.0")
         End Set
     End Property
 
-    Public Property AzRate() As Double
+    Public Property AzRate() As float
         Get
             AzRate = 1
-            If Double.TryParse(txtAzRate.Text, NumberStyles.Number, CultureInfo.CurrentCulture, AzRate) Then
+            If float.TryParse(txtAzRate.Text, NumberStyles.Number, CultureInfo.CurrentCulture, AzRate) Then
                 If AzRate < 1 Then _
                     AzRate = 1
                 If AzRate > 90 Then _
@@ -129,29 +129,29 @@ Public Class SetupDialogForm
             End If
         End Get
 
-        Set(ByVal value As Double)
+        Set(ByVal value As float)
             txtAzRate.Text = Format$(value, "0.0")
         End Set
     End Property
 
-    Public Property MaxAlt() As Double
+    Public Property MaxAlt() As float
         Get
             MaxAlt = 90
-            If Double.TryParse(txtMaxAlt.Text, NumberStyles.Number, CultureInfo.CurrentCulture, MaxAlt) Then
+            If float.TryParse(txtMaxAlt.Text, NumberStyles.Number, CultureInfo.CurrentCulture, MaxAlt) Then
                 If MaxAlt < 0 Then _
                     MaxAlt = 0
                 If MaxAlt > 90 Then _
                     MaxAlt = 90
             End If
         End Get
-        Set(ByVal value As Double)
+        Set(ByVal value As float)
             txtMaxAlt.Text = Format$(value, "0.0")
         End Set
     End Property
-    Public Property MinAlt() As Double
+    Public Property MinAlt() As float
         Get
             MinAlt = 0
-            If Double.TryParse(txtMinAlt.Text, NumberStyles.Number, CultureInfo.CurrentCulture, MinAlt) Then
+            If float.TryParse(txtMinAlt.Text, NumberStyles.Number, CultureInfo.CurrentCulture, MinAlt) Then
                 If MinAlt < 0 Then _
                     MinAlt = 0
                 If MinAlt > 90 Then _
@@ -159,14 +159,14 @@ Public Class SetupDialogForm
             End If
         End Get
 
-        Set(ByVal value As Double)
+        Set(ByVal value As float)
             txtMinAlt.Text = Format$(value, "0.0")
         End Set
     End Property
-    Public Property StepSize() As Double
+    Public Property StepSize() As float
         Get
             StepSize = 1
-            If Double.TryParse(txtStepSize.Text, NumberStyles.Number, CultureInfo.CurrentCulture, StepSize) Then
+            If float.TryParse(txtStepSize.Text, NumberStyles.Number, CultureInfo.CurrentCulture, StepSize) Then
                 If StepSize < 1 Then _
                     StepSize = 1
                 If StepSize > 90 Then _
@@ -174,7 +174,7 @@ Public Class SetupDialogForm
             End If
         End Get
 
-        Set(ByVal value As Double)
+        Set(ByVal value As float)
             txtStepSize.Text = Format$(value, "0.0")
         End Set
     End Property

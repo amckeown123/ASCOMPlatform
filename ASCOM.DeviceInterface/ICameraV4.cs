@@ -386,7 +386,7 @@ namespace ASCOM.DeviceInterface
         /// <exception cref="PropertyNotImplementedException">Must throw exception if not supported.</exception>
         /// <exception cref="NotConnectedException">If the device is not connected</exception>
         /// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception>
-        double CCDTemperature { get; }
+        float CCDTemperature { get; }
 
         /// <summary>
         /// Turns on and off the camera cooler, and returns the current on/off state.
@@ -413,7 +413,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// Returns zero if <see cref="CoolerOn" /> is <c>false</c>.
         /// </remarks>
-        double CoolerPower { get; }
+        float CoolerPower { get; }
 
         /// <summary>
         /// Returns the gain of the camera in photoelectrons per A/D unit.
@@ -425,7 +425,7 @@ namespace ASCOM.DeviceInterface
         /// Some cameras have multiple gain modes; these should be selected via the  <see cref="SetupDialog" /> and thus are
         /// static during a session.
         /// </remarks>
-        double ElectronsPerADU { get; }
+        float ElectronsPerADU { get; }
 
         /// <summary>
         /// Reports the full well capacity of the camera in electrons, at the current camera settings (binning, SetupDialog settings, etc.)
@@ -433,7 +433,7 @@ namespace ASCOM.DeviceInterface
         /// <value>The full well capacity.</value>
         /// <exception cref="NotConnectedException">If the device is not connected</exception>
         /// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception>
-        double FullWellCapacity { get; }
+        float FullWellCapacity { get; }
 
         /// <summary>
         /// Returns a flag indicating whether this camera has a mechanical shutter
@@ -459,7 +459,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// Only valid if <see cref="CanSetCCDTemperature" /> is <c>true</c>.
         /// </remarks>
-        double HeatSinkTemperature { get; }
+        float HeatSinkTemperature { get; }
 
         /// <summary>
         /// Returns an array of int of size <see cref="NumX" /> * <see cref="NumY" /> containing the pixel values from the last exposure.
@@ -511,7 +511,7 @@ namespace ASCOM.DeviceInterface
         /// <see cref="StartExposure">StartExposure</see> it will have no effect on the size of this array. This property
         /// should only be used from scripts due to the extremely high memory utilization on
         /// large image arrays (26 bytes per pixel). Pixels values should be in Short, int,
-        /// or Double format.</para>
+        /// or float format.</para>
         /// <para>For colour or multispectral cameras, will produce an array of <see cref="NumX" /> * <see cref="NumY" /> *
         /// NumPlanes.  If the application cannot handle multispectral images, it should use
         /// just the first plane.</para>
@@ -571,7 +571,7 @@ namespace ASCOM.DeviceInterface
         /// <remarks>
         /// This may differ from the exposure time requested due to shutter latency, camera timing precision, etc.
         /// </remarks>
-        double LastExposureDuration { get; }
+        float LastExposureDuration { get; }
 
         /// <summary>
         /// Reports the actual exposure start in the FITS-standard CCYY-MM-DDThh:mm:ss[.sss...] format.
@@ -647,7 +647,7 @@ namespace ASCOM.DeviceInterface
         /// <value>The pixel size X.</value>
         /// <exception cref="NotConnectedException">If the device is not connected</exception>
         /// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception>
-        double PixelSizeX { get; }
+        float PixelSizeX { get; }
 
         /// <summary>
         /// Returns the height of the CCD chip pixels in microns.
@@ -655,7 +655,7 @@ namespace ASCOM.DeviceInterface
         /// <value>The pixel size Y.</value>
         /// <exception cref="NotConnectedException">If the device is not connected</exception>
         /// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception>
-        double PixelSizeY { get; }
+        float PixelSizeY { get; }
 
         /// <summary>
         /// Activates the Camera's mount control system to instruct the mount to move in a particular direction for a given period of time
@@ -699,7 +699,7 @@ namespace ASCOM.DeviceInterface
         /// <b>Note:</b>  Camera hardware and/or driver should perform cooler ramping, to prevent
         /// thermal shock and potential damage to the CCD array or cooler stack.
         /// </remarks>
-        double SetCCDTemperature { get; set; }
+        float SetCCDTemperature { get; set; }
 
         /// <summary>
         /// Starts an exposure. Use <see cref="ImageReady" /> to check when the exposure is complete.
@@ -719,7 +719,7 @@ namespace ASCOM.DeviceInterface
         /// support an exposure duration of zero then, for dark and bias frames, set it to the minimum that is possible.</para>
         /// <para>Some applications will set an exposure time of zero for bias frames so it's important that the driver allows this.</para>
         /// </remarks>
-        void StartExposure(double Duration, bool Light);
+        void StartExposure(float Duration, bool Light);
 
         /// <summary>
         /// Sets the subframe start position for the X axis (0 based) and returns the current value.
@@ -827,7 +827,7 @@ namespace ASCOM.DeviceInterface
         /// specific camera model.
         /// <para>This is only available for the Camera Interface Version 2 and later.</para>
         /// </remarks>
-        double ExposureMax { get; }
+        float ExposureMax { get; }
 
         /// <summary>
         /// Minimum exposure time
@@ -844,7 +844,7 @@ namespace ASCOM.DeviceInterface
         /// that the driver is aware of the capabilities of the specific camera model.</para>
         /// <para>This is only available for the Camera Interface Version 2 and later.</para>
         /// </remarks>
-        double ExposureMin { get; }
+        float ExposureMin { get; }
 
         /// <summary>
         /// Exposure resolution
@@ -858,12 +858,12 @@ namespace ASCOM.DeviceInterface
         /// <para>Please note that the Duration provided to <see cref="StartExposure">StartExposure</see> does not have to be an exact multiple of this number;
         /// the driver should choose the closest available value. Also in some cases the resolution may not be constant over the full range
         /// of exposure times; in this case the smallest increment would be appropriate. A value of 0.0 shall indicate that there is no minimum resolution
-        /// except that imposed by the resolution of the double value itself.</para>
+        /// except that imposed by the resolution of the float value itself.</para>
         /// <para>It is recommended that this function be called only after a <see cref="Connected">connection</see> is established with the camera hardware, to ensure
         /// that the driver is aware of the capabilities of the specific camera model.</para>
         /// <para>This is only available for the Camera Interface Version 2 and later.</para>
         /// </remarks>
-        double ExposureResolution { get; }
+        float ExposureResolution { get; }
 
         /// <summary>
         /// Gets or sets Fast Readout Mode
@@ -1897,7 +1897,7 @@ namespace ASCOM.DeviceInterface
         /// <p style="color:red"><b>This is an optional property and can throw a PropertyNotImplementedException.</b></p>
         /// <para>This is only available in Camera Interface Version 3 and later.</para>
         /// </remarks>
-        double SubExposureDuration { get; set; }
+        float SubExposureDuration { get; set; }
 
         #endregion
 

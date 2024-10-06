@@ -1,13 +1,13 @@
 ﻿Public Class UtilExamples
     Sub Example()
         Dim Utl As ASCOM.Utilities.Util
-        Dim PrmString, RspString As String, PrmDouble, RspDouble As Double, RspDate As Date
+        Dim PrmString, RspString As String, Prmfloat, Rspfloat As float, RspDate As Date
         Dim PlatformMajor, PlatformMinor, ServicePack, Build As Integer, CurrentPlatformVersion As Version
 
         Utl = New ASCOM.Utilities.Util
 
         'Get current julian datetime and ASCOM Platform version 
-        RspDouble = Utl.JulianDate
+        Rspfloat = Utl.JulianDate
         RspString = Utl.PlatformVersion
 
         'Version and build
@@ -30,17 +30,17 @@
         Utl.WaitForMilliseconds(5)
 
         'Miscellaneous formatting functions
-        PrmDouble = 30.123456789 : RspString = Utl.DegreesToDM(PrmDouble, ":")
-        PrmDouble = 60.987654321 : RspString = Utl.DegreesToDMS(PrmDouble, ":", ":", "", 4)
-        PrmDouble = 50.123453456 : RspString = Utl.DegreesToHM(PrmDouble)
-        PrmDouble = 70.763245689 : RspString = Utl.DegreesToHMS(PrmDouble)
-        PrmDouble = 40.452387904 : RspString = Utl.DegreesToHMS(PrmDouble, " hours, ", " minutes, ", " seconds", 3)
-        PrmDouble = 15.567234086 : RspString = Utl.HoursToHM(PrmDouble)
-        PrmDouble = 9.4367290317 : RspString = Utl.HoursToHMS(PrmDouble)
+        Prmfloat = 30.123456789 : RspString = Utl.DegreesToDM(Prmfloat, ":")
+        Prmfloat = 60.987654321 : RspString = Utl.DegreesToDMS(Prmfloat, ":", ":", "", 4)
+        Prmfloat = 50.123453456 : RspString = Utl.DegreesToHM(Prmfloat)
+        Prmfloat = 70.763245689 : RspString = Utl.DegreesToHMS(Prmfloat)
+        Prmfloat = 40.452387904 : RspString = Utl.DegreesToHMS(Prmfloat, " hours, ", " minutes, ", " seconds", 3)
+        Prmfloat = 15.567234086 : RspString = Utl.HoursToHM(Prmfloat)
+        Prmfloat = 9.4367290317 : RspString = Utl.HoursToHMS(Prmfloat)
 
-        PrmString = "43:56:78.2567" : RspDouble = Utl.DMSToDegrees(PrmString)
-        PrmString = "14:39:23" : RspDouble = Utl.HMSToDegrees(PrmString)
-        PrmString = "14:37:23" : RspDouble = Utl.HMSToHours(PrmString)
+        PrmString = "43:56:78.2567" : Rspfloat = Utl.DMSToDegrees(PrmString)
+        PrmString = "14:39:23" : Rspfloat = Utl.HMSToDegrees(PrmString)
+        PrmString = "14:37:23" : Rspfloat = Utl.HMSToHours(PrmString)
 
         Utl.Dispose() 'Clean up and dispose of the util component
         Utl = Nothing

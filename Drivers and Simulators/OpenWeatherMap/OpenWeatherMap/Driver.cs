@@ -228,7 +228,7 @@ namespace ASCOM.OpenWeatherMap
         /// current value, 0.5= average for the last 30 minutes, 1.0 = average for the
         /// last hour
         /// </remarks>
-        public double AveragePeriod
+        public float AveragePeriod
         {
             get
             {
@@ -247,7 +247,7 @@ namespace ASCOM.OpenWeatherMap
         /// Amount of sky obscured by cloud
         /// </summary>
         /// <remarks>0%= clear sky, 100% = 100% cloud coverage</remarks>
-        public double CloudCover
+        public float CloudCover
         {
             get
             {
@@ -265,7 +265,7 @@ namespace ASCOM.OpenWeatherMap
         /// Normally optional but mandatory if <see cref=" ASCOM.DeviceInterface.IObservingConditions.Humidity"/>
         /// Is provided
         /// </remarks>
-        public double DewPoint
+        public float DewPoint
         {
             get
             {
@@ -282,7 +282,7 @@ namespace ASCOM.OpenWeatherMap
         /// Normally optional but mandatory if <see cref="ASCOM.DeviceInterface.IObservingConditions.DewPoint"/> 
         /// Is provided
         /// </remarks>
-        public double Humidity
+        public float Humidity
         {
             get
             {
@@ -300,7 +300,7 @@ namespace ASCOM.OpenWeatherMap
         /// at sea level. Please check whether your pressure sensor delivers local pressure
         /// or sea level pressure and adjust if required to observatory pressure.
         /// </remarks>
-        public double Pressure
+        public float Pressure
         {
             get
             {
@@ -317,7 +317,7 @@ namespace ASCOM.OpenWeatherMap
         /// This property can be interpreted as 0.0 = Dry any positive nonzero value
         /// = wet.
         /// </remarks>
-        public double RainRate
+        public float RainRate
         {
             get
             {
@@ -384,7 +384,7 @@ namespace ASCOM.OpenWeatherMap
         /// <summary>
         /// Sky brightness at the observatory
         /// </summary>
-        public double SkyBrightness
+        public float SkyBrightness
         {
             get
             {
@@ -396,7 +396,7 @@ namespace ASCOM.OpenWeatherMap
         /// <summary>
         /// Sky quality at the observatory
         /// </summary>
-        public double SkyQuality
+        public float SkyQuality
         {
             get
             {
@@ -408,7 +408,7 @@ namespace ASCOM.OpenWeatherMap
         /// <summary>
         /// Seeing at the observatory as the FWH size of stars in arc sec.
         /// </summary>
-        public double StarFWHM
+        public float StarFWHM
         {
             get
             {
@@ -420,7 +420,7 @@ namespace ASCOM.OpenWeatherMap
         /// <summary>
         /// Sky temperature at the observatory in deg C
         /// </summary>
-        public double SkyTemperature
+        public float SkyTemperature
         {
             get
             {
@@ -432,7 +432,7 @@ namespace ASCOM.OpenWeatherMap
         /// <summary>
         /// Temperature at the observatory in deg C
         /// </summary>
-        public double Temperature
+        public float Temperature
         {
             get
             {
@@ -452,7 +452,7 @@ namespace ASCOM.OpenWeatherMap
         /// the last update of any parameter. A negative value indicates no valid value
         /// ever received.
         /// </remarks>
-        public double TimeSinceLastUpdate(string PropertyName)
+        public float TimeSinceLastUpdate(string PropertyName)
         {
             var lu = OpenWeatherMap.TimeSinceLastUpdate;
             Log.LogMessage("TimeSinceLastUpdate", "{0}, {1}", PropertyName, lu);
@@ -471,7 +471,7 @@ namespace ASCOM.OpenWeatherMap
         /// 0..360.0, 360=N, 180=S, 90=E, 270=W. When there Is no wind the driver will
         /// return a value of 0 for wind direction
         /// </remarks>
-        public double WindDirection
+        public float WindDirection
         {
             get
             {
@@ -484,7 +484,7 @@ namespace ASCOM.OpenWeatherMap
         /// <summary>
         /// Peak 3 second wind gust at the observatory over the last 2 minutes in m/s
         /// </summary>
-        public double WindGust
+        public float WindGust
         {
             get
             {
@@ -497,7 +497,7 @@ namespace ASCOM.OpenWeatherMap
         /// <summary>
         /// Wind speed at the observatory in m/s
         /// </summary>
-        public double WindSpeed
+        public float WindSpeed
         {
             get
             {

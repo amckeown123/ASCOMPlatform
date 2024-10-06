@@ -154,14 +154,14 @@ class DeviceCamera
     /// Returns the current CCD temperature in degrees Celsius.
     /// </summary>
     /// <value>The CCD temperature.</value>
-    public double CCDTemperature
+    public float CCDTemperature
     {
         get
         {
             try
             {
                 CheckConnected("CCDTemperature");
-                double ccdTemperature = CameraHardware.CCDTemperature;
+                float ccdTemperature = CameraHardware.CCDTemperature;
                 LogMessage("CCDTemperature", ccdTemperature.ToString());
                 return ccdTemperature;
             }
@@ -456,14 +456,14 @@ class DeviceCamera
     /// Returns the present cooler power level, in percent.
     /// </summary>
     /// <value>The cooler power.</value>
-    public double CoolerPower
+    public float CoolerPower
     {
         get
         {
             try
             {
                 CheckConnected("CoolerPower");
-                double coolerPower = CameraHardware.CoolerPower;
+                float coolerPower = CameraHardware.CoolerPower;
                 LogMessage("CoolerPower", coolerPower.ToString());
                 return coolerPower;
             }
@@ -513,14 +513,14 @@ class DeviceCamera
     /// Returns the gain of the camera in photoelectrons per A/D unit.
     /// </summary>
     /// <value>The electrons per ADU.</value>
-    public double ElectronsPerADU
+    public float ElectronsPerADU
     {
         get
         {
             try
             {
                 CheckConnected("ElectronsPerADU");
-                double electronsPerAdu = CameraHardware.ElectronsPerADU;
+                float electronsPerAdu = CameraHardware.ElectronsPerADU;
                 LogMessage("ElectronsPerADU", electronsPerAdu.ToString());
                 return electronsPerAdu;
             }
@@ -536,14 +536,14 @@ class DeviceCamera
     /// Returns the maximum exposure time supported by <see cref="StartExposure">StartExposure</see>.
     /// </summary>
     /// <returns>The maximum exposure time, in seconds, that the camera supports</returns>
-    public double ExposureMax
+    public float ExposureMax
     {
         get
         {
             try
             {
                 CheckConnected("ExposureMax");
-                double exposureMax = CameraHardware.ExposureMax;
+                float exposureMax = CameraHardware.ExposureMax;
                 LogMessage("ExposureMax", exposureMax.ToString());
                 return exposureMax;
             }
@@ -559,14 +559,14 @@ class DeviceCamera
     /// Minimum exposure time
     /// </summary>
     /// <returns>The minimum exposure time, in seconds, that the camera supports through <see cref="StartExposure">StartExposure</see></returns>
-    public double ExposureMin
+    public float ExposureMin
     {
         get
         {
             try
             {
                 CheckConnected("ExposureMin");
-                double exposureMin = CameraHardware.ExposureMin;
+                float exposureMin = CameraHardware.ExposureMin;
                 LogMessage("ExposureMin", exposureMin.ToString());
                 return exposureMin;
             }
@@ -582,14 +582,14 @@ class DeviceCamera
     /// Exposure resolution
     /// </summary>
     /// <returns>The smallest increment in exposure time supported by <see cref="StartExposure">StartExposure</see>.</returns>
-    public double ExposureResolution
+    public float ExposureResolution
     {
         get
         {
             try
             {
                 CheckConnected("ExposureResolution");
-                double exposureResolution = CameraHardware.ExposureResolution;
+                float exposureResolution = CameraHardware.ExposureResolution;
                 LogMessage("ExposureResolution", exposureResolution.ToString());
                 return exposureResolution;
             }
@@ -642,14 +642,14 @@ class DeviceCamera
     /// Reports the full well capacity of the camera in electrons, at the current camera settings (binning, SetupDialog settings, etc.)
     /// </summary>
     /// <value>The full well capacity.</value>
-    public double FullWellCapacity
+    public float FullWellCapacity
     {
         get
         {
             try
             {
                 CheckConnected("FullWellCapacity");
-                double fullWellCapacity = CameraHardware.FullWellCapacity;
+                float fullWellCapacity = CameraHardware.FullWellCapacity;
                 LogMessage("FullWellCapacity", fullWellCapacity.ToString());
                 return fullWellCapacity;
             }
@@ -799,14 +799,14 @@ class DeviceCamera
     /// Returns the current heat sink temperature (called"ambient temperature" by some manufacturers) in degrees Celsius.
     /// </summary>
     /// <value>The heat sink temperature.</value>
-    public double HeatSinkTemperature
+    public float HeatSinkTemperature
     {
         get
         {
             try
             {
                 CheckConnected("HeatSinkTemperature");
-                double heatSinkTemperature = CameraHardware.HeatSinkTemperature;
+                float heatSinkTemperature = CameraHardware.HeatSinkTemperature;
                 LogMessage("HeatSinkTemperature", heatSinkTemperature.ToString());
                 return heatSinkTemperature;
             }
@@ -914,14 +914,14 @@ class DeviceCamera
     /// Reports the actual exposure duration in seconds (i.e. shutter open time).
     /// </summary>
     /// <value>The last duration of the exposure.</value>
-    public double LastExposureDuration
+    public float LastExposureDuration
     {
         get
         {
             try
             {
                 CheckConnected("LastExposureDuration");
-                double lastExposureDuration = CameraHardware.LastExposureDuration;
+                float lastExposureDuration = CameraHardware.LastExposureDuration;
                 LogMessage("LastExposureDuration", lastExposureDuration.ToString());
                 return lastExposureDuration;
             }
@@ -1236,14 +1236,14 @@ class DeviceCamera
     /// Returns the width of the CCD chip pixels in microns.
     /// </summary>
     /// <value>The pixel size X.</value>
-    public double PixelSizeX
+    public float PixelSizeX
     {
         get
         {
             try
             {
                 CheckConnected("PixelSizeX");
-                double pixelSizeX = CameraHardware.PixelSizeX;
+                float pixelSizeX = CameraHardware.PixelSizeX;
                 LogMessage("PixelSizeX", pixelSizeX.ToString());
                 return pixelSizeX;
             }
@@ -1259,14 +1259,14 @@ class DeviceCamera
     /// Returns the height of the CCD chip pixels in microns.
     /// </summary>
     /// <value>The pixel size Y.</value>
-    public double PixelSizeY
+    public float PixelSizeY
     {
         get
         {
             try
             {
                 CheckConnected("PixelSizeY");
-                double pixelSizeY = CameraHardware.PixelSizeY;
+                float pixelSizeY = CameraHardware.PixelSizeY;
                 LogMessage("PixelSizeY", pixelSizeY.ToString());
                 return pixelSizeY;
             }
@@ -1411,14 +1411,14 @@ class DeviceCamera
     /// Sets the camera cooler setpoint in degrees Celsius, and returns the current setpoint.
     /// </summary>
     /// <value>The set CCD temperature.</value>
-    public double SetCCDTemperature
+    public float SetCCDTemperature
     {
         get
         {
             try
             {
                 CheckConnected("SetCCDTemperature Get");
-                double setCcdTemperature = CameraHardware.SetCCDTemperature;
+                float setCcdTemperature = CameraHardware.SetCCDTemperature;
                 LogMessage("SetCCDTemperature Get", setCcdTemperature.ToString());
                 return setCcdTemperature;
             }
@@ -1449,7 +1449,7 @@ class DeviceCamera
     /// </summary>
     /// <param name="duration">Duration of exposure in seconds, can be zero if <see cref="StartExposure">Light</see> is <c>false</c></param>
     /// <param name="light"><c>true</c> for light frame, <c>false</c> for dark frame (ignored if no shutter)</param>
-    public void StartExposure(double duration, bool light)
+    public void StartExposure(float duration, bool light)
     {
         try
         {
@@ -1559,14 +1559,14 @@ class DeviceCamera
     /// <summary>
     /// Camera's sub-exposure interval
     /// </summary>
-    public double SubExposureDuration
+    public float SubExposureDuration
     {
         get
         {
             try
             {
                 CheckConnected("SubExposureDuration Get");
-                double subExposureDuration = CameraHardware.SubExposureDuration;
+                float subExposureDuration = CameraHardware.SubExposureDuration;
                 LogMessage("SubExposureDuration Get", subExposureDuration.ToString());
                 return subExposureDuration;
             }

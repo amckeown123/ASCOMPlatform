@@ -49,7 +49,7 @@ namespace ASCOM.Simulator
         public string ProgID { get; set; }
         public string SensorName { get; set; }
         public int SwitchNumber { get; set; }
-        public double LastPeriodAverage { get; set; }
+        public float LastPeriodAverage { get; set; }
         public DateTime TimeOfLastUpdate { get; set; }
         public List<Hub.TimeValue> Readings { get; set; }
 

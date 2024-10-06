@@ -1,6 +1,7 @@
 ﻿using System;
 // Exceptions for the Utilities name space
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace ASCOM.Utilities.Exceptions
 {
@@ -35,16 +36,6 @@ namespace ASCOM.Utilities.Exceptions
         {
         }
 
-        /// <summary>
-        /// Serialise the exception
-        /// </summary>
-        /// <param name="info">Serialisation information</param>
-        /// <param name="context">Serialisation context</param>
-        /// <remarks></remarks>
-        public HelperException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
-
-        {
-        }
 
     }
 
@@ -79,16 +70,6 @@ namespace ASCOM.Utilities.Exceptions
         {
         }
 
-        /// <summary>
-        /// Serialise the exception
-        /// </summary>
-        /// <param name="info">Serialisation information</param>
-        /// <param name="context">Serialisation context</param>
-        /// <remarks></remarks>
-        public ProfileNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
-
-        {
-        }
     }
 
     /// <summary>
@@ -122,16 +103,15 @@ namespace ASCOM.Utilities.Exceptions
         {
         }
 
-        /// <summary>
-        /// Serialise the exception
-        /// </summary>
-        /// <param name="info">Serialisation information</param>
-        /// <param name="context">Serialisation context</param>
-        /// <remarks></remarks>
-        public InvalidValueException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
 
+        public InvalidValueException(string message, string v1, string v2) : this(message)
         {
+            V1 = v1;
+            V2 = v2;
         }
+
+        public string V1 { get; }
+        public string V2 { get; }
     }
 
     /// <summary>
@@ -168,16 +148,6 @@ namespace ASCOM.Utilities.Exceptions
         {
         }
 
-        /// <summary>
-        /// Serialise the exception
-        /// </summary>
-        /// <param name="info">Serialisation information</param>
-        /// <param name="context">Serialisation context</param>
-        /// <remarks></remarks>
-        public SerialPortInUseException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
-
-        {
-        }
     }
 
     /// <summary>
@@ -212,17 +182,6 @@ namespace ASCOM.Utilities.Exceptions
         public ProfilePersistenceException(string message, Exception inner) : base(message, inner)
         {
         }
-
-        /// <summary>
-        /// Serialise the exception
-        /// </summary>
-        /// <param name="info">Serialisation information</param>
-        /// <param name="context">Serialisation context</param>
-        /// <remarks></remarks>
-        public ProfilePersistenceException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
-
-        {
-        }
     }
 
     /// <summary>
@@ -255,107 +214,78 @@ namespace ASCOM.Utilities.Exceptions
         /// <remarks></remarks>
         public DriverNotRegisteredException(string message, Exception inner) : base(message, inner)
         {
+
         }
 
         /// <summary>
-        /// Serialise the exception
+        /// Exception thrown when an attempt is made to write to a protected part of the the Profile store that is 
+        /// reserved for Platform use. An example is attempting to write to the the default value of a device driver 
+        /// profile. This value is reserved for use by the Chooser to display the device description and is set by the 
+        /// Profile.Register method.
         /// </summary>
-        /// <param name="info">Serialisation information</param>
-        /// <param name="context">Serialisation context</param>
         /// <remarks></remarks>
-        public DriverNotRegisteredException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
-
+        [Serializable()]
+        [Guid("00BC6F08-4277-47c3-9DBA-F80E02C5A448")]
+        [ComVisible(true)]
+        [ClassInterface(ClassInterfaceType.None)]
+        // Exception for Utilities component exceptions
+        public class RestrictedAccessException : HelperException
         {
+
+            /// <summary>
+            /// Create a new exception with message 
+            /// </summary>
+            /// <param name="message">Message to be reported by the exception</param>
+            /// <remarks></remarks>
+            public RestrictedAccessException(string message) : base(message)
+            {
+            }
+
+            /// <summary>
+            /// Create a new exception with message 
+            /// </summary>
+            /// <param name="message">Message to be reported by the exception</param>
+            /// <param name="inner">Exception to be reported as the inner exception</param>
+            /// <remarks></remarks>
+            public RestrictedAccessException(string message, Exception inner) : base(message, inner)
+            {
+            }
+
         }
+
+        /// <summary>
+        /// Exception thrown when an attempt is made to read a value that has not yet been set.
+        /// </summary>
+        /// <remarks></remarks>
+        [Serializable()]
+        [Guid("C893C94C-3D48-4068-8BCE-6CED6AEF2512")]
+        [ComVisible(true)]
+        [ClassInterface(ClassInterfaceType.None)]
+        // Exception for Utilities component exceptions
+        public class ValueNotSetException : HelperException
+        {
+
+            /// <summary>
+            /// Create a new exception with message 
+            /// </summary>
+            /// <param name="message">Message to be reported by the exception</param>
+            /// <remarks></remarks>
+            public ValueNotSetException(string message) : base(message)
+            {
+            }
+
+            /// <summary>
+            /// Create a new exception with message 
+            /// </summary>
+            /// <param name="message">Message to be reported by the exception</param>
+            /// <param name="inner">Exception to be reported as the inner exception</param>
+            /// <remarks></remarks>
+            public ValueNotSetException(string message, Exception inner) : base(message, inner)
+            {
+            }
+
+
+        }
+
     }
-
-    /// <summary>
-    /// Exception thrown when an attempt is made to write to a protected part of the the Profile store that is 
-    /// reserved for Platform use. An example is attempting to write to the the default value of a device driver 
-    /// profile. This value is reserved for use by the Chooser to display the device description and is set by the 
-    /// Profile.Register method.
-    /// </summary>
-    /// <remarks></remarks>
-    [Serializable()]
-    [Guid("00BC6F08-4277-47c3-9DBA-F80E02C5A448")]
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    // Exception for Utilities component exceptions
-    public class RestrictedAccessException : HelperException
-    {
-
-        /// <summary>
-        /// Create a new exception with message 
-        /// </summary>
-        /// <param name="message">Message to be reported by the exception</param>
-        /// <remarks></remarks>
-        public RestrictedAccessException(string message) : base(message)
-        {
-        }
-
-        /// <summary>
-        /// Create a new exception with message 
-        /// </summary>
-        /// <param name="message">Message to be reported by the exception</param>
-        /// <param name="inner">Exception to be reported as the inner exception</param>
-        /// <remarks></remarks>
-        public RestrictedAccessException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        /// <summary>
-        /// Serialise the exception
-        /// </summary>
-        /// <param name="info">Serialisation information</param>
-        /// <param name="context">Serialisation context</param>
-        /// <remarks></remarks>
-        public RestrictedAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
-
-        {
-        }
-    }
-
-    /// <summary>
-    /// Exception thrown when an attempt is made to read a value that has not yet been set.
-    /// </summary>
-    /// <remarks></remarks>
-    [Serializable()]
-    [Guid("C893C94C-3D48-4068-8BCE-6CED6AEF2512")]
-    [ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.None)]
-    // Exception for Utilities component exceptions
-    public class ValueNotSetException : HelperException
-    {
-
-        /// <summary>
-        /// Create a new exception with message 
-        /// </summary>
-        /// <param name="message">Message to be reported by the exception</param>
-        /// <remarks></remarks>
-        public ValueNotSetException(string message) : base(message)
-        {
-        }
-
-        /// <summary>
-        /// Create a new exception with message 
-        /// </summary>
-        /// <param name="message">Message to be reported by the exception</param>
-        /// <param name="inner">Exception to be reported as the inner exception</param>
-        /// <remarks></remarks>
-        public ValueNotSetException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        /// <summary>
-        /// Serialise the exception
-        /// </summary>
-        /// <param name="info">Serialisation information</param>
-        /// <param name="context">Serialisation context</param>
-        /// <remarks></remarks>
-        public ValueNotSetException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
-
-        {
-        }
-    }
-
 }

@@ -157,7 +157,7 @@ namespace ASCOM.DeviceInterface
 		/// <p style="color:red"><b>Must be implemented, must not throw an ASCOM.PropertyNotImplementedException.</b></p>
 		/// This value is for information purposes only. The exposure cannot be set directly in seconds, use <see cref="P:ASCOM.DeviceInterface.IVideo.IntegrationRate"/> property to change the exposure.
 		/// </remarks>
-		double ExposureMax { get; }
+		float ExposureMax { get; }
 
 		/// <summary>
 		/// The minimum supported exposure (integration time) in seconds.
@@ -168,7 +168,7 @@ namespace ASCOM.DeviceInterface
 		/// <p style="color:red"><b>Must be implemented, must not throw an ASCOM.PropertyNotImplementedException.</b></p>
 		/// This value is for information purposes only. The exposure cannot be set directly in seconds, use <see cref="P:ASCOM.DeviceInterface.IVideo.IntegrationRate"/> property to change the exposure.
 		/// </remarks>
-		double ExposureMin { get; }
+		float ExposureMin { get; }
 
 		/// <summary>
 		/// The frame rate at which the camera is running.
@@ -552,7 +552,7 @@ namespace ASCOM.DeviceInterface
 		/// <exception cref="PropertyNotImplementedException">Must throw exception if not implemented.</exception>
 		/// <exception cref="NotConnectedException">If the device is not connected</exception>
 		/// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception> 
-		double PixelSizeX { get; }
+		float PixelSizeX { get; }
 
 		/// <summary>
 		/// Returns the height of the CCD chip pixels in microns.
@@ -561,7 +561,7 @@ namespace ASCOM.DeviceInterface
 		/// <exception cref="PropertyNotImplementedException">Must throw exception if not implemented.</exception>
 		/// <exception cref="NotConnectedException">If the device is not connected</exception>
 		/// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception> 
-		double PixelSizeY { get; }
+		float PixelSizeY { get; }
 
 		/// <summary>
 		/// Reports the bit depth the camera can produce.

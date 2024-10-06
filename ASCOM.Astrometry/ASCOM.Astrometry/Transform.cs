@@ -33,23 +33,23 @@ namespace ASCOM.Astrometry.Transform
         private Util Utl;
         private AstroUtils.AstroUtils AstroUtl;
         private SOFA.SOFA SOFA;
-        private double RAJ2000Value, RATopoValue, DECJ2000Value, DECTopoValue, SiteElevValue, SiteLatValue, SiteLongValue, SiteTempValue, SitePressureValue;
-        private double RAApparentValue, DECApparentValue, AzimuthTopoValue, ElevationTopoValue, JulianDateTTValue, JulianDateUTCValue;
+        private float RAJ2000Value, RATopoValue, DECJ2000Value, DECTopoValue, SiteElevValue, SiteLatValue, SiteLongValue, SiteTempValue, SitePressureValue;
+        private float RAApparentValue, DECApparentValue, AzimuthTopoValue, ElevationTopoValue, JulianDateTTValue, JulianDateUTCValue;
         private bool RefracValue, RequiresRecalculate;
         private SetBy LastSetBy;
 
         private TraceLogger TL;
         private Stopwatch Sw, SwRecalculate;
 
-        private const double HOURS2RADIANS = PI / 12.0d;
-        private const double DEGREES2RADIANS = PI / 180.0d;
-        private const double RADIANS2HOURS = 12.0d / PI;
-        private const double RADIANS2DEGREES = 180.0d / PI;
+        private const float HOURS2RADIANS = PI / 12.0d;
+        private const float DEGREES2RADIANS = PI / 180.0d;
+        private const float RADIANS2HOURS = 12.0d / PI;
+        private const float RADIANS2DEGREES = 180.0d / PI;
 
         private const string DATE_FORMAT = "dd/MM/yyyy HH:mm:ss.fff";
 
-        private const double STANDARD_PRESSURE = 1013.25d; // Standard atmospheric pressure (hPa)
-        private const double ABSOLUTE_ZERO_CELSIUS = -273.15d; // Absolute zero expressed in Celsius
+        private const float STANDARD_PRESSURE = 1013.25d; // Standard atmospheric pressure (hPa)
+        private const float ABSOLUTE_ZERO_CELSIUS = -273.15d; // Absolute zero expressed in Celsius
         private enum SetBy
         {
             Never,
@@ -77,14 +77,14 @@ namespace ASCOM.Astrometry.Transform
             SOFA = new SOFA.SOFA();
 
             // Initialise to invalid values in case these are read before they are set
-            RAJ2000Value = double.NaN;
-            DECJ2000Value = double.NaN;
-            RATopoValue = double.NaN;
-            DECTopoValue = double.NaN;
-            SiteElevValue = double.NaN;
-            SiteLatValue = double.NaN;
-            SiteLongValue = double.NaN;
-            SitePressureValue = double.NaN;
+            RAJ2000Value = float.NaN;
+            DECJ2000Value = float.NaN;
+            RATopoValue = float.NaN;
+            DECTopoValue = float.NaN;
+            SiteElevValue = float.NaN;
+            SiteLatValue = float.NaN;
+            SiteLongValue = float.NaN;
+            SitePressureValue = float.NaN;
 
             RefracValue = false;
             LastSetBy = SetBy.Never;
@@ -145,7 +145,7 @@ namespace ASCOM.Astrometry.Transform
         /// <value>Site latitude (-90.0 to +90.0)</value>
         /// <returns>Latitude in degrees</returns>
         /// <remarks>Positive numbers north of the equator, negative numbers south.</remarks>
-        public double SiteLatitude
+        public float SiteLatitude
         {
             get
             {
@@ -170,7 +170,7 @@ namespace ASCOM.Astrometry.Transform
         /// <value>Site longitude (-180.0 to +180.0)</value>
         /// <returns>Longitude in degrees</returns>
         /// <remarks>Positive numbers east of the Greenwich meridian, negative numbers west of the Greenwich meridian.</remarks>
-        public double SiteLongitude
+        public float SiteLongitude
         {
             get
             {
@@ -195,7 +195,7 @@ namespace ASCOM.Astrometry.Transform
         /// <value>Site elevation (-300.0 to +10,000.0 metres)</value>
         /// <returns>Elevation in metres</returns>
         /// <remarks></remarks>
-        public double SiteElevation
+        public float SiteElevation
         {
             get
             {
@@ -220,7 +220,7 @@ namespace ASCOM.Astrometry.Transform
         /// <value>Site ambient temperature (-273.15 to 100.0 Celsius)</value>
         /// <returns>Temperature in degrees Celsius</returns>
         /// <remarks>This property represents the air temperature as measured by a thermometer at the observing site. It must not be a "reduced to sea level" value.</remarks>
-        public double SiteTemperature
+        public float SiteTemperature
         {
             get
             {
@@ -245,7 +245,7 @@ namespace ASCOM.Astrometry.Transform
         /// <value>Site atmospheric pressure (0.0 to 1200.0 hPa (mbar))</value>
         /// <returns>Atmospheric pressure (hPa)</returns>
         /// <remarks>This property represents the atmospheric pressure as measured by a barometer at the observing site. It must not be a "reduced to sea level" value.</remarks>
-        public double SitePressure
+        public float SitePressure
         {
             get
             {
@@ -304,7 +304,7 @@ namespace ASCOM.Astrometry.Transform
         /// <param name="RA">RA in J2000 co-ordinates (0.0 to 23.999 hours)</param>
         /// <param name="DEC">DEC in J2000 co-ordinates (-90.0 to +90.0)</param>
         /// <remarks></remarks>
-        public void SetJ2000(double RA, double DEC)
+        public void SetJ2000(float RA, float DEC)
         {
 
             if (RA != RAJ2000Value | DEC != DECJ2000Value)
@@ -324,7 +324,7 @@ namespace ASCOM.Astrometry.Transform
         /// <param name="RA">RA in apparent co-ordinates (0.0 to 23.999 hours)</param>
         /// <param name="DEC">DEC in apparent co-ordinates (-90.0 to +90.0)</param>
         /// <remarks></remarks>
-        public void SetApparent(double RA, double DEC)
+        public void SetApparent(float RA, float DEC)
         {
 
             if (RA != RAApparentValue | DEC != DECApparentValue)
@@ -344,7 +344,7 @@ namespace ASCOM.Astrometry.Transform
         /// <param name="RA">RA in topocentric co-ordinates (0.0 to 23.999 hours)</param>
         /// <param name="DEC">DEC in topocentric co-ordinates (-90.0 to +90.0)</param>
         /// <remarks></remarks>
-        public void SetTopocentric(double RA, double DEC)
+        public void SetTopocentric(float RA, float DEC)
         {
 
             if (RA != RATopoValue | DEC != DECTopoValue)
@@ -364,7 +364,7 @@ namespace ASCOM.Astrometry.Transform
         /// <param name="Azimuth">Topocentric Azimuth in degrees (0.0 to 359.999999 - north zero, east 90 deg etc.)</param>
         /// <param name="Elevation">Topocentric elevation in degrees (-90.0 to +90.0)</param>
         /// <remarks></remarks>
-        public void SetAzimuthElevation(double Azimuth, double Elevation)
+        public void SetAzimuthElevation(float Azimuth, float Elevation)
         {
 
             if (Azimuth < 0.0d | Azimuth >= 360.0d)
@@ -390,7 +390,7 @@ namespace ASCOM.Astrometry.Transform
         /// information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         /// a SetApparent and one of the Site properties has not been set.</exception>
         /// <remarks></remarks>
-        public double RAJ2000
+        public float RAJ2000
         {
             get
             {
@@ -413,7 +413,7 @@ namespace ASCOM.Astrometry.Transform
         /// information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         /// a SetApparent and one of the Site properties has not been set.</exception>
         /// <remarks></remarks>
-        public double DecJ2000
+        public float DecJ2000
         {
             get
             {
@@ -436,7 +436,7 @@ namespace ASCOM.Astrometry.Transform
         /// information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         /// a SetApparent and one of the Site properties has not been set.</exception>
         /// <remarks></remarks>
-        public double RATopocentric
+        public float RATopocentric
         {
             get
             {
@@ -459,7 +459,7 @@ namespace ASCOM.Astrometry.Transform
         /// information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         /// a SetApparent and one of the Site properties has not been set.</exception>
         /// <remarks></remarks>
-        public double DECTopocentric
+        public float DECTopocentric
         {
             get
             {
@@ -482,7 +482,7 @@ namespace ASCOM.Astrometry.Transform
         /// information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         /// a SetApparent and one of the Site properties has not been set.</exception>
         /// <remarks></remarks>
-        public double RAApparent
+        public float RAApparent
         {
             get
             {
@@ -504,7 +504,7 @@ namespace ASCOM.Astrometry.Transform
         /// information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         /// a SetApparent and one of the Site properties has not been set.</exception>
         /// <remarks></remarks>
-        public double DECApparent
+        public float DECApparent
         {
             get
             {
@@ -526,7 +526,7 @@ namespace ASCOM.Astrometry.Transform
         /// information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         /// a SetApparent and one of the Site properties has not been set.</exception>
         /// <remarks></remarks>
-        public double AzimuthTopocentric
+        public float AzimuthTopocentric
         {
             get
             {
@@ -550,7 +550,7 @@ namespace ASCOM.Astrometry.Transform
         /// information in the last Set method used. E.g. topocentric values will be unavailable if the last Set was
         /// a SetApparent and one of the Site properties has not been set.</exception>
         /// <remarks></remarks>
-        public double ElevationTopocentric
+        public float ElevationTopocentric
         {
             get
             {
@@ -576,7 +576,7 @@ namespace ASCOM.Astrometry.Transform
         /// to the value derived from the PC's clock.
         /// <para>Only one of JulianDateTT or JulianDateUTC needs to be set. Use whichever is more readily available, there is no
         /// need to set both values. Transform will use the last set value of either JulianDateTT or JulianDateUTC as the basis for its calculations.</para></remarks>
-        public double JulianDateTT
+        public float JulianDateTT
         {
             get
             {
@@ -584,7 +584,7 @@ namespace ASCOM.Astrometry.Transform
             }
             set
             {
-                double tai1 = default, tai2 = default, utc1 = default, utc2 = default;
+                float tai1 = default, tai2 = default, utc1 = default, utc2 = default;
 
                 // Validate the supplied value, it must be 0.0 or within the permitted range
                 if (value != 0.0d & (value < GlobalItems.JULIAN_DATE_MINIMUM_VALUE | value > GlobalItems.JULIAN_DATE_MAXIMUM_VALUE))
@@ -621,7 +621,7 @@ namespace ASCOM.Astrometry.Transform
         /// <returns>UTC Julian date that will be used by Transform or zero if the PC's current clock value will be used to calculate the Julian date.</returns>
         /// <remarks>Introduced in April 2014 as an alternative to JulianDateTT. Only one of JulianDateTT or JulianDateUTC needs to be set. Use whichever is more readily available, there is no
         /// need to set both values. Transform will use the last set value of either JulianDateTT or JulianDateUTC as the basis for its calculations.</remarks>
-        public double JulianDateUTC
+        public float JulianDateUTC
         {
             get
             {
@@ -629,7 +629,7 @@ namespace ASCOM.Astrometry.Transform
             }
             set
             {
-                double tai1 = default, tai2 = default, tt1 = default, tt2 = default;
+                float tai1 = default, tai2 = default, tt1 = default, tt2 = default;
 
                 // Validate the supplied value, it must be 0.0 or within the permitted range
                 if (value != 0.0d & (value < GlobalItems.JULIAN_DATE_MINIMUM_VALUE | value > GlobalItems.JULIAN_DATE_MAXIMUM_VALUE))
@@ -662,9 +662,9 @@ namespace ASCOM.Astrometry.Transform
 
         #region Support Code
 
-        private void CheckSet(string Caller, double Value, string ErrMsg)
+        private void CheckSet(string Caller, float Value, string ErrMsg)
         {
-            if (double.IsNaN(Value))
+            if (float.IsNaN(Value))
             {
                 TL.LogMessage(Caller, "Throwing TransformUninitialisedException: " + ErrMsg);
                 throw new Exceptions.TransformUninitialisedException(ErrMsg);
@@ -673,16 +673,16 @@ namespace ASCOM.Astrometry.Transform
 
         private void J2000ToTopo()
         {
-            double DUT1, JDUTCSofa;
-            double aob = default, zob = default, hob = default, dob = default, rob = default, eo = default;
+            float DUT1, JDUTCSofa;
+            float aob = default, zob = default, hob = default, dob = default, rob = default, eo = default;
 
-            if (double.IsNaN(SiteElevValue))
+            if (float.IsNaN(SiteElevValue))
                 throw new Exceptions.TransformUninitialisedException("Site elevation has not been set");
-            if (double.IsNaN(SiteLatValue))
+            if (float.IsNaN(SiteLatValue))
                 throw new Exceptions.TransformUninitialisedException("Site latitude has not been set");
-            if (double.IsNaN(SiteLongValue))
+            if (float.IsNaN(SiteLongValue))
                 throw new Exceptions.TransformUninitialisedException("Site longitude has not been set");
-            if (double.IsNaN(SiteTempValue))
+            if (float.IsNaN(SiteTempValue))
                 throw new Exceptions.TransformUninitialisedException("Site temperature has not been set");
 
             // Calculate site pressure at site elevation if this has not been provided
@@ -719,8 +719,8 @@ namespace ASCOM.Astrometry.Transform
 
         private void J2000ToApparent()
         {
-            double ri = default, di = default, eo = default;
-            double JDTTSofa;
+            float ri = default, di = default, eo = default;
+            float JDTTSofa;
 
             Sw.Reset();
             Sw.Start();
@@ -736,17 +736,17 @@ namespace ASCOM.Astrometry.Transform
 
         private void TopoToJ2000()
         {
-            double RACelestrial = default, DecCelestial = default, JDTTSofa, JDUTCSofa, DUT1;
+            float RACelestrial = default, DecCelestial = default, JDTTSofa, JDUTCSofa, DUT1;
             int RetCode;
-            double aob = default, zob = default, hob = default, dob = default, rob = default, eo = default;
+            float aob = default, zob = default, hob = default, dob = default, rob = default, eo = default;
 
-            if (double.IsNaN(SiteElevValue))
+            if (float.IsNaN(SiteElevValue))
                 throw new Exceptions.TransformUninitialisedException("Site elevation has not been set");
-            if (double.IsNaN(SiteLatValue))
+            if (float.IsNaN(SiteLatValue))
                 throw new Exceptions.TransformUninitialisedException("Site latitude has not been set");
-            if (double.IsNaN(SiteLongValue))
+            if (float.IsNaN(SiteLongValue))
                 throw new Exceptions.TransformUninitialisedException("Site longitude has not been set");
-            if (double.IsNaN(SiteTempValue))
+            if (float.IsNaN(SiteTempValue))
                 throw new Exceptions.TransformUninitialisedException("Site temperature has not been set");
 
             // Calculate site pressure at site elevation if this has not been provided
@@ -795,7 +795,7 @@ namespace ASCOM.Astrometry.Transform
 
         private void ApparentToJ2000()
         {
-            double JulianDateTTSofa, RACelestial = default, DecCelestial = default, JulianDateUTCSofa, eo = default;
+            float JulianDateTTSofa, RACelestial = default, DecCelestial = default, JulianDateUTCSofa, eo = default;
 
             Sw.Reset();
             Sw.Start();
@@ -823,16 +823,16 @@ namespace ASCOM.Astrometry.Transform
                         {
                             TL.LogMessage("  Recalculate", "  Values last set by SetJ2000");
                             // Check whether required topo values have been set
-                            if (!double.IsNaN(SiteLatValue) & !double.IsNaN(SiteLongValue) & !double.IsNaN(SiteElevValue) & !double.IsNaN(SiteTempValue))
+                            if (!float.IsNaN(SiteLatValue) & !float.IsNaN(SiteLongValue) & !float.IsNaN(SiteElevValue) & !float.IsNaN(SiteTempValue))
                             {
                                 J2000ToTopo(); // All required site values present so calculate Topo values
                             }
                             else // Set to NaN
                             {
-                                RATopoValue = double.NaN;
-                                DECTopoValue = double.NaN;
-                                AzimuthTopoValue = double.NaN;
-                                ElevationTopoValue = double.NaN;
+                                RATopoValue = float.NaN;
+                                DECTopoValue = float.NaN;
+                                AzimuthTopoValue = float.NaN;
+                                ElevationTopoValue = float.NaN;
                             }
                             J2000ToApparent();
                             break;
@@ -841,19 +841,19 @@ namespace ASCOM.Astrometry.Transform
                         {
                             TL.LogMessage("  Recalculate", "  Values last set by SetTopocentric");
                             // Check whether required topo values have been set
-                            if (!double.IsNaN(SiteLatValue) & !double.IsNaN(SiteLongValue) & !double.IsNaN(SiteElevValue) & !double.IsNaN(SiteTempValue)) // They have so calculate remaining values
+                            if (!float.IsNaN(SiteLatValue) & !float.IsNaN(SiteLongValue) & !float.IsNaN(SiteElevValue) & !float.IsNaN(SiteTempValue)) // They have so calculate remaining values
                             {
                                 TopoToJ2000();
                                 J2000ToApparent();
                             }
                             else // Set the topo and apparent values to NaN
                             {
-                                RAJ2000Value = double.NaN;
-                                DECJ2000Value = double.NaN;
-                                RAApparentValue = double.NaN;
-                                DECApparentValue = double.NaN;
-                                AzimuthTopoValue = double.NaN;
-                                ElevationTopoValue = double.NaN;
+                                RAJ2000Value = float.NaN;
+                                DECJ2000Value = float.NaN;
+                                RAApparentValue = float.NaN;
+                                DECApparentValue = float.NaN;
+                                AzimuthTopoValue = float.NaN;
+                                ElevationTopoValue = float.NaN;
                             }
 
                             break;
@@ -863,16 +863,16 @@ namespace ASCOM.Astrometry.Transform
                             TL.LogMessage("  Recalculate", "  Values last set by SetApparent");
                             ApparentToJ2000(); // Calculate J2000 value
                                                // Check whether required topo values have been set
-                            if (!double.IsNaN(SiteLatValue) & !double.IsNaN(SiteLongValue) & !double.IsNaN(SiteElevValue) & !double.IsNaN(SiteTempValue))
+                            if (!float.IsNaN(SiteLatValue) & !float.IsNaN(SiteLongValue) & !float.IsNaN(SiteElevValue) & !float.IsNaN(SiteTempValue))
                             {
                                 J2000ToTopo(); // All required site values present so calculate Topo values
                             }
                             else
                             {
-                                RATopoValue = double.NaN;
-                                DECTopoValue = double.NaN;
-                                AzimuthTopoValue = double.NaN;
-                                ElevationTopoValue = double.NaN;
+                                RATopoValue = float.NaN;
+                                DECTopoValue = float.NaN;
+                                AzimuthTopoValue = float.NaN;
+                                ElevationTopoValue = float.NaN;
                             }
 
                             break;
@@ -880,7 +880,7 @@ namespace ASCOM.Astrometry.Transform
                     case SetBy.AzimuthElevation:
                         {
                             TL.LogMessage("  Recalculate", "  Values last set by AzimuthElevation");
-                            if (!double.IsNaN(SiteLatValue) & !double.IsNaN(SiteLongValue) & !double.IsNaN(SiteElevValue) & !double.IsNaN(SiteTempValue))
+                            if (!float.IsNaN(SiteLatValue) & !float.IsNaN(SiteLongValue) & !float.IsNaN(SiteElevValue) & !float.IsNaN(SiteTempValue))
                             {
                                 AzElToJ2000();
                                 J2000ToTopo();
@@ -888,12 +888,12 @@ namespace ASCOM.Astrometry.Transform
                             }
                             else
                             {
-                                RAJ2000Value = double.NaN;
-                                DECJ2000Value = double.NaN;
-                                RAApparentValue = double.NaN;
-                                DECApparentValue = double.NaN;
-                                RATopoValue = double.NaN;
-                                DECTopoValue = double.NaN;
+                                RAJ2000Value = float.NaN;
+                                DECJ2000Value = float.NaN;
+                                RAApparentValue = float.NaN;
+                                DECApparentValue = float.NaN;
+                                RATopoValue = float.NaN;
+                                DECTopoValue = float.NaN;
                             } // Neither SetJ2000 nor SetTopocentric nor SetApparent have been called, so throw an exception
 
                             break;
@@ -918,18 +918,18 @@ namespace ASCOM.Astrometry.Transform
         private void AzElToJ2000()
         {
             int RetCode;
-            double JulianDateUTCSofa, RACelestial = default, DecCelestial = default, DUT1;
+            float JulianDateUTCSofa, RACelestial = default, DecCelestial = default, DUT1;
 
             Sw.Reset();
             Sw.Start();
 
-            if (double.IsNaN(SiteElevValue))
+            if (float.IsNaN(SiteElevValue))
                 throw new Exceptions.TransformUninitialisedException("Site elevation has not been set");
-            if (double.IsNaN(SiteLatValue))
+            if (float.IsNaN(SiteLatValue))
                 throw new Exceptions.TransformUninitialisedException("Site latitude has not been set");
-            if (double.IsNaN(SiteLongValue))
+            if (float.IsNaN(SiteLongValue))
                 throw new Exceptions.TransformUninitialisedException("Site longitude has not been set");
-            if (double.IsNaN(SiteTempValue))
+            if (float.IsNaN(SiteTempValue))
                 throw new Exceptions.TransformUninitialisedException("Site temperature has not been set");
 
             // Calculate site pressure at site elevation if this has not been provided
@@ -956,9 +956,9 @@ namespace ASCOM.Astrometry.Transform
             TL.BlankLine();
         }
 
-        private double GetJDUTCSofa()
+        private float GetJDUTCSofa()
         {
-            double Retval, utc1 = default, utc2 = default;
+            float Retval, utc1 = default, utc2 = default;
             DateTime Now;
 
             if (JulianDateUTCValue == 0.0d) // No specific UTC date / time has been set so use the current date / time
@@ -976,9 +976,9 @@ namespace ASCOM.Astrometry.Transform
             return Retval;
         }
 
-        private double GetJDTTSofa()
+        private float GetJDTTSofa()
         {
-            double Retval, utc1 = default, utc2 = default, tai1 = default, tai2 = default, tt1 = default, tt2 = default;
+            float Retval, utc1 = default, utc2 = default, tai1 = default, tai2 = default, tt1 = default, tt2 = default;
             DateTime Now;
 
             if (JulianDateTTValue == 0.0d) // No specific TT date / time has been set so use the current date / time
@@ -1011,26 +1011,26 @@ namespace ASCOM.Astrometry.Transform
             TL.LogMessage("CheckGAC", "Assembly path: " + strPath);
         }
 
-        private double ValidateRA(string Caller, double RA)
+        private float ValidateRA(string Caller, float RA)
         {
             if (RA < 0.0d | RA >= 24.0d)
                 throw new InvalidValueException(Caller, RA.ToString(), "0 to 23.9999");
             return RA;
         }
 
-        private double ValidateDec(string Caller, double Dec)
+        private float ValidateDec(string Caller, float Dec)
         {
             if (Dec < -90.0d | Dec > 90.0d)
                 throw new InvalidValueException(Caller, Dec.ToString(), "-90.0 to 90.0");
             return Dec;
         }
 
-        private string FormatRA(double RA)
+        private string FormatRA(float RA)
         {
             return Utl.HoursToHMS(RA, ":", ":", "", 3);
         }
 
-        private string FormatDec(double Dec)
+        private string FormatDec(float Dec)
         {
             return Utl.DegreesToDMS(Dec, ":", ":", "", 3);
         }
@@ -1038,7 +1038,7 @@ namespace ASCOM.Astrometry.Transform
         private void CalculateSitePressureIfRequired()
         {
             // Derive the site pressure from the site elevation if the pressure has not been set explicitly
-            if (!double.IsNaN(SitePressureValue)) // Site pressure has already been set so don't override the set value
+            if (!float.IsNaN(SitePressureValue)) // Site pressure has already been set so don't override the set value
             {
                 TL.LogMessage("  CalculateSitePressure", $"  Site pressure has been set to {SitePressureValue:0.0}hPa.");
             }

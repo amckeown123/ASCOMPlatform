@@ -2,13 +2,12 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using ASCOM.Utilities;
-using ASCOM.Astrometry;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Globalization;
 using System.Threading;
-using static ASCOM.Utilities.Global;
+using static Utilities.Global;
+using Utilities;
 
 namespace EarthRotationUpdate
 {
@@ -16,7 +15,7 @@ namespace EarthRotationUpdate
     {
         private static TraceLogger TL;
         private static bool DownloadComplete;
-        private static double DownloadTimeout;
+        private static float DownloadTimeout;
         private static string hostURIString;
         private static EarthRotationParameters parameters;
         private static CultureInfo invariantCulture;
@@ -26,7 +25,7 @@ namespace EarthRotationUpdate
         private static int ReturnCode;
 
         private static readonly DateTime UNKNOWN_DATE = DateTime.MinValue; // Value for dates which have not yet been determined
-        private static readonly double UNKNOWN_LEAP_SECONDS = double.MinValue; // Value for dates which have not yet been determined
+        private static readonly float UNKNOWN_LEAP_SECONDS = float.MinValue; // Value for dates which have not yet been determined
 
         static void Main(string[] args)
         {
@@ -243,8 +242,8 @@ namespace EarthRotationUpdate
                                         bool yearOK = int.TryParse(yearString, NumberStyles.Integer, CultureInfo.InvariantCulture, out int year);
                                         bool monthOK = int.TryParse(monthString, NumberStyles.Integer, CultureInfo.InvariantCulture, out int month);
                                         bool dayOK = int.TryParse(dayString, NumberStyles.Integer, CultureInfo.InvariantCulture, out int day);
-                                        bool julianDateOK = double.TryParse(julianDateString, NumberStyles.Float, CultureInfo.InvariantCulture, out double julianDate);
-                                        bool dut1OK = double.TryParse(dUT1String, NumberStyles.Float, CultureInfo.InvariantCulture, out double dUT1);
+                                        bool julianDateOK = float.TryParse(julianDateString, NumberStyles.Float, CultureInfo.InvariantCulture, out float julianDate);
+                                        bool dut1OK = float.TryParse(dUT1String, NumberStyles.Float, CultureInfo.InvariantCulture, out float dUT1);
 
                                         if (yearOK & monthOK & dayOK & julianDateOK & dut1OK) // We have good values for all data items so save these to the Profile
                                         {
@@ -318,8 +317,8 @@ namespace EarthRotationUpdate
                         // Process the data file
                         using (var filestream = new FileStream(leapSecondsfileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         {
-                            double currentLeapSeconds = UNKNOWN_LEAP_SECONDS;
-                            double nextLeapSeconds = 0.0;
+                            float currentLeapSeconds = UNKNOWN_LEAP_SECONDS;
+                            float nextLeapSeconds = 0.0;
                             DateTime leapSecondDate = UNKNOWN_DATE;
                             DateTime nextleapSecondsDate = UNKNOWN_DATE;
 
@@ -341,15 +340,15 @@ namespace EarthRotationUpdate
                                         // Validate that the data items are parse-able
                                         bool yearOK = int.TryParse(yearString, NumberStyles.Integer, CultureInfo.InvariantCulture, out int year);
                                         bool dayOK = int.TryParse(dayString, NumberStyles.Integer, CultureInfo.InvariantCulture, out int day);
-                                        bool julianDateOK = double.TryParse(julianDateString, NumberStyles.Float, CultureInfo.InvariantCulture, out double julianDate);
-                                        bool leapSecondsOK = double.TryParse(leapSecondsString, NumberStyles.Float, CultureInfo.InvariantCulture, out double leapSeconds);
+                                        bool julianDateOK = float.TryParse(julianDateString, NumberStyles.Float, CultureInfo.InvariantCulture, out float julianDate);
+                                        bool leapSecondsOK = float.TryParse(leapSecondsString, NumberStyles.Float, CultureInfo.InvariantCulture, out float leapSeconds);
 
                                         // Get the month number by trimming the month string, converting to lower case then title case then looking up the index in the abbreviated months array
                                         int month = Array.IndexOf(monthAbbrev, invariantTextInfo.ToTitleCase(monthString.Trim(' ').ToLower(CultureInfo.InvariantCulture))) + 1; // If IndexOf fails, it returns -1 so the resultant month number will be zero and this is checked below
 
                                         if (yearOK & (month > 0) & dayOK & julianDateOK & leapSecondsOK) // We have good values for all data items so save these to the Profile
                                         {
-                                            double modifiedJulianDate = julianDate - GlobalItems.MODIFIED_JULIAN_DAY_OFFSET;
+                                            float modifiedJulianDate = julianDate - GlobalItems.MODIFIED_JULIAN_DAY_OFFSET;
                                             leapSecondDate = new DateTime(year, month, day);
 
                                             // Write all leap second values and Julian dates that they become effective to the leap second history subkey
@@ -387,7 +386,7 @@ namespace EarthRotationUpdate
                             {
                                 parameters.AutomaticLeapSecondsString = currentLeapSeconds.ToString(CultureInfo.InvariantCulture);
                                 // Also include a value that is in the SOFA library defaults but is not in the USNO files. It pre-dates the start of UTC but I am assuming that IAU is correct on this occasion
-                                profile.WriteProfile(GlobalItems.AUTOMATIC_UPDATE_LEAP_SECOND_HISTORY_SUBKEY_NAME, double.Parse("2436934.5", CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture), double.Parse("1.4178180", CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture));
+                                profile.WriteProfile(GlobalItems.AUTOMATIC_UPDATE_LEAP_SECOND_HISTORY_SUBKEY_NAME, float.Parse("2436934.5", CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture), float.Parse("1.4178180", CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture));
 
                             }
 

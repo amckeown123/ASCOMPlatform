@@ -37,8 +37,8 @@ namespace ASCOM.Controls
         private bool _analogDialRegionOnly;
         private Color _borderColor = Color.DimGray;
         private int _currentLevel;
-        private const double degHigh = Math.PI*1.2;
-        private const double degLow = Math.PI*0.8;
+        private const float degHigh = (float)(Math.PI*1.2);
+        private const float degLow = (float)(Math.PI*0.8);
         private Color _dialBackColor = Color.White;
         private Color _dialNeedle = Color.Black;
         private Color _dialPeak = Color.Red;
@@ -697,22 +697,22 @@ namespace ASCOM.Controls
                 if (_formType == MeterScale.Log10)
                 {
                     _calcValue =
-                        (int) (Math.Log10((double) _currentLevel/(_max/10) + 1)*(_ledCount1 + _ledCount2 + _ledCount3));
+                        (int) (Math.Log10((float) _currentLevel/(_max/10) + 1)*(_ledCount1 + _ledCount2 + _ledCount3));
                     if (_showLedPeakInAnalog)
                         _calcPeak =
-                            (int) (Math.Log10((double) _peakLevel/(_max/10) + 1)*(_ledCount1 + _ledCount2 + _ledCount3));
+                            (int) (Math.Log10((float) _peakLevel/(_max/10) + 1)*(_ledCount1 + _ledCount2 + _ledCount3));
                 }
 
                 if (_formType == MeterScale.Analog)
                 {
-                    _calcValue = (int) (((double) _currentLevel/_max)*(_ledCount1 + _ledCount2 + _ledCount3) + 0.5);
+                    _calcValue = (int) (((float) _currentLevel/_max)*(_ledCount1 + _ledCount2 + _ledCount3) + 0.5);
                     if (_showLedPeakInAnalog)
-                        _calcPeak = (int) (((double) _peakLevel/_max)*(_ledCount1 + _ledCount2 + _ledCount3) + 0.5);
+                        _calcPeak = (int) (((float) _peakLevel/_max)*(_ledCount1 + _ledCount2 + _ledCount3) + 0.5);
                 }
 
-                Double degStep = (degHigh - degLow)/(_ledCount1 + _ledCount2 + _ledCount3 - 1);
-                double i;
-                double sinI, CosI;
+                float degStep = (degHigh - degLow)/(_ledCount1 + _ledCount2 + _ledCount3 - 1);
+                float i;
+                float sinI, CosI;
                 int lc = 0;
                 var ledRadiusStart = (int) (Width*0.6);
                 if (!ShowTextInDial) ledRadiusStart = (int) (Width*0.65);
@@ -733,8 +733,8 @@ namespace ASCOM.Controls
                     }
 
                     lc++;
-                    sinI = Math.Sin(i);
-                    CosI = Math.Cos(i);
+                    sinI = (float)Math.Sin(i);
+                    CosI = (float)Math.Cos(i);
                     g.DrawLine(scalePen, (int) ((ledRadiusStart - _led.Height)*sinI + Width/2),
                                (int) ((ledRadiusStart - _led.Height)*CosI + Height*0.9),
                                (int) (ledRadiusStart*sinI + Width/2), (int) (ledRadiusStart*CosI + Height*0.9));
@@ -744,8 +744,8 @@ namespace ASCOM.Controls
 
             if (_formType == MeterScale.Log10)
             {
-                _calcValue = (int) (Math.Log10((double) _currentLevel/(_max/10) + 1)*_max);
-                if (_showPeak) _calcPeak = (int) (Math.Log10((double) _peakLevel/(_max/10) + 1)*_max);
+                _calcValue = (int) (Math.Log10((float) _currentLevel/(_max/10) + 1)*_max);
+                if (_showPeak) _calcPeak = (int) (Math.Log10((float) _peakLevel/(_max/10) + 1)*_max);
             }
 
             if (_formType == MeterScale.Analog)
@@ -756,10 +756,10 @@ namespace ASCOM.Controls
             int dialRadiusLow = (int) (Width*0.3f), dialRadiusHigh = (int) (Width*0.65f);
 
             var dialPen = new Pen(_dialNeedle, Width*0.01f);
-            double dialPos;
-            if (_calcValue > 0) dialPos = degHigh - (((double) _calcValue/_max)*(degHigh - degLow));
+            float dialPos;
+            if (_calcValue > 0) dialPos = degHigh - (((float) _calcValue/_max)*(degHigh - degLow));
             else dialPos = degHigh;
-            Double sinD = Math.Sin(dialPos), cosD = Math.Cos(dialPos);
+            float sinD = (float)Math.Sin(dialPos), cosD = (float)Math.Cos(dialPos);
             g.DrawLine(dialPen, (int) (dialRadiusLow*sinD + Width*0.5),
                        (int) (dialRadiusLow*cosD + Height*0.9),
                        (int) (dialRadiusHigh*sinD + Width*0.5),
@@ -768,9 +768,9 @@ namespace ASCOM.Controls
             if (_showPeak)
             {
                 var peakPen = new Pen(_dialPeak, Width*0.01f);
-                if (_calcPeak > 0) dialPos = degHigh - (((double) _calcPeak/_max)*(degHigh - degLow));
+                if (_calcPeak > 0) dialPos = degHigh - (((float) _calcPeak/_max)*(degHigh - degLow));
                 else dialPos = degHigh;
-                Double sinP = Math.Sin(dialPos), cosP = Math.Cos(dialPos);
+                float sinP = (float)Math.Sin(dialPos), cosP = (float)Math.Cos(dialPos);
                 g.DrawLine(peakPen, (int) (dialRadiusLow*sinP + Width*0.5),
                            (int) (dialRadiusLow*cosP + Height*0.9),
                            (int) (dialRadiusHigh*sinP + Width*0.5),
@@ -783,15 +783,15 @@ namespace ASCOM.Controls
         {
             if (_formType == MeterScale.Log10)
             {
-                _calcValue = (int) (Math.Log10((double) _currentLevel/(_max/10) + 1)*(_ledCount1 + _ledCount2 + _ledCount3));
+                _calcValue = (int) (Math.Log10((float) _currentLevel/(_max/10) + 1)*(_ledCount1 + _ledCount2 + _ledCount3));
                 if (_showPeak)
-                    _calcPeak = (int) (Math.Log10((double) _peakLevel/(_max/10) + 1)*(_ledCount1 + _ledCount2 + _ledCount3));
+                    _calcPeak = (int) (Math.Log10((float) _peakLevel/(_max/10) + 1)*(_ledCount1 + _ledCount2 + _ledCount3));
             }
 
             if (_formType == MeterScale.Analog)
             {
-                _calcValue = (int) (((double) _currentLevel/_max)*(_ledCount1 + _ledCount2 + _ledCount3) + 0.5);
-                if (_showPeak) _calcPeak = (int) (((double) _peakLevel/_max)*(_ledCount1 + _ledCount2 + _ledCount3) + 0.5);
+                _calcValue = (int) (((float) _currentLevel/_max)*(_ledCount1 + _ledCount2 + _ledCount3) + 0.5);
+                if (_showPeak) _calcPeak = (int) (((float) _peakLevel/_max)*(_ledCount1 + _ledCount2 + _ledCount3) + 0.5);
             }
 
 
@@ -884,16 +884,16 @@ namespace ASCOM.Controls
         {
             if (!_analogDialRegionOnly) g.FillRectangle(new SolidBrush(BackColor), 0, 0, Width, Height);
 
-            double degStep = (degHigh*1.05 - degLow/1.05)/19;
-            double i = degHigh*1.05;
-            double sinI, cosI;
+            float degStep = (float)((degHigh*1.05 - degLow/1.05)/19);
+            float i = (float)(degHigh * 1.05);
+            float sinI, cosI;
 
             var curvePoints = new PointF[40];
             for (int cp = 0; cp < 20; cp++)
             {
                 i = i - degStep;
-                sinI = Math.Sin(i);
-                cosI = Math.Cos(i);
+                sinI = (float)Math.Sin(i);
+                cosI = (float)Math.Cos(i);
                 curvePoints[cp] = new PointF((float) (sinI*Width*0.7 + Width/2), (float) (cosI*Width*0.7 + Height*0.9));
                 curvePoints[38 - cp] = new PointF((float) (sinI*Width*0.3 + Width/2),
                                                   (float) (cosI*Width*0.3 + Height*0.9));
@@ -919,8 +919,8 @@ namespace ASCOM.Controls
                     if (lc < _ledCount1 + _ledCount2) scalePen = new Pen(Led2ColorOn, _led.Width);
                     if (lc < _ledCount1) scalePen = new Pen(Led1ColorOn, _led.Width);
                     lc++;
-                    sinI = Math.Sin(i);
-                    cosI = Math.Cos(i);
+                    sinI = (float)Math.Sin(i);
+                    cosI = (float)Math.Cos(i);
                     g.DrawLine(scalePen, (int) ((ledRadiusStart - _led.Height)*sinI + Width/2),
                                (int) ((ledRadiusStart - _led.Height)*cosI + Height*0.9),
                                (int) (ledRadiusStart*sinI + Width/2), (int) (ledRadiusStart*cosI + Height*0.9));
@@ -960,8 +960,8 @@ namespace ASCOM.Controls
                         dtColor = new SolidBrush(_dialTextHigh);
                     }
                     var dtfont = new Font(Font.FontFamily, meterFontSize);
-                    sinI = Math.Sin(i);
-                    cosI = Math.Cos(i);
+                    sinI = (float)Math.Sin(i);
+                    cosI = (float)Math.Cos(i);
                     g.DrawString(_dialText[dt++], dtfont, dtColor, (int) (textRadiusStart*sinI + Width/2),
                                  (int) (textRadiusStart*cosI + Height*0.9), dtformat);
                 }

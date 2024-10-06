@@ -94,7 +94,7 @@ static class FocuserHardware
     /// <summary>
     /// Step size (microns) for the focuser.
     /// </summary>
-    internal static double StepSize
+    internal static float StepSize
     {
         get
         {
@@ -135,7 +135,7 @@ static class FocuserHardware
     /// <summary>
     /// Current ambient temperature in degrees Celsius as measured by the focuser.
     /// </summary>
-    internal static double Temperature
+    internal static float Temperature
     {
         get
         {

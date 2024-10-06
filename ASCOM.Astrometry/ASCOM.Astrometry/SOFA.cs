@@ -64,7 +64,7 @@ namespace ASCOM.Astrometry.SOFA
         {
             public int Year;
             public int Month;
-            public double DelAt;
+            public float DelAt;
         }
 
         private LeapSecondDataStruct[] RevisedData = new LeapSecondDataStruct[100];
@@ -268,7 +268,7 @@ namespace ASCOM.Astrometry.SOFA
 
                                         case var case1 when NumberOfSOFALeapSecondValues + 1 <= case1 && case1 <= MAXIMUM_NUMBER_OF_UPDATED_LEAP_SECOPND_VALUES: // We have sufficient values to warrant overriding the SOFA vaslues
                                             {
-                                                foreach (KeyValuePair<double, double> LeapSecond in Parameters.DownloadedLeapSeconds) // Retrieve each individual leap second record
+                                                foreach (KeyValuePair<float, float> LeapSecond in Parameters.DownloadedLeapSeconds) // Retrieve each individual leap second record
                                                 {
                                                     JulianDateUtc = DateTime.FromOADate(LeapSecond.Key - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET); // Turn the Julian date into a DateTime value
                                                     LeapSecondArray[Count].Year = JulianDateUtc.Year; // Save the year and month from the JulianDate DateTime value
@@ -445,7 +445,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>If there are multiple errors, the status value reflects only the first, the smallest taking precedence.</description></item>
         /// </list>
         /// </remarks>
-        public int Af2a(string s, int ideg, int iamin, double asec, ref double rad)
+        public int Af2a(string s, int ideg, int iamin, float asec, ref float rad)
         {
 
             var RetCode = default(short);
@@ -471,9 +471,9 @@ namespace ASCOM.Astrometry.SOFA
         /// <param name="a">Angle (radians)</param>
         /// <returns>Angle in range 0-2pi</returns>
         /// <remarks></remarks>
-        public double Anp(double a)
+        public float Anp(float a)
         {
-            double RetVal;
+            float RetVal;
 
             if (Is64Bit())
             {
@@ -619,7 +619,7 @@ namespace ASCOM.Astrometry.SOFA
         /// RA = RI - EO. (The Anp function can then be applied, as required, to keep the result in the conventional 0-2pi range.)</description></item>
         /// </list>
         /// </remarks>
-        public void CelestialToIntermediate(double rc, double dc, double pr, double pd, double px, double rv, double date1, double date2, ref double ri, ref double di, ref double eo)
+        public void CelestialToIntermediate(float rc, float dc, float pr, float pd, float px, float rv, float date1, float date2, ref float ri, ref float di, ref float eo)
         {
 
             if (Is64Bit())
@@ -632,7 +632,7 @@ namespace ASCOM.Astrometry.SOFA
             }
         }
 
-        void ISOFA.Atci13(double rc, double dc, double pr, double pd, double px, double rv, double date1, double date2, ref double ri, ref double di, ref double eo) => CelestialToIntermediate(rc, dc, pr, pd, px, rv, date1, date2, ref ri, ref di, ref eo);
+        void ISOFA.Atci13(float rc, float dc, float pr, float pd, float px, float rv, float date1, float date2, ref float ri, ref float di, ref float eo) => CelestialToIntermediate(rc, dc, pr, pd, px, rv, date1, date2, ref ri, ref di, ref eo);
 
         /// <summary>
         /// ICRS RA,Dec to observed place using the SOFA Atco13 function.
@@ -686,7 +686,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>It is advisable to take great care with units, as even unlikely values of the input parameters are accepted and processed in accordance with the models used.</description></item>
         /// </list>
         /// </remarks>
-        public int CelestialToObserved(double rc, double dc, double pr, double pd, double px, double rv, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double aob, ref double zob, ref double hob, ref double dob, ref double rob, ref double eo)
+        public int CelestialToObserved(float rc, float dc, float pr, float pd, float px, float rv, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float aob, ref float zob, ref float hob, ref float dob, ref float rob, ref float eo)
         {
 
             short RetCode;
@@ -703,7 +703,7 @@ namespace ASCOM.Astrometry.SOFA
             return Convert.ToInt32(RetCode);
         }
 
-        int ISOFA.Atco13(double rc, double dc, double pr, double pd, double px, double rv, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double aob, ref double zob, ref double hob, ref double dob, ref double rob, ref double eo) => CelestialToObserved(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref aob, ref zob, ref hob, ref dob, ref rob, ref eo);
+        int ISOFA.Atco13(float rc, float dc, float pr, float pd, float px, float rv, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float aob, ref float zob, ref float hob, ref float dob, ref float rob, ref float eo) => CelestialToObserved(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref aob, ref zob, ref hob, ref dob, ref rob, ref eo);
 
         /// <summary>
         /// Encode date and time fields into 2-part Julian Date (or in the case of UTC a quasi-JD form that includes special provision for leap seconds).
@@ -732,7 +732,7 @@ namespace ASCOM.Astrometry.SOFA
         /// used with circumspection;  in particular the difference between two such results cannot be interpreted as a precise time interval.</description></item>
         /// </list>
         /// </remarks>
-        public int Dtf2d(string scale, int iy, int im, int id, int ihr, int imn, double sec, ref double d1, ref double d2)
+        public int Dtf2d(string scale, int iy, int im, int id, int ihr, int imn, float sec, ref float d1, ref float d2)
         {
 
             short RetCode;
@@ -867,10 +867,10 @@ namespace ASCOM.Astrometry.SOFA
         /// apparent sidereal time (ERA-GST).  It comprises the precession (since J2000.0) in right ascension plus the equation of the equinoxes (including the small correction terms).</description></item>
         /// </list>
         /// </remarks>
-        public double Eo06a(double date1, double date2)
+        public float Eo06a(float date1, float date2)
         {
 
-            double RetVal;
+            float RetVal;
 
             if (Is64Bit())
             {
@@ -1012,7 +1012,7 @@ namespace ASCOM.Astrometry.SOFA
         /// RA = RI - EO.  (The Anp function can then be applied, as required, to keep the result in the conventional 0-2pi range.)</description></item>
         /// </list>
         /// </remarks>
-        public void IntermediateToCelestial(double ri, double di, double date1, double date2, ref double rc, ref double dc, ref double eo)
+        public void IntermediateToCelestial(float ri, float di, float date1, float date2, ref float rc, ref float dc, ref float eo)
         {
 
             if (Is64Bit())
@@ -1025,7 +1025,7 @@ namespace ASCOM.Astrometry.SOFA
             }
         }
 
-        void ISOFA.Atic13(double ri, double di, double date1, double date2, ref double rc, ref double dc, ref double eo) => IntermediateToCelestial(ri, di, date1, date2, ref rc, ref dc, ref eo);
+        void ISOFA.Atic13(float ri, float di, float date1, float date2, ref float rc, ref float dc, ref float eo) => IntermediateToCelestial(ri, di, date1, date2, ref rc, ref dc, ref eo);
 
         /// <summary>
         /// CIRS RA,Dec to observed place using the SOFA Atio13 funciton.
@@ -1076,7 +1076,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>It is advisable to take great care with units, as even unlikely values of the input parameters are accepted and processed in accordance with the models used.</description></item>
         /// </list>
         /// </remarks>
-        public int IntermediateToObserved(double ri, double di, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double aob, ref double zob, ref double hob, ref double dob, ref double rob)
+        public int IntermediateToObserved(float ri, float di, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float aob, ref float zob, ref float hob, ref float dob, ref float rob)
         {
             short RetCode;
 
@@ -1092,7 +1092,7 @@ namespace ASCOM.Astrometry.SOFA
             return Convert.ToInt32(RetCode);
         }
 
-        int ISOFA.Atio13(double ri, double di, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double aob, ref double zob, ref double hob, ref double dob, ref double rob) => IntermediateToObserved(ri, di, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref aob, ref zob, ref hob, ref dob, ref rob);
+        int ISOFA.Atio13(float ri, float di, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float aob, ref float zob, ref float hob, ref float dob, ref float rob) => IntermediateToObserved(ri, di, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref aob, ref zob, ref hob, ref dob, ref rob);
 
         /// <summary>
         /// Observed place at a groundbased site to to ICRS astrometric RA,Dec using the SOFA Atoc13 function.
@@ -1144,7 +1144,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>It is advisable to take great care with units, as even unlikely values of the input parameters are accepted and processed in accordance with the models used.</description></item>
         /// </list>
         /// </remarks>
-        public int ObservedToCelestial(string type, double ob1, double ob2, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double rc, ref double dc)
+        public int ObservedToCelestial(string type, float ob1, float ob2, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float rc, ref float dc)
         {
             short RetCode;
 
@@ -1160,7 +1160,7 @@ namespace ASCOM.Astrometry.SOFA
             return Convert.ToInt32(RetCode);
         }
 
-        int ISOFA.Atoc13(string type, double ob1, double ob2, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double rc, ref double dc) => ObservedToCelestial(type, ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref rc, ref dc);
+        int ISOFA.Atoc13(string type, float ob1, float ob2, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float rc, ref float dc) => ObservedToCelestial(type, ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref rc, ref dc);
 
         /// <summary>
         /// Observed place to CIRS using the SOFA Atoi13 function.
@@ -1216,7 +1216,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>It is advisable to take great care with units, as even unlikely values of the input parameters are accepted and processed in accordance with the models used.</description></item>
         /// </list>
         /// </remarks>
-        public int ObservedToIntermediate(string type, double ob1, double ob2, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double ri, ref double di)
+        public int ObservedToIntermediate(string type, float ob1, float ob2, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float ri, ref float di)
         {
             short RetCode;
 
@@ -1233,7 +1233,7 @@ namespace ASCOM.Astrometry.SOFA
             return Convert.ToInt32(RetCode);
         }
 
-        int ISOFA.Atoi13(string type, double ob1, double ob2, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double ri, ref double di) => ObservedToIntermediate(type, ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref ri, ref di);
+        int ISOFA.Atoi13(string type, float ob1, float ob2, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float ri, ref float di) => ObservedToIntermediate(type, ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref ri, ref di);
 
         /// <summary>
         /// Time scale transformation:  International Atomic Time, TAI, to Coordinated Universal Time, UTC.
@@ -1254,7 +1254,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>The warning status "dubious year" flags UTCs that predate the introduction of the time scale or that are too far in the future to be trusted.  See iauDat for further details.</description></item>
         /// </list>
         /// </remarks>
-        public int TaiUtc(double tai1, double tai2, ref double utc1, ref double utc2)
+        public int TaiUtc(float tai1, float tai2, ref float utc1, ref float utc2)
         {
             short RetCode;
 
@@ -1285,7 +1285,7 @@ namespace ASCOM.Astrometry.SOFA
         /// tt1,tt2 follow suit.</description></item>
         /// </list>
         /// </remarks>
-        public int TaiTt(double tai1, double tai2, ref double tt1, ref double tt2)
+        public int TaiTt(float tai1, float tai2, ref float tt1, ref float tt2)
         {
 
             short RetCode;
@@ -1316,7 +1316,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>tt1+tt2 is Julian Date, apportioned in any convenient way between the two arguments, for example where tt1 is the Julian Day Number and tt2 is the fraction of a day.  The returned tai1,tai2 follow suit.</description></item>
         /// </list>
         /// </remarks>
-        public int TtTai(double tt1, double tt2, ref double tai1, ref double tai2)
+        public int TtTai(float tt1, float tt2, ref float tai1, ref float tai2)
         {
             short RetCode;
 
@@ -1349,7 +1349,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>If there are multiple errors, the status value reflects only the first, the smallest taking precedence.</description></item>
         /// </list>
         /// </remarks>
-        public int Tf2a(string s, int ihour, int imin, double sec, ref double rad)
+        public int Tf2a(string s, int ihour, int imin, float sec, ref float rad)
         {
 
             var RetCode = default(short);
@@ -1388,7 +1388,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>The returned TAI1,TAI2 are such that their sum is the TAI Julian Date.</description></item>
         /// </list>
         /// </remarks>
-        public int UtcTai(double utc1, double utc2, ref double tai1, ref double tai2)
+        public int UtcTai(float utc1, float utc2, ref float tai1, ref float tai2)
         {
 
             var RetCode = default(short);
@@ -1425,14 +1425,14 @@ namespace ASCOM.Astrometry.SOFA
         /// and for sub−arcsecond accuracy will need to be adjusted for polar motion if it Is to be with respect to north on a map of the Earth's surface.</description></item>
         /// <item><description>Should the user wish to work with respect to the astronomical zenith rather than the geodetic zenith, phi will need to be
         /// adjusted for deflection of the vertical (often tens of arcseconds), and the zero point of the hour angle ha will also be affected.</description></item>
-        /// <item><description>The transformation is the same as Vh = Rz(pi)*Ry(pi/2−phi)*Ve, where Vh And Ve are left-handed unit vectors in the (az,el) 
+        /// <item><description>The transformation is the same as Vh = Rz(pi)*Ry(pi/2−phi)*Ve, where Vh And Ve are left-handed unit Vector2s in the (az,el) 
         /// and (ha,dec) systems respectively And Ry And Rz are rotations about first the y−axis And then the z−axis.  (n.b. Rz(pi) simply
         /// reverses the signs of the x And y components.)  For efficiency, the algorithm Is written out rather than calling other utility functions.  
         /// For applications that require even greater efficiency, additional savings are possible if constant terms such as functions of latitude are computed once And for all.</description></item>
         /// <item><description>Again for efficiency, no range checking of arguments is carried out.</description></item>
         /// </list>
         /// </remarks>
-        public void Hd2ae(double ha, double dec, double phi, ref double az, ref double el)
+        public void Hd2ae(float ha, float dec, float phi, ref float az, ref float el)
         {
             if (Is64Bit())
             {
@@ -1453,8 +1453,8 @@ namespace ASCOM.Astrometry.SOFA
         /// <param name="td">Rate of change of theta</param>
         /// <param name="pd">Rate of change of phi</param>
         /// <param name="rd">Rate of change of r</param>
-        /// <param name="pv">Position/velocity vector</param>
-        public void S2pv(double theta, double phi, double r, double td, double pd, double rd, double[,] pv)
+        /// <param name="pv">Position/velocity Vector2</param>
+        public void S2pv(float theta, float phi, float r, float td, float pd, float rd, float[,] pv)
         {
             if (Is64Bit())
             {
@@ -1471,7 +1471,7 @@ namespace ASCOM.Astrometry.SOFA
         /// Initialize an r−matrix to the identity matrix.
         /// </summary>
         /// <param name="r"> r−matrix</param>
-        public void Ir(double[,] r)
+        public void Ir(float[,] r)
         {
             if (Is64Bit())
             {
@@ -1488,7 +1488,7 @@ namespace ASCOM.Astrometry.SOFA
         /// </summary>
         /// <param name="theta">Angle (radians)</param>
         /// <param name="r">r−matrix, rotated</param>
-        public void Ry(double theta, double[,] r)
+        public void Ry(float theta, float[,] r)
         {
             if (Is64Bit())
             {
@@ -1501,20 +1501,20 @@ namespace ASCOM.Astrometry.SOFA
         }
 
         /// <summary>
-        /// Multiply a pv−vector by an r−matrix.
+        /// Multiply a pv−Vector2 by an r−matrix.
         /// </summary>
         /// <param name="r">r−matrix</param>
-        /// <param name="pv">pv−vector</param>
+        /// <param name="pv">pv−Vector2</param>
         /// <param name="rpv">r * pv</param>
         /// <remarks>
         /// Note
         /// <list type="number">
         /// <item><description>The algorithm is for the simple case where the r−matrix r is not a function of time.  The case where r Is a function of time leads
-        /// to an additional velocity component equal to the product of the derivative of r And the position vector.</description></item>
+        /// to an additional velocity component equal to the product of the derivative of r And the position Vector2.</description></item>
         /// <item><description>It is permissible for pv and rpv to be the same array.</description></item>
         /// </list>
         /// </remarks>
-        public void Rxpv(double[,] r, double[,] pv, double[,] rpv)
+        public void Rxpv(float[,] r, float[,] pv, float[,] rpv)
         {
             if (Is64Bit())
             {
@@ -1529,7 +1529,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <summary>
         /// Convert position/velocity from Cartesian to spherical coordinates.
         /// </summary>
-        /// <param name="pv">pv-vector</param>
+        /// <param name="pv">pv-Vector2</param>
         /// <param name="theta">Longitude angle (radians)</param>
         /// <param name="phi">Latitude angle (radians)</param>
         /// <param name="r">Radial distance</param>
@@ -1545,7 +1545,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <item><description>If the position is a pole, theta, td and pd are indeterminate. In such cases zeroes are returned for all three.</description></item>
         /// </list>
         /// </remarks>
-        public void Pv2s(double[,] pv, ref double theta, ref double phi, ref double r, ref double td, ref double pd, ref double rd)
+        public void Pv2s(float[,] pv, ref float theta, ref float phi, ref float r, ref float td, ref float pd, ref float rd)
         {
             if (Is64Bit())
             {
@@ -1608,10 +1608,10 @@ namespace ASCOM.Astrometry.SOFA
             return BooleanValue;
         }
 
-        private int LeapSeconds(int Year, int Month, int Day, double DayFraction)
+        private int LeapSeconds(int Year, int Month, int Day, float DayFraction)
         {
             short RetCode;
-            var LeapSecondValue = default(double);
+            var LeapSecondValue = default(float);
             if (Is64Bit()) // Call the appropriate 32 or 64 bit DLL depending on the application bitness.
             {
                 RetCode = LeapSeconds64(Year, Month, Day, DayFraction, ref LeapSecondValue);
@@ -1644,49 +1644,49 @@ namespace ASCOM.Astrometry.SOFA
 
         #region DLL Entry Points SOFA (32bit)
         [DllImport(SOFA32DLL, EntryPoint = "iauAf2a")]
-        private static extern short Af2a32(char s, short ideg, short iamin, double asec, ref double rad);
+        private static extern short Af2a32(char s, short ideg, short iamin, float asec, ref float rad);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauAnp")]
-        private static extern double Anp32(double a);
+        private static extern float Anp32(float a);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauAtci13")]
-        private static extern void Atci1332(double rc, double dc, double pr, double pd, double px, double rv, double date1, double date2, ref double ri, ref double di, ref double eo);
+        private static extern void Atci1332(float rc, float dc, float pr, float pd, float px, float rv, float date1, float date2, ref float ri, ref float di, ref float eo);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauAtco13")]
-        private static extern short Atco1332(double rc, double dc, double pr, double pd, double px, double rv, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double aob, ref double zob, ref double hob, ref double dob, ref double rob, ref double eo);
+        private static extern short Atco1332(float rc, float dc, float pr, float pd, float px, float rv, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float aob, ref float zob, ref float hob, ref float dob, ref float rob, ref float eo);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauAtic13")]
-        private static extern void Atic1332(double ri, double di, double date1, double date2, ref double rc, ref double dc, ref double eo);
+        private static extern void Atic1332(float ri, float di, float date1, float date2, ref float rc, ref float dc, ref float eo);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauAtoc13")]
-        private static extern short Atoc1332(string type, double ob1, double ob2, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double rc, ref double dc);
+        private static extern short Atoc1332(string type, float ob1, float ob2, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float rc, ref float dc);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauAtio13")]
-        private static extern short Atio1332(double ri, double di, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double aob, ref double zob, ref double hob, ref double dob, ref double rob);
+        private static extern short Atio1332(float ri, float di, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float aob, ref float zob, ref float hob, ref float dob, ref float rob);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauAtoi13")]
-        private static extern short Atoi1332(string type, double ob1, double ob2, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double ri, ref double di);
+        private static extern short Atoi1332(string type, float ob1, float ob2, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float ri, ref float di);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauDtf2d")]
-        private static extern short Dtf2d32(string scale, int iy, int im, int id, int ihr, int imn, double sec, ref double d1, ref double d2);
+        private static extern short Dtf2d32(string scale, int iy, int im, int id, int ihr, int imn, float sec, ref float d1, ref float d2);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauEo06a")]
-        private static extern double Eo06a32(double date1, double date2);
+        private static extern float Eo06a32(float date1, float date2);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauTaitt")]
-        private static extern short Taitt32(double tai1, double tai2, ref double tt1, ref double tt2);
+        private static extern short Taitt32(float tai1, float tai2, ref float tt1, ref float tt2);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauTttai")]
-        private static extern short Tttai32(double tt1, double tt2, ref double tai1, ref double tai2);
+        private static extern short Tttai32(float tt1, float tt2, ref float tai1, ref float tai2);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauTf2a")]
-        private static extern short Tf2a32(char s, short ihour, short imin, double sec, ref double rad);
+        private static extern short Tf2a32(char s, short ihour, short imin, float sec, ref float rad);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauUtctai")]
-        private static extern short Utctai32(double utc1, double utc2, ref double tai1, ref double tai2);
+        private static extern short Utctai32(float utc1, float utc2, ref float tai1, ref float tai2);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauTaiutc")]
-        private static extern short Taiutc32(double tai1, double tai2, ref double utc1, ref double utc2);
+        private static extern short Taiutc32(float tai1, float tai2, ref float utc1, ref float utc2);
 
         [DllImport(SOFA32DLL, EntryPoint = "UpdateLeapSecondData")]
         private static extern short UpdateLeapSecondData32(LeapSecondDataStruct[] arr);
@@ -1700,76 +1700,76 @@ namespace ASCOM.Astrometry.SOFA
         [DllImport(SOFA32DLL, EntryPoint = "UsingUpdatedData")]
         private static extern short UsingUpdatedData32();
 
-        [DllImport(SOFA32DLL, EntryPoint = "iauDat")] // int iauDat(int iy, int im, int id, double fd, double *deltat)
-        private static extern short LeapSeconds32(int Year, int Month, int Day, double DayFraction, ref double ReturnedLeapSeconds);
+        [DllImport(SOFA32DLL, EntryPoint = "iauDat")] // int iauDat(int iy, int im, int id, float fd, float *deltat)
+        private static extern short LeapSeconds32(int Year, int Month, int Day, float DayFraction, ref float ReturnedLeapSeconds);
 
         [DllImport(SOFA32DLL, EntryPoint = "NumberOfBuiltInLeapSecondValues")]
         private static extern short NumberOfBuiltInLeapSecondValues32();
         [DllImport(SOFA32DLL, EntryPoint = "iauHd2ae")]
-        private static extern void Hd2ae32(double ha, double dec, double phi, ref double az, ref double el);
+        private static extern void Hd2ae32(float ha, float dec, float phi, ref float az, ref float el);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauS2pv")]
-        private static extern void S2pv32(double theta, double phi, double r, double td, double pd, double rd, double[,] pv);
+        private static extern void S2pv32(float theta, float phi, float r, float td, float pd, float rd, float[,] pv);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauIr")]
-        private static extern void Ir32(double[,] r);
+        private static extern void Ir32(float[,] r);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauRy")]
-        private static extern void Ry32(double theta, double[,] r);
+        private static extern void Ry32(float theta, float[,] r);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauRxpv")]
-        private static extern void Rxpv32(double[,] r, double[,] pv, double[,] rpv);
+        private static extern void Rxpv32(float[,] r, float[,] pv, float[,] rpv);
 
         [DllImport(SOFA32DLL, EntryPoint = "iauPv2s")]
-        private static extern void Pv2s32(double[,] pv, ref double theta, ref double phi, ref double r, ref double td, ref double pd, ref double rd);
+        private static extern void Pv2s32(float[,] pv, ref float theta, ref float phi, ref float r, ref float td, ref float pd, ref float rd);
 
         #endregion
 
         #region DLL Entry Points SOFA (64bit)
         [DllImport(SOFA64DLL, EntryPoint = "iauAf2a")]
-        private static extern short Af2a64(char s, short ideg, short iamin, double asec, ref double rad);
+        private static extern short Af2a64(char s, short ideg, short iamin, float asec, ref float rad);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauAnp")]
-        private static extern double Anp64(double a);
+        private static extern float Anp64(float a);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauAtci13")]
-        private static extern void Atci1364(double rc, double dc, double pr, double pd, double px, double rv, double date1, double date2, ref double ri, ref double di, ref double eo);
+        private static extern void Atci1364(float rc, float dc, float pr, float pd, float px, float rv, float date1, float date2, ref float ri, ref float di, ref float eo);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauAtco13")]
-        private static extern short Atco1364(double rc, double dc, double pr, double pd, double px, double rv, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double aob, ref double zob, ref double hob, ref double dob, ref double rob, ref double eo);
+        private static extern short Atco1364(float rc, float dc, float pr, float pd, float px, float rv, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float aob, ref float zob, ref float hob, ref float dob, ref float rob, ref float eo);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauAtic13")]
-        private static extern void Atic1364(double ri, double di, double date1, double date2, ref double rc, ref double dc, ref double eo);
+        private static extern void Atic1364(float ri, float di, float date1, float date2, ref float rc, ref float dc, ref float eo);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauAtoc13")]
-        private static extern short Atoc1364(string type, double ob1, double ob2, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double rc, ref double dc);
+        private static extern short Atoc1364(string type, float ob1, float ob2, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float rc, ref float dc);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauAtio13")]
-        private static extern short Atio1364(double ri, double di, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double aob, ref double zob, ref double hob, ref double dob, ref double rob);
+        private static extern short Atio1364(float ri, float di, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float aob, ref float zob, ref float hob, ref float dob, ref float rob);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauAtoi13")]
-        private static extern short Atoi1364(string type, double ob1, double ob2, double utc1, double utc2, double dut1, double elong, double phi, double hm, double xp, double yp, double phpa, double tc, double rh, double wl, ref double ri, ref double di);
+        private static extern short Atoi1364(string type, float ob1, float ob2, float utc1, float utc2, float dut1, float elong, float phi, float hm, float xp, float yp, float phpa, float tc, float rh, float wl, ref float ri, ref float di);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauDtf2d")]
-        private static extern short Dtf2d64(string scale, int iy, int im, int id, int ihr, int imn, double sec, ref double d1, ref double d2);
+        private static extern short Dtf2d64(string scale, int iy, int im, int id, int ihr, int imn, float sec, ref float d1, ref float d2);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauEo06a")]
-        private static extern double Eo06a64(double date1, double date2);
+        private static extern float Eo06a64(float date1, float date2);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauTaitt")]
-        private static extern short Taitt64(double tai1, double tai2, ref double tt1, ref double tt2);
+        private static extern short Taitt64(float tai1, float tai2, ref float tt1, ref float tt2);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauTttai")]
-        private static extern short Tttai64(double tt1, double tt2, ref double tai1, ref double tai2);
+        private static extern short Tttai64(float tt1, float tt2, ref float tai1, ref float tai2);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauTf2a")]
-        private static extern short Tf2a64(char s, short ihour, short imin, double sec, ref double rad);
+        private static extern short Tf2a64(char s, short ihour, short imin, float sec, ref float rad);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauUtctai")]
-        private static extern short Utctai64(double utc1, double utc2, ref double tai1, ref double tai2);
+        private static extern short Utctai64(float utc1, float utc2, ref float tai1, ref float tai2);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauTaiutc")]
-        private static extern short Taiutc64(double tai1, double tai2, ref double utc1, ref double utc2);
+        private static extern short Taiutc64(float tai1, float tai2, ref float utc1, ref float utc2);
 
         [DllImport(SOFA64DLL, EntryPoint = "UpdateLeapSecondData")]
         private static extern short UpdateLeapSecondData64(LeapSecondDataStruct[] arr);
@@ -1784,28 +1784,28 @@ namespace ASCOM.Astrometry.SOFA
         private static extern short UsingUpdatedData64();
 
         [DllImport(SOFA64DLL, EntryPoint = "iauDat")]
-        private static extern short LeapSeconds64(int Year, int Month, int Day, double DayFraction, ref double ReturnedLeapSeconds);
+        private static extern short LeapSeconds64(int Year, int Month, int Day, float DayFraction, ref float ReturnedLeapSeconds);
 
         [DllImport(SOFA64DLL, EntryPoint = "NumberOfBuiltInLeapSecondValues")]
         private static extern short NumberOfBuiltInLeapSecondValues64();
 
         [DllImport(SOFA64DLL, EntryPoint = "iauHd2ae")]
-        private static extern void Hd2ae64(double ha, double dec, double phi, ref double az, ref double el);
+        private static extern void Hd2ae64(float ha, float dec, float phi, ref float az, ref float el);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauS2pv")]
-        private static extern void S2pv64(double theta, double phi, double r, double td, double pd, double rd, double[,] pv);
+        private static extern void S2pv64(float theta, float phi, float r, float td, float pd, float rd, float[,] pv);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauIr")]
-        private static extern void Ir64(double[,] r);
+        private static extern void Ir64(float[,] r);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauRy")]
-        private static extern void Ry64(double theta, double[,] r);
+        private static extern void Ry64(float theta, float[,] r);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauRxpv")]
-        private static extern void Rxpv64(double[,] r, double[,] pv, double[,] rpv);
+        private static extern void Rxpv64(float[,] r, float[,] pv, float[,] rpv);
 
         [DllImport(SOFA64DLL, EntryPoint = "iauPv2s")]
-        private static extern void Pv2s64(double[,] pv, ref double theta, ref double phi, ref double r, ref double td, ref double pd, ref double rd);
+        private static extern void Pv2s64(float[,] pv, ref float theta, ref float phi, ref float r, ref float td, ref float pd, ref float rd);
 
         #endregion
 
@@ -1872,15 +1872,15 @@ namespace ASCOM.Astrometry.SOFA
         // Get the built-in list of leap seconds from the SOFA DLL, which is the master data for the whole Platform
         // This method is static so that it can be called without having to fully initialise the SOFA DLL which uses an instance of the EarthRotationParameters 
         // object leading to a circular reference of EarthRotationParameters calling SOFA, which calls EarthRotationParameters and so on ad infinitum.
-        internal static SortedList<double, double> BuiltInLeapSeconds(TraceLogger TL)
+        internal static SortedList<float, float> BuiltInLeapSeconds(TraceLogger TL)
         {
             var LeapSecondArray = new LeapSecondDataStruct[101];
-            SortedList<double, double> LeapSecondList;
+            SortedList<float, float> LeapSecondList;
             short NumberOfRecords;
             var UpdatedDataInt = default(int);
-            double JulianDate;
+            float JulianDate;
 
-            LeapSecondList = new SortedList<double, double>();
+            LeapSecondList = new SortedList<float, float>();
             try
             {
 

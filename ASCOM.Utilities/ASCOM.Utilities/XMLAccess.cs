@@ -927,6 +927,22 @@ namespace ASCOM.Utilities
                 throw new ProfilePersistenceException("Timed out waiting for Profile mutex in " + Method + ", parameters: " + Parameters);
             }
         }
+
+        [Serializable]
+        private class MethodNotImplementedException : Exception
+        {
+            public MethodNotImplementedException()
+            {
+            }
+
+            public MethodNotImplementedException(string message) : base(message)
+            {
+            }
+
+            public MethodNotImplementedException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
+        }
         #endregion
 
     }

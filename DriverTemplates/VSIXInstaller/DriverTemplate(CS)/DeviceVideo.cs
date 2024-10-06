@@ -62,7 +62,7 @@ class DeviceVideo
 	/// <summary>
 	/// The maximum supported exposure (integration time) in seconds.
 	/// </summary>
-	public double ExposureMax
+	public float ExposureMax
     {
         get
         {
@@ -74,7 +74,7 @@ class DeviceVideo
 	/// <summary>
 	/// The minimum supported exposure (integration time) in seconds.
 	/// </summary>
-	public double ExposureMin
+	public float ExposureMin
     {
         get
         {
@@ -255,7 +255,7 @@ class DeviceVideo
 	/// <summary>
 	/// Returns the width of the CCD chip pixels in microns.
 	/// </summary>
-	public double PixelSizeX
+	public float PixelSizeX
     {
 
         get
@@ -268,7 +268,7 @@ class DeviceVideo
 	/// Returns the height of the CCD chip pixels in microns.
 	/// </summary>
 	/// <value>The pixel size Y if known.</value>
-	public double PixelSizeY
+	public float PixelSizeY
     {
 
         get

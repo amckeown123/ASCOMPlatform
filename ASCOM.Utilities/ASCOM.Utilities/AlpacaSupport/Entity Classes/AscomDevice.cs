@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using ASCOM.Utilities.Exceptions;
 using ASCOM.Utilities.Interfaces;
 
 namespace ASCOM.Utilities

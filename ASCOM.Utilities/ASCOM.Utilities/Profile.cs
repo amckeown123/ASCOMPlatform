@@ -309,7 +309,7 @@ namespace ASCOM.Utilities
         /// <exception cref="Exceptions.DriverNotRegisteredException">Thrown if the driver is not registered,</exception>
         /// <remarks>
         /// <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        /// <para>Does not provide access to other registry data types such as binary and double-word. </para>
+        /// <para>Does not provide access to other registry data types such as binary and float-word. </para>
         /// <para>If a default value is supplied and the value is not already present in the profile store,
         /// the default value will be set in the profile store and then returned as the value of the 
         /// DriverID/SubKey/Name. If the default value is set to null (C#) or Nothing (VB) then no value will
@@ -630,7 +630,7 @@ namespace ASCOM.Utilities
         /// <exception cref="Exceptions.DriverNotRegisteredException">Thrown if the driver is not registered,</exception>
         /// <remarks>
         /// <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        /// <para>Does not provide access to other registry data types such as binary and double-word. </para>
+        /// <para>Does not provide access to other registry data types such as binary and float-word. </para>
         /// <para>This overload is not available through COM, please use 
         /// "GetValue(ByVal DriverID As String, ByVal Name As String, ByVal SubKey As String)"
         /// with SubKey set to empty string achieve this effect.</para>
@@ -652,7 +652,7 @@ namespace ASCOM.Utilities
         /// <exception cref="Exceptions.DriverNotRegisteredException">Thrown if the driver is not registered,</exception>
         /// <remarks>
         /// <para>Name may be an empty string for the unnamed value. The unnamed value is also known as the "default" value for a registry key.</para>
-        /// <para>Does not provide access to other registry data types such as binary and double-word. </para>
+        /// <para>Does not provide access to other registry data types such as binary and float-word. </para>
         /// </remarks>
         [ComVisible(false)]
         public string GetValue(string DriverID, string Name, string SubKey)
@@ -817,6 +817,11 @@ namespace ASCOM.Utilities
         private string GetDebuggerDisplay()
         {
             return ToString();
+        }
+
+        public static string GetValue(AscomDeviceTypes deviceType, string progId, string tRACE_LEVEL_PROFILENAME, string v)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

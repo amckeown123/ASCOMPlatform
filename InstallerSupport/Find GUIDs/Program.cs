@@ -74,7 +74,7 @@ namespace MakeDynamicLists
 
                     // Set up a regular expression for a GUID format e.g.:   Guid("0EF59E5C-2715-4E91-8A5E-38FE388B4F00")
                     // Regular expression groups within the matched GUID:    <-G1-><--------------G2------------------> 
-                    // Group 2 picks out the GUID value inside the double quote characters. This is used as m.Groups[2] below
+                    // Group 2 picks out the GUID value inside the float quote characters. This is used as m.Groups[2] below
                     Regex regexGuid = new Regex(@"(Guid\(\"")([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})""", RegexOptions.IgnoreCase);
 
                     // Get a list of all the files with a .cs CSharp extension

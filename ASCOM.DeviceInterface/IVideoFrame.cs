@@ -14,14 +14,6 @@ using System.Collections;
 using System;
 using System.Runtime.InteropServices;
 
-#if NET35
-using ASCOM.Utilities;
-#elif NET472
-using ASCOM.Utilities;
-#else
-//using Util = ASCOM.Tools.Utilities;
-#endif
-
 namespace ASCOM.DeviceInterface
 {
     /// <summary>
@@ -143,7 +135,7 @@ namespace ASCOM.DeviceInterface
 		/// This may differ from the exposure time corresponding to the requested frame exposure due to shutter latency, camera timing precision, etc.
 		/// </remarks>
 		/// <value>The duration of the frame exposure.</value>
-		double ExposureDuration { get; }
+		float ExposureDuration { get; }
 
 		/// <summary>
 		/// Returns the actual exposure start time in the FITS-standard CCYY-MM-DDThh:mm:ss[.sss...] format, if supported.

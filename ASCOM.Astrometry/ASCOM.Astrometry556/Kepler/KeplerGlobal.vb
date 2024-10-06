@@ -11,14 +11,14 @@ Module KeplerGlobalCode
         Friend max_harmonic() As Integer
         Friend max_power_of_t As Integer
         Friend arg_tbl() As Integer
-        Friend lon_tbl() As Double
-        Friend lat_tbl() As Double
-        Friend rad_tbl() As Double
-        Friend distance As Double
-        Friend timescale As Double
-        Friend trunclvl As Double
+        Friend lon_tbl() As float
+        Friend lat_tbl() As float
+        Friend rad_tbl() As float
+        Friend distance As float
+        Friend timescale As float
+        Friend trunclvl As float
 
-        Friend Sub New(ByVal ma As Integer, ByVal mh() As Integer, ByVal mpt As Integer, ByVal at() As Integer, ByVal lot() As Double, ByVal lat() As Double, ByVal rat() As Double, ByVal dis As Double, ByVal ts As Double, ByVal tl As Double)
+        Friend Sub New(ByVal ma As Integer, ByVal mh() As Integer, ByVal mpt As Integer, ByVal at() As Integer, ByVal lot() As float, ByVal lat() As float, ByVal rat() As float, ByVal dis As float, ByVal ts As float, ByVal tl As float)
             maxargs = ma
             max_harmonic = mh
             max_power_of_t = mpt
@@ -34,27 +34,27 @@ Module KeplerGlobalCode
 
     Friend Structure orbit
         Friend obname As String '/* name of the object */
-        Friend epoch As Double '/* epoch of orbital elements */
-        Friend i As Double '/* inclination	*/
-        Friend W As Double '/* longitude of the ascending node */
-        Friend wp As Double '/* argument of the perihelion */
-        Friend a As Double '/* mean distance (semimajor axis) */
-        Friend dm As Double    '/* daily motion */
-        Friend ecc As Double   '/* eccentricity */
-        Friend M As Double '/* mean anomaly */
-        Friend equinox As Double   '/* epoch of equinox and ecliptic */
-        Friend mag As Double   '/* visual magnitude at 1AU from earth and sun */
-        Friend sdiam As Double '/* equatorial semidiameter at 1au, arc seconds */
+        Friend epoch As float '/* epoch of orbital elements */
+        Friend i As float '/* inclination	*/
+        Friend W As float '/* longitude of the ascending node */
+        Friend wp As float '/* argument of the perihelion */
+        Friend a As float '/* mean distance (semimajor axis) */
+        Friend dm As float    '/* daily motion */
+        Friend ecc As float   '/* eccentricity */
+        Friend M As float '/* mean anomaly */
+        Friend equinox As float   '/* epoch of equinox and ecliptic */
+        Friend mag As float   '/* visual magnitude at 1AU from earth and sun */
+        Friend sdiam As float '/* equatorial semidiameter at 1au, arc seconds */
         '/* The following used by perterbation formulas: */
         Friend ptable As plantbl
-        Friend L As Double  '/* computed mean longitude */
-        Friend r As Double  '/* computed radius vector */
-        Friend plat As Double   '/* perturbation in ecliptic latitude */
+        Friend L As float  '/* computed mean longitude */
+        Friend r As float  '/* computed radius Vector2 */
+        Friend plat As float   '/* perturbation in ecliptic latitude */
 
-        Friend Sub New(ByVal obn As String, ByVal ep As Double, ByVal i_p As Double, ByVal W_p As Double, _
-                       ByVal wp_p As Double, ByVal a_p As Double, ByVal dm_p As Double, ByVal ecc_p As Double, _
-                       ByVal M_p As Double, ByVal eq As Double, ByVal mg As Double, ByVal sd As Double, _
-                       ByVal pt As plantbl, ByVal L_p As Double, ByVal r_p As Double, ByVal pl As Double)
+        Friend Sub New(ByVal obn As String, ByVal ep As float, ByVal i_p As float, ByVal W_p As float, _
+                       ByVal wp_p As float, ByVal a_p As float, ByVal dm_p As float, ByVal ecc_p As float, _
+                       ByVal M_p As float, ByVal eq As float, ByVal mg As float, ByVal sd As float, _
+                       ByVal pt As plantbl, ByVal L_p As float, ByVal r_p As float, ByVal pl As float)
             obname = obn
             epoch = ep
             i = i_p
@@ -79,26 +79,26 @@ Module KeplerGlobalCode
     Friend Const NARGS As Integer = 18
 
     '/* Conversion factors between degrees and radians */
-    Private Const DTR As Double = 0.017453292519943295
-    Private Const RTD As Double = 57.295779513082323
-    Private Const RTS As Double = 206264.80624709636 '/* arc seconds per radian */
-    Private Const STR As Double = 0.00000484813681109536 '/* radians per arc second */
-    Private Const PI As Double = 3.1415926535897931
-    Private Const TPI As Double = 2.0 * PI
+    Private Const DTR As float = 0.017453292519943295
+    Private Const RTD As float = 57.295779513082323
+    Private Const RTS As float = 206264.80624709636 '/* arc seconds per radian */
+    Private Const STR As float = 0.00000484813681109536 '/* radians per arc second */
+    Private Const PI As float = 3.1415926535897931
+    Private Const TPI As float = 2.0 * PI
 
     '/* Standard epochs.  Note Julian epochs (J) are measured in
     ' * years of 365.25 days.
     ' */
-    Private Const J2000 As Double = 2451545.0 '/* 2000 January 1.5 */
-    Private Const B1950 As Double = 2433282.423 '/* 1950 January 0.923 Besselian epoch */
-    Private Const J1900 As Double = 2415020.0 '/* 1900 January 0, 12h UT */
+    Private Const J2000 As float = 2451545.0 '/* 2000 January 1.5 */
+    Private Const B1950 As float = 2433282.423 '/* 1950 January 0.923 Besselian epoch */
+    Private Const J1900 As float = 2415020.0 '/* 1900 January 0, 12h UT */
 
     '/* Constants used elsewhere. These are DE403 values. */
-    Private Const aearth As Double = 6378137.0 '/* Radius of the earth, in meters.  */
-    Private Const au As Double = 149597870.691 '/* Astronomical unit, in kilometers.  */
-    Private Const emrat As Double = 81.300585 '/* Earth/Moon mass ratio.  */
-    Private Const Clight As Double = 299792.458 '/* Speed of light, km/sec  */
-    Private Const Clightaud As Double = Nothing '/* C in au/day  */
+    Private Const aearth As float = 6378137.0 '/* Radius of the earth, in meters.  */
+    Private Const au As float = 149597870.691 '/* Astronomical unit, in kilometers.  */
+    Private Const emrat As float = 81.300585 '/* Earth/Moon mass ratio.  */
+    Private Const Clight As float = 299792.458 '/* Speed of light, km/sec  */
+    Private Const Clightaud As float = Nothing '/* C in au/day  */
 #End Region
 
 #Region "Utility Routines"
@@ -110,8 +110,8 @@ Module KeplerGlobalCode
     '// according to the DE403 values. Refer to 
     '// S. Moshier's aa54e sources.
 
-    Friend Sub epsiln(ByVal J As Double, ByRef eps As Double, ByRef coseps As Double, ByRef sineps As Double)
-        Dim T As Double
+    Friend Sub epsiln(ByVal J As float, ByRef eps As float, ByRef coseps As float, ByRef sineps As float)
+        Dim T As float
 
         T = (J - 2451545.0) / 365250.0 '// T / 10
         eps = ((((((((((0.000000000245 * T + 0.00000000579) * T + 0.0000002787) * T _
@@ -131,21 +131,21 @@ Module KeplerGlobalCode
     '   precession, and nutation,"  Astron. J. 108, 711-724 (1994)  */
 
     ' /* Corrections to Williams (1994) introduced in DE403.  */
-    Friend pAcof() As Double = {-0.000000000866, -0.00000004759, 0.0000002424, 0.000013095, _
+    Friend pAcof() As float = {-0.000000000866, -0.00000004759, 0.0000002424, 0.000013095, _
                                  0.00017451, -0.0018055, -0.235316, 0.076, 110.5414, 50287.91959}
 
-    Friend nodecof() As Double = {0.00000000000000066402, -0.00000000000000269151, -0.000000000001547021, _
+    Friend nodecof() As float = {0.00000000000000066402, -0.00000000000000269151, -0.000000000001547021, _
                                    0.000000000007521313, 0.00000000019, -0.00000000354, -0.00000018103, _
                                    0.000000126, 0.00007436169, -0.04207794833, 3.052115282424}
 
-    Friend inclcof() As Double = {0.00000000000000012147, 7.3759E-17, -0.0000000000000826287, _
+    Friend inclcof() As float = {0.00000000000000012147, 7.3759E-17, -0.0000000000000826287, _
                                    0.000000000000250341, 0.000000000024650839, -0.000000000054000441, _
                                    0.00000000132115526, -0.0000006012, -0.0000162442, 0.00227850649, 0.0}
 
     '/* Subroutine arguments:
     ' *
-    ' * R = rectangular equatorial coordinate vector to be precessed.
-    ' *     The result is written back into the input vector.
+    ' * R = rectangular equatorial coordinate Vector2 to be precessed.
+    ' *     The result is written back into the input Vector2.
     ' * J = Julian date
     ' * direction =
     ' *      Precess from J to J2000: direction = 1
@@ -155,11 +155,11 @@ Module KeplerGlobalCode
     ' * to go from J2000 to J2.
     ' */
 
-    Friend Sub precess(ByRef R() As Double, ByVal J As Double, ByVal direction As Integer)
-        Dim A, B, T, pA, W, z As Double
-        Dim x(3) As Double
-        Dim p() As Double
-        Dim eps, coseps, sineps As Double
+    Friend Sub precess(ByRef R() As float, ByVal J As float, ByVal direction As Integer)
+        Dim A, B, T, pA, W, z As float
+        Dim x(3) As float
+        Dim p() As float
+        Dim eps, coseps, sineps As float
         Dim i As Integer
 
         If (J = J2000) Then Return
@@ -251,9 +251,9 @@ Module KeplerGlobalCode
         Next
     End Sub
 
-    Friend Function atan4(ByVal x As Double, ByVal y As Double) As Double
+    Friend Function atan4(ByVal x As float, ByVal y As float) As float
 
-        Dim z, w As Double
+        Dim z, w As float
         Dim code As Integer
 
         code = 0
@@ -291,9 +291,9 @@ Module KeplerGlobalCode
     '//
     '// Reduce x modulo 2 pi
     '//
-    Friend Function modtp(ByVal x As Double) As Double
+    Friend Function modtp(ByVal x As float) As float
 
-        Dim y As Double
+        Dim y As float
 
         y = Floor(x / TPI)
         y = x - y * TPI
@@ -309,10 +309,10 @@ Module KeplerGlobalCode
     '//
     '//  Reduce x modulo 360 degrees
     '//
-    Friend Function mod360(ByVal x As Double) As Double
+    Friend Function mod360(ByVal x As float) As float
 
         Dim k As Integer
-        Dim y As Double
+        Dim y As float
 
         k = CInt(x / 360.0)
         y = x - k * 360.0
@@ -351,14 +351,14 @@ Module KeplerGlobalCode
     ' */
 
 
-    Friend Sub KeplerCalc(ByVal J As Double, ByRef e As orbit, ByRef rect() As Double)
+    Friend Sub KeplerCalc(ByVal J As float, ByRef e As orbit, ByRef rect() As float)
 
-        Dim polar(3) As Double
-        Dim alat, E1, M, W, temp As Double
-        Dim epoch, inclination, ascnode, argperih As Double
-        Dim meandistance, dailymotion, eccent, meananomaly As Double
-        Dim r, coso, sino, cosa As Double
-        Dim eps, coseps, sineps As Double
+        Dim polar(3) As float
+        Dim alat, E1, M, W, temp As float
+        Dim epoch, inclination, ascnode, argperih As float
+        Dim meandistance, dailymotion, eccent, meananomaly As float
+        Dim r, coso, sino, cosa As float
+        Dim eps, coseps, sineps As float
         'Dim TL As New TraceLogger("", "KeplerCalc")
         'TL.Enabled = True
         'TL.LogMessage("KepCalc", "Started")
@@ -473,7 +473,7 @@ Module KeplerGlobalCode
             dailymotion *= J - epoch
             '//
             '// M is proportional to the area swept out by the radius
-            '// vector of a circular orbit during the time between
+            '// Vector2 of a circular orbit during the time between
             '// perihelion passage and Julian date J.
             '// It is the mean anomaly at time J.
             '//
@@ -494,7 +494,7 @@ Module KeplerGlobalCode
             '// Integrate the ellipse expressed in polar coordinates
             '//     r = a(1-e^2)/(1 + e cosW)
             '// with respect to the angle W to get an expression for the
-            '// area swept out by the radius vector.  The area is given
+            '// area swept out by the radius Vector2.  The area is given
             '// by the mean anomaly; the angle is solved numerically.
             '// 
             '// The answer is obtained in two steps.  We first solve
@@ -628,17 +628,17 @@ kepdon:
     '// emb = Equatorial rectangular coordinates of EMB.
     '// pr = Earth's distance to the Sun (au)
     '//
-    Friend Sub embofs(ByVal J As Double, ByRef ea() As Double, ByRef pr As Double)
+    Friend Sub embofs(ByVal J As float, ByRef ea() As float, ByRef pr As float)
 
-        Dim pm(3), polm(3) As Double
-        Dim a, b As Double
+        Dim pm(3), polm(3) As float
+        Dim a, b As float
         Dim i As Integer
 
         'Dim TL As New TraceLogger("", "Embofs")
         'TL.Enabled = True
         'TL.LogMessage("Embofs", "Start")
         '//
-        '// Compute the vector Moon - Earth.
+        '// Compute the Vector2 Moon - Earth.
         '//
         'TL.LogMessage("Embofs", "Before GMoon")
         gmoon(J, pm, polm)
@@ -707,19 +707,19 @@ kepdon:
 #End Region
 
 #Region "GPlan"
-    Private ss(NARGS, 31) As Double
-    Private cc(NARGS, 31) As Double
-    Private Args(NARGS) As Double
-    Private LP_equinox, NF_arcsec, Ea_arcsec, pA_precession As Double
+    Private ss(NARGS, 31) As float
+    Private cc(NARGS, 31) As float
+    Private Args(NARGS) As float
+    Private LP_equinox, NF_arcsec, Ea_arcsec, pA_precession As float
 
     '/*   Routines to chew through tables of perturbations.  */
-    Friend Function mods3600(ByVal x As Double) As Double
+    Friend Function mods3600(ByVal x As float) As float
         Return ((x) - 1296000.0 * Floor((x) / 1296000.0))
     End Function
 
     '/* From Simon et al (1994)  */
     '/* Arc sec per 10000 Julian years.  */
-    Friend freqs() As Double = { _
+    Friend freqs() As float = { _
           53810162868.8982, _
           21066413643.3548, _
           12959774228.3429, _
@@ -731,7 +731,7 @@ kepdon:
           52272245.1795}
 
     '/* Arc sec.  */
-    Friend phases() As Double = { _
+    Friend phases() As float = { _
           252.25090552 * 3600.0, _
           181.97980085 * 3600.0, _
           100.46645683 * 3600.0, _
@@ -742,9 +742,9 @@ kepdon:
           304.34866548 * 3600.0, _
           860492.1546}
 
-    Friend Function gplan(ByVal JD As Double, ByRef plan As plantbl, ByRef pobj() As Double) As Integer
-        Dim su, cu, sv, cv, TI As Double
-        Dim t, sl, sb, sr As Double
+    Friend Function gplan(ByVal JD As float, ByRef plan As plantbl, ByRef pobj() As float) As Integer
+        Dim su, cu, sv, cv, TI As float
+        Dim t, sl, sb, sr As float
         Dim i, j, k, m, n, k1, ip, np, nt As Integer
         Dim p, pl, pb, pr As Integer
 
@@ -861,8 +861,8 @@ kepdon:
     '/* Prepare lookup table of sin and cos ( i*Lj )
     ' * for required multiple angles
     ' */
-    Friend Function sscc(ByVal k As Integer, ByVal arg As Double, ByVal n As Integer) As Integer
-        Dim cu, su, cv, sv, s As Double
+    Friend Function sscc(ByVal k As Integer, ByVal arg As float, ByVal n As Integer) As Integer
+        Dim cu, su, cv, sv, s As float
         Dim i As Integer
 
         su = Sin(arg)
@@ -884,8 +884,8 @@ kepdon:
     End Function
     '/* Compute mean elements at Julian date J.  */
 
-    Sub mean_elements(ByVal J As Double)
-        Dim x, T, T2 As Double
+    Sub mean_elements(ByVal J As float)
+        Dim x, T, T2 As float
 
         '/* Time variables.  T is in Julian centuries.  */
         T = (J - 2451545.0) / 36525.0
@@ -996,11 +996,11 @@ kepdon:
     '   in three variables (e.g., longitude, latitude, radius)
     '   of the same list of arguments.  */
 
-    Friend Function g3plan(ByVal JD As Double, ByRef plan As plantbl, ByRef pobj() As Double, ByVal objnum As Integer) As Integer
+    Friend Function g3plan(ByVal JD As float, ByRef plan As plantbl, ByRef pobj() As float, ByVal objnum As Integer) As Integer
         Dim i, j, k, m, n, k1, ip, np, nt As Integer
         Dim p, pl, pb, pr As Integer
-        Dim su, cu, sv, cv As Double
-        Dim TI, t, sl, sb, sr As Double
+        Dim su, cu, sv, cv As float
+        Dim TI, t, sl, sb, sr As float
 
         mean_elements(JD)
         '#If 0 Then
@@ -1123,11 +1123,11 @@ kepdon:
     '/* Generic program to accumulate sum of trigonometric series
     '   in two variables (e.g., longitude, radius)
     '   of the same list of arguments.  */
-    Friend Function g2plan(ByVal JD As Double, ByRef plan As plantbl, ByRef pobj() As Double) As Integer
+    Friend Function g2plan(ByVal JD As float, ByRef plan As plantbl, ByRef pobj() As float) As Integer
         Dim i, j, k, m, n, k1, ip, np, nt As Integer
         Dim p, pl, pr As Integer
-        Dim su, cu, sv, cv As Double
-        Dim TI, t, sl, sr As Double
+        Dim su, cu, sv, cv As float
+        Dim TI, t, sl, sr As float
 
         mean_elements(JD)
         '#If 0 Then
@@ -1232,11 +1232,11 @@ kepdon:
     '/* Generic program to accumulate sum of trigonometric series
     '   in one variable.  */
 
-    Friend Function g1plan(ByVal JD As Double, ByRef plan As plantbl) As Double
+    Friend Function g1plan(ByVal JD As float, ByRef plan As plantbl) As float
         Dim i, j, k, m, k1, ip, np, nt As Integer
         Dim p, pl As Integer
-        Dim su, cu, sv, cv As Double
-        Dim TI, t, sl As Double
+        Dim su, cu, sv, cv As float
+        Dim TI, t, sl As float
 
         TI = (JD - J2000) / plan.timescale
         mean_elements(JD)
@@ -1311,8 +1311,8 @@ kepdon:
         Return (plan.trunclvl * sl)
     End Function
 
-    Friend Function gmoon(ByVal J As Double, ByRef rect() As Double, ByRef pol() As Double) As Integer
-        Dim x, cosB, sinB, cosL, sinL, eps, coseps, sineps As Double
+    Friend Function gmoon(ByVal J As float, ByRef rect() As float, ByRef pol() As float) As Integer
+        Dim x, cosB, sinB, cosL, sinL, eps, coseps, sineps As float
         'Dim TL As New TraceLogger("", "GMoon")
         'TL.Enabled = True
         'TL.LogMessage("GMoon", "Before G2Plan")

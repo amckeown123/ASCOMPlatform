@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using Utilities;
+using ASCOM.Utilities;
 
 namespace RemoveASCOM
 {

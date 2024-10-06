@@ -231,7 +231,7 @@ Public Interface IObservingConditions
     ''' <para>Please resist the temptation to throw exceptions when clients query sensor properties when insufficient time has passed to get a true average reading. 
     ''' A best estimate of the average sensor value should be returned in these situations. </para> 
     ''' </remarks>
-    Property AveragePeriod As Double
+    Property AveragePeriod As float
 
     ''' <summary>
     ''' Amount of sky obscured by cloud
@@ -243,7 +243,7 @@ Public Interface IObservingConditions
     ''' <p style="color:red"><b>Optional property, can throw a PropertyNotImplementedException</b></p>
     ''' This property should return a value between 0.0 and 100.0 where 0.0 = clear sky and 100.0 = 100% cloud coverage
     ''' </remarks>
-    ReadOnly Property CloudCover As Double
+    ReadOnly Property CloudCover As float
 
     ''' <summary>
     ''' Atmospheric dew point at the observatory
@@ -260,7 +260,7 @@ Public Interface IObservingConditions
     ''' one to be implemented and the other to throw a PropertyNotImplementedException. The Utilities component contains methods (<see cref="Util.DewPoint2Humidity"/> and 
     ''' <see cref="Util.Humidity2DewPoint"/>) to convert DewPoint to Humidity and vice versa given the ambient temperature.</para>
     ''' </remarks>
-    ReadOnly Property DewPoint As Double
+    ReadOnly Property DewPoint As float
 
     ''' <summary>
     ''' Atmospheric humidity at the observatory
@@ -276,7 +276,7 @@ Public Interface IObservingConditions
     ''' <see cref="Util.Humidity2DewPoint"/>) to convert DewPoint to Humidity and vice versa given the ambient temperature.</para>
     ''' <para>This property should return a value between 0.0 and 100.0 where 0.0 = 0% relative humidity and 100.0 = 100% relative humidity.</para>
     ''' </remarks>   
-    ReadOnly Property Humidity As Double
+    ReadOnly Property Humidity As float
 
     ''' <summary>
     ''' Atmospheric pressure at the observatory
@@ -294,7 +294,7 @@ Public Interface IObservingConditions
     ''' The <see cref="Util.ConvertPressure"/> method can be used to effect this adjustment.
     ''' </para>
     ''' </remarks>
-    ReadOnly Property Pressure As Double
+    ReadOnly Property Pressure As float
 
     ''' <summary>
     ''' Rain rate at the observatory
@@ -315,7 +315,7 @@ Public Interface IObservingConditions
     ''' <item><description>Violent rain — when the precipitation rate is &gt; 50 mm (2.0 in) per hour</description></item>
     ''' </list>
     ''' </remarks>
-    ReadOnly Property RainRate As Double
+    ReadOnly Property RainRate As float
 
     ''' <summary>
     ''' Sky brightness at the observatory
@@ -345,7 +345,7 @@ Public Interface IObservingConditions
     ''' <item><description>32000–100000 lux</description><description>Direct sunlight</description></item>
     ''' </list>
     ''' </remarks>
-    ReadOnly Property SkyBrightness As Double
+    ReadOnly Property SkyBrightness As float
 
     ''' <summary>
     ''' Sky quality at the observatory
@@ -496,7 +496,7 @@ Public Interface IObservingConditions
     ''' </table>
     ''' </para>
     ''' </remarks>
-    ReadOnly Property SkyQuality As Double
+    ReadOnly Property SkyQuality As float
 
     ''' <summary>
     ''' Seeing at the observatory measured as star full width half maximum (FWHM) in arc secs.
@@ -507,7 +507,7 @@ Public Interface IObservingConditions
     ''' <remarks>
     ''' <p style="color:red"><b>Optional property, can throw a PropertyNotImplementedException</b></p>
     ''' </remarks>
-    ReadOnly Property StarFWHM As Double
+    ReadOnly Property StarFWHM As float
 
     ''' <summary>
     ''' Sky temperature at the observatory
@@ -521,7 +521,7 @@ Public Interface IObservingConditions
     ''' to convert these units to and from degrees Fahrenheit.</para>
     ''' <para>This is expected to be returned by an infra-red sensor looking at the sky. The lower the temperature the more the sky is likely to be clear.</para>
     ''' </remarks>
-    ReadOnly Property SkyTemperature As Double
+    ReadOnly Property SkyTemperature As float
 
     ''' <summary>
     ''' Temperature at the observatory
@@ -535,7 +535,7 @@ Public Interface IObservingConditions
     ''' to convert these units to and from degrees Fahrenheit.</para>
     ''' <para>This is expected to be the ambient temperature at the observatory.</para>
     ''' </remarks>
-    ReadOnly Property Temperature As Double
+    ReadOnly Property Temperature As float
 
     ''' <summary>
     ''' Wind direction at the observatory
@@ -548,7 +548,7 @@ Public Interface IObservingConditions
     ''' The returned value must be between 0.0 and 360.0, interpreted according to the metereological standard, where a special value of 0.0 is returned when the wind speed is 0.0. 
     ''' Wind direction is measured clockwise from north, through east, where East=90.0, South=180.0, West=270.0 and North=360.0.
     ''' </remarks>
-    ReadOnly Property WindDirection As Double
+    ReadOnly Property WindDirection As float
 
     ''' <summary>
     ''' Peak 3 second wind gust at the observatory over the last 2 minutes
@@ -561,7 +561,7 @@ Public Interface IObservingConditions
     ''' The units of this property are metres per second. Driver and application authors can use the <see cref="Util.ConvertUnits"/> method
     ''' to convert these units to and from miles per hour or knots.
     ''' </remarks>
-    ReadOnly Property WindGust As Double
+    ReadOnly Property WindGust As float
 
     ''' <summary>
     ''' Wind speed at the observatory
@@ -574,7 +574,7 @@ Public Interface IObservingConditions
     ''' The units of this property are metres per second. Driver and application authors can use the <see cref="Util.ConvertUnits"/> method
     ''' to convert these units to and from miles per hour or knots.
     ''' </remarks>
-    ReadOnly Property WindSpeed As Double
+    ReadOnly Property WindSpeed As float
 #End Region
 
 #Region "Device Methods"
@@ -593,7 +593,7 @@ Public Interface IObservingConditions
     ''' <para>Return a negative value to indicate that no valid value has ever been received from the hardware.</para>
     ''' <para>If an empty string is supplied as the PropertyName, the driver must return the time since the most recent update of any sensor. A MethodNotImplementedException must not be thrown in this circumstance.</para>
     ''' </remarks>
-    Function TimeSinceLastUpdate(PropertyName As String) As Double
+    Function TimeSinceLastUpdate(PropertyName As String) As float
 
     ''' <summary>
     ''' Provides a description of the sensor providing the requested property

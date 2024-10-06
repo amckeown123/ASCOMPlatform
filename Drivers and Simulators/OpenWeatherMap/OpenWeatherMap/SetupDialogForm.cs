@@ -35,13 +35,13 @@ namespace ASCOM.OpenWeatherMap
             {
                 OpenWeatherMap.locationType = LocationType.LatLong;
             }
-            OpenWeatherMap.SiteElevation = double.Parse(textBoxSiteElevation.Text);
+            OpenWeatherMap.SiteElevation = float.Parse(textBoxSiteElevation.Text);
             OpenWeatherMap.CityName = textBoxCityName.Text;
             OpenWeatherMap.SiteLatitude = util.DMSToDegrees(textBoxSiteLatitude.Text);
             OpenWeatherMap.SiteLongitude = util.DMSToDegrees(textBoxSiteLongitude.Text);
             OpenWeatherMap.apiKey = textBoxApiKey.Text;
             OpenWeatherMap.apiUrl = textBoxApiUrl.Text;
-            OpenWeatherMap.MinimumQueryInterval = (double)MinimumRefreshInterval.Value;
+            OpenWeatherMap.MinimumQueryInterval = (float)MinimumRefreshInterval.Value;
         }
 
         private void cmdCancel_Click(object sender, EventArgs e) // Cancel button event handler

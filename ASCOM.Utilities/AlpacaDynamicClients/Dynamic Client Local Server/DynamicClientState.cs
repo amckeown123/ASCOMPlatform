@@ -1,6 +1,5 @@
-﻿using ASCOM.Com;
-using ASCOM.Common;
-using ASCOM.Common.Alpaca;
+﻿
+using ASCOM.Utilities;
 using System;
 
 namespace ASCOM.DynamicClients
@@ -15,7 +14,7 @@ namespace ASCOM.DynamicClients
         /// </summary>
         /// <param name="ProgId">The device's ProgId</param>
         /// <param name="DeviceType">The ASCOM device type</param>
-        public DynamicClientState(string progId, DeviceTypes deviceType, string driverDisplayName)
+        public DynamicClientState(string progId, AscomDeviceTypes deviceType, string driverDisplayName)
         {
             // Save the provided ProgId and device type for use when saving values to the Profile
             ProgId = progId;
@@ -51,7 +50,7 @@ namespace ASCOM.DynamicClients
         public string IpAddressString { get; set; } = SharedConstants.IPADDRESS_DEFAULT;
         public int PortNumber { get; set; } = SharedConstants.PORTNUMBER_DEFAULT;
         public int RemoteDeviceNumber { get; set; } = SharedConstants.REMOTE_DEVICE_NUMBER_DEFAULT;
-        public ServiceType ServiceType { get; set; } = SharedConstants.SERVICE_TYPE_DEFAULT;
+        public System.ServiceProcess.ServiceType ServiceType { get; set; } = SharedConstants.SERVICE_TYPE_DEFAULT;
         public int EstablishConnectionTimeout { get; set; } = SharedConstants.ESTABLISH_CONNECTION_TIMEOUT_DEFAULT;
         public int StandardDeviceResponseTimeout { get; set; } = SharedConstants.STANDARD_SERVER_RESPONSE_TIMEOUT_DEFAULT;
         public int LongDeviceResponseTimeout { get; set; } = SharedConstants.LONG_SERVER_RESPONSE_TIMEOUT_DEFAULT;
@@ -68,7 +67,7 @@ namespace ASCOM.DynamicClients
         public bool TrustUserGeneratedSslCertificates { get; set; } = SharedConstants.TRUST_UNSIGNED_CERTIFICATES_DEFAULT;
 
         // Additional Properties
-        public DeviceTypes DeviceType { get; set; } = DeviceTypes.Video; // Deliberately initialised to a value that is invalid for Alpaca to detect failure to initialise later in the client!
+        public AscomDeviceTypes DeviceType { get; set; } = AscomDeviceTypes.Video; // Deliberately initialised to a value that is invalid for Alpaca to detect failure to initialise later in the client!
 
         public uint ClientId { get; set; } = (uint)new Random().Next(1,65536);  // Creates a random client ID in the range 1::65535
 

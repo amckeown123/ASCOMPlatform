@@ -129,14 +129,14 @@ class DeviceVideo
     /// <summary>
     /// The maximum supported exposure (integration time) in seconds.
     /// </summary>
-    public double ExposureMax
+    public float ExposureMax
     {
         get
         {
             try
             {
                 CheckConnected("ExposureMax");
-                double exposureMax = VideoHardware.ExposureMax;
+                float exposureMax = VideoHardware.ExposureMax;
                 LogMessage("ExposureMax", exposureMax.ToString());
                 return exposureMax;
             }
@@ -151,14 +151,14 @@ class DeviceVideo
     /// <summary>
     /// The minimum supported exposure (integration time) in seconds.
     /// </summary>
-    public double ExposureMin
+    public float ExposureMin
     {
         get
         {
             try
             {
                 CheckConnected("ExposureMin");
-                double exposureMin = VideoHardware.ExposureMin;
+                float exposureMin = VideoHardware.ExposureMin;
                 LogMessage("ExposureMin", exposureMin.ToString());
                 return exposureMin;
             }
@@ -496,14 +496,14 @@ class DeviceVideo
     /// <summary>
     /// Returns the width of the CCD chip pixels in microns.
     /// </summary>
-    public double PixelSizeX
+    public float PixelSizeX
     {
         get
         {
             try
             {
                 CheckConnected("PixelSizeX");
-                double pixelSizeX = VideoHardware.PixelSizeX;
+                float pixelSizeX = VideoHardware.PixelSizeX;
                 LogMessage("PixelSizeX", pixelSizeX.ToString());
                 return pixelSizeX;
             }
@@ -519,14 +519,14 @@ class DeviceVideo
     /// Returns the height of the CCD chip pixels in microns.
     /// </summary>
     /// <value>The pixel size Y if known.</value>
-    public double PixelSizeY
+    public float PixelSizeY
     {
         get
         {
             try
             {
                 CheckConnected("PixelSizeY");
-                double pixelSizeY = VideoHardware.PixelSizeY;
+                float pixelSizeY = VideoHardware.PixelSizeY;
                 LogMessage("PixelSizeY", pixelSizeY.ToString());
                 return pixelSizeY;
             }

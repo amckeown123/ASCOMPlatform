@@ -57,7 +57,7 @@ namespace ASCOM.Simulator
         }
 
         /// <summary>
-        /// Validate the textbox contents to ensure that it is a valid double number, Called every time a the text changes so that issues are flagged immediately
+        /// Validate the textbox contents to ensure that it is a valid float number, Called every time a the text changes so that issues are flagged immediately
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -67,7 +67,7 @@ namespace ASCOM.Simulator
 
             try
             {
-                double x = double.Parse(textBox.Text);
+                float x = float.Parse(textBox.Text);
                 ErrorFlag.SetError(textBox, "");
                 BtnOK.Enabled = true;
             }
@@ -116,12 +116,12 @@ namespace ASCOM.Simulator
 
         private void BtnOK_Click(object sender, EventArgs e)
         {
-            TelescopeHardware.StartCoordinates.X = double.Parse(txtStartAzimuth.Text);
-            TelescopeHardware.StartCoordinates.Y = double.Parse(txtStartAltitude.Text);
-            TelescopeHardware.ParkAzimuth = double.Parse(txtParkAzimuth.Text);
-            TelescopeHardware.ParkAltitude = double.Parse(txtParkAltitude.Text);
-            TelescopeHardware.HomePosition.X = double.Parse(TxtHomeAzimuth.Text);
-            TelescopeHardware.HomePosition.Y = double.Parse(TxtHomeAltitude.Text);
+            TelescopeHardware.StartCoordinates.X = float.Parse(txtStartAzimuth.Text);
+            TelescopeHardware.StartCoordinates.Y = float.Parse(txtStartAltitude.Text);
+            TelescopeHardware.ParkAzimuth = float.Parse(txtParkAzimuth.Text);
+            TelescopeHardware.ParkAltitude = float.Parse(txtParkAltitude.Text);
+            TelescopeHardware.HomePosition.X = float.Parse(TxtHomeAzimuth.Text);
+            TelescopeHardware.HomePosition.Y = float.Parse(TxtHomeAltitude.Text);
             using (Profile profile = new Profile())
             {
                 profile.WriteValue(SharedResources.PROGRAM_ID, "HomeAzimuth", TelescopeHardware.HomePosition.X.ToString(CultureInfo.InvariantCulture));

@@ -147,33 +147,33 @@ namespace ASCOM.Simulator
 
         #region IObservingConditionsV1 Implementation
 
-        public double AveragePeriod
+        public float AveragePeriod
         {
             get { return OCSimulator.AveragePeriodGet(clientNumber); }
             set { OCSimulator.AveragePeriodSet(clientNumber, value); }
         }
 
-        public double CloudCover
+        public float CloudCover
         {
             get { return OCSimulator.CloudCover(clientNumber); }
         }
 
-        public double DewPoint
+        public float DewPoint
         {
             get { return OCSimulator.DewPoint(clientNumber); }
         }
 
-        public double Humidity
+        public float Humidity
         {
             get { return OCSimulator.Humidity(clientNumber); }
         }
 
-        public double Pressure
+        public float Pressure
         {
             get { return OCSimulator.Pressure(clientNumber); }
         }
 
-        public double RainRate
+        public float RainRate
         {
             get { return OCSimulator.RainRate(clientNumber); }
         }
@@ -188,47 +188,47 @@ namespace ASCOM.Simulator
             return OCSimulator.SensorDescription(clientNumber, PropertyName);
         }
 
-        public double SkyBrightness
+        public float SkyBrightness
         {
             get { return OCSimulator.SkyBrightness(clientNumber); }
         }
 
-        public double SkyQuality
+        public float SkyQuality
         {
             get { return OCSimulator.SkyQuality(clientNumber); }
         }
 
-        public double StarFWHM
+        public float StarFWHM
         {
             get { return OCSimulator.StarFWHM(clientNumber); }
         }
 
-        public double SkyTemperature
+        public float SkyTemperature
         {
             get { return OCSimulator.SkyTemperature(clientNumber); }
         }
 
-        public double Temperature
+        public float Temperature
         {
             get { return OCSimulator.Temperature(clientNumber); }
         }
 
-        public double TimeSinceLastUpdate(string PropertyName)
+        public float TimeSinceLastUpdate(string PropertyName)
         {
             return OCSimulator.TimeSinceLastUpdate(clientNumber, PropertyName);
         }
 
-        public double WindDirection
+        public float WindDirection
         {
             get { return OCSimulator.WindDirection(clientNumber); }
         }
 
-        public double WindGust
+        public float WindGust
         {
             get { return OCSimulator.WindGust(clientNumber); }
         }
 
-        public double WindSpeed
+        public float WindSpeed
         {
             get { return OCSimulator.WindSpeed(clientNumber); }
         }

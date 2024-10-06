@@ -11,6 +11,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using static ASCOM.Utilities.Global;
 using System.IO.Ports;
 
+
 namespace ASCOM.Utilities
 {
 

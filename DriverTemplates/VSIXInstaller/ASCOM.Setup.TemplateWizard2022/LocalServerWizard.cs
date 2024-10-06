@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TemplateWizard;
 using System.Windows.Forms;
 using EnvDTE;
 using System.IO;
 
 
-
-
 namespace ASCOM.Setup
 {
-    using ASCOM.DynamicClients;
+ 
     using ASCOM.Utilities;
 
     public class LocalServerWizard : IWizard

@@ -53,7 +53,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.CloudCover):
                             try
                             {
-                                CloudCover = (double)stateValue.Value;
+                                CloudCover = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -65,7 +65,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.DewPoint):
                             try
                             {
-                                DewPoint = (double)stateValue.Value;
+                                DewPoint = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -77,7 +77,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.Humidity):
                             try
                             {
-                                Humidity = (double)stateValue.Value;
+                                Humidity = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -89,7 +89,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.Pressure):
                             try
                             {
-                                Pressure = (double)stateValue.Value;
+                                Pressure = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -101,7 +101,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.RainRate):
                             try
                             {
-                                RainRate = (double)stateValue.Value;
+                                RainRate = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -113,7 +113,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.SkyBrightness):
                             try
                             {
-                                SkyBrightness = (double)stateValue.Value;
+                                SkyBrightness = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -125,7 +125,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.SkyQuality):
                             try
                             {
-                                SkyQuality = (double)stateValue.Value;
+                                SkyQuality = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -137,7 +137,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.SkyTemperature):
                             try
                             {
-                                SkyTemperature = (double)stateValue.Value;
+                                SkyTemperature = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -149,7 +149,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.StarFWHM):
                             try
                             {
-                                StarFWHM = (double)stateValue.Value;
+                                StarFWHM = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -161,7 +161,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.Temperature):
                             try
                             {
-                                Temperature = (double)stateValue.Value;
+                                Temperature = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -173,7 +173,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.WindDirection):
                             try
                             {
-                                WindDirection = (double)stateValue.Value;
+                                WindDirection = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -185,7 +185,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.WindGust):
                             try
                             {
-                                WindGust = (double)stateValue.Value;
+                                WindGust = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -197,7 +197,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IObservingConditionsV2.WindSpeed):
                             try
                             {
-                                WindSpeed = (double)stateValue.Value;
+                                WindSpeed = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -233,67 +233,67 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Telescope altitude
         /// </summary>
-        public double? CloudCover { get; set; } = null;
+        public float? CloudCover { get; set; } = null;
 
         /// <summary>
         /// Telescope is at home
         /// </summary>
-        public double? DewPoint { get; set; } = null;
+        public float? DewPoint { get; set; } = null;
 
         /// <summary>
         /// Telescope is parked
         /// </summary>
-        public double? Humidity { get; set; } = null;
+        public float? Humidity { get; set; } = null;
 
         /// <summary>
         /// Telescope azimuth
         /// </summary>
-        public double? Pressure { get; set; } = null;
+        public float? Pressure { get; set; } = null;
 
         /// <summary>
         /// Telescope declination
         /// </summary>
-        public double? RainRate { get; set; } = null;
+        public float? RainRate { get; set; } = null;
 
         /// <summary>
         /// Telescope is pulse guiding
         /// </summary>
-        public double? SkyBrightness { get; set; } = null;
+        public float? SkyBrightness { get; set; } = null;
 
         /// <summary>
         /// Telescope right ascension
         /// </summary>
-        public double? SkyQuality { get; set; } = null;
+        public float? SkyQuality { get; set; } = null;
 
         /// <summary>
         /// Telescope pointing state
         /// </summary>
-        public double? SkyTemperature { get; set; } = null;
+        public float? SkyTemperature { get; set; } = null;
 
         /// <summary>
         /// Telescope sidereal time
         /// </summary>
-        public double? StarFWHM { get; set; } = null;
+        public float? StarFWHM { get; set; } = null;
 
         /// <summary>
         /// Telescope is slewing
         /// </summary>
-        public double? Temperature { get; set; } = null;
+        public float? Temperature { get; set; } = null;
 
         /// <summary>
         /// Telescope  is tracking
         /// </summary>
-        public double? WindDirection { get; set; } = null;
+        public float? WindDirection { get; set; } = null;
 
         /// <summary>
         /// Telescope UTC date and time
         /// </summary>
-        public double? WindGust { get; set; } = null;
+        public float? WindGust { get; set; } = null;
 
         /// <summary>
         /// Telescope UTC date and time
         /// </summary>
-        public double? WindSpeed { get; set; } = null;
+        public float? WindSpeed { get; set; } = null;
         /// <summary>
         /// The time at which the state was recorded
         /// </summary>

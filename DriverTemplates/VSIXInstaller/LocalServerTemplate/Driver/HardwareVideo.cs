@@ -58,7 +58,7 @@ static class VideoHardware
     /// <summary>
     /// The maximum supported exposure (integration time) in seconds.
     /// </summary>
-    internal static double ExposureMax
+    internal static float ExposureMax
     {
         get
         {
@@ -70,7 +70,7 @@ static class VideoHardware
     /// <summary>
     /// The minimum supported exposure (integration time) in seconds.
     /// </summary>
-    internal static double ExposureMin
+    internal static float ExposureMin
     {
         get
         {
@@ -250,7 +250,7 @@ static class VideoHardware
     /// <summary>
     /// Returns the width of the CCD chip pixels in microns.
     /// </summary>
-    internal static double PixelSizeX
+    internal static float PixelSizeX
     {
 
         get
@@ -263,7 +263,7 @@ static class VideoHardware
     /// Returns the height of the CCD chip pixels in microns.
     /// </summary>
     /// <value>The pixel size Y if known.</value>
-    internal static double PixelSizeY
+    internal static float PixelSizeY
     {
 
         get

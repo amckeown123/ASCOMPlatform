@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using Microsoft.Win32;
-using Utilities;
+using ASCOM.Utilities;
 
 namespace SetACL
 {
@@ -22,6 +22,8 @@ namespace SetACL
         private bool DisableTLOnExit = true;
 
         private Stopwatch sw, swSupport;
+
+        public ASCOM.Utilities.TraceLogger TL1 { get; }
 
         /// <summary>
         /// Enum containing all the possible registry access rights values. The built-in RegistryRights enum only has a partial collection
@@ -81,6 +83,8 @@ namespace SetACL
 
             ProfileRegKey = null;
         }
+
+    
 
         // IDisposable
         protected virtual void Dispose(bool disposing)

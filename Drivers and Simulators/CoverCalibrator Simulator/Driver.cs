@@ -23,14 +23,14 @@ namespace ASCOM.Simulator
         // Private simulator constants
         private const string DRIVER_PROGID = "ASCOM.Simulator.CoverCalibrator"; // ASCOM DeviceID (COM ProgID) for this driver.
         private const string DRIVER_DESCRIPTION = "ASCOM CoverCalibrator Simulator"; // Driver description that displays in the ASCOM Chooser.
-        internal const double SYNCHRONOUS_BEHAVIOUR_LIMIT = 0.5; // Threshold (seconds) above which state changes will be handled asynchronously
+        internal const float SYNCHRONOUS_BEHAVIOUR_LIMIT = 0.5; // Threshold (seconds) above which state changes will be handled asynchronously
 
         // Persistence constants
         private const string TRACE_STATE_PROFILE_NAME = "Trace State"; private const bool TRACE_STATE_DEFAULT = false;
         private const string MAX_BRIGHTNESS_PROFILE_NAME = "Maximum Brightness"; private const string MAX_BRIGHTNESS_DEFAULT = "100"; // Number of different brightness states
-        private const string CALIBRATOR_STABILISATION_TIME_PROFILE_NAME = "Calibrator Stabilisation Time"; private const double CALIBRATOR_STABLISATION_TIME_DEFAULT = 2.0; // Seconds
+        private const string CALIBRATOR_STABILISATION_TIME_PROFILE_NAME = "Calibrator Stabilisation Time"; private const float CALIBRATOR_STABLISATION_TIME_DEFAULT = 2.0; // Seconds
         private const string CALIBRATOR_INITIALISATION_STATE_PROFILE_NAME = "Calibrator Initialisation State"; private const CalibratorStatus CALIBRATOR_INITIALISATION_STATE_DEFAULT = CalibratorStatus.Off;
-        private const string COVER_OPENING_TIME_PROFILE_NAME = "Cover Opening Time"; private const double COVER_OPENING_TIME_DEFAULT = 5.0; // Seconds
+        private const string COVER_OPENING_TIME_PROFILE_NAME = "Cover Opening Time"; private const float COVER_OPENING_TIME_DEFAULT = 5.0; // Seconds
         private const string COVER_INITIALISATION_STATE_PROFILE_NAME = "Cover Initialisation State"; private const CoverStatus COVER_INITIALISATION_STATE_DEFAULT = CoverStatus.Closed;
 
         // Simulator state variables
@@ -44,8 +44,8 @@ namespace ASCOM.Simulator
         internal static CalibratorStatus CalibratorStateInitialisationValue;
         internal static CoverStatus CoverStateInitialisationValue;
         internal static int MaxBrightnessValue;
-        internal static double CoverOpeningTimeValue;
-        internal static double CalibratorStablisationTimeValue;
+        internal static float CoverOpeningTimeValue;
+        internal static float CalibratorStablisationTimeValue;
 
         // Simulator components 
         private Util utilities; // ASCOM Utilities component
@@ -634,12 +634,12 @@ namespace ASCOM.Simulator
 
                 TL.Enabled = Convert.ToBoolean(driverProfile.GetValue(DRIVER_PROGID, TRACE_STATE_PROFILE_NAME, string.Empty, TRACE_STATE_DEFAULT.ToString()));
                 MaxBrightnessValue = Convert.ToInt32(driverProfile.GetValue(DRIVER_PROGID, MAX_BRIGHTNESS_PROFILE_NAME, string.Empty, MAX_BRIGHTNESS_DEFAULT));
-                CalibratorStablisationTimeValue = Convert.ToDouble(driverProfile.GetValue(DRIVER_PROGID, CALIBRATOR_STABILISATION_TIME_PROFILE_NAME, string.Empty, CALIBRATOR_STABLISATION_TIME_DEFAULT.ToString()));
+                CalibratorStablisationTimeValue = Convert.Tofloat(driverProfile.GetValue(DRIVER_PROGID, CALIBRATOR_STABILISATION_TIME_PROFILE_NAME, string.Empty, CALIBRATOR_STABLISATION_TIME_DEFAULT.ToString()));
                 if (!Enum.TryParse<CalibratorStatus>(driverProfile.GetValue(DRIVER_PROGID, CALIBRATOR_INITIALISATION_STATE_PROFILE_NAME, string.Empty, CALIBRATOR_INITIALISATION_STATE_DEFAULT.ToString()), out CalibratorStateInitialisationValue))
                 {
                     CalibratorStateInitialisationValue = CALIBRATOR_INITIALISATION_STATE_DEFAULT;
                 }
-                CoverOpeningTimeValue = Convert.ToDouble(driverProfile.GetValue(DRIVER_PROGID, COVER_OPENING_TIME_PROFILE_NAME, string.Empty, COVER_OPENING_TIME_DEFAULT.ToString()));
+                CoverOpeningTimeValue = Convert.Tofloat(driverProfile.GetValue(DRIVER_PROGID, COVER_OPENING_TIME_PROFILE_NAME, string.Empty, COVER_OPENING_TIME_DEFAULT.ToString()));
                 if (!Enum.TryParse<CoverStatus>(driverProfile.GetValue(DRIVER_PROGID, COVER_INITIALISATION_STATE_PROFILE_NAME, string.Empty, COVER_INITIALISATION_STATE_DEFAULT.ToString()), out CoverStateInitialisationValue))
                 {
                     CoverStateInitialisationValue = COVER_INITIALISATION_STATE_DEFAULT;
@@ -681,7 +681,7 @@ namespace ASCOM.Simulator
         /// Wait for a given number of seconds while keeping the Windows message pump running
         /// </summary>
         /// <param name="duration">Wait duration (seconds)</param>
-        private void WaitFor(double duration)
+        private void WaitFor(float duration)
         {
             DateTime endTime = DateTime.Now.AddSeconds(duration); // Calculate the end time
             do

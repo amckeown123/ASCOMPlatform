@@ -316,7 +316,7 @@ namespace ASCOM.DeviceInterface
 		/// Raises an error only if no altitude control. If actual dome altitude can not be read, then reports back the altitude of the last slew position.
 		/// </para>
 		/// </remarks>
-		double Altitude { get; }
+		float Altitude { get; }
 
 		/// <summary>
 		/// <para><see langword="true" /> when the dome is in the home position. Raises an error if not supported.</para>
@@ -387,7 +387,7 @@ namespace ASCOM.DeviceInterface
 		/// move where they are instructed. Any such slaving calculations must be done by the application.
 		/// </para>
 		/// </remarks>
-		double Azimuth { get; }
+		float Azimuth { get; }
 
 		/// <summary>
 		/// <see langword="true" /> if driver can perform a search for home position.
@@ -623,7 +623,7 @@ namespace ASCOM.DeviceInterface
 		/// The requested altitude should be interpreted by the driver as the position on the sky that the observer wishes to observe. The driver has detailed knowledge of the physical structure and
 		/// must coordinate shutters, roofs or clamshell segments to open an aperture on the sky that satisfies the observer's request.
 		/// </remarks>
-		void SlewToAltitude(double Altitude);
+		void SlewToAltitude(float Altitude);
 
 		/// <summary>
 		/// Ensure that the requested viewing azimuth is available for observing.
@@ -642,7 +642,7 @@ namespace ASCOM.DeviceInterface
 		/// The requested azimuth should be interpreted by the driver as the position on the sky that the observer wishes to observe. The driver has detailed knowledge of the physical structure and
 		/// must coordinate shutters, roofs or clamshell segments to open an aperture on the sky that satisfies the observer's request.
 		/// </remarks>
-		void SlewToAzimuth(double Azimuth);
+		void SlewToAzimuth(float Azimuth);
 
 		/// <summary>
 		/// Synchronize the current position of the dome to the given azimuth.
@@ -655,7 +655,7 @@ namespace ASCOM.DeviceInterface
 		/// <exception cref="InvalidValueException">If the supplied azimuth is outside the range 0..360 degrees.</exception>
 		/// <exception cref="NotConnectedException">If the device is not connected.</exception>
 		/// <exception cref="DriverException">An error occurred that is not described by one of the more specific ASCOM exceptions. Include sufficient detail in the message text to enable the issue to be accurately diagnosed by someone other than yourself.</exception>
-		void SyncToAzimuth(double Azimuth);
+		void SyncToAzimuth(float Azimuth);
 
         #endregion
 

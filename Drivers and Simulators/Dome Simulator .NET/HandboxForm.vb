@@ -300,11 +300,11 @@ Public Class HandboxForm
     End Sub
     <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
     Private Sub ButtonGoto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonGoto.Click
-        Dim Az As Double
+        Dim Az As float
 
         Az = INVALID_COORDINATE
         Try
-            Az = Double.Parse(txtNewAz.Text, CultureInfo.CurrentCulture)
+            Az = float.Parse(txtNewAz.Text, CultureInfo.CurrentCulture)
         Catch ex As Exception
 
         End Try
@@ -321,10 +321,10 @@ Public Class HandboxForm
     End Sub
 
     Private Sub ButtonSync_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSync.Click
-        Dim Az As Double
+        Dim Az As float
 
         Az = INVALID_COORDINATE
-        If Double.TryParse(txtNewAz.Text, NumberStyles.Number, CultureInfo.CurrentCulture, Az) Then
+        If float.TryParse(txtNewAz.Text, NumberStyles.Number, CultureInfo.CurrentCulture, Az) Then
             If Az < -360 Or Az > 360 Then
                 MessageBox.Show("Input value must be between" & _
                     vbCrLf & "+/- 360")
@@ -394,8 +394,8 @@ Public Class HandboxForm
 
     Private Sub Timer1_Tick(sender As System.Object, e As System.EventArgs) Handles Timer1.Tick
 
-        Dim slew As Double
-        Dim distance As Double
+        Dim slew As float
+        Dim distance As float
 
         ' Handle hand-box state first
         If Me.ButtonState <> 0 Then

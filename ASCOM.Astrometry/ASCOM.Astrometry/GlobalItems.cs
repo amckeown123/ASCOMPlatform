@@ -8,60 +8,60 @@ namespace ASCOM.Astrometry
     {
 
         // Physical constants
-        internal const double MOON_RADIUS = 1737.0d; // km
-        internal const double EARTH_RADIUS = 6378.0d; // km
-        internal const double SUN_RADIUS = 696342.0d; // km
-        internal const double MERCURY_RADIUS = 2439.7d; // km
-        internal const double VENUS_RADIUS = 2439.7d; // km
-        internal const double MARS_RADIUS = 3396.2d; // km
-        internal const double JUPITER_RADIUS = 69911.0d; // km
-        internal const double SATURN_RADIUS = 6051.8d; // km
-        internal const double NEPTUNE_RADIUS = 24767.0d; // km
-        internal const double URANUS_RADIUS = 24973.0d; // km
-        internal const double PLUTO_RADIUS = 1153.0d; // km
+        internal const float MOON_RADIUS = 1737.0f; // km
+        internal const float EARTH_RADIUS = 6378.0f; // km
+        internal const float SUN_RADIUS = 696342.0f; // km
+        internal const float MERCURY_RADIUS = 2439.7f; // km
+        internal const float VENUS_RADIUS = 2439.7f; // km
+        internal const float MARS_RADIUS = 3396.2f; // km
+        internal const float JUPITER_RADIUS = 69911.0f; // km
+        internal const float SATURN_RADIUS = 6051.8f; // km
+        internal const float NEPTUNE_RADIUS = 24767.0f; // km
+        internal const float URANUS_RADIUS = 24973.0f; // km
+        internal const float PLUTO_RADIUS = 1153.0f; // km
 
         // Fixed event definitions
-        internal const double SUN_RISE = -50.0d / 60.0d; // Degrees
-        internal const double CIVIL_TWILIGHT = -6.0d; // Degrees
-        internal const double NAUTICAL_TWILIGHT = -12.0d; // Degrees
-        internal const double AMATEUR_ASRONOMICAL_TWILIGHT = -15.0d; // Degrees
-        internal const double ASTRONOMICAL_TWILIGHT = -18.0d; // Degrees
+        internal const float SUN_RISE = -50.0f / 60.0f; // Degrees
+        internal const float CIVIL_TWILIGHT = -6.0f; // Degrees
+        internal const float NAUTICAL_TWILIGHT = -12.0f; // Degrees
+        internal const float AMATEUR_ASRONOMICAL_TWILIGHT = -15.0f; // Degrees
+        internal const float ASTRONOMICAL_TWILIGHT = -18.0f; // Degrees
 
         // Conversion factors
-        internal const double HOURS2DEG = 15.0d;
-        internal const double DEG2HOURS = 1.0d / 15.0d;
-        internal const double DEG2HOURSSOLSID = 1.0d / 15.04107d;
-        internal const double SECONDS2DAYS = 1.0d / (60.0d * 60.0d * 24.0d);
-        internal const double AU2KILOMETRE = 149597870.691d;
+        internal const float HOURS2DEG = 15.0f;
+        internal const float DEG2HOURS = 1.0f / 15.0f;
+        internal const float DEG2HOURSSOLSID = 1.0f / 15.04107f;
+        internal const float SECONDS2DAYS = 1.0f / (60.0f * 60.0f * 24.0f);
+        internal const float AU2KILOMETRE = 149597870.691f;
 
         // NOVAS.COM Constants
         internal const short FN1 = 1;
         internal const short FN0 = 0;
-        internal const double J2000BASE = 2451545.0d; // TDB Julian date of epoch J2000.0.
-        internal const double KMAU = 149597870.0d; // Astronomical Unit in kilometres.
-        internal const double MAU = 149597870000.0d; // Astronomical Unit in meters.
-        internal const double C = 173.14463348d; // Speed of light in AU/Day.
-        internal const double GS = 1.32712438E+20d; // Heliocentric gravitational constant.
-        internal const double EARTHRAD = 6378.14d; // Radius of Earth in kilometres.
-        internal const double F = 0.00335281d; // Earth ellipsoid flattening.
-        internal const double OMEGA = 0.00007292115d; // Rotational angular velocity of Earth in radians/sec.
-        internal const double TWOPI = 6.2831853071795862d; // Value of pi in radians.
-        internal const double RAD2SEC = 206264.80624709636d; // Angle conversion constants.
-        internal const double DEG2RAD = 0.017453292519943295d;
-        internal const double RAD2DEG = 57.295779513082323d;
+        internal const float J2000BASE = 2451545.0f; // TDB Julian date of epoch J2000.0.
+        internal const float KMAU = 149597870.0f; // Astronomical Unit in kilometres.
+        internal const float MAU = 149597870000.0f; // Astronomical Unit in meters.
+        internal const float C = 173.14463348f; // Speed of light in AU/Day.
+        internal const float GS = 1.32712438E+20f; // Heliocentric gravitational constant.
+        internal const float EARTHRAD = 6378.14f; // Radius of Earth in kilometres.
+        internal const float F = 0.00335281f; // Earth ellipsoid flattening.
+        internal const float OMEGA = 0.00007292115f; // Rotational angular velocity of Earth in radians/sec.
+        internal const float TWOPI = 6.2831853071795862f; // Value of pi in radians.
+        internal const float RAD2SEC = 206264.80624709636f; // Angle conversion constants.
+        internal const float DEG2RAD = 0.017453292519943295f;
+        internal const float RAD2DEG = 57.295779513082323f;
 
         // General constants
-        internal const double TT_TAI_OFFSET = 32.184d; // 32.184 seconds
-        internal const double MODIFIED_JULIAN_DAY_OFFSET = 2400000.5d; // This is the offset of Modified Julian dates from true Julian dates
-        internal const double SECPERDAY = 86400.0d;
-        internal const double DELTAUT1_BOUND = 0.9d; // Used to validate delta UT1 values input manually or automatically downloaded, which must line in the range -DELTAUT1_BOUND to +DELTAUT1_BOUND
-        internal const double TROPICAL_YEAR_IN_DAYS = 365.24219d;
+        internal const float TT_TAI_OFFSET = 32.184f; // 32.184 seconds
+        internal const float MODIFIED_JULIAN_DAY_OFFSET = 2400000.5f; // This is the offset of Modified Julian dates from true Julian dates
+        internal const float SECPERDAY = 86400.0f;
+        internal const float DELTAUT1_BOUND = 0.9f; // Used to validate delta UT1 values input manually or automatically downloaded, which must line in the range -DELTAUT1_BOUND to +DELTAUT1_BOUND
+        internal const float TROPICAL_YEAR_IN_DAYS = 365.24219f;
 
-        internal const double OLE_AUTOMATION_JULIAN_DATE_OFFSET = 2415018.5d; // Offset of OLE automation dates from Julian dates
-        internal const double JULIAN_DATE_MINIMUM_VALUE = -657435.0d + OLE_AUTOMATION_JULIAN_DATE_OFFSET; // Minimum valid Julian date value (1/1/0100 00:00:00) - because DateTime.FromOADate has this limit
-        internal const double JULIAN_DATE_MAXIMUM_VALUE = 2958465.99999999d + OLE_AUTOMATION_JULIAN_DATE_OFFSET; // Maximum valid Julian date value (31/12/9999 23:59:59.999) - because DateTime.FromOADate has this limit
+        internal const float OLE_AUTOMATION_JULIAN_DATE_OFFSET = 2415018.5f; // Offset of OLE automation dates from Julian dates
+        internal const float JULIAN_DATE_MINIMUM_VALUE = -657435.0f + OLE_AUTOMATION_JULIAN_DATE_OFFSET; // Minimum valid Julian date value (1/1/0100 00:00:00) - because DateTime.FromOADate has this limit
+        internal const float JULIAN_DATE_MAXIMUM_VALUE = 2958465.99999999f + OLE_AUTOMATION_JULIAN_DATE_OFFSET; // Maximum valid Julian date value (31/12/9999 23:59:59.999) - because DateTime.FromOADate has this limit
 
-        internal const double RACIO_DEFAULT_VALUE = double.NaN; // NOVAS3: Default value that if still present will indicate that this value was not updated
+        internal const float RACIO_DEFAULT_VALUE = float.NaN; // NOVAS3: Default value that if still present will indicate that this value was not updated
 
         // Profile store Key names
         internal const string ASTROMETRY_SUBKEY = "Astrometry";
@@ -157,23 +157,23 @@ namespace ASCOM.Astrometry
         // Default values
         internal const string UPDATE_TYPE_DEFAULT = UPDATE_AUTOMATIC_LEAP_SECONDS_AND_DELTAUT1; // Default value for earth rotation data source
         internal const string EARTH_ROTATION_DATA_LAST_UPDATED_DEFAULT = NEVER_UPDATED; // Default value for the scheduled job last run time
-        internal const double MANUAL_DELTAUT1_DEFAULT = 0.0d; // Default value for the manual delta UT1 value
+        internal const float MANUAL_DELTAUT1_DEFAULT = 0.0f; // Default value for the manual delta UT1 value
         internal const string AUTOMATIC_LEAP_SECONDS_NOT_AVAILABLE_DEFAULT = NOT_DOWNLOADED; // Default value for the automatically downloaded number of leap seconds
         internal const string NEXT_LEAP_SECONDS_NOT_AVAILABLE_DEFAULT = NOT_DOWNLOADED; // Default value for the next leap second
         internal const string NEXT_LEAP_SECONDS_DATE_NOT_AVAILABLE_DEFAULT = NOT_DOWNLOADED; // Default value for the next leap second effective date
         internal const string DOWNLOAD_TASK_INTERNET_DATA_SOURCE_DEFAULT = EARTH_ROTATION_INTERNET_DATA_SOURCE_0; // Default source for earth rotation files - JULY 2020 Changed to NASA because all USNO sites are unavailable until end of 2020
         internal const string DOWNLOAD_TASK_REPEAT_DEFAULT = SCHEDULE_REPEAT_WEEKLY; // Default repeat frequency for the automatic data download task
-        internal const double DOWNLOAD_TASK_TIMEOUT_DEFAULT = 30.0d; // Default timeout in seconds for data transfers from earth rotation data sources
+        internal const float DOWNLOAD_TASK_TIMEOUT_DEFAULT = 30.0f; // Default timeout in seconds for data transfers from earth rotation data sources
         internal const bool DOWNLOAD_TASK_TRACE_ENABLED_DEFAULT = true; // Initial state for download task trace output
 
         // Not available constants
-        internal const double DOUBLE_VALUE_NOT_AVAILABLE = double.MinValue;
+        internal const float float_VALUE_NOT_AVAILABLE = float.MinValue;
         internal readonly static DateTime DATE_VALUE_NOT_AVAILABLE = new(1, 1, 1);
         internal const string NOT_DOWNLOADED = "Not downloaded";
         internal const string NEVER_UPDATED = "Never";
 
         // Ultimate fallback-back value for number of leap seconds if all else fails
-        internal const double LEAP_SECOND_ULTIMATE_FALLBACK_VALUE = 37.0d;
+        internal const float LEAP_SECOND_ULTIMATE_FALLBACK_VALUE = 37.0f;
 
     }
 
@@ -600,12 +600,12 @@ namespace ASCOM.Astrometry
     }
 
     /// <summary>
-    /// Output vector reference system
+    /// Output Vector2 reference system
     /// </summary>
     /// <remarks></remarks>
     [Guid("CD7AEAC0-1BFA-447e-A43E-62C231B0FC55")]
     [ComVisible(true)]
-    public enum OutputVectorOption : short
+    public enum OutputVector2Option : short
     {
         /// <summary>
         /// Referred to GCRS axes
@@ -634,7 +634,7 @@ namespace ASCOM.Astrometry
         /// <remarks></remarks>
         ReferredToMeanEclipticOfDate = 1,
         /// <summary>
-        /// For corrections to components of modelled pole unit vector referred to GCRS axes, that is, dx and dy.
+        /// For corrections to components of modelled pole unit Vector2 referred to GCRS axes, that is, dx and dy.
         /// </summary>
         /// <remarks></remarks>
         ReferredToGCRSAxes = 2
@@ -949,37 +949,37 @@ namespace ASCOM.Astrometry
         /// Mean right ascension [hours].
         /// </summary>
         /// <remarks></remarks>
-        public double RA;
+        public float RA;
 
         /// <summary>
         /// Mean declination [degrees].
         /// </summary>
         /// <remarks></remarks>
-        public double Dec;
+        public float Dec;
 
         /// <summary>
         /// Proper motion in RA [seconds of time per century].
         /// </summary>
         /// <remarks></remarks>
-        public double ProMoRA;
+        public float ProMoRA;
 
         /// <summary>
         /// Proper motion in declination [arc seconds per century].
         /// </summary>
         /// <remarks></remarks>
-        public double ProMoDec;
+        public float ProMoDec;
 
         /// <summary>
         /// Parallax [arc seconds].
         /// </summary>
         /// <remarks></remarks>
-        public double Parallax;
+        public float Parallax;
 
         /// <summary>
         /// Radial velocity [kilometres per second]
         /// </summary>
         /// <remarks></remarks>
-        public double RadialVelocity;
+        public float RadialVelocity;
     }
 
     /// <summary>
@@ -999,81 +999,81 @@ namespace ASCOM.Astrometry
         /// Geodetic latitude in degrees; north positive.
         /// </summary>
         /// <remarks></remarks>
-        public double Latitude; // geodetic latitude in degrees; north positive.
+        public float Latitude; // geodetic latitude in degrees; north positive.
         /// <summary>
         /// Geodetic longitude in degrees; east positive.
         /// </summary>
         /// <remarks></remarks>
-        public double Longitude; // geodetic longitude in degrees; east positive.
+        public float Longitude; // geodetic longitude in degrees; east positive.
         /// <summary>
         /// Height of the observer in meters.
         /// </summary>
         /// <remarks></remarks>
-        public double Height; // height of the observer in meters.
+        public float Height; // height of the observer in meters.
         /// <summary>
         /// Temperature (degrees Celsius).
         /// </summary>
         /// <remarks></remarks>
-        public double Temperature; // temperature (degrees Celsius).
+        public float Temperature; // temperature (degrees Celsius).
         /// <summary>
         /// Atmospheric pressure (millibars)
         /// </summary>
         /// <remarks></remarks>
-        public double Pressure; // atmospheric pressure (millibars)
+        public float Pressure; // atmospheric pressure (millibars)
     }
 
     /// <summary>
-    /// Structure to hold a position vector
+    /// Structure to hold a position Vector2
     /// </summary>
-    /// <remarks>Object position vector
+    /// <remarks>Object position Vector2
     /// </remarks>
     [Guid("69651C90-75F5-4f46-8D0F-22D186151D45")]
     [ComVisible(true)]
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct PosVector
+    public struct PosVector2
     {
         /// <summary>
         /// x co-ordinate
         /// </summary>
         /// <remarks></remarks>
-        public double x;
+        public float x;
         /// <summary>
         /// y co-ordinate
         /// </summary>
         /// <remarks></remarks>
-        public double y;
+        public float y;
         /// <summary>
         /// z co-ordinate
         /// </summary>
         /// <remarks></remarks>
-        public double z;
+        public float z;
     }
 
     /// <summary>
-    /// Structure to hold a velocity vector
+    /// Structure to hold a velocity Vector2
     /// </summary>
-    /// <remarks>Object velocity vector
+    /// <remarks>Object velocity Vector2
     /// </remarks>
     [Guid("F18240B0-00CC-4ff7-9A94-AC835387F959")]
     [ComVisible(true)]
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct VelVector
+    public struct VelVector2
     {
         /// <summary>
         /// x velocity component 
         /// </summary>
         /// <remarks></remarks>
-        public double x;
+        public float x;
         /// <summary>
         /// y velocity component
         /// </summary>
         /// <remarks></remarks>
-        public double y;
+        public float y;
         /// <summary>
         /// z velocity component
         /// </summary>
         /// <remarks></remarks>
-        public double z;
+        public float z;
     }
 
     /// <summary>
@@ -1090,27 +1090,27 @@ namespace ASCOM.Astrometry
         /// l (mean anomaly of the Moon)
         /// </summary>
         /// <remarks></remarks>
-        public double l;
+        public float l;
         /// <summary>
         /// l' (mean anomaly of the Sun)
         /// </summary>
         /// <remarks></remarks>
-        public double ldash;
+        public float ldash;
         /// <summary>
         /// F (L - omega; L = mean longitude of the Moon)
         /// </summary>
         /// <remarks></remarks>
-        public double F;
+        public float F;
         /// <summary>
         /// D (mean elongation of the Moon from the Sun)
         /// </summary>
         /// <remarks></remarks>
-        public double D;
+        public float D;
         /// <summary>
         /// Omega (mean longitude of the Moon's ascending node)
         /// </summary>
         /// <remarks></remarks>
-        public double Omega;
+        public float Omega;
     }
     #endregion
 
@@ -1160,37 +1160,37 @@ namespace ASCOM.Astrometry
         /// ICRS right ascension (hours)
         /// </summary>
         /// <remarks></remarks>
-        public double RA;
+        public float RA;
 
         /// <summary>
         /// ICRS declination (degrees)
         /// </summary>
         /// <remarks></remarks>
-        public double Dec;
+        public float Dec;
 
         /// <summary>
         /// ICRS proper motion in right ascension (milliarcseconds/year)
         /// </summary>
         /// <remarks></remarks>
-        public double ProMoRA;
+        public float ProMoRA;
 
         /// <summary>
         /// ICRS proper motion in declination (milliarcseconds/year)
         /// </summary>
         /// <remarks></remarks>
-        public double ProMoDec;
+        public float ProMoDec;
 
         /// <summary>
         /// Parallax (milliarcseconds)
         /// </summary>
         /// <remarks></remarks>
-        public double Parallax;
+        public float Parallax;
 
         /// <summary>
         /// Radial velocity (km/s)
         /// </summary>
         /// <remarks></remarks>
-        public double RadialVelocity;
+        public float RadialVelocity;
     }
 
     /// <summary>
@@ -1233,31 +1233,31 @@ namespace ASCOM.Astrometry
     public struct SkyPos
     {
         /// <summary>
-        /// Unit vector toward object (dimensionless)
+        /// Unit Vector2 toward object (dimensionless)
         /// </summary>
         /// <remarks></remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.R8)]
-        public double[] RHat;
+        public float[] RHat;
         /// <summary>
         /// Apparent, topocentric, or astrometric right ascension (hours)
         /// </summary>
         /// <remarks></remarks>
-        public double RA;
+        public float RA;
         /// <summary>
         /// Apparent, topocentric, or astrometric declination (degrees)
         /// </summary>
         /// <remarks></remarks>
-        public double Dec;
+        public float Dec;
         /// <summary>
         /// True (geometric, Euclidean) distance to solar system body or 0.0 for star (AU)
         /// </summary>
         /// <remarks></remarks>
-        public double Dis;
+        public float Dis;
         /// <summary>
         /// Radial velocity (km/s)
         /// </summary>
         /// <remarks></remarks>
-        public double RV;
+        public float RV;
     }
 
     /// <summary>
@@ -1270,17 +1270,17 @@ namespace ASCOM.Astrometry
     public struct InSpace
     {
         /// <summary>
-        /// Geocentric position vector (x, y, z), components in km with respect to true equator and equinox of date
+        /// Geocentric position Vector2 (x, y, z), components in km with respect to true equator and equinox of date
         /// </summary>
         /// <remarks></remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.R8)]
-        public double[] ScPos;
+        public float[] ScPos;
         /// <summary>
-        /// Geocentric velocity vector (x_dot, y_dot, z_dot), components in km/s with respect to true equator and equinox of date
+        /// Geocentric velocity Vector2 (x_dot, y_dot, z_dot), components in km/s with respect to true equator and equinox of date
         /// </summary>
         /// <remarks></remarks>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.R8)]
-        public double[] ScVel;
+        public float[] ScVel;
     }
 
     /// <summary>
@@ -1296,12 +1296,12 @@ namespace ASCOM.Astrometry
         /// TDB Julian date
         /// </summary>
         /// <remarks></remarks>
-        public double JdTdb;
+        public float JdTdb;
         /// <summary>
         /// Right ascension of the CIO with respect to the GCRS (arc seconds)
         /// </summary>
         /// <remarks></remarks>
-        public double RACio;
+        public float RACio;
     }
 
     /// <summary>
@@ -1318,27 +1318,27 @@ namespace ASCOM.Astrometry
         /// Geodetic (ITRS) latitude; north positive (degrees)
         /// </summary>
         /// <remarks></remarks>
-        public double Latitude;
+        public float Latitude;
         /// <summary>
         /// Geodetic (ITRS) longitude; east positive (degrees)
         /// </summary>
         /// <remarks></remarks>
-        public double Longitude;
+        public float Longitude;
         /// <summary>
         /// Observer's height above sea level
         /// </summary>
         /// <remarks></remarks>
-        public double Height;
+        public float Height;
         /// <summary>
         /// Observer's location's ambient temperature (degrees Celsius)
         /// </summary>
         /// <remarks></remarks>
-        public double Temperature;
+        public float Temperature;
         /// <summary>
         /// Observer's location's atmospheric pressure (millibars)
         /// </summary>
         /// <remarks></remarks>
-        public double Pressure;
+        public float Pressure;
     }
 
     /// <summary>
@@ -1372,8 +1372,8 @@ namespace ASCOM.Astrometry
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     internal struct JDHighPrecision
     {
-        public double JDPart1;
-        public double JDPart2;
+        public float JDPart1;
+        public float JDPart2;
     }
 
     // Internal version of Object3 with correct marshalling hints and type for Number field

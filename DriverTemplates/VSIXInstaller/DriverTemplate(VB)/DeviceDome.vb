@@ -26,7 +26,7 @@ Class DeviceDome
 	''' <summary>
 	''' The altitude (degrees, horizon zero and increasing positive to 90 zenith) of the part of the sky that the observer wishes to observe.
 	''' </summary>
-	Public ReadOnly Property Altitude() As Double Implements IDomeV2.Altitude
+	Public ReadOnly Property Altitude() As float Implements IDomeV2.Altitude
 		Get
 			TL.LogMessage("Altitude Get", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("Altitude", False)
@@ -66,7 +66,7 @@ Class DeviceDome
 	''' <summary>
 	''' The dome azimuth (degrees, North zero and increasing clockwise, i.e., 90 East, 180 South, 270 West). North is true north and not magnetic north.
 	''' </summary>
-	Public ReadOnly Property Azimuth() As Double Implements IDomeV2.Azimuth
+	Public ReadOnly Property Azimuth() As float Implements IDomeV2.Azimuth
 		Get
 			TL.LogMessage("Azimuth", "Not implemented")
 			Throw New ASCOM.PropertyNotImplementedException("Azimuth", False)
@@ -232,7 +232,7 @@ Class DeviceDome
 	''' <param name="Altitude">
 	''' The desired viewing altitude (degrees, horizon zero and increasing positive to 90 degrees at the zenith)
 	''' </param>
-	Public Sub SlewToAltitude(Altitude As Double) Implements IDomeV2.SlewToAltitude
+	Public Sub SlewToAltitude(Altitude As float) Implements IDomeV2.SlewToAltitude
 		TL.LogMessage("SlewToAltitude", "Not implemented")
 		Throw New ASCOM.MethodNotImplementedException("SlewToAltitude")
 	End Sub
@@ -245,7 +245,7 @@ Class DeviceDome
 	''' Desired viewing azimuth (degrees, North zero and increasing clockwise. i.e., 90 East,
 	''' 180 South, 270 West)
 	''' </param>
-	Public Sub SlewToAzimuth(Azimuth As Double) Implements IDomeV2.SlewToAzimuth
+	Public Sub SlewToAzimuth(Azimuth As float) Implements IDomeV2.SlewToAzimuth
 		TL.LogMessage("SlewToAzimuth", "Not implemented")
 		Throw New ASCOM.MethodNotImplementedException("SlewToAzimuth")
 	End Sub
@@ -269,7 +269,7 @@ Class DeviceDome
 	''' Target azimuth (degrees, North zero and increasing clockwise. i.e., 90 East,
 	''' 180 South, 270 West)
 	''' </param>
-	Public Sub SyncToAzimuth(Azimuth As Double) Implements IDomeV2.SyncToAzimuth
+	Public Sub SyncToAzimuth(Azimuth As float) Implements IDomeV2.SyncToAzimuth
 		TL.LogMessage("SyncToAzimuth", "Not implemented")
 		Throw New ASCOM.MethodNotImplementedException("SyncToAzimuth")
 	End Sub

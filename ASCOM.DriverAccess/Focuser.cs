@@ -117,9 +117,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-		public double StepSize
+		public float StepSize
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "StepSize", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "StepSize", new Type[] { }, new object[] { })); }
         }
 
         /// <inheritdoc/>
@@ -136,9 +136,9 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-		public double Temperature
+		public float Temperature
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "Temperature", new Type[] { }, new object[] { })); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "Temperature", new Type[] { }, new object[] { })); }
         }
 
         #endregion

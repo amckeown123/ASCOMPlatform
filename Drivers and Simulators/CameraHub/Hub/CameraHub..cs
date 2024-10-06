@@ -603,7 +603,7 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the current CCD temperature in degrees Celsius.
         /// </summary>
         /// <value>The CCD temperature.</value>
-        static internal double CCDTemperature
+        static internal float CCDTemperature
         {
             get
             {
@@ -761,7 +761,7 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the present cooler power level, in percent.
         /// </summary>
         /// <value>The cooler power.</value>
-        static internal double CoolerPower
+        static internal float CoolerPower
         {
             get
             {
@@ -773,7 +773,7 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the gain of the camera in photoelectrons per A/D unit.
         /// </summary>
         /// <value>The electrons per ADU.</value>
-        static internal double ElectronsPerADU
+        static internal float ElectronsPerADU
         {
             get
             {
@@ -785,7 +785,7 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the maximum exposure time supported by <see cref="StartExposure">StartExposure</see>.
         /// </summary>
         /// <returns>The maximum exposure time, in seconds, that the camera supports</returns>
-        static internal double ExposureMax
+        static internal float ExposureMax
         {
             get
             {
@@ -797,7 +797,7 @@ namespace ASCOM.CameraHub.Camera
         /// Minimum exposure time
         /// </summary>
         /// <returns>The minimum exposure time, in seconds, that the camera supports through <see cref="StartExposure">StartExposure</see></returns>
-        static internal double ExposureMin
+        static internal float ExposureMin
         {
             get
             {
@@ -809,7 +809,7 @@ namespace ASCOM.CameraHub.Camera
         /// Exposure resolution
         /// </summary>
         /// <returns>The smallest increment in exposure time supported by <see cref="StartExposure">StartExposure</see>.</returns>
-        static internal double ExposureResolution
+        static internal float ExposureResolution
         {
             get
             {
@@ -837,7 +837,7 @@ namespace ASCOM.CameraHub.Camera
         /// Reports the full well capacity of the camera in electrons, at the current camera settings (binning, SetupDialog settings, etc.)
         /// </summary>
         /// <value>The full well capacity.</value>
-        static internal double FullWellCapacity
+        static internal float FullWellCapacity
         {
             get
             {
@@ -919,7 +919,7 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the current heat sink temperature (called "ambient temperature" by some manufacturers) in degrees Celsius.
         /// </summary>
         /// <value>The heat sink temperature.</value>
-        static internal double HeatSinkTemperature
+        static internal float HeatSinkTemperature
         {
             get
             {
@@ -987,7 +987,7 @@ namespace ASCOM.CameraHub.Camera
         /// Reports the actual exposure duration in seconds (i.e. shutter open time).
         /// </summary>
         /// <value>The last duration of the exposure.</value>
-        static internal double LastExposureDuration
+        static internal float LastExposureDuration
         {
             get
             {
@@ -1147,7 +1147,7 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the width of the CCD chip pixels in microns.
         /// </summary>
         /// <value>The pixel size X.</value>
-        static internal double PixelSizeX
+        static internal float PixelSizeX
         {
             get
             {
@@ -1159,7 +1159,7 @@ namespace ASCOM.CameraHub.Camera
         /// Returns the height of the CCD chip pixels in microns.
         /// </summary>
         /// <value>The pixel size Y.</value>
-        static internal double PixelSizeY
+        static internal float PixelSizeY
         {
             get
             {
@@ -1235,7 +1235,7 @@ namespace ASCOM.CameraHub.Camera
         /// Sets the camera cooler set point in degrees Celsius, and returns the current set point.
         /// </summary>
         /// <value>The set CCD temperature.</value>
-        static internal double SetCCDTemperature
+        static internal float SetCCDTemperature
         {
             get
             {
@@ -1252,7 +1252,7 @@ namespace ASCOM.CameraHub.Camera
         /// </summary>
         /// <param name="Duration">Duration of exposure in seconds, can be zero if <see cref="StartExposure">Light</see> is <c>false</c></param>
         /// <param name="Light"><c>true</c> for light frame, <c>false</c> for dark frame (ignored if no shutter)</param>
-        static internal void StartExposure(double Duration, bool Light)
+        static internal void StartExposure(float Duration, bool Light)
         {
             camera.StartExposure(Duration, Light);
         }
@@ -1298,7 +1298,7 @@ namespace ASCOM.CameraHub.Camera
         /// <summary>
         /// Camera's sub-exposure interval
         /// </summary>
-        static internal double SubExposureDuration
+        static internal float SubExposureDuration
         {
             get
             {

@@ -123,7 +123,7 @@ class DeviceSwitch
 	/// </summary>
 	/// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	/// <returns>The maximum value to which this device can be set or which a read only sensor will return.</returns>
-	public double MaxSwitchValue(short id)
+	public float MaxSwitchValue(short id)
     {
         Validate("MaxSwitchValue", id);
         tl.LogMessage("MaxSwitchValue", $"MaxSwitchValue({id}) - not implemented");
@@ -135,7 +135,7 @@ class DeviceSwitch
 	/// </summary>
 	/// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	/// <returns>The minimum value to which this device can be set or which a read only sensor will return.</returns>
-	public double MinSwitchValue(short id)
+	public float MinSwitchValue(short id)
     {
         Validate("MinSwitchValue", id);
         tl.LogMessage("MinSwitchValue", $"MinSwitchValue({id}) - not implemented");
@@ -147,7 +147,7 @@ class DeviceSwitch
 	/// </summary>
 	/// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	/// <returns>The step size for this device.</returns>
-	public double SwitchStep(short id)
+	public float SwitchStep(short id)
     {
         Validate("SwitchStep", id);
         tl.LogMessage("SwitchStep", $"SwitchStep({id}) - not implemented");
@@ -155,12 +155,12 @@ class DeviceSwitch
     }
 
 	/// <summary>
-	/// Returns the value for switch device id as a double
+	/// Returns the value for switch device id as a float
 	/// </summary>
 	/// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	/// <returns>The value for this switch, this is expected to be between <see cref="MinSwitchValue"/> and
 	/// <see cref="MaxSwitchValue"/>.</returns>
-	public double GetSwitchValue(short id)
+	public float GetSwitchValue(short id)
     {
         Validate("GetSwitchValue", id);
         tl.LogMessage("GetSwitchValue", $"GetSwitchValue({id}) - not implemented");
@@ -168,11 +168,11 @@ class DeviceSwitch
     }
 
 	/// <summary>
-	/// Set the value for this device as a double.
+	/// Set the value for this device as a float.
 	/// </summary>
 	/// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
 	/// <param name="value">The value to be set, between <see cref="MinSwitchValue"/> and <see cref="MaxSwitchValue"/></param>
-	public void SetSwitchValue(short id, double value)
+	public void SetSwitchValue(short id, float value)
     {
         Validate("SetSwitchValue", id, value);
         if (!CanWrite(id))
@@ -211,7 +211,7 @@ class DeviceSwitch
     /// <param name="message">The message.</param>
     /// <param name="id">The id.</param>
     /// <param name="value">The value.</param>
-    private void Validate(string message, short id, double value)
+    private void Validate(string message, short id, float value)
     {
         Validate(message, id);
         var min = MinSwitchValue(id);

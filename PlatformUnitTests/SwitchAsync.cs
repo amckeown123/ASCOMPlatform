@@ -108,7 +108,7 @@ namespace PlatformUnitTests
 
             // Confirm the expected outcomes
             Assert.True(switchSim.StateChangeComplete(10));
-            Assert.Equal<double>(5.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(5.0, switchSim.GetSwitchValue(10));
 
             switchSim.Connected = false;
         }
@@ -132,22 +132,22 @@ namespace PlatformUnitTests
             Assert.True(switchSim.CanAsync(10));
 
             // Confirm that the current value is 0.0
-            Assert.Equal<double>(0.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(0.0, switchSim.GetSwitchValue(10));
 
             // Set the value true asynchronously (should take 3 seconds to complete)
             switchSim.SetAsyncValue(10, 5.0);
             Assert.False(switchSim.StateChangeComplete(10));
-            Assert.Equal<double>(0.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(0.0, switchSim.GetSwitchValue(10));
 
             // Wait for most of 3 seconds and make sure the operation is still running
             Thread.Sleep(2950);
             Assert.False(switchSim.StateChangeComplete(10));
-            Assert.Equal<double>(0.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(0.0, switchSim.GetSwitchValue(10));
 
             // Wait a short while longer to make sure that the new value is in effect
             Thread.Sleep(150);
             Assert.True(switchSim.StateChangeComplete(10));
-            Assert.Equal<double>(5.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(5.0, switchSim.GetSwitchValue(10));
 
             switchSim.Connected = false;
         }
@@ -255,22 +255,22 @@ namespace PlatformUnitTests
             Assert.True(switchSim.CanAsync(10));
 
             // Confirm that the current value is 0.0
-            Assert.Equal<double>(0.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(0.0, switchSim.GetSwitchValue(10));
 
             // Set the value true asynchronously (should take 3 seconds to complete)
             switchSim.SetAsyncValue(10, 5.0);
             Assert.False(switchSim.StateChangeComplete(10));
-            Assert.Equal<double>(0.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(0.0, switchSim.GetSwitchValue(10));
 
             // Wait for most of 3 seconds and make sure the operation is still running
             Thread.Sleep(2950);
             Assert.False(switchSim.StateChangeComplete(10));
-            Assert.Equal<double>(0.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(0.0, switchSim.GetSwitchValue(10));
 
             // Wait a short while longer to make sure that the new value is in effect
             Thread.Sleep(150);
             Assert.True(switchSim.StateChangeComplete(10));
-            Assert.Equal<double>(5.0, switchSim.GetSwitchValue(10));
+            Assert.Equal<float>(5.0, switchSim.GetSwitchValue(10));
 
             switchSim.Connected = false;
         }

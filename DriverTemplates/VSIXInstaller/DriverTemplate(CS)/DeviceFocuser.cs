@@ -121,7 +121,7 @@ class DeviceFocuser
 	/// <summary>
 	/// Step size (microns) for the focuser.
 	/// </summary>
-	public double StepSize
+	public float StepSize
     {
         get
         {
@@ -162,7 +162,7 @@ class DeviceFocuser
 	/// <summary>
 	/// Current ambient temperature in degrees Celsius as measured by the focuser.
 	/// </summary>
-	public double Temperature
+	public float Temperature
     {
         get
         {

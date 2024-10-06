@@ -78,15 +78,15 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-		public double ExposureMax
+		public float ExposureMax
         {
-            get { return (double)memberFactory.CallMember(1, "ExposureMax", new Type[0], new object[0]); }
+            get { return (float)memberFactory.CallMember(1, "ExposureMax", new Type[0], new object[0]); }
         }
 
         /// <inheritdoc/>
-		public double ExposureMin
+		public float ExposureMin
         {
-            get { return (double)memberFactory.CallMember(1, "ExposureMin", new Type[0], new object[0]); }
+            get { return (float)memberFactory.CallMember(1, "ExposureMin", new Type[0], new object[0]); }
         }
 
         /// <inheritdoc/>
@@ -140,15 +140,15 @@ namespace ASCOM.DriverAccess
         }
 
         /// <inheritdoc/>
-		public double PixelSizeX
+		public float PixelSizeX
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "PixelSizeX", new Type[0], new object[0])); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "PixelSizeX", new Type[0], new object[0])); }
         }
 
         /// <inheritdoc/>
-		public double PixelSizeY
+		public float PixelSizeY
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "PixelSizeY", new Type[0], new object[0])); }
+            get { return Convert.Tofloat(memberFactory.CallMember(1, "PixelSizeY", new Type[0], new object[0])); }
         }
 
         /// <inheritdoc/>

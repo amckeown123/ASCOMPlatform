@@ -20,8 +20,8 @@ namespace ASCOM.Simulator.Config
 		internal override void SaveSettings()
 		{
 			Properties.Settings.Default.SupportedExposuresList = string.Join("#;", tbxSupportedExposures.Lines);
-			Properties.Settings.Default.ExposureMin = (double)nudMinExposureSec.Value;
-			Properties.Settings.Default.ExposureMax = (double)nudMaxExposureSec.Value;
+			Properties.Settings.Default.ExposureMin = (float)nudMinExposureSec.Value;
+			Properties.Settings.Default.ExposureMax = (float)nudMaxExposureSec.Value;
 		}
 
 		internal void SetVisibility(bool enabled)

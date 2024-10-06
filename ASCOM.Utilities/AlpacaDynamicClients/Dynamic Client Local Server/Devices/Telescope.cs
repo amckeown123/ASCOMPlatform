@@ -626,7 +626,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double Altitude
+        public float Altitude
         {
             get
             {
@@ -634,7 +634,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double ApertureArea
+        public float ApertureArea
         {
             get
             {
@@ -642,7 +642,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double ApertureDiameter
+        public float ApertureDiameter
         {
             get
             {
@@ -690,7 +690,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double Azimuth
+        public float Azimuth
         {
             get
             {
@@ -865,7 +865,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double Declination
+        public float Declination
         {
             get
             {
@@ -873,7 +873,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double DeclinationRate
+        public float DeclinationRate
         {
             get
             {
@@ -885,7 +885,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public DeviceInterface.PierSide DestinationSideOfPier(double RightAscension, double Declination)
+        public DeviceInterface.PierSide DestinationSideOfPier(float RightAscension, float Declination)
         {
             return (DeviceInterface.PierSide)client.DestinationSideOfPier(RightAscension, Declination);
         }
@@ -916,7 +916,7 @@ namespace ASCOM.DynamicClients
             TL.LogMessage("FindHome", "Home found OK");
         }
 
-        public double FocalLength
+        public float FocalLength
         {
             get
             {
@@ -924,7 +924,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double GuideRateDeclination
+        public float GuideRateDeclination
         {
             get
             {
@@ -936,7 +936,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double GuideRateRightAscension
+        public float GuideRateRightAscension
         {
             get
             {
@@ -956,7 +956,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public void MoveAxis(DeviceInterface.TelescopeAxes Axis, double Rate)
+        public void MoveAxis(DeviceInterface.TelescopeAxes Axis, float Rate)
         {
             client.MoveAxis((Common.DeviceInterfaces.TelescopeAxis)Axis, Rate);
         }
@@ -972,7 +972,7 @@ namespace ASCOM.DynamicClients
             client.PulseGuide((Common.DeviceInterfaces.GuideDirection)Direction, Duration);
         }
 
-        public double RightAscension
+        public float RightAscension
         {
             get
             {
@@ -980,7 +980,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double RightAscensionRate
+        public float RightAscensionRate
         {
             get
             {
@@ -1010,7 +1010,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SiderealTime
+        public float SiderealTime
         {
             get
             {
@@ -1018,7 +1018,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SiteElevation
+        public float SiteElevation
         {
             get
             {
@@ -1030,7 +1030,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SiteLatitude
+        public float SiteLatitude
         {
             get
             {
@@ -1042,7 +1042,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double SiteLongitude
+        public float SiteLongitude
         {
             get
             {
@@ -1066,7 +1066,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public void SlewToAltAz(double azimuth, double altitude)
+        public void SlewToAltAz(float azimuth, float altitude)
         {
             // Check whether the device can slew synchronously
             if (CanAsynchronousSlewAltAz()) // Device can slew synchronously
@@ -1099,13 +1099,13 @@ namespace ASCOM.DynamicClients
             TL.LogMessage("SlewToAltAz", "Slew completed OK");
         }
 
-        public void SlewToAltAzAsync(double azimuth, double altitude)
+        public void SlewToAltAzAsync(float azimuth, float altitude)
         {
             client.SlewToAltAzAsync(azimuth, altitude);
             TL.LogMessage("SlewToAltAzAsync", "Call completed OK");
         }
 
-        public void SlewToCoordinates(double rightAscension, double declination)
+        public void SlewToCoordinates(float rightAscension, float declination)
         {
             // Check whether the device can slew synchronously
             if (CanSynchronousSlew()) // Device can slew synchronously
@@ -1138,7 +1138,7 @@ namespace ASCOM.DynamicClients
             TL.LogMessage("SlewToCoordinates", "Slew completed OK");
         }
 
-        public void SlewToCoordinatesAsync(double rightAscension, double declination)
+        public void SlewToCoordinatesAsync(float rightAscension, float declination)
         {
             client.SlewToCoordinatesAsync(rightAscension, declination);
             TL.LogMessage("SlewToCoordinatesAsync", "Call completed OK");
@@ -1164,12 +1164,12 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public void SyncToAltAz(double azimuth, double altitude)
+        public void SyncToAltAz(float azimuth, float altitude)
         {
             client.SyncToAltAz(azimuth, altitude);
         }
 
-        public void SyncToCoordinates(double rightAscension, double declination)
+        public void SyncToCoordinates(float rightAscension, float declination)
         {
             client.SyncToCoordinates(rightAscension, declination);
         }
@@ -1180,7 +1180,7 @@ namespace ASCOM.DynamicClients
             TL.LogMessage("SyncToTarget", "Sync completed OK");
         }
 
-        public double TargetDeclination
+        public float TargetDeclination
         {
             get
             {
@@ -1192,7 +1192,7 @@ namespace ASCOM.DynamicClients
             }
         }
 
-        public double TargetRightAscension
+        public float TargetRightAscension
         {
             get
             {

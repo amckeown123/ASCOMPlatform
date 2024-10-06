@@ -27,7 +27,7 @@ namespace ASCOM.DeviceInterface
     /// <para>The new MinSwitchValue, MaxSwitchValue and SwitchStep methods are used to define the range and values that a device can handle.
     /// This also defines the number of different values - states - that a device can have, from two for a traditional on-off switch, through
     /// those with a small number of states to those which have many states.</para>
-    /// <para>The SetSwitchValue and GetSwitchValue methods are used to set and get the value of a device as a double.</para>
+    /// <para>The SetSwitchValue and GetSwitchValue methods are used to set and get the value of a device as a float.</para>
     /// <para>There is no fundamental difference between devices with different numbers of states.</para>
     /// <para><b>Naming Conventions</b></para>
     /// <para>Each device handled by a Switch is known as a device or switch device for general cases,
@@ -345,7 +345,7 @@ namespace ASCOM.DeviceInterface
         /// <para> Devices are numbered from 0 to <see cref="MaxSwitch"/> - 1.</para>
         /// <para>This is a Version 2 method.</para>
         /// </remarks>
-        double MaxSwitchValue(short id);
+        float MaxSwitchValue(short id);
 
         /// <summary>
         /// Returns the minimum value for this switch device, this must be less than <see cref="MaxSwitchValue"/>
@@ -360,7 +360,7 @@ namespace ASCOM.DeviceInterface
         /// <para> Devices are numbered from 0 to <see cref="MaxSwitch"/> - 1.</para>
         /// <para>This is a Version 2 method.</para>
         /// </remarks>
-        double MinSwitchValue(short id);
+        float MinSwitchValue(short id);
 
         /// <summary>
         /// Returns the step size that this device supports (the difference between successive values of the device).
@@ -380,10 +380,10 @@ namespace ASCOM.DeviceInterface
         /// <para>Devices are numbered from 0 to <see cref="MaxSwitch"/> - 1.</para>
         /// <para>This is a Version 2 method.</para>
         /// </remarks>
-        double SwitchStep(short id);
+        float SwitchStep(short id);
 
         /// <summary>
-        /// Returns the value for switch device id as a double
+        /// Returns the value for switch device id as a float
         /// </summary>
         /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
         /// <returns>The value for this switch, this is expected to be between <see cref="MinSwitchValue"/> and
@@ -403,10 +403,10 @@ namespace ASCOM.DeviceInterface
         /// <para>Devices are numbered from 0 to <see cref="MaxSwitch"/> - 1.</para>
         /// <para>This is a Version 2 method.</para>
         /// </remarks>
-        double GetSwitchValue(short id);
+        float GetSwitchValue(short id);
 
         /// <summary>
-        /// Set the value for this device as a double.
+        /// Set the value for this device as a float.
         /// </summary>
         /// <param name="id">The device number (0 to <see cref="MaxSwitch"/> - 1)</param>
         /// <param name="value">The value to be set, between <see cref="MinSwitchValue"/> and <see cref="MaxSwitchValue"/></param>
@@ -422,7 +422,7 @@ namespace ASCOM.DeviceInterface
         /// <para>Devices are numbered from 0 to <see cref="MaxSwitch"/> - 1.</para>
         /// <para>This is a Version 2 method.</para>
         /// </remarks>
-        void SetSwitchValue(short id, double value);
+        void SetSwitchValue(short id, float value);
 
         #endregion
 
@@ -494,7 +494,7 @@ namespace ASCOM.DeviceInterface
         /// Set a switch's value asynchronously
         /// </summary>
         /// <param name="id">Switch number.</param>
-        /// <param name="value">New double value.</param>
+        /// <param name="value">New float value.</param>
         /// <p style="color:red"><b>This is an optional method and can throw a <see cref="MethodNotImplementedException"/> when <see cref="CanAsync(short)"/> is <see langword="false"/>.</b></p>
         /// <exception cref="MethodNotImplementedException">When CanAsync(id) is false.</exception>
         /// <remarks>
@@ -506,7 +506,7 @@ namespace ASCOM.DeviceInterface
         /// <para>Devices are numbered from 0 to <see cref="MaxSwitch"/> - 1.</para>
         /// <para>This is a Version 2 method.</para>
         /// </remarks>
-        void SetAsyncValue(short id, double value);
+        void SetAsyncValue(short id, float value);
 
         /// <summary>
         /// Flag indicating whether this switch can operate asynchronously.

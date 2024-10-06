@@ -23,7 +23,7 @@ namespace ASCOM.Astrometry.NOVAS
     /// <code>rc = ASCOM.Astrometry.NOVAS2COM.AppStar(tjd, earth, star, ra, dec)</code> 
     /// <para>Method names are identical to those used in NOVAS2, as are almost all paramaters. There are a few 
     /// changes that introduce some new structures but these should be self explanatory. One significant difference 
-    /// is that position and velocity vectors are returned as structures rather than double arrays. This was done 
+    /// is that position and velocity Vector2s are returned as structures rather than float arrays. This was done 
     /// to make type checking more effective.</para>
     /// <para>Testing of the high level supervisory functions has been carried out using real-time star data from
     /// the USNO web site. Values provided by this NOVAS2 implementation agree on average to about 50 milli 
@@ -45,15 +45,15 @@ namespace ASCOM.Astrometry.NOVAS
 
         #region NOVAS Members
         /// <summary>
-        /// Corrects position vector for aberration of light.
+        /// Corrects position Vector2 for aberration of light.
         /// </summary>
-        /// <param name="pos">Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
-        /// <param name="vel">Velocity vector of center of mass of the Earth, referred to origin at solar system barycenter, components in AU/day.</param>
+        /// <param name="pos">Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
+        /// <param name="vel">Velocity Vector2 of center of mass of the Earth, referred to origin at solar system barycenter, components in AU/day.</param>
         /// <param name="lighttime">Light time from body to Earth in days.</param>
-        /// <param name="pos2">OUT: Position vector, referred to origin at center of mass of the Earth, corrected for aberration, components in AU</param>
+        /// <param name="pos2">OUT: Position Vector2, referred to origin at center of mass of the Earth, corrected for aberration, components in AU</param>
         /// <returns>0...Everything OK.</returns>
         /// <remarks>Algorithm includes relativistic terms.</remarks>
-        public short Aberration(double[] pos, double[] vel, double lighttime, ref double[] pos2)
+        public short Aberration(float[] pos, float[] vel, float lighttime, ref float[] pos2)
         {
             return NOVAS2.Aberration(pos, vel, lighttime, ref pos2);
         }
@@ -76,7 +76,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// used. Please use the NOVAS3.1 or later classes in applications that require planetary or moon ephemeredes as these classes 
         /// can access the JPL 421 planetary ephemeris data provided as part of the ASCOM distribution.
         /// </remarks>
-        public short AppPlanet(double tjd, ref BodyDescription ss_object, ref BodyDescription earth, ref double ra, ref double dec, ref double dis)
+        public short AppPlanet(float tjd, ref BodyDescription ss_object, ref BodyDescription earth, ref float ra, ref float dec, ref float dis)
         {
             return NOVAS2.AppPlanet(tjd, ref ss_object, ref earth, ref ra, ref dec, ref dis);
         }
@@ -93,7 +93,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// 0...Everything OK
         /// >0...Error code from function 'solarsystem'.</pre></returns>
         /// <remarks></remarks>
-        public short AppStar(double tjd, ref BodyDescription earth, ref CatEntry star, ref double ra, ref double dec)
+        public short AppStar(float tjd, ref BodyDescription earth, ref CatEntry star, ref float ra, ref float dec)
         {
             return NOVAS2.AppStar(tjd, ref earth, ref star, ref ra, ref dec);
         }
@@ -115,7 +115,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// used. Please use the NOVAS3.1 or later classes in applications that require planetary or moon ephemeredes as these classes 
         /// can access the JPL 421 planetary ephemeris data provided as part of the ASCOM distribution.
         /// </remarks>
-        public short AstroPlanet(double tjd, ref BodyDescription ss_object, ref BodyDescription earth, ref double ra, ref double dec, ref double dis)
+        public short AstroPlanet(float tjd, ref BodyDescription ss_object, ref BodyDescription earth, ref float ra, ref float dec, ref float dis)
         {
             return NOVAS2.AstroPlanet(tjd, ref ss_object, ref earth, ref ra, ref dec, ref dis);
         }
@@ -133,7 +133,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// >0...Error code from function 'solarsystem'.
         /// </pre></returns>
         /// <remarks>     Computes the astrometric place of a star, given its mean place, proper motion, parallax, and radial velocity for J2000.0.</remarks>
-        public short AstroStar(double tjd, ref BodyDescription earth, ref CatEntry star, ref double ra, ref double dec)
+        public short AstroStar(float tjd, ref BodyDescription earth, ref CatEntry star, ref float ra, ref float dec)
         {
             return NOVAS2.AstroStar(tjd, ref earth, ref star, ref ra, ref dec);
         }
@@ -141,14 +141,14 @@ namespace ASCOM.Astrometry.NOVAS
         /// <summary>
         /// Moves the origin of coordinates from the barycenter of the solar system to the center of mass of the Earth
         /// </summary>
-        /// <param name="pos">Position vector, referred to origin at solar system barycenter, components in AU.</param>
-        /// <param name="earthvector">Position vector of center of mass of the Earth, referred to origin at solar system barycenter, components in AU.</param>
-        /// <param name="pos2">OUT: Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
+        /// <param name="pos">Position Vector2, referred to origin at solar system barycenter, components in AU.</param>
+        /// <param name="earthVector2">Position Vector2 of center of mass of the Earth, referred to origin at solar system barycenter, components in AU.</param>
+        /// <param name="pos2">OUT: Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
         /// <param name="lighttime">OUT: Light time from body to Earth in days.</param>
         /// <remarks>This corrects for parallax.</remarks>
-        public void BaryToGeo(double[] pos, double[] earthvector, ref double[] pos2, ref double lighttime)
+        public void BaryToGeo(float[] pos, float[] earthVector2, ref float[] pos2, ref float lighttime)
         {
-            NOVAS2.BaryToGeo(pos, earthvector, ref pos2, ref lighttime);
+            NOVAS2.BaryToGeo(pos, earthVector2, ref pos2, ref lighttime);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="day">OUT: Day number</param>
         /// <param name="hour">OUT: Time in hours</param>
         /// <remarks></remarks>
-        public void CalDate(double tjd, ref short year, ref short month, ref short day, ref double hour)
+        public void CalDate(float tjd, ref short year, ref short month, ref short day, ref float hour)
         {
             NOVAS2.CalDate(tjd, ref year, ref month, ref day, ref hour);
         }
@@ -176,7 +176,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// <para>3. Daily values of the offsets are published, for example, in IERS Bulletins A and B.</para>
         /// <para>4. This function is the "C" version of Fortran NOVAS routine "celpol".</para>
         /// </remarks>
-        public void CelPole(double del_dpsi, double del_deps)
+        public void CelPole(float del_dpsi, float del_deps)
         {
             NOVAS2.CelPole(del_dpsi, del_deps);
         }
@@ -191,7 +191,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="dpsi">OUT: Nutation in longitude in arcseconds at 'tjd'.</param>
         /// <param name="deps">OUT: Nutation in obliquity in arcseconds at 'tjd'.</param>
         /// <remarks></remarks>
-        public void EarthTilt(double tjd, ref double mobl, ref double tobl, ref double eq, ref double dpsi, ref double deps)
+        public void EarthTilt(float tjd, ref float mobl, ref float tobl, ref float eq, ref float dpsi, ref float deps)
         {
             NOVAS2.EarthTilt(tjd, ref mobl, ref tobl, ref eq, ref dpsi, ref deps);
         }
@@ -202,8 +202,8 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="tjd">TDB Julian date.</param>
         /// <param name="cel_obj">Structure containing the designation of the body of interest</param>
         /// <param name="origin">Origin point (solar system barycentre or centre of mass of the Sun</param>
-        /// <param name="pos">OUT: Position vector of 'body' at tjd; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        /// <param name="vel">OUT: Velocity vector of 'body' at tjd; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        /// <param name="pos">OUT: Position Vector2 of 'body' at tjd; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        /// <param name="vel">OUT: Velocity Vector2 of 'body' at tjd; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         /// <returns><pre>
         /// 0    ... Everything OK.
         /// 1    ... Invalid value of 'origin'.
@@ -212,7 +212,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// 10+n ... where n is the error code from 'solarsystem'.
         /// 20+n ... where n is the error code from 'readeph'.</pre></returns>
         /// <remarks></remarks>
-        public short Ephemeris(double tjd, ref BodyDescription cel_obj, Origin origin, ref double[] pos, ref double[] vel)
+        public short Ephemeris(float tjd, ref BodyDescription cel_obj, Origin origin, ref float[] pos, ref float[] vel)
         {
             return NOVAS2.Ephemeris(tjd, ref cel_obj, origin, ref pos, ref vel);
         }
@@ -238,7 +238,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// for polar motion, which is significant at the sub-arcsecond 
         /// level.  This function can also adjust coordinates for atmospheric 
         /// refraction.</remarks>
-        public void Equ2Hor(double tjd, double deltat, double x, double y, ref SiteInfo location, double ra, double dec, RefractionOption ref_option, ref double zd, ref double az, ref double rar, ref double decr)
+        public void Equ2Hor(float tjd, float deltat, float x, float y, ref SiteInfo location, float ra, float dec, RefractionOption ref_option, ref float zd, ref float az, ref float rar, ref float decr)
         {
             NOVAS2.Equ2Hor(tjd, deltat, x, y, ref location, ra, dec, ref_option, ref zd, ref az, ref rar, ref decr);
         }
@@ -254,7 +254,7 @@ namespace ASCOM.Astrometry.NOVAS
         ///   a[3] = D (mean elongation of the Moon from the Sun)
         ///   a[4] = omega (mean longitude of the Moon's ascending node)</pre></param>
         /// <remarks></remarks>
-        public void FundArgs(double t, ref double[] a)
+        public void FundArgs(float t, ref float[] a)
         {
             NOVAS2.FundArgs(t, ref a);
         }
@@ -265,16 +265,16 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="tjd">TT (or TDT) Julian date.</param>
         /// <param name="earth">Structure containing the body designation for the Earth.</param>
         /// <param name="tdb">OUT: TDB Julian date corresponding to 'tjd'.</param>
-        /// <param name="bary_earthp">OUT: Barycentric position vector of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        /// <param name="bary_earthv">OUT: Barycentric velocity vector of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox  of J2000.0, in AU/Day.</param>
-        /// <param name="helio_earthp">OUT: Heliocentric position vector of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        /// <param name="helio_earthv">OUT: Heliocentric velocity vector of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        /// <param name="bary_earthp">OUT: Barycentric position Vector2 of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        /// <param name="bary_earthv">OUT: Barycentric velocity Vector2 of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox  of J2000.0, in AU/Day.</param>
+        /// <param name="helio_earthp">OUT: Heliocentric position Vector2 of Earth at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        /// <param name="helio_earthv">OUT: Heliocentric velocity Vector2 of Earth at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         /// <returns><pre>
         /// 0...Everything OK.
         /// >0...Error code from function 'solarsystem'.</pre>
         /// </returns>
         /// <remarks></remarks>
-        public short GetEarth(double tjd, ref BodyDescription earth, ref double tdb, ref double[] bary_earthp, ref double[] bary_earthv, ref double[] helio_earthp, ref double[] helio_earthv)
+        public short GetEarth(float tjd, ref BodyDescription earth, ref float tdb, ref float[] bary_earthp, ref float[] bary_earthv, ref float[] helio_earthp, ref float[] helio_earthv)
         {
             return NOVAS2.GetEarth(tjd, ref earth, ref tdb, ref bary_earthp, ref bary_earthv, ref helio_earthp, ref helio_earthv);
         }
@@ -288,7 +288,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="hour">Time in hours</param>
         /// <returns>OUT: Julian date.</returns>
         /// <remarks></remarks>
-        public double JulianDate(short year, short month, short day, double hour)
+        public float JulianDate(short year, short month, short day, float hour)
         {
             return NOVAS2.JulianDate(year, month, day, hour);
         }
@@ -313,7 +313,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// used. Please use the NOVAS3.1 or later classes in applications that require planetary or moon ephemeredes as these classes 
         /// can access the JPL 421 planetary ephemeris data provided as part of the ASCOM distribution.
         /// </remarks>
-        public short LocalPlanet(double tjd, ref BodyDescription ss_object, ref BodyDescription earth, double deltat, ref SiteInfo location, ref double ra, ref double dec, ref double dis)
+        public short LocalPlanet(float tjd, ref BodyDescription ss_object, ref BodyDescription earth, float deltat, ref SiteInfo location, ref float ra, ref float dec, ref float dis)
         {
             return NOVAS2.LocalPlanet(tjd, ref ss_object, ref earth, deltat, ref location, ref ra, ref dec, ref dis);
         }
@@ -333,7 +333,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// >0...Error code from function 'solarsystem'.
         /// </pre></returns>
         /// <remarks></remarks>
-        public short LocalStar(double tjd, ref BodyDescription earth, double deltat, ref CatEntry star, ref SiteInfo location, ref double ra, ref double dec)
+        public short LocalStar(float tjd, ref BodyDescription earth, float deltat, ref CatEntry star, ref SiteInfo location, ref float ra, ref float dec)
         {
             return NOVAS2.LocalStar(tjd, ref earth, deltat, ref star, ref location, ref ra, ref dec);
         }
@@ -352,7 +352,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="rad_vel">Radial velocity.</param>
         /// <param name="star">OUT: Structure containing the input data</param>
         /// <remarks></remarks>
-        public void MakeCatEntry(string catalog, string star_name, int star_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, ref CatEntry star)
+        public void MakeCatEntry(string catalog, string star_name, int star_num, float ra, float dec, float pm_ra, float pm_dec, float parallax, float rad_vel, ref CatEntry star)
         {
             NOVAS2.MakeCatEntry(catalog, star_name, star_num, ra, dec, pm_ra, pm_dec, parallax, rad_vel, ref star);
         }
@@ -374,7 +374,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// place at date 'tjd'.  Proper motion, parallax and radial velocity 
         /// are assumed to be zero.
         /// </remarks>
-        public short MeanStar(double tjd, ref BodyDescription earth, double ra, double dec, ref double mra, ref double mdec)
+        public short MeanStar(float tjd, ref BodyDescription earth, float ra, float dec, ref float mra, ref float mdec)
         {
             return NOVAS2.MeanStar(tjd, ref earth, ra, dec, ref mra, ref mdec);
         }
@@ -386,11 +386,11 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="fn">Flag determining 'direction' of transformation;<pre>
         ///    fn  = 0 transformation applied, mean to true.
         ///    fn != 0 inverse transformation applied, true to mean.</pre></param>
-        /// <param name="pos">Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of epoch.</param>
-        /// <param name="pos2">OUT: Position vector, geocentric equatorial rectangular coordinates, referred to true equator and equinox of epoch.</param>
+        /// <param name="pos">Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of epoch.</param>
+        /// <param name="pos2">OUT: Position Vector2, geocentric equatorial rectangular coordinates, referred to true equator and equinox of epoch.</param>
         /// <returns>0...Everything OK.</returns>
         /// <remarks>Inverse transformation may be applied by setting flag 'fn'.</remarks>
-        public short Nutate(double tjd, NutationDirection fn, double[] pos, ref double[] pos2)
+        public short Nutate(float tjd, NutationDirection fn, float[] pos, ref float[] pos2)
         {
             return NOVAS2.Nutate(tjd, fn, pos, ref pos2);
         }
@@ -403,22 +403,22 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="obliqnutation">OUT: Nutation in obliquity in arcseconds.</param>
         /// <returns>0...Everything OK.</returns>
         /// <remarks></remarks>
-        public short NutationAngles(double tdbtime, ref double longnutation, ref double obliqnutation)
+        public short NutationAngles(float tdbtime, ref float longnutation, ref float obliqnutation)
         {
             return NOVAS2.NutationAngles(tdbtime, ref longnutation, ref obliqnutation);
         }
 
         /// <summary>
-        /// Transforms a vector from an Earth-fixed geographic system to a space-fixed system
+        /// Transforms a Vector2 from an Earth-fixed geographic system to a space-fixed system
         /// </summary>
         /// <param name="tjd">TT (or TDT) Julian date</param>
         /// <param name="gast">Greenwich apparent sidereal time, in hours.</param>
         /// <param name="x"> Conventionally-defined X coordinate of rotational pole with respect to CIO, in arcseconds.</param>
         /// <param name="y">Conventionally-defined Y coordinate of rotational pole with respect to CIO, in arcseconds.</param>
-        /// <param name="vece"> Vector in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
-        /// <param name="vecs">OUT: Vector in geocentric rectangular space-fixed system, referred to mean equator and equinox of J2000.0.</param>
-        /// <remarks>Transforms a vector from an Earth-fixed geographic system to a space-fixed system based on mean equator and equinox of J2000.0; applies rotations for wobble, spin, nutation, and precession.</remarks>
-        public void Pnsw(double tjd, double gast, double x, double y, double[] vece, ref double[] vecs)
+        /// <param name="vece"> Vector2 in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
+        /// <param name="vecs">OUT: Vector2 in geocentric rectangular space-fixed system, referred to mean equator and equinox of J2000.0.</param>
+        /// <remarks>Transforms a Vector2 from an Earth-fixed geographic system to a space-fixed system based on mean equator and equinox of J2000.0; applies rotations for wobble, spin, nutation, and precession.</remarks>
+        public void Pnsw(float tjd, float gast, float x, float y, float[] vece, ref float[] vecs)
         {
             NOVAS2.Pnsw(tjd, gast, x, y, vece, ref vecs);
         }
@@ -427,11 +427,11 @@ namespace ASCOM.Astrometry.NOVAS
         /// Precesses equatorial rectangular coordinates from one epoch to another.
         /// </summary>
         /// <param name="tjd1">TDB Julian date of first epoch.</param>
-        /// <param name="pos">Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of first epoch.</param>
+        /// <param name="pos">Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of first epoch.</param>
         /// <param name="tjd2">TDB Julian date of second epoch.</param>
-        /// <param name="pos2">OUT: Position vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of second epoch.</param>
+        /// <param name="pos2">OUT: Position Vector2, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of second epoch.</param>
         /// <remarks>The coordinates are referred to the mean equator and equinox of the two respective epochs.</remarks>
-        public void Precession(double tjd1, double[] pos, double tjd2, ref double[] pos2)
+        public void Precession(float tjd1, float[] pos, float tjd2, ref float[] pos2)
         {
             NOVAS2.Precession(tjd1, pos, tjd2, ref pos2);
         }
@@ -440,27 +440,27 @@ namespace ASCOM.Astrometry.NOVAS
         /// Applies proper motion, including foreshortening effects, to a star's position.
         /// </summary>
         /// <param name="tjd1">TDB Julian date of first epoch.</param>
-        /// <param name="pos">Position vector at first epoch.</param>
-        /// <param name="vel">Velocity vector at first epoch.</param>
+        /// <param name="pos">Position Vector2 at first epoch.</param>
+        /// <param name="vel">Velocity Vector2 at first epoch.</param>
         /// <param name="tjd2">TDB Julian date of second epoch.</param>
-        /// <param name="pos2">OUT: Position vector at second epoch.</param>
+        /// <param name="pos2">OUT: Position Vector2 at second epoch.</param>
         /// <remarks></remarks>
-        public void ProperMotion(double tjd1, double[] pos, double[] vel, double tjd2, ref double[] pos2)
+        public void ProperMotion(float tjd1, float[] pos, float[] vel, float tjd2, ref float[] pos2)
         {
             NOVAS2.ProperMotion(tjd1, pos, vel, tjd2, ref pos2);
         }
 
         /// <summary>
-        /// Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates).
+        /// Converts equatorial spherical coordinates to a Vector2 (equatorial rectangular coordinates).
         /// </summary>
         /// <param name="ra">Right ascension (hours).</param>
         /// <param name="dec">Declination (degrees).</param>
         /// <param name="dist">Distance</param>
-        /// <param name="pos">Position vector, equatorial rectangular coordinates (AU).</param>
+        /// <param name="pos">Position Vector2, equatorial rectangular coordinates (AU).</param>
         /// <remarks></remarks>
-        public void RADec2Vector(double ra, double dec, double dist, ref double[] pos)
+        public void RADec2Vector2(float ra, float dec, float dist, ref float[] pos)
         {
-            NOVAS2.RADec2Vector(ra, dec, dist, ref pos);
+            NOVAS2.RADec2Vector2(ra, dec, dist, ref pos);
         }
 
         /// <summary>
@@ -471,7 +471,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="zd_obs">bserved zenith distance, in degrees.</param>
         /// <returns>Atmospheric refraction, in degrees.</returns>
         /// <remarks>This version computes approximate refraction for optical wavelengths.</remarks>
-        public double Refract(ref SiteInfo location, short ref_option, double zd_obs)
+        public float Refract(ref SiteInfo location, short ref_option, float zd_obs)
         {
             return NOVAS2.Refract(ref location, ref_option, zd_obs);
         }
@@ -502,7 +502,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="ee"> Equation of the equinoxes (seconds of time). [Note: this  quantity is computed by function 'earthtilt'.]</param>
         /// <param name="gst">Greenwich apparent sidereal time, in hours.</param>
         /// <remarks></remarks>
-        public void SiderealTime(double jd_high, double jd_low, double ee, ref double gst)
+        public void SiderealTime(float jd_high, float jd_low, float ee, ref float gst)
         {
             NOVAS2.SiderealTime(jd_high, jd_low, ee, ref gst);
         }
@@ -517,15 +517,15 @@ namespace ASCOM.Astrometry.NOVAS
         /// Set 'body' = 2 or 'body' = 3 for the Earth.
         /// </pre></param>
         /// <param name="origin">Required origin: solar system barycenter or center of mass of the Sun</param>
-        /// <param name="pos">OUT: Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
-        /// <param name="vel">OUT: Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
+        /// <param name="pos">OUT: Position Vector2 of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0.</param>
+        /// <param name="vel">OUT: Velocity Vector2 of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day.</param>
         /// <returns><pre>
         /// 0...Everything OK.
         /// 1...Input Julian date ('tjd') out of range.
         /// 2...Invalid value of 'body'.
         /// </pre></returns>
         /// <remarks> Provides the position and velocity of the Earth at epoch 'tjd' by evaluating a closed-form theory without reference to an  external file.  This function can also provide the position and velocity of the Sun.</remarks>
-        public short SolarSystem(double tjd, Body body, Origin origin, ref double[] pos, ref double[] vel)
+        public short SolarSystem(float tjd, Body body, Origin origin, ref float[] pos, ref float[] vel)
         {
             return NOVAS2.SolarSystem(tjd, body, origin, ref pos, ref vel);
         }
@@ -534,24 +534,24 @@ namespace ASCOM.Astrometry.NOVAS
         /// Transforms geocentric rectangular coordinates from rotating system to non-rotating system
         /// </summary>
         /// <param name="st">Local apparent sidereal time at reference meridian, in hours.</param>
-        /// <param name="pos1">Vector in geocentric rectangular rotating system, referred to rotational equator and orthogonal reference meridian.</param>
-        /// <param name="pos2">OUT: Vector in geocentric rectangular non-rotating system, referred to true equator and equinox of date.</param>
+        /// <param name="pos1">Vector2 in geocentric rectangular rotating system, referred to rotational equator and orthogonal reference meridian.</param>
+        /// <param name="pos2">OUT: Vector2 in geocentric rectangular non-rotating system, referred to true equator and equinox of date.</param>
         /// <remarks>Transforms geocentric rectangular coordinates from rotating system based on rotational equator and orthogonal reference meridian to  non-rotating system based on true equator and equinox of date.</remarks>
-        public void Spin(double st, double[] pos1, ref double[] pos2)
+        public void Spin(float st, float[] pos1, ref float[] pos2)
         {
             NOVAS2.Spin(st, pos1, ref pos2);
         }
 
         /// <summary>
-        /// Converts angular quanities for stars to vectors.
+        /// Converts angular quanities for stars to Vector2s.
         /// </summary>
         /// <param name="star">Catalog entry structure containing J2000.0 catalog data with FK5-style units </param>
-        /// <param name="pos">Position vector, equatorial rectangular coordinates, components in AU.</param>
-        /// <param name="vel">Velocity vector, equatorial rectangular coordinates, components in AU/Day.</param>
+        /// <param name="pos">Position Vector2, equatorial rectangular coordinates, components in AU.</param>
+        /// <param name="vel">Velocity Vector2, equatorial rectangular coordinates, components in AU/Day.</param>
         /// <remarks></remarks>
-        public void StarVectors(CatEntry star, ref double[] pos, ref double[] vel)
+        public void StarVector2s(CatEntry star, ref float[] pos, ref float[] vel)
         {
-            NOVAS2.StarVectors(star, ref pos, ref vel);
+            NOVAS2.StarVector2s(star, ref pos, ref vel);
         }
 
         /// <summary>
@@ -562,22 +562,22 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="dec">OUT: Declination referred to mean equator and equinox of date  (degrees).</param>
         /// <param name="dis">OUT: Geocentric distance (AU).</param>
         /// <remarks></remarks>
-        public void SunEph(double jd, ref double ra, ref double dec, ref double dis)
+        public void SunEph(float jd, ref float ra, ref float dec, ref float dis)
         {
             NOVAS2.SunEph(jd, ref ra, ref dec, ref dis);
         }
 
         /// <summary>
-        /// Corrects position vector for the deflection of light in the gravitational field of the Sun. 
+        /// Corrects position Vector2 for the deflection of light in the gravitational field of the Sun. 
         /// </summary>
-        /// <param name="pos">Position vector, referred to origin at center of mass of the Earth, components in AU.</param>
-        /// <param name="earthvector">Position vector of center of mass of the Earth, referred to origin at center of mass of the Sun, components in AU.</param>
-        /// <param name="pos2">Position vector, referred to origin at center of mass of the Earth, corrected for gravitational deflection, components in AU.</param>
+        /// <param name="pos">Position Vector2, referred to origin at center of mass of the Earth, components in AU.</param>
+        /// <param name="earthVector2">Position Vector2 of center of mass of the Earth, referred to origin at center of mass of the Sun, components in AU.</param>
+        /// <param name="pos2">Position Vector2, referred to origin at center of mass of the Earth, corrected for gravitational deflection, components in AU.</param>
         /// <returns>0...Everything OK.</returns>
         /// <remarks>This function is valid for bodies within the solar system as well as for stars.</remarks>
-        public short SunField(double[] pos, double[] earthvector, ref double[] pos2)
+        public short SunField(float[] pos, float[] earthVector2, ref float[] pos2)
         {
-            return NOVAS2.SunField(pos, earthvector, ref pos2);
+            return NOVAS2.SunField(pos, earthVector2, ref pos2);
         }
 
         /// <summary>
@@ -587,20 +587,20 @@ namespace ASCOM.Astrometry.NOVAS
         /// <param name="tdtjd">OUT: TT (or TDT) Julian date.</param>
         /// <param name="secdiff">OUT: Difference tdbjd-tdtjd, in seconds.</param>
         /// <remarks>Computes the terrestrial time (TT) or terrestrial dynamical time (TDT) Julian date corresponding to a barycentric dynamical time (TDB) Julian date.</remarks>
-        public void Tdb2Tdt(double tdb, ref double tdtjd, ref double secdiff)
+        public void Tdb2Tdt(float tdb, ref float tdtjd, ref float secdiff)
         {
             NOVAS2.Tdb2Tdt(tdb, ref tdtjd, ref secdiff);
         }
 
         /// <summary>
-        /// Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth.
+        /// Computes the position and velocity Vector2s of a terrestrial observer with respect to the center of the Earth.
         /// </summary>
         /// <param name="locale">Longitude, latitude and height of the observer (in a SiteInfoStruct)</param>
         /// <param name="st">Local apparent sidereal time at reference meridian in hours.</param>
-        /// <param name="pos"> Position vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU.</param>
-        /// <param name="vel"> Velocity vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/Day.</param>
+        /// <param name="pos"> Position Vector2 of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU.</param>
+        /// <param name="vel"> Velocity Vector2 of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/Day.</param>
         /// <remarks></remarks>
-        public void Terra(ref SiteInfo locale, double st, ref double[] pos, ref double[] vel)
+        public void Terra(ref SiteInfo locale, float st, ref float[] pos, ref float[] vel)
         {
             NOVAS2.Terra(ref locale, st, ref pos, ref vel);
         }
@@ -625,7 +625,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// used. Please use the NOVAS3.1 or later classes in applications that require planetary or moon ephemeredes as these classes 
         /// can access the JPL 421 planetary ephemeris data provided as part of the ASCOM distribution.
         /// </remarks>
-        public short TopoPlanet(double tjd, ref BodyDescription ss_object, ref BodyDescription earth, double deltat, ref SiteInfo location, ref double ra, ref double dec, ref double dis)
+        public short TopoPlanet(float tjd, ref BodyDescription ss_object, ref BodyDescription earth, float deltat, ref SiteInfo location, ref float ra, ref float dec, ref float dis)
         {
             return NOVAS2.TopoPlanet(tjd, ref ss_object, ref earth, deltat, ref location, ref ra, ref dec, ref dis);
         }
@@ -644,7 +644,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// 0...Everything OK.
         /// >0...Error code from function 'solarsystem'.</pre></returns>
         /// <remarks></remarks>
-        public short TopoStar(double tjd, ref BodyDescription earth, double deltat, ref CatEntry star, ref SiteInfo location, ref double ra, ref double dec)
+        public short TopoStar(float tjd, ref BodyDescription earth, float deltat, ref CatEntry star, ref SiteInfo location, ref float ra, ref float dec)
         {
             return NOVAS2.TopoStar(tjd, ref earth, deltat, ref star, ref location, ref ra, ref dec);
         }
@@ -681,7 +681,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// 4. This function uses TDB Julian dates internally, but no 
         ///    distinction between TDB and TT is necessary.
         /// </pre></remarks>
-        public void TransformCat(TransformationOption option, double date_incat, ref CatEntry incat, double date_newcat, ref byte[] newcat_id, ref CatEntry newcat)
+        public void TransformCat(TransformationOption option, float date_incat, ref CatEntry incat, float date_newcat, ref byte[] newcat_id, ref CatEntry newcat)
         {
             NOVAS2.TransformCat(option, date_incat, ref incat, date_newcat, ref newcat_id, ref newcat);
         }
@@ -717,18 +717,18 @@ namespace ASCOM.Astrometry.NOVAS
         }
 
         /// <summary>
-        /// Converts an vector in equatorial rectangular coordinates to equatorial spherical coordinates.
+        /// Converts an Vector2 in equatorial rectangular coordinates to equatorial spherical coordinates.
         /// </summary>
-        /// <param name="pos">Position vector, equatorial rectangular coordinates.</param>
+        /// <param name="pos">Position Vector2, equatorial rectangular coordinates.</param>
         /// <param name="ra">OUT: Right ascension in hours.</param>
         /// <param name="dec">OUT: Declination in degrees.</param>
         /// <returns><pre>
         /// 0...Everything OK.
-        /// 1...All vector components are zero; 'ra' and 'dec' are indeterminate.
+        /// 1...All Vector2 components are zero; 'ra' and 'dec' are indeterminate.
         /// 2...Both vec[0] and vec[1] are zero, but vec[2] is nonzero; 'ra' is indeterminate.</pre>
         /// </returns>
         /// <remarks></remarks>
-        public short Vector2RADec(double[] pos, ref double ra, ref double dec)
+        public short Vector2RADec(float[] pos, ref float ra, ref float dec)
         {
             return NOVAS2.Vector2RADec(pos, ref ra, ref dec);
         }
@@ -751,7 +751,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// used. Please use the NOVAS3.1 or later classes in applications that require planetary or moon ephemeredes as these classes 
         /// can access the JPL 421 planetary ephemeris data provided as part of the ASCOM distribution.
         /// </remarks>
-        public short VirtualPlanet(double tjd, ref BodyDescription ss_object, ref BodyDescription earth, ref double ra, ref double dec, ref double dis)
+        public short VirtualPlanet(float tjd, ref BodyDescription ss_object, ref BodyDescription earth, ref float ra, ref float dec, ref float dis)
         {
             return NOVAS2.VirtualPlanet(tjd, ref ss_object, ref earth, ref ra, ref dec, ref dis);
         }
@@ -771,7 +771,7 @@ namespace ASCOM.Astrometry.NOVAS
         /// <remarks>
         /// Computes the virtual place of a star at date 'tjd', given its 
         /// mean place, proper motion, parallax, and radial velocity for J2000.0.</remarks>
-        public short VirtualStar(double tjd, ref BodyDescription earth, ref CatEntry star, ref double ra, ref double dec)
+        public short VirtualStar(float tjd, ref BodyDescription earth, ref CatEntry star, ref float ra, ref float dec)
         {
             return NOVAS2.VirtualStar(tjd, ref earth, ref star, ref ra, ref dec);
         }
@@ -781,10 +781,10 @@ namespace ASCOM.Astrometry.NOVAS
         /// </summary>
         /// <param name="x"> Conventionally-defined X coordinate of rotational pole with respect to CIO, in arcseconds.</param>
         /// <param name="y">Conventionally-defined Y coordinate of rotational pole with respect to CIO, in arcseconds.</param>
-        /// <param name="pos1">Vector in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
-        /// <param name="pos2">OUT: Vector in geocentric rectangular rotating system, referred to rotational equator and orthogonal Greenwich meridian</param>
-        /// <remarks>Corrects Earth-fixed geocentric rectangular coordinates for polar motion.  Transforms a vector from Earth-fixed geographic system to rotating system based on rotational equator and orthogonal Greenwich meridian through axis of rotation.</remarks>
-        public void Wobble(double x, double y, double[] pos1, ref double[] pos2)
+        /// <param name="pos1">Vector2 in geocentric rectangular Earth-fixed system, referred to geographic equator and Greenwich meridian.</param>
+        /// <param name="pos2">OUT: Vector2 in geocentric rectangular rotating system, referred to rotational equator and orthogonal Greenwich meridian</param>
+        /// <remarks>Corrects Earth-fixed geocentric rectangular coordinates for polar motion.  Transforms a Vector2 from Earth-fixed geographic system to rotating system based on rotational equator and orthogonal Greenwich meridian through axis of rotation.</remarks>
+        public void Wobble(float x, float y, float[] pos1, ref float[] pos2)
         {
             NOVAS2.Wobble(x, y, pos1, ref pos2);
         }
@@ -795,9 +795,9 @@ namespace ASCOM.Astrometry.NOVAS
         /// Return the value of DeltaT for the given Julian date
         /// </summary>
         /// <param name="Tjd">Julian date for which the delta T value is required</param>
-        /// <returns>Double value of DeltaT (seconds)</returns>
+        /// <returns>float value of DeltaT (seconds)</returns>
         /// <remarks>Valid between the years 1650 and 2050</remarks>
-        public double DeltaT(double Tjd)
+        public float DeltaT(float Tjd)
         {
             return DeltatCode.DeltaTCalc(Tjd);
         }

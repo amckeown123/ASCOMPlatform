@@ -106,7 +106,7 @@ Public Class Util
     ''' to 0, causing the calling Win32 process to give up control to the kernel scheduler and then immediately 
     ''' become eligible for scheduling. </remarks>
     Public Sub WaitForMilliseconds(ByVal Milliseconds As Integer) Implements IUtil.WaitForMilliseconds
-        Dim EndPoint As Double
+        Dim EndPoint As float
         m_StopWatch.Reset() 'Initialise from last times use
         m_StopWatch.Start() 'Start timer straight away
 
@@ -129,10 +129,10 @@ Public Class Util
     ' the seconds or even the minutes part.
     '
     ''' <summary>
-    ''' Convert sexagesimal degrees to binary double-precision degrees
+    ''' Convert sexagesimal degrees to binary float-precision degrees
     ''' </summary>
     ''' <param name="DMS">The sexagesimal input string (degrees)</param>
-    ''' <returns>The double-precision binary value (degrees) represented by the sexagesimal input</returns>
+    ''' <returns>The float-precision binary value (degrees) represented by the sexagesimal input</returns>
     ''' <remarks><para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just 
     ''' about anything that resembles sexagesimal. Thee way they operate is to first separate the input string 
     ''' into numeric "tokens", strings consisting only of the numerals 0-9, plus and minus, and period. All other 
@@ -146,7 +146,7 @@ Public Class Util
     ''' would be legal. So 00:30.5:30 would convert to 1.0 unit. </para>
     ''' <para>Note that plain units, for example 23.128734523 are acceptable to the method. </para>
     ''' </remarks>
-    Public Function DMSToDegrees(ByVal DMS As String) As Double Implements IUtil.DMSToDegrees
+    Public Function DMSToDegrees(ByVal DMS As String) As float Implements IUtil.DMSToDegrees
         'Refactored to use .NET regular expressions
         Dim sg As Short
         Dim rx As System.Text.RegularExpressions.Regex
@@ -189,10 +189,10 @@ Public Class Util
     End Function
 
     ''' <summary>
-    ''' Convert sexagesimal hours to binary double-precision hours
+    ''' Convert sexagesimal hours to binary float-precision hours
     ''' </summary>
     ''' <param name="HMS">The sexagesimal input string (hours)</param>
-    ''' <returns>The double-precision binary value (hours) represented by the sexagesimal input </returns>
+    ''' <returns>The float-precision binary value (hours) represented by the sexagesimal input </returns>
     ''' <remarks>
     ''' <para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just about 
     ''' anything that resembles sexagesimal. Thee way they operate is to first separate the input string into 
@@ -209,15 +209,15 @@ Public Class Util
     ''' fractional parts, but it would be legal. So 00:30.5:30 would convert to 1.0 unit. Note that plain units, 
     ''' for example 23.128734523 are acceptable to the method. </para>
     ''' </remarks>
-    Public Function HMSToHours(ByVal HMS As String) As Double Implements IUtil.HMSToHours
+    Public Function HMSToHours(ByVal HMS As String) As float Implements IUtil.HMSToHours
         HMSToHours = DMSToDegrees(HMS)
     End Function
 
     ''' <summary>
-    ''' Convert sexagesimal hours to binary double-precision hours
+    ''' Convert sexagesimal hours to binary float-precision hours
     ''' </summary>
     ''' <param name="HMS">The sexagesimal input string (hours)</param>
-    ''' <returns>The double-precision binary value (hours) represented by the sexagesimal input</returns>
+    ''' <returns>The float-precision binary value (hours) represented by the sexagesimal input</returns>
     ''' <remarks>
     ''' <para>The sexagesimal to real conversion methods such as this one are flexible enough to convert just about 
     ''' anything that resembles sexagesimal. Thee way they operate is to first separate the input string into 
@@ -234,7 +234,7 @@ Public Class Util
     ''' fractional parts, but it would be legal. So 00:30.5:30 would convert to 1.0 unit. Note that plain units, 
     ''' for example 23.128734523 are acceptable to the method. </para>
     ''' </remarks>
-    Public Function HMSToDegrees(ByVal HMS As String) As Double Implements IUtil.HMSToDegrees
+    Public Function HMSToDegrees(ByVal HMS As String) As float Implements IUtil.HMSToDegrees
         HMSToDegrees = DMSToDegrees(HMS) * 15.0#
     End Function
 
@@ -253,11 +253,11 @@ Public Class Util
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
     ''' characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+    ''' "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToDMS(ByVal Degrees As Double) As String Implements IUtilExtra.DegreesToDMS
+    Public Overloads Function DegreesToDMS(ByVal Degrees As float) As String Implements IUtilExtra.DegreesToDMS
         Return DegreesToDMS(Degrees, "° ", "' ", """", 0)
     End Function
 
@@ -271,11 +271,11 @@ Public Class Util
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
     ''' characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+    ''' "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String) As String Implements IUtilExtra.DegreesToDMS
+    Public Overloads Function DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String) As String Implements IUtilExtra.DegreesToDMS
         Return DegreesToDMS(Degrees, DegDelim, "' ", """", 0)
     End Function
 
@@ -290,11 +290,11 @@ Public Class Util
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
     ''' characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+    ''' "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToDMS
+    Public Overloads Function DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToDMS
         Return DegreesToDMS(Degrees, DegDelim, MinDelim, """", 0)
     End Function
 
@@ -310,11 +310,11 @@ Public Class Util
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
     ''' characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
+    ''' "DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-        Public Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String Implements IUtilExtra.DegreesToDMS
+        Public Overloads Function DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String Implements IUtilExtra.DegreesToDMS
         Return DegreesToDMS(Degrees, DegDelim, MinDelim, SecDelim, 0)
     End Function
 
@@ -331,7 +331,7 @@ Public Class Util
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single 
     ''' characters.</para>
     ''' </remarks>
-    Public Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String Implements IUtil.DegreesToDMS
+    Public Overloads Function DegreesToDMS(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String Implements IUtil.DegreesToDMS
         Dim w, m, s As String, n As Boolean, f As String, i As Integer
 
         If Degrees < 0.0# Then
@@ -380,11 +380,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+    ''' "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function HoursToHMS(ByVal Hours As Double) As String Implements IUtilExtra.HoursToHMS
+    Public Overloads Function HoursToHMS(ByVal Hours As float) As String Implements IUtilExtra.HoursToHMS
         Return DegreesToDMS(Hours, ":", ":", "", 0)
     End Function
 
@@ -397,11 +397,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+    ''' "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String) As String Implements IUtilExtra.HoursToHMS
+    Public Overloads Function HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String) As String Implements IUtilExtra.HoursToHMS
         Return DegreesToDMS(Hours, HrsDelim, ":", "", 0)
     End Function
 
@@ -415,11 +415,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+    ''' "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.HoursToHMS
+    Public Overloads Function HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.HoursToHMS
         Return DegreesToDMS(Hours, HrsDelim, MinDelim, "", 0)
     End Function
 
@@ -434,11 +434,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+    ''' "HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String Implements IUtilExtra.HoursToHMS
+    Public Overloads Function HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String Implements IUtilExtra.HoursToHMS
         Return DegreesToDMS(Hours, HrsDelim, MinDelim, SecDelim, 0)
     End Function
 
@@ -454,13 +454,13 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' </remarks>
-    Public Overloads Function HoursToHMS(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String Implements IUtil.HoursToHMS
+    Public Overloads Function HoursToHMS(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String Implements IUtil.HoursToHMS
         Return DegreesToDMS(Hours, HrsDelim, MinDelim, SecDelim, SecDecimalDigits)
     End Function
 #End Region
 
 #Region "DegreesToHMS"
-    'Public Overloads Function DegreesToHMS(ByVal Degrees As Double, Optional ByVal HrsDelim As String = ":", Optional ByVal MinDelim As String = ":", Optional ByVal SecDelim As String = "", Optional ByVal SecDecimalDigits As Short = 0) As String Implements IUtil.DegreesToHMS
+    'Public Overloads Function DegreesToHMS(ByVal Degrees As float, Optional ByVal HrsDelim As String = ":", Optional ByVal MinDelim As String = ":", Optional ByVal SecDelim As String = "", Optional ByVal SecDecimalDigits As Short = 0) As String Implements IUtil.DegreesToHMS
     ''' <summary>
     ''' Convert degrees to sexagesimal hours, minutes, and seconds with default delimters of HH:MM:SS
     ''' </summary>
@@ -469,11 +469,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+    ''' "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToHMS(ByVal Degrees As Double) As String Implements IUtilExtra.DegreesToHMS
+    Public Overloads Function DegreesToHMS(ByVal Degrees As float) As String Implements IUtilExtra.DegreesToHMS
         Return DegreesToHMS(Degrees, ":", ":", "", 0)
     End Function
 
@@ -486,11 +486,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+    ''' "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String) As String Implements IUtilExtra.DegreesToHMS
+    Public Overloads Function DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String) As String Implements IUtilExtra.DegreesToHMS
         Return DegreesToHMS(Degrees, HrsDelim, ":", "", 0)
     End Function
 
@@ -504,11 +504,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+    ''' "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToHMS
+    Public Overloads Function DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToHMS
         Return DegreesToHMS(Degrees, HrsDelim, MinDelim, "", 0)
     End Function
 
@@ -523,11 +523,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
+    ''' "DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String Implements IUtilExtra.DegreesToHMS
+    Public Overloads Function DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String Implements IUtilExtra.DegreesToHMS
         Return DegreesToHMS(Degrees, HrsDelim, MinDelim, SecDelim, 0)
     End Function
 
@@ -543,7 +543,7 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters. </para>
     ''' </remarks>
-    Public Overloads Function DegreesToHMS(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String Implements IUtil.DegreesToHMS
+    Public Overloads Function DegreesToHMS(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal SecDelim As String, ByVal SecDecimalDigits As Integer) As String Implements IUtil.DegreesToHMS
         Return DegreesToDMS(Degrees / 15.0#, HrsDelim, MinDelim, SecDelim, SecDecimalDigits)
     End Function
 
@@ -562,11 +562,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToDM(ByVal Degrees As Double) As String Implements IUtilExtra.DegreesToDM
+    Public Overloads Function DegreesToDM(ByVal Degrees As float) As String Implements IUtilExtra.DegreesToDM
         Return DegreesToDM(Degrees, "° ", "'", 0)
     End Function
 
@@ -579,11 +579,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String) As String Implements IUtilExtra.DegreesToDM
+    Public Overloads Function DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String) As String Implements IUtilExtra.DegreesToDM
         Return DegreesToDM(Degrees, DegDelim, "'", 0)
     End Function
 
@@ -597,11 +597,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Overloads Function DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToDM
+    Public Overloads Function DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToDM
         Return DegreesToDM(Degrees, DegDelim, MinDelim, 0)
     End Function
 
@@ -616,7 +616,7 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' </remarks>
-    Public Overloads Function DegreesToDM(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String Implements IUtil.DegreesToDM
+    Public Overloads Function DegreesToDM(ByVal Degrees As float, ByVal DegDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String Implements IUtil.DegreesToDM
         Dim w, m, f As String, n As Boolean, i As Integer
 
         If Degrees < 0.0# Then
@@ -659,11 +659,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with an suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Function HoursToHM(ByVal Hours As Double) As String Implements IUtilExtra.HoursToHM
+    Public Function HoursToHM(ByVal Hours As float) As String Implements IUtilExtra.HoursToHM
         Return DegreesToDM(Hours, ":", "", 0)
     End Function
 
@@ -676,11 +676,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with an suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Function HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String) As String Implements IUtilExtra.HoursToHM
+    Public Function HoursToHM(ByVal Hours As float, ByVal HrsDelim As String) As String Implements IUtilExtra.HoursToHM
         Return DegreesToDM(Hours, HrsDelim, "", 0)
     End Function
 
@@ -694,11 +694,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with an suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Function HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.HoursToHM
+    Public Function HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.HoursToHM
         Return DegreesToDM(Hours, HrsDelim, MinDelim, 0)
     End Function
 
@@ -713,14 +713,14 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters.</para>
     ''' </remarks>
-    Public Function HoursToHM(ByVal Hours As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String Implements IUtil.HoursToHM
+    Public Function HoursToHM(ByVal Hours As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String Implements IUtil.HoursToHM
         Return DegreesToDM(Hours, HrsDelim, MinDelim, MinDecimalDigits)
     End Function
 
 #End Region
 
 #Region "DegreesToHM"
-    'Public Function DegreesToHM(ByVal Degrees As Double, Optional ByVal HrsDelim As String = ":", Optional ByVal MinDelim As String = "", Optional ByVal MinDecimalDigits As Short = 0) As String Implements IUtil.DegreesToHM
+    'Public Function DegreesToHM(ByVal Degrees As float, Optional ByVal HrsDelim As String = ":", Optional ByVal MinDelim As String = "", Optional ByVal MinDecimalDigits As Short = 0) As String Implements IUtil.DegreesToHM
     ''' <summary>
     ''' Convert degrees to sexagesimal hours and minutes with default delimiters HH:MM
     ''' </summary>
@@ -729,11 +729,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Function DegreesToHM(ByVal Degrees As Double) As String Implements IUtilExtra.DegreesToHM
+    Public Function DegreesToHM(ByVal Degrees As float) As String Implements IUtilExtra.DegreesToHM
         Return DegreesToHM(Degrees, ":", "", 0)
     End Function
 
@@ -746,11 +746,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Function DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String) As String Implements IUtilExtra.DegreesToHM
+    Public Function DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String) As String Implements IUtilExtra.DegreesToHM
         Return DegreesToHM(Degrees, HrsDelim, "", 0)
     End Function
 
@@ -764,11 +764,11 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
     ''' <para>This overload is not available through COM, please use 
-    ''' "DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
+    ''' "DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
     <ComVisible(False)> _
-    Public Function DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToHM
+    Public Function DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToHM
         Return DegreesToHM(Degrees, HrsDelim, MinDelim, 0)
     End Function
 
@@ -783,7 +783,7 @@ Public Class Util
     ''' <remarks>
     ''' <para>If you need a leading plus sign, you must prepend it yourself. The delimiters are not restricted to single characters</para>
     ''' </remarks>
-    Public Function DegreesToHM(ByVal Degrees As Double, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String Implements IUtil.DegreesToHM
+    Public Function DegreesToHM(ByVal Degrees As float, ByVal HrsDelim As String, ByVal MinDelim As String, ByVal MinDecimalDigits As Integer) As String Implements IUtil.DegreesToHM
         Return DegreesToDM(Degrees / 15.0#, HrsDelim, MinDelim, MinDecimalDigits)
     End Function
 
@@ -800,12 +800,12 @@ Public Class Util
     ''' <remarks>Please be careful if you wish to convert this string into a number within your application 
     ''' because the ASCOM Platform is used internationally and some countries use characters other 
     ''' than point as the decimal separator. 
-    ''' <para>If your application tries to convert 5.5 into a Double value when running on a PC localised to 
+    ''' <para>If your application tries to convert 5.5 into a float value when running on a PC localised to 
     ''' France, you will get an exception because the French decimal separater is comma and 5.5 is not 
     ''' a valid representation of a decimal number in that locale.</para>
-    ''' <para>If you still wish to turn the Platform Version into a Double value, you can use an 
+    ''' <para>If you still wish to turn the Platform Version into a float value, you can use an 
     ''' approach such as this:</para>
-    ''' <code>If Double.Parse(Util.PlatformVersion, CultureInfo.InvariantCulture) &lt; 5.5 Then...</code>
+    ''' <code>If float.Parse(Util.PlatformVersion, CultureInfo.InvariantCulture) &lt; 5.5 Then...</code>
     ''' <para>If you just wish to test whether the platform is greater than a particular level,
     ''' you can use the <see cref="IsMinimumRequiredVersion">IsMinimumRequiredVersion</see> method.</para>
     ''' </remarks>
@@ -906,7 +906,7 @@ Public Class Util
     ''' <returns>UTC offset (hours) for the computer's clock</returns>
     ''' <remarks>The offset is in hours, such that UTC = local + offset. The offset includes any daylight/summer time that may be 
     ''' in effect.</remarks>
-    Public ReadOnly Property TimeZoneOffset() As Double Implements IUtil.TimeZoneOffset
+    Public ReadOnly Property TimeZoneOffset() As float Implements IUtil.TimeZoneOffset
         Get
             Return GetTimeZoneOffset()
         End Get
@@ -928,7 +928,7 @@ Public Class Util
     ''' </summary>
     ''' <returns>Current Julian date</returns>
     ''' <remarks>This is quantised to the second in the COM component but to a small decimal fraction in the .NET component</remarks>
-    Public ReadOnly Property JulianDate() As Double Implements IUtil.JulianDate
+    Public ReadOnly Property JulianDate() As float Implements IUtil.JulianDate
         Get
             Return Me.DateUTCToJulian(Date.UtcNow)
         End Get
@@ -940,7 +940,7 @@ Public Class Util
     ''' <param name="LocalDate">Date in local-time</param>
     ''' <returns>Julian date</returns>
     ''' <remarks>Julian dates are always in UTC </remarks>
-    Public Function DateLocalToJulian(ByVal LocalDate As Date) As Double Implements IUtil.DateLocalToJulian
+    Public Function DateLocalToJulian(ByVal LocalDate As Date) As float Implements IUtil.DateLocalToJulian
         Return Me.DateUTCToJulian(CvtUTC(LocalDate))
     End Function
 
@@ -950,7 +950,7 @@ Public Class Util
     ''' <param name="JD">Julian date to convert</param>
     ''' <returns>Date in local-time for the given Julian date</returns>
     ''' <remarks>Julian dates are always in UTC</remarks>
-    Public Function DateJulianToLocal(ByVal JD As Double) As Date Implements IUtil.DateJulianToLocal
+    Public Function DateJulianToLocal(ByVal JD As float) As Date Implements IUtil.DateJulianToLocal
         Return CvtLocal(Me.DateJulianToUTC(JD))
     End Function
 
@@ -960,7 +960,7 @@ Public Class Util
     ''' <param name="UTCDate">UTC date to convert</param>
     ''' <returns>Julian date</returns>
     ''' <remarks>Julian dates are always in UTC </remarks>
-    Public Function DateUTCToJulian(ByVal UTCDate As Date) As Double Implements IUtil.DateUTCToJulian
+    Public Function DateUTCToJulian(ByVal UTCDate As Date) As float Implements IUtil.DateUTCToJulian
         Return UTCDate.ToOADate() + 2415018.5
     End Function
 
@@ -970,7 +970,7 @@ Public Class Util
     ''' <param name="JD">Julian date</param>
     ''' <returns>Date in UTC for the given Julian date</returns>
     ''' <remarks>Julian dates are always in UTC </remarks>
-    Public Function DateJulianToUTC(ByVal JD As Double) As Date Implements IUtil.DateJulianToUTC
+    Public Function DateJulianToUTC(ByVal JD As float) As Date Implements IUtil.DateJulianToUTC
         Return System.DateTime.FromOADate(JD - 2415018.5)
     End Function
 
@@ -1002,8 +1002,8 @@ Public Class Util
     ' PURPOSE     : Return the time zone offset in hours, such that
     '               UTC - local + offset
     '------------------------------------------------------------------------
-    Private Function GetTimeZoneOffset() As Double
-        Dim x As Double
+    Private Function GetTimeZoneOffset() As float
+        Dim x As float
         '5.0.2 Added sign as the ASCOM standard is opposite to Windows
         x = 23.45 * 43.67
         x = -x

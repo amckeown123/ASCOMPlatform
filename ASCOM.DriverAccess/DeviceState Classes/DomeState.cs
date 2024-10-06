@@ -53,7 +53,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IDomeV3.Altitude):
                             try
                             {
-                                Altitude = (double)stateValue.Value;
+                                Altitude = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -89,7 +89,7 @@ namespace ASCOM.DriverAccess
                         case nameof(IDomeV3.Azimuth):
                             try
                             {
-                                Azimuth = (double)stateValue.Value;
+                                Azimuth = (float)stateValue.Value;
                             }
                             catch (Exception ex)
                             {
@@ -150,7 +150,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Dome altitude
         /// </summary>
-        public double? Altitude { get; set; } = null;
+        public float? Altitude { get; set; } = null;
 
         /// <summary>
         /// Dome is at home
@@ -165,7 +165,7 @@ namespace ASCOM.DriverAccess
         /// <summary>
         /// Dome azimuth
         /// </summary>
-        public double? Azimuth { get; set; } = null;
+        public float? Azimuth { get; set; } = null;
 
         /// <summary>
         /// Dome shutter state

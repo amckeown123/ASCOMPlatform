@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿
 using ASCOM.DeviceInterface;
+using System.Numerics;
+
 
 namespace ASCOM.Simulator
 {
@@ -12,8 +14,9 @@ namespace ASCOM.Simulator
     /// </summary>
     internal static class MountFunctions
     {
-        private const double HOURS_TO_DEGREES = 15.0;
-        private const double DEGREES_TO_HOURS = 0.06666666666666667;
+        private const float HOURS_TO_DEGREES = 15.0f;
+        private const float DEGREES_TO_HOURS = 0.06666666666666667f;
+
 
         /// <summary>
         /// convert a RaDec position to an axes positions. 
@@ -21,9 +24,9 @@ namespace ASCOM.Simulator
         /// <param name="raDec"></param>
         /// <param name="preserveSop">used for sync</param>
         /// <returns></returns>
-        internal static Vector ConvertRaDecToAxes(Vector raDec, bool preserveSop = false)
+        internal static Vector2 ConvertRaDecToAxes(Vector2 raDec, bool preserveSop = false)
         {
-            Vector axes = new Vector();
+            Vector2 axes = new Vector2();
             switch (TelescopeHardware.AlignmentMode)
             {
                 case ASCOM.DeviceInterface.AlignmentModes.algAltAz:
@@ -32,7 +35,6 @@ namespace ASCOM.Simulator
 
                 case ASCOM.DeviceInterface.AlignmentModes.algGermanPolar:
                     PierSide sop = TelescopeHardware.SideOfPier;
-
                     axes.X = (TelescopeHardware.SiderealTime - raDec.X) * HOURS_TO_DEGREES;
                     axes.Y = (TelescopeHardware.Latitude >= 0) ? raDec.Y : -raDec.Y;
                     axes.X = RangeAzm(axes.X);
@@ -63,9 +65,9 @@ namespace ASCOM.Simulator
             return RangeAxes(axes);
         }
 
-        internal static Vector ConvertAltAzmToAxes(Vector altAz)
+        internal static Vector2 ConvertAltAzmToAxes(Vector2 altAz)
         {
-            Vector axes = altAz;
+            Vector2 axes = altAz;
             switch (TelescopeHardware.AlignmentMode)
             {
                 case ASCOM.DeviceInterface.AlignmentModes.algAltAz:
@@ -98,9 +100,9 @@ namespace ASCOM.Simulator
             return RangeAxes(axes);
         }
 
-        internal static Vector ConvertAxesToRaDec(Vector axes)
+        internal static Vector2 ConvertAxesToRaDec(Vector2 axes)
         {
-            Vector raDec = new Vector();
+            Vector2 raDec = new Vector2();
             switch (TelescopeHardware.AlignmentMode)
             {
                 case ASCOM.DeviceInterface.AlignmentModes.algAltAz:
@@ -114,7 +116,7 @@ namespace ASCOM.Simulator
                     // undo through the pole
                     if (axes.Y > 90)
                     {
-                        axes.X += 180.0;
+                        axes.X += 180.0f;
                         axes.Y = 180 - axes.Y;
                         axes = RangeAltAzm(axes);
                     }
@@ -126,9 +128,9 @@ namespace ASCOM.Simulator
             return RangeRaDec(raDec);
         }
 
-        internal static Vector ConvertAxesToAltAzm(Vector axes)
+        internal static Vector2 ConvertAxesToAltAzm(Vector2 axes)
         {
-            Vector altAzm = axes;
+            Vector2 altAzm = axes;
             switch (TelescopeHardware.AlignmentMode)
             {
                 case ASCOM.DeviceInterface.AlignmentModes.algAltAz:
@@ -164,27 +166,27 @@ namespace ASCOM.Simulator
         /// forces a ra dec value to the range 0 to 24.0 and -90 to 90
         /// </summary>
         /// <param name="raDec">The ra dec.</param>
-        private static Vector RangeRaDec(Vector raDec)
+        private static Vector2 RangeRaDec(Vector2 raDec)
         {
-            return new Vector(RangeHa(raDec.X), RangeDec(raDec.Y));
+            return new Vector2(RangeHa(raDec.X), RangeDec(raDec.Y));
         }
 
         /// <summary>
         /// forces an altz value the the range 0 to 360 for azimuth and -90 to 90 for altitude
         /// </summary>
         /// <param name="altAzm"></param>
-        private static Vector RangeAltAzm(Vector altAzm)
+        private static Vector2 RangeAltAzm(Vector2 altAzm)
         {
-            return new Vector(RangeAzm(altAzm.X), RangeDec(altAzm.Y));
+            return new Vector2(RangeAzm(altAzm.X), RangeDec(altAzm.Y));
         }
 
         /// <summary>
         /// forces axis values to the range 0 to 360 and -90 to 270
         /// </summary>
         /// <param name="axes"></param>
-        private static Vector RangeAxes(Vector axes)
+        private static Vector2 RangeAxes(Vector2 axes)
         {
-            return new Vector(RangeAzm(axes.X), RangeDecx(axes.Y));
+            return new Vector2(RangeAzm(axes.X), RangeDecx(axes.Y));
         }
 
         /// <summary>
@@ -192,12 +194,12 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="azm">The azm.</param>
         /// <returns></returns>
-        private static double RangeAzm(double azm)
+        private static float RangeAzm(float azm)
         {
             while ((azm >= 360.0) || (azm < 0.0))
             {
-                if (azm < 0.0) azm += 360.0;
-                if (azm >= 360.0) azm -= 360.0;
+                if (azm < 0.0) azm += 360.0f;
+                if (azm >= 360.0) azm -= 360.0f;
             }
             return azm;
         }
@@ -207,12 +209,12 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="dec">The dec in degrees.</param>
         /// <returns></returns>
-        internal static double RangeDecx(double dec)
+        internal static float RangeDecx(float dec)
         {
             while ((dec >= 270) || (dec < -90))
             {
-                if (dec < -90) dec += 360.0;
-                if (dec >= 270) dec -= 360.0;
+                if (dec < -90) dec += 360.0f;
+                if (dec >= 270) dec -= 360.0f;
             }
             return dec;
         }
@@ -222,12 +224,12 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="dec">The dec.</param>
         /// <returns></returns>
-        private static double RangeDec(double dec)
+        private static float RangeDec(float dec)
         {
             while ((dec > 90.0) || (dec < -90.0))
             {
-                if (dec < -90.0) dec += 180.0;
-                if (dec > 90.0) dec = 180.0 - dec;
+                if (dec < -90.0) dec += 180.0f;
+                if (dec > 90.0) dec = 180.0f - dec;
             }
             return dec;
         }
@@ -237,12 +239,12 @@ namespace ASCOM.Simulator
         /// </summary>
         /// <param name="ha">The ha.</param>
         /// <returns></returns>
-        private static double RangeHa(double ha)
+        private static float RangeHa(float ha)
         {
             while ((ha >= 24.0) || (ha < 0.0))
             {
-                if (ha < 0.0) ha += 24.0;
-                if (ha >= 24.0) ha -= 24.0;
+                if (ha < 0.0) ha += 24.0f;
+                if (ha >= 24.0) ha -= 24.0f;
             }
             return ha;
         }

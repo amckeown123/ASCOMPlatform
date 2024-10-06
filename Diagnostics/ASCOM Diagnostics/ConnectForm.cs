@@ -334,12 +334,12 @@ namespace ASCOM.Utilities
                         }
                     case "RightAscension":
                         {
-                            Result = Util.DegreesToHMS(Conversions.ToDouble(DeviceObject.RightAscension));
+                            Result = Util.DegreesToHMS(Conversions.Tofloat(DeviceObject.RightAscension));
                             break;
                         }
                     case "Declination":
                         {
-                            Result = Util.DegreesToDMS(Conversions.ToDouble(DeviceObject.Declination), ":", ":", "");
+                            Result = Util.DegreesToDMS(Conversions.Tofloat(DeviceObject.Declination), ":", ":", "");
                             break;
                         }
                     case "Disconnect":

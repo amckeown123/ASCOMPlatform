@@ -1,13 +1,15 @@
-﻿using System;
+﻿
+using ASCOM.Utilities.Exceptions;
+using ASCOM.Utilities.Interfaces;
+using Nancy.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading;
-using ASCOM.Utilities.Interfaces;
-using Nancy.Json;
-//using Newtonsoft.Json;
 
 namespace ASCOM.Utilities
 {
@@ -17,11 +19,11 @@ namespace ASCOM.Utilities
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The discovery process is asynchronous and is initiated by the <see cref="StartDiscovery(int, int, int, double, bool, bool, bool)"/> method. Clients can then either work synchronously by looping and periodically 
+    /// The discovery process is asynchronous and is initiated by the <see cref="StartDiscovery(int, int, int, float, bool, bool, bool)"/> method. Clients can then either work synchronously by looping and periodically 
     /// polling the <see cref="DiscoveryComplete"/> property or work asynchronously by handling the <see cref="AlpacaDevicesUpdated"/> and <see cref="DiscoveryCompleted"/> events while doing other work.
     /// </para>
     /// <para>
-    /// The <see cref="StartDiscovery(int, int, int, double, bool, bool, bool)"/> method is used to set the character of the discovery e.g. the discovery duration and whether to search for IPv4 and/or IPv6 devices. 
+    /// The <see cref="StartDiscovery(int, int, int, float, bool, bool, bool)"/> method is used to set the character of the discovery e.g. the discovery duration and whether to search for IPv4 and/or IPv6 devices. 
     /// After the specified discovery duration, the <see cref="DiscoveryComplete"/> event fires and the <see cref="DiscoveryCompleted"/> property returns True.
     /// </para>
     /// <para>
@@ -46,7 +48,7 @@ namespace ASCOM.Utilities
         // Private variables
         private Dictionary<IPEndPoint, AlpacaDevice> alpacaDeviceList = new(); // List of discovered Alpaca devices keyed on IP:Port
         private bool disposedValue = false; // To detect redundant Dispose() method calls
-        private double discoveryTime; // Length of the discovery phase before it times out
+        private float discoveryTime; // Length of the discovery phase before it times out
         private bool tryDnsNameResolution; // Flag indicating whether to attempt name resolution on the host IP address
         private DateTime discoveryStartTime; // Time at which the start discovery command was received
         private bool discoveryCompleteValue; // Discovery completion status
@@ -72,6 +74,32 @@ namespace ASCOM.Utilities
         {
             TL = traceLogger; // Save the supplied trace logger object
             InitialiseClass(); // Initialise using the trace logger
+        }
+
+        event System.EventHandler IAlpacaDiscoveryExtra.AlpacaDevicesUpdated
+        {
+            add
+            {
+                throw new System.NotImplementedException();
+            }
+
+            remove
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        event System.EventHandler IAlpacaDiscoveryExtra.DiscoveryCompleted
+        {
+            add
+            {
+                throw new System.NotImplementedException();
+            }
+
+            remove
+            {
+                throw new System.NotImplementedException();
+            }
         }
 
         private void InitialiseClass()
@@ -160,7 +188,7 @@ namespace ASCOM.Utilities
         /// Flag that indicates when a discovery cycle is complete
         /// </summary>
         /// <returns>True when discovery is complete.</returns>
-        /// <remarks>The discovery is considered complete when the time period specified on the <see cref="StartDiscovery(int, int, int, double, bool, bool, bool)"/> method is exceeded.</remarks>
+        /// <remarks>The discovery is considered complete when the time period specified on the <see cref="StartDiscovery(int, int, int, float, bool, bool, bool)"/> method is exceeded.</remarks>
         public bool DiscoveryComplete
         {
             get
@@ -288,7 +316,7 @@ namespace ASCOM.Utilities
         /// <param name="resolveDnsName">Attempt to resolve host IP addresses to DNS names</param>
         /// <param name="useIpV4">Search for Alpaca devices that use IPv4 addresses. (One or both of useIpV4 and useIpV6 must be True.)</param>
         /// <param name="useIpV6">Search for Alpaca devices that use IPv6 addresses. (One or both of useIpV4 and useIpV6 must be True.)</param>
-        public void StartDiscovery(int numberOfPolls, int pollInterval, int discoveryPort, double discoveryDuration, bool resolveDnsName, bool useIpV4, bool useIpV6)
+        public void StartDiscovery(int numberOfPolls, int pollInterval, int discoveryPort, float discoveryDuration, bool resolveDnsName, bool useIpV4, bool useIpV6)
         {
 
             // Validate parameters
@@ -431,8 +459,9 @@ namespace ASCOM.Utilities
                 LogMessage("GetAlpacaDeviceInformation", $"DISCOVERY TIMEOUT: {discoveryTime} ({discoveryTime * 1000d})");
 
                 // Wait for API version result and process it
-                using (var apiClient = new WebClientWithTimeOut())
+               
                 {
+                    WebClientWithTimeOut apiClient = new WebClientWithTimeOut();
                     LogMessage("GetAlpacaDeviceInformation", $"About to get version information from http://{hostIpAndPort}/management/apiversions at IP endpoint {deviceIpEndPoint.Address} {deviceIpEndPoint.AddressFamily}");
 
                     string apiVersionsJsonResponse = GetRequest($"http://{hostIpAndPort}/management/apiversions", Convert.ToInt32(discoveryTime * 1000d));
@@ -452,8 +481,9 @@ namespace ASCOM.Utilities
                 }
 
                 // Wait for device description result and process it
-                using (var descriptionClient = new WebClientWithTimeOut())
+
                 {
+                    var descriptionClient = new WebClientWithTimeOut();
                     string deviceDescriptionJsonResponse = GetRequest($"http://{hostIpAndPort}/management/v1/description", Convert.ToInt32(discoveryTime * 1000d));
                     LogMessage("GetAlpacaDeviceInformation", $"Received JSON response from {hostIpAndPort}: {deviceDescriptionJsonResponse}");
                     var serializer = new JavaScriptSerializer();
@@ -473,9 +503,9 @@ namespace ASCOM.Utilities
                 }
 
                 // Wait for configured devices result and process it
-                using (var configuredDevicesClient = new WebClientWithTimeOut())
                 {
-                    string configuredDevicesJsonResponse = GetRequest($"http://{hostIpAndPort}/management/v1/configureddevices", Convert.ToInt32(discoveryTime * 1000d));
+                    var configuredDevicesClient = new WebClientWithTimeOut();
+                        string configuredDevicesJsonResponse = GetRequest($"http://{hostIpAndPort}/management/v1/configureddevices", Convert.ToInt32(discoveryTime * 1000d));
                     LogMessage("GetAlpacaDeviceInformation", $"Received JSON response from {hostIpAndPort}: {configuredDevicesJsonResponse}");
 
                     var serializer = new JavaScriptSerializer();
@@ -625,17 +655,18 @@ namespace ASCOM.Utilities
         /// <returns>Device response as a string</returns>
         private string GetRequest(string deviceUrl, int timeOut)
         {
-            WebClientWithTimeOut webClient;
+            HttpClient webClient;
             string returnString;
 
-            webClient = new WebClientWithTimeOut();
-            webClient.Timeout = timeOut;
+            webClient = new HttpClient();
+            webClient.Timeout.Add(TimeSpan.FromSeconds(timeOut));
 
             // Get the string response from the device
-            returnString = webClient.DownloadString(deviceUrl);
+            returnString = webClient.GetStreamAsync(deviceUrl).Result.ToString();
 
             return returnString;
         }
+
 
         #endregion
 

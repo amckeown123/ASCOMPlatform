@@ -22,7 +22,7 @@ namespace ASCOM.Simulator
 	{
 		private long? frameNumber;
 		private string imageInfo;
-		private double? exposureDuration;
+		private float? exposureDuration;
 		private string exposureStartTime;
 		private int[,] pixels;
 		private object[,] pixelsVariant;
@@ -122,7 +122,7 @@ namespace ASCOM.Simulator
 		}
 
 		/// <exception cref="T:ASCOM.PropertyNotImplementedException">Must throw an exception if not supported</exception>
-		public double ExposureDuration
+		public float ExposureDuration
 		{
 			get
 			{

@@ -1,11 +1,13 @@
-﻿using Microsoft.Win32;
-using System;
-using System.IO;
+﻿
 
 // NOTE - This cut down TraceLogger source code is included in each of the Platform installer support utilities to ensure that
 // they are self-contained with no external ASCOM dependencies. If the normal Utilities DLL was included as Platform content,
 // any Utilities assembly in the GAC would be loaded instead of the intended version in the Platform content. This will
 // result in the previous Platform's TraceLogger code being run instead of the intended version included as installer content.
+
+using Microsoft.Win32;
+using System;
+using System.IO;
 
 namespace Utilities
 {
@@ -26,7 +28,7 @@ namespace Utilities
     public class TraceLogger : IDisposable
     {
 
-        private string logFileType;
+        private readonly string logFileType;
         private StreamWriter logFileStream;
         private bool enabled;
         private string logFilePath;
@@ -44,13 +46,14 @@ namespace Utilities
         #region New and IDisposable Support
 
         private bool disposedValue = false;
+        private string v;
 
         /// <summary>
         /// Creates a new TraceLogger instance and initialises filename and type
         /// </summary>
         /// <param name="logFileType">String identifying the type of log e,g, Focuser, LX200, GEMINI, MoonLite, G11</param>
         /// <remarks>The LogFileType is used in the file name to allow you to quickly identify which of several logs contains the information of interest.</remarks>
-        public TraceLogger(string logFileType) : base()
+        public TraceLogger(string logFileType, string v) : base()
         {
             //Save parameters to use when the first call to write a record is made
             this.logFileType = logFileType;
@@ -60,6 +63,11 @@ namespace Utilities
 
             // Initialise the log file path to the default value
             logFilePath = folderName + TRACE_LOGGER_FILENAME_BASE + DateTime.Now.ToString(TRACE_LOGGER_FILE_NAME_DATE_FORMAT);
+        }
+
+        public TraceLogger(string v)
+        {
+            this.v = v;
         }
 
         /// <summary>

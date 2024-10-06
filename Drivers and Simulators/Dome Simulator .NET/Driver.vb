@@ -253,7 +253,7 @@ Public Class Dome
         If Not g_bConnected Then Throw New NotConnectedException("Dome simulator is not connected")
     End Sub
 
-    Private Shared Sub check_Az(ByVal Az As Double)
+    Private Shared Sub check_Az(ByVal Az As float)
         If Az = INVALID_COORDINATE Then Throw New InvalidValueException("Azimuth", "Invalid Coordinate", "0 to 360 degrees")
         If Az >= 360.0# Or Az < 0.0# Then Throw New InvalidValueException("Azimuth", Az.ToString, "0 to 360.0 degrees")
     End Sub
@@ -277,7 +277,7 @@ Public Class Dome
         End If
     End Sub
 
-    Public ReadOnly Property Altitude() As Double Implements IDomeV3.Altitude
+    Public ReadOnly Property Altitude() As float Implements IDomeV3.Altitude
         Get
             If g_TrafficForm IsNot Nothing Then
                 If g_TrafficForm.chkShutter.Checked Then _
@@ -331,7 +331,7 @@ Public Class Dome
         End Get
     End Property
 
-    Public ReadOnly Property Azimuth() As Double Implements IDomeV3.Azimuth
+    Public ReadOnly Property Azimuth() As float Implements IDomeV3.Azimuth
         Get
             If g_TrafficForm IsNot Nothing Then
                 If g_TrafficForm.chkOther.Checked Then _
@@ -790,7 +790,7 @@ Public Class Dome
         End Get
     End Property
 
-    Public Sub SlewToAltitude(ByVal Altitude As Double) Implements IDomeV3.SlewToAltitude
+    Public Sub SlewToAltitude(ByVal Altitude As float) Implements IDomeV3.SlewToAltitude
         If g_TrafficForm IsNot Nothing Then
             If g_TrafficForm.chkShutter.Checked Then g_TrafficForm.TrafficLine("SlewToAltitude:" & Format$(Altitude, "0.0"))
         End If
@@ -822,7 +822,7 @@ Public Class Dome
         HW_MoveShutter(Altitude)
     End Sub
 
-    Public Sub SlewToAzimuth(ByVal Azimuth As Double) Implements IDomeV3.SlewToAzimuth
+    Public Sub SlewToAzimuth(ByVal Azimuth As float) Implements IDomeV3.SlewToAzimuth
         If g_TrafficForm IsNot Nothing Then
             If g_TrafficForm.chkSlew.Checked Then g_TrafficForm.TrafficLine("SlewToAzimuth: " & Format$(Azimuth, "0.0"))
         End If
@@ -850,7 +850,7 @@ Public Class Dome
         HW_Move(Azimuth)
     End Sub
 
-    Public Sub SyncToAzimuth(ByVal Azimuth As Double) Implements IDomeV3.SyncToAzimuth
+    Public Sub SyncToAzimuth(ByVal Azimuth As float) Implements IDomeV3.SyncToAzimuth
         If g_TrafficForm IsNot Nothing Then
             If g_TrafficForm.chkSlew.Checked Then g_TrafficForm.TrafficLine("SyncToAzimuth: " & Format$(Azimuth, "0.0"))
         End If
