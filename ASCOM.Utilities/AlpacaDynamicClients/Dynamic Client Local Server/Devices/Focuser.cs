@@ -1,5 +1,4 @@
 ﻿using ASCOM.Alpaca.Clients;
-using ASCOM.Common;
 using ASCOM.DeviceInterface;
 using ASCOM.Common.Interfaces;
 using ASCOM.Tools;
@@ -18,7 +17,7 @@ namespace ASCOM.DynamicClients
     public class Focuser : ReferenceCountedObjectBase, IFocuserV4, IDisposable
     {
         // Set the device type of this device
-        private const DeviceTypes deviceType = DeviceTypes.Focuser;
+        private const Common.DeviceTypes deviceType = Common.DeviceTypes.Focuser;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaFocuser client;
@@ -696,7 +695,7 @@ namespace ASCOM.DynamicClients
         public void Halt()
         {
             client.Halt();
-            TL.LogMessage("Halt", "Halted OK");
+            LogMessage("Halt", "Halted OK");
         }
 
         public void Move(int Position)
@@ -731,7 +730,7 @@ namespace ASCOM.DynamicClients
         private void LogMessage(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Information, identifier, message);
+            TL?.LogMessage(identifier, message);
         }
 
         /// <summary>
@@ -742,7 +741,7 @@ namespace ASCOM.DynamicClients
         private void LogDebug(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Debug, identifier, message);
+            TL?.LogMessage(identifier, message);
         }
 
         #endregion

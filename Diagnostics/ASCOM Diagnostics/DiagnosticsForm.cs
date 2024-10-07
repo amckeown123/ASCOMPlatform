@@ -31,9 +31,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Win32;
 using PlatformUpdateChecker;
 using Semver;
-using static System.Collections.Specialized.BitVector232;
-
-
+using static System.Collections.Specialized.BitVector32;
 
 
 //using Semver;
@@ -62,7 +60,7 @@ namespace ASCOM.Utilities
         private const bool CREATE_DEBUG_COLSOLE = false;
 
         // Current number of leap seconds - Used to test NOVAS 3.1 DeltaT calculation - Needs to be updated when the number of leap seconds changes
-        private const float CURRENT_LEAP_SECONDS = 37.0d;
+        private const double CURRENT_LEAP_SECONDS = 37.0d;
 
         private const string ASCOM_PLATFORM_NAME = "ASCOM Platform 7";
         private const string INST_DISPLAY_NAME = "DisplayName";
@@ -79,20 +77,20 @@ namespace ASCOM.Utilities
         private const string TestTelescopeDescription = "This is a test telescope";
         private const string RevisedTestTelescopeDescription = "Updated description for test telescope!!!";
         private const string NewTestTelescopeDescription = "New description for test telescope!!!";
-        private const float TOLERANCE_E2 = 0.01d; // Used in evaluating precision match of float values
-        private const float TOLERANCE_E3 = 0.001d; // Used in evaluating precision match of float values
-        private const float TOLERANCE_E4 = 0.0001d; // Used in evaluating precision match of float values
-        private const float TOLERANCE_E5 = 0.00001d; // Used in evaluating precision match of float values
-        private const float TOLERANCE_E6 = 0.000001d; // Used in evaluating precision match of float values
-        private const float TOLERANCE_E7 = 0.0000001d; // Used in evaluating precision match of float values
-        private const float TOLERANCE_E8 = 0.00000001d; // Used in evaluating precision match of float values
-        private const float TOLERANCE_E9 = 0.000000001d;
-        private const float TOLERANCE_100_MILLISECONDS = 0.000027777778d; // 1 arc second in hours also 1 second in degrees
-        private const float TOLERANCE_1_SECOND = 0.00027777778d; // 1 arc second in hours also 1 second in degrees
-        private const float TOLERANCE_5_SECONDS = 0.00138888888d; // 1 arc second in hours also 1 second in degrees
+        private const double TOLERANCE_E2 = 0.01d; // Used in evaluating precision match of double values
+        private const double TOLERANCE_E3 = 0.001d; // Used in evaluating precision match of double values
+        private const double TOLERANCE_E4 = 0.0001d; // Used in evaluating precision match of double values
+        private const double TOLERANCE_E5 = 0.00001d; // Used in evaluating precision match of double values
+        private const double TOLERANCE_E6 = 0.000001d; // Used in evaluating precision match of double values
+        private const double TOLERANCE_E7 = 0.0000001d; // Used in evaluating precision match of double values
+        private const double TOLERANCE_E8 = 0.00000001d; // Used in evaluating precision match of double values
+        private const double TOLERANCE_E9 = 0.000000001d;
+        private const double TOLERANCE_100_MILLISECONDS = 0.000027777778d; // 1 arc second in hours also 1 second in degrees
+        private const double TOLERANCE_1_SECOND = 0.00027777778d; // 1 arc second in hours also 1 second in degrees
+        private const double TOLERANCE_5_SECONDS = 0.00138888888d; // 1 arc second in hours also 1 second in degrees
 
-        private const float RADIANS_TO_HOURS = 12.0d / Math.PI;
-        private const float RADIANS_TO_DEGREES = 180.0d / Math.PI;
+        private const double RADIANS_TO_HOURS = 12.0d / Math.PI;
+        private const double RADIANS_TO_DEGREES = 180.0d / Math.PI;
 
         private const int DOME_SLEW_TIMEOUT = 240;
         private const string INST_UNINSTALL_STRING = "UninstallString";
@@ -100,7 +98,7 @@ namespace ASCOM.Utilities
         private const string INST_NOT_KNOWN = "Not known";
 
         private const string TEST_DATE = "Thursday, 30 December 2010 09:00:00"; // Arbitrary test date used to generate NOVASCOM test data, it must conform to the "F" date format for the invariant culture
-        private const float J2000 = 2451545.0d; // Julian day for J2000 epoch
+        private const double J2000 = 2451545.0d; // Julian day for J2000 epoch
         private const int INDENT = 3; // Display indent for recursive loop output
 
         private const int CSIDL_PROGRAM_FILES = 38; // 0x0026
@@ -122,7 +120,7 @@ namespace ASCOM.Utilities
         internal static extern bool FreeConsole();
         #endregion
 
-        private enum floatType
+        private enum DoubleType
         {
             Number,
             Hours0To24,
@@ -277,6 +275,8 @@ namespace ASCOM.Utilities
                 BringToFront();
                 KeyPreview = true; // Ensure that key press events are sent to the form so that the key press event handler can respond to them
 
+                Status("Diagnostics may take several minutes to complete");
+
                 LogInternal("Load", "Complete");
                 LogInternal(" ", " ");
             }
@@ -325,6 +325,7 @@ namespace ASCOM.Utilities
                 TL.BlankLine();
                 TL.LogMessage("CurrentCulture", CultureInfo.CurrentCulture.EnglishName + " " + CultureInfo.CurrentCulture.Name + " Decimal Separator \"" + CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator + "\"" + " Number Group Separator \"" + CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator + "\"");
                 TL.LogMessage("CurrentUICulture", CultureInfo.CurrentUICulture.EnglishName + " " + CultureInfo.CurrentUICulture.Name + " Decimal Separator \"" + CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator + "\"" + " Number Group Separator \"" + CultureInfo.CurrentUICulture.NumberFormat.NumberGroupSeparator + "\"");
+                TL.BlankLine();
 
                 try
                 {
@@ -336,8 +337,36 @@ namespace ASCOM.Utilities
                     string currentBuildNumber = regKey.GetValue("currentBuildNumber", "").ToString();
                     string ubr = regKey.GetValue("UBR", "").ToString();
 
-                    TL.BlankLine();
-                    TL.LogMessage("OS Version", $"{productName} {currentType} {currentMajorVersionNumber}.{currentMinorVersionNumber}.{currentBuildNumber}.{ubr}");
+                    // Use the build num,ber to determine the OS version label
+                    string productVersionName = "Unknown OS version";
+                    try
+                    {
+                        int buildNumber = Int32.Parse(currentBuildNumber);
+
+                        // Select the appropriate OS product label based on the build number
+                        productVersionName = buildNumber switch
+                        {
+                            int build when build < 10000 => "Earlier than Windows 10",
+                            int build when (build >= 10000) & (build < 19041) => "Windows 10",
+                            19041 => "Windows 10 (2004)",
+                            19042 => "Windows 10 (20H2)",
+                            19043 => "Windows 10 (21H1)",
+                            19044 => "Windows 10 (21H2)",
+                            19045 => "Windows 10 (22H2)",
+                            22000 => "Windows 11 (21H2)",
+                            22621 => "Windows 11 (22H2)",
+                            22631 => "Windows 11 (23H2)",
+                            26100 => "Windows 11 (24H2)",
+                            _ => $"Windows 11 or later"
+                        };
+                    }
+                    catch (Exception ex)
+                    {
+                        TL.LogMessageCrLf("OSVersion", $"Exception parsing OS version - {ex.Message}\r\n{ex}");
+                        TL.LogMessageCrLf("OSVersion", $"Major version number: {currentMajorVersionNumber}, Minor version number: {currentMinorVersionNumber}, Build number: {currentBuildNumber}");
+                    }
+
+                    TL.LogMessage("OS Version", $"{productVersionName} {currentType} {currentMajorVersionNumber}.{currentMinorVersionNumber}.{currentBuildNumber}.{ubr}");
                     TL.BlankLine();
                 }
                 catch (Exception ex)
@@ -868,10 +897,10 @@ namespace ASCOM.Utilities
         private void SOFATests()
         {
             Astrometry.SOFA.SOFA SOFA;
-            float t1 = default, t2 = default, date1, date2;
+            double t1 = default, t2 = default, date1, date2;
             int j;
-            float rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, aob = default, zob = default, hob = default, dob = default, rob = default, eo = default;
-            float ri = default, di = default, a = default, u1 = default, u2 = default, a1 = default, a2 = default, ob1, ob2;
+            double rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, aob = default, zob = default, hob = default, dob = default, rob = default, eo = default;
+            double ri = default, di = default, a = default, u1 = default, u2 = default, a1 = default, a2 = default, ob1, ob2;
 
             Status("Testing SOFA");
             TL.LogMessage("SOFATests", "Starting test");
@@ -885,11 +914,11 @@ namespace ASCOM.Utilities
             // Af2a tests
             j = SOFA.Af2a("-", 45, 13, 27.2d, ref a);
 
-            Comparefloat("SOFATests", "Af2a", a, -0.78931157943136443d, 0.000000000001d);
+            CompareDouble("SOFATests", "Af2a", a, -0.78931157943136443d, 0.000000000001d);
             CompareInteger("SOFATests", "Af2a-status", j, 0);
 
             // Anp tests
-            Comparefloat("SOFATests", "Anp", SOFA.Anp(-0.1d), 6.1831853071795866d, 0.000000000001d);
+            CompareDouble("SOFATests", "Anp", SOFA.Anp(-0.1d), 6.1831853071795866d, 0.000000000001d);
 
             // Atci13 tests
             rc = 2.71d;
@@ -903,9 +932,9 @@ namespace ASCOM.Utilities
 
             SOFA.CelestialToIntermediate(rc, dc, pr, pd, px, rv, date1, date2, ref ri, ref di, ref eo);
 
-            Comparefloat("SOFATests", "CelestialToIntermediate-ri", ri, 2.7101215729690389d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "CelestialToIntermediate-di", di, 0.17293713672182304d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
-            Comparefloat("SOFATests", "CelestialToIntermediate-eo", eo, -0.0029006187126573756d, TOLERANCE_E8);
+            CompareDouble("SOFATests", "CelestialToIntermediate-ri", ri, 2.7101215729690389d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "CelestialToIntermediate-di", di, 0.17293713672182304d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "CelestialToIntermediate-eo", eo, -0.0029006187126573756d, TOLERANCE_E8);
 
             // Atco13 tests
             rc = 2.71d;
@@ -929,25 +958,25 @@ namespace ASCOM.Utilities
 
             j = SOFA.CelestialToObserved(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref aob, ref zob, ref hob, ref dob, ref rob, ref eo);
 
-            Comparefloat("SOFATests", "CelestialToObserved-aob", aob, 0.0925177448538656d, TOLERANCE_100_MILLISECONDS, floatType.Degrees0To360InRadians);
-            Comparefloat("SOFATests", "CelestialToObserved-zob", zob, 1.4076614052567671d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
-            Comparefloat("SOFATests", "CelestialToObserved-hob", hob, -0.0926515443143121d, TOLERANCE_100_MILLISECONDS, floatType.HoursMinus12ToPlus12InRadians);
-            Comparefloat("SOFATests", "CelestialToObserved-dob", dob, 0.17166265600755917d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
-            Comparefloat("SOFATests", "CelestialToObserved-rob", rob, 2.7102604535030976d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "CelestialToObserved-eo", eo, -0.0030205483548024128d, TOLERANCE_E8);
+            CompareDouble("SOFATests", "CelestialToObserved-aob", aob, 0.0925177448538656d, TOLERANCE_100_MILLISECONDS, DoubleType.Degrees0To360InRadians);
+            CompareDouble("SOFATests", "CelestialToObserved-zob", zob, 1.4076614052567671d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "CelestialToObserved-hob", hob, -0.0926515443143121d, TOLERANCE_100_MILLISECONDS, DoubleType.HoursMinus12ToPlus12InRadians);
+            CompareDouble("SOFATests", "CelestialToObserved-dob", dob, 0.17166265600755917d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "CelestialToObserved-rob", rob, 2.7102604535030976d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "CelestialToObserved-eo", eo, -0.0030205483548024128d, TOLERANCE_E8);
             CompareInteger("SOFATests", "CelestialToObserved-status", j, 0);
 
             // Dtf2d tests
 
             j = SOFA.Dtf2d("UTC", 1994, 6, 30, 23, 59, 60.13599d, ref u1, ref u2);
 
-            Comparefloat("SOFATests", "Dtf2d", u1 + u2, 2449534.49999d, 0.000001d);
+            CompareDouble("SOFATests", "Dtf2d", u1 + u2, 2449534.49999d, 0.000001d);
             CompareInteger("SOFATests", "Dtf2d-status", j, 0);
 
             // Eo06a tests
             eo = SOFA.Eo06a(2400000.5d, 53736.0d);
 
-            Comparefloat("SOFATests", "Eo06a-eo", eo, -0.0013328823719418337d, 0.000000000000001d);
+            CompareDouble("SOFATests", "Eo06a-eo", eo, -0.0013328823719418337d, 0.000000000000001d);
 
             // Atic13 tests
             ri = 2.7101215729690389d;
@@ -957,9 +986,9 @@ namespace ASCOM.Utilities
 
             SOFA.IntermediateToCelestial(ri, di, date1, date2, ref rc, ref dc, ref eo);
 
-            Comparefloat("SOFATests", "IntermediateToCelestial-rc", rc, 2.7101265045313747d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "IntermediateToCelestial-dc", dc, 0.17406325376283424d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
-            Comparefloat("SOFATests", "IntermediateToCelestial-eo", eo, -0.0029006187126573756d, 0.00000000000001d);
+            CompareDouble("SOFATests", "IntermediateToCelestial-rc", rc, 2.7101265045313747d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "IntermediateToCelestial-dc", dc, 0.17406325376283424d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "IntermediateToCelestial-eo", eo, -0.0029006187126573756d, 0.00000000000001d);
 
             // Atio13 tests
             ri = 2.7101215729690389d;
@@ -979,11 +1008,11 @@ namespace ASCOM.Utilities
 
             j = SOFA.IntermediateToObserved(ri, di, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref aob, ref zob, ref hob, ref dob, ref rob);
 
-            Comparefloat("SOFATests", "IntermediateToObserved-aob", aob, 0.0923395222479499d, TOLERANCE_100_MILLISECONDS, floatType.Degrees0To360InRadians);
-            Comparefloat("SOFATests", "IntermediateToObserved-zob", zob, 1.4077587045137225d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
-            Comparefloat("SOFATests", "IntermediateToObserved-hob", hob, -0.092476198797820056d, TOLERANCE_100_MILLISECONDS, floatType.HoursMinus12ToPlus12InRadians);
-            Comparefloat("SOFATests", "IntermediateToObserved-dob", dob, 0.17176534357582651d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
-            Comparefloat("SOFATests", "IntermediateToObserved-rob", rob, 2.7100851079868864d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "IntermediateToObserved-aob", aob, 0.0923395222479499d, TOLERANCE_100_MILLISECONDS, DoubleType.Degrees0To360InRadians);
+            CompareDouble("SOFATests", "IntermediateToObserved-zob", zob, 1.4077587045137225d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "IntermediateToObserved-hob", hob, -0.092476198797820056d, TOLERANCE_100_MILLISECONDS, DoubleType.HoursMinus12ToPlus12InRadians);
+            CompareDouble("SOFATests", "IntermediateToObserved-dob", dob, 0.17176534357582651d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "IntermediateToObserved-rob", rob, 2.7100851079868864d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
             CompareInteger("SOFATests", "IntermediateToObserved-status", j, 0);
 
             // Atoc13 tests
@@ -1003,22 +1032,22 @@ namespace ASCOM.Utilities
             ob1 = 2.7100851079868864d;
             ob2 = 0.17176534357582651d;
             j = SOFA.ObservedToCelestial("R", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref rc, ref dc);
-            Comparefloat("SOFATests", "ObservedToCelestial-R-rc", rc, 2.7099567446610004d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "ObservedToCelestial-R-dc", dc, 0.17416965008953986d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "ObservedToCelestial-R-rc", rc, 2.7099567446610004d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "ObservedToCelestial-R-dc", dc, 0.17416965008953986d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
             CompareInteger("SOFATests", "ObservedToCelestial-R-status", j, 0);
 
             ob1 = -0.092476198797820056d;
             ob2 = 0.17176534357582651d;
             j = SOFA.ObservedToCelestial("H", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref rc, ref dc);
-            Comparefloat("SOFATests", "ObservedToCelestial-H-rc", rc, 2.7099567446610004d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "ObservedToCelestial-H-dc", dc, 0.17416965008953986d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "ObservedToCelestial-H-rc", rc, 2.7099567446610004d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "ObservedToCelestial-H-dc", dc, 0.17416965008953986d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
             CompareInteger("SOFATests", "ObservedToCelestial-H-status", j, 0);
 
             ob1 = 0.0923395222479499d;
             ob2 = 1.4077587045137225d;
             j = SOFA.ObservedToCelestial("A", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref rc, ref dc);
-            Comparefloat("SOFATests", "ObservedToCelestial-A-rc", rc, 2.7099567446610004d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "ObservedToCelestial-A-dc", dc, 0.17416965008953986d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "ObservedToCelestial-A-rc", rc, 2.7099567446610004d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "ObservedToCelestial-A-dc", dc, 0.17416965008953986d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
             CompareInteger("SOFATests", "ObservedToCelestial-A-status", j, 0);
 
             // Atoi13 tests
@@ -1038,53 +1067,53 @@ namespace ASCOM.Utilities
             ob1 = 2.7100851079868864d;
             ob2 = 0.17176534357582651d;
             j = SOFA.ObservedToIntermediate("R", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref ri, ref di);
-            Comparefloat("SOFATests", "ObservedToIntermediate-ri", ri, 2.7101215744491358d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "ObservedToIntermediate-di", di, 0.17293718391145677d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "ObservedToIntermediate-ri", ri, 2.7101215744491358d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "ObservedToIntermediate-di", di, 0.17293718391145677d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
             CompareInteger("SOFATests", "ObservedToIntermediate-status", j, 0);
 
             ob1 = -0.092476198797820056d;
             ob2 = 0.17176534357582651d;
             j = SOFA.ObservedToIntermediate("H", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref ri, ref di);
-            Comparefloat("SOFATests", "ObservedToIntermediate-ri", ri, 2.7101215744491358d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "ObservedToIntermediate-di", di, 0.17293718391145677d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "ObservedToIntermediate-ri", ri, 2.7101215744491358d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "ObservedToIntermediate-di", di, 0.17293718391145677d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
             CompareInteger("SOFATests", "ObservedToIntermediate-status", j, 0);
 
             ob1 = 0.0923395222479499d;
             ob2 = 1.4077587045137225d;
             j = SOFA.ObservedToIntermediate("A", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, ref ri, ref di);
-            Comparefloat("SOFATests", "ObservedToIntermediate-ri", ri, 2.7101215744491358d, TOLERANCE_100_MILLISECONDS, floatType.Hours0To24InRadians);
-            Comparefloat("SOFATests", "ObservedToIntermediate-di", di, 0.17293718391145677d, TOLERANCE_100_MILLISECONDS, floatType.DegreesMinus180ToPlus180InRadians);
+            CompareDouble("SOFATests", "ObservedToIntermediate-ri", ri, 2.7101215744491358d, TOLERANCE_100_MILLISECONDS, DoubleType.Hours0To24InRadians);
+            CompareDouble("SOFATests", "ObservedToIntermediate-di", di, 0.17293718391145677d, TOLERANCE_100_MILLISECONDS, DoubleType.DegreesMinus180ToPlus180InRadians);
             CompareInteger("SOFATests", "ObservedToIntermediate-status", j, 0);
 
             // TaiTT tests
             j = SOFA.TaiTt(2453750.5d, 0.892482639d, ref t1, ref t2);
-            Comparefloat("SOFATests", "TaiTT-t1", t1, 2453750.5d, 0.000001d);
-            Comparefloat("SOFATests", "TaiTT-t2", t2, 0.892855139d, 0.000000000001d);
+            CompareDouble("SOFATests", "TaiTT-t1", t1, 2453750.5d, 0.000001d);
+            CompareDouble("SOFATests", "TaiTT-t2", t2, 0.892855139d, 0.000000000001d);
             CompareInteger("SOFATests", "TaiTT-status", j, 0);
 
             // TaiUtc tests
             j = SOFA.TaiUtc(2453750.5d, 0.892482639d, ref u1, ref u2);
-            Comparefloat("SOFATests", "TaiUtc-u1", u1, 2453750.5d, 0.000001d);
-            Comparefloat("SOFATests", "TaiUtc-u2", u2, 0.89210069455555552d, 0.000000000001d);
+            CompareDouble("SOFATests", "TaiUtc-u1", u1, 2453750.5d, 0.000001d);
+            CompareDouble("SOFATests", "TaiUtc-u2", u2, 0.89210069455555552d, 0.000000000001d);
             CompareInteger("SOFATests", "TaiUtc-status", j, 0);
 
             // Tf2a tests
             j = SOFA.Tf2a("+", 4, 58, 20.2d, ref a);
 
-            Comparefloat("SOFATests", "Tf2a", a, 1.3017392781895374d, 0.000000000001d);
+            CompareDouble("SOFATests", "Tf2a", a, 1.3017392781895374d, 0.000000000001d);
             CompareInteger("SOFATests", "Tf2a-status", j, 0);
 
             // TTTai tests
             j = SOFA.TtTai(2453750.5d, 0.892482639d, ref a1, ref a2);
-            Comparefloat("SOFATests", "TtTai-a1", a1, 2453750.5d, 0.000001d);
-            Comparefloat("SOFATests", "TtTai-a2", a2, 0.892110139d, 0.000000000001d);
+            CompareDouble("SOFATests", "TtTai-a1", a1, 2453750.5d, 0.000001d);
+            CompareDouble("SOFATests", "TtTai-a2", a2, 0.892110139d, 0.000000000001d);
             CompareInteger("SOFATests", "TtTai-status", j, 0);
 
             // UtcTai tests
             j = SOFA.UtcTai(2453750.5d, 0.892100694d, ref u1, ref u2);
 
-            Comparefloat("SOFATests", "UtcTai-u1", u1, 2453750.5d, 0.000001d);
-            Comparefloat("SOFATests", "UtcTai-u2", u2, 0.89248263844444442d, 0.000000000001d);
+            CompareDouble("SOFATests", "UtcTai-u1", u1, 2453750.5d, 0.000001d);
+            CompareDouble("SOFATests", "UtcTai-u2", u2, 0.89248263844444442d, 0.000000000001d);
             CompareInteger("SOFATests", "UtcTai-status", j, 0);
 
             Status("");
@@ -1427,14 +1456,14 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.Telescope",
-                    Description = "Platform 6 Telescope Simulator",
+                    Description = "Platform Telescope Simulator",
                     DeviceType = "Telescope",
                     Name = "Simulator",
                     DriverVersion = "7.0",
                     InterfaceVersion = 3,
                     IsPlatform5 = false,
                     SixtyFourBit = true,
-                    AxisRates = new float[,] { { 0.0d, 0.5d }, { 1.0d / 3.0d, 1.0d } }, // Axis rates relative to MaxRate
+                    AxisRates = new double[,] { { 0.0d, 0.5d }, { 1.0d / 3.0d, 1.0d } }, // Axis rates relative to MaxRate
                     AxisRatesRelative = true
                 };
                 TestSimulator(Sim);
@@ -1443,7 +1472,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.CoverCalibrator",
-                    Description = "Platform 6 CoverCalibrator Simulator",
+                    Description = "Platform CoverCalibrator Simulator",
                     DeviceType = "CoverCalibrator",
                     Name = "CoverCalibrator Simulator",
                     DriverVersion = DiagnosticsMajorMinorVersionNumber,
@@ -1464,7 +1493,7 @@ namespace ASCOM.Utilities
                     InterfaceVersion = 2,
                     IsPlatform5 = true,
                     SixtyFourBit = true,
-                    AxisRates = new float[,] { { 0.0d }, { 8.0d } }, // Absolute axis rates
+                    AxisRates = new double[,] { { 0.0d }, { 8.0d } }, // Absolute axis rates
                     AxisRatesRelative = false
                 };
                 TestSimulator(Sim);
@@ -1487,7 +1516,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.Camera",
-                    Description = "Platform 6 Camera Simulator",
+                    Description = "Platform Camera Simulator",
                     DeviceType = "Camera",
                     Name = "Sim ",
                     DriverVersion = DiagnosticsMajorMinorVersionNumber,
@@ -1500,7 +1529,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.Dome",
-                    Description = "Platform 6 Dome Simulator",
+                    Description = "Platform Dome Simulator",
                     DeviceType = "Dome",
                     Name = "Simulator",
                     DriverVersion = DiagnosticsMajorMinorVersionNumber,
@@ -1542,7 +1571,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.FilterWheel",
-                    Description = "Platform 6 FilterWheel Simulator",
+                    Description = "Platform FilterWheel Simulator",
                     DeviceType = "FilterWheel",
                     Name = "Filter Wheel Simulator .NET",
                     DriverVersion = DiagnosticsMajorNumber + ".0",
@@ -1570,7 +1599,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.Focuser",
-                    Description = "Platform 6 Focuser Simulator",
+                    Description = "Platform Focuser Simulator",
                     DeviceType = "Focuser",
                     Name = "ASCOM.Simulator.Focuser",
                     DriverVersion = DiagnosticsMajorMinorVersionNumber,
@@ -1584,7 +1613,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.SafetyMonitor",
-                    Description = "Platform 6 Safety Monitor Simulator",
+                    Description = "Platform Safety Monitor Simulator",
                     DeviceType = "SafetyMonitor",
                     Name = "ASCOM.Simulator.SafetyMonitor",
                     DriverVersion = DiagnosticsMajorNumber + ".0",
@@ -1612,7 +1641,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.Switch",
-                    Description = "Platform 6 Switch Simulator",
+                    Description = "Platform Switch Simulator",
                     DeviceType = "Switch",
                     Name = "ASCOM Switch V2 Simulator",
                     DriverVersion = "7.0",
@@ -1626,7 +1655,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.Video",
-                    Description = "Platform 6 Video Simulator",
+                    Description = "Platform Video Simulator",
                     DeviceType = "Video",
                     Name = "Video Simulator",
                     DriverVersion = DiagnosticsMajorMinorVersionNumber,
@@ -1640,7 +1669,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.Simulator.ObservingConditions",
-                    Description = "Platform 6 ObservingConditions Simulator",
+                    Description = "Platform ObservingConditions Simulator",
                     DeviceType = "ObservingConditions",
                     Name = "ASCOM Observing Conditions Simulator",
                     DriverVersion = DiagnosticsMajorMinorVersionNumber,
@@ -1654,7 +1683,7 @@ namespace ASCOM.Utilities
                 Sim = new SimulatorDescriptor()
                 {
                     ProgID = "ASCOM.OCH.ObservingConditions",
-                    Description = "Platform 6 ObservingConditions Hub",
+                    Description = "Platform ObservingConditions Hub",
                     DeviceType = "ObservingConditionsHub",
                     Name = "ASCOM Observing Conditions Hub (OCH)",
                     DriverVersion = DiagnosticsMajorMinorVersionNumber,
@@ -1674,7 +1703,7 @@ namespace ASCOM.Utilities
             object DeviceAxisRates;
             int ct;
             Type DeviceType;
-            float MaxSlewRate;
+            double MaxSlewRate;
             string returnString;
             CoverStatus coverState;
             CalibratorStatus calibratorState;
@@ -1693,58 +1722,67 @@ namespace ASCOM.Utilities
                     try
                     {
                         TL.LogMessage("TestSimulator", "CreateObject for Device: " + Sim.ProgID + " " + Sim.Description);
+
+                        #region Connect to device
+
                         DeviceType = Type.GetTypeFromProgID(Sim.ProgID);
                         DeviceObject = Activator.CreateInstance(DeviceType);
 
                         switch (Sim.DeviceType ?? "")
                         {
                             case "Focuser":
-                                {
-                                    try
-                                    {
-                                        DeviceObject.Connected = true;
-                                        Compare("TestSimulator", "Connected OK", "True", "True");
-                                    }
-                                    catch (RuntimeBinderException) // Could be a Platform 5 driver that uses "Link" instead of "Connected"
-                                    {
-                                        DeviceObject.Link = true; // Try Link, if it fails the outer try will catch the exception
-                                        Compare("TestSimulator", "Linked OK", "True", "True");
-                                    }
-
-                                    // Disable temperature compensation if its available
-                                    try
-                                    {
-                                        DeviceObject.TempComp = false;
-                                        Compare("TestSimulator", "Temperature compensation disabled OK", "True", "True");
-                                    }
-                                    catch (Exception ex1)
-                                    {
-                                        LogException("TestSimulator", "Exception setting temperature compensation: " + ex1.ToString());
-                                    }
-
-                                    break;
-                                }
-
-                            case "ObservingConditionsHub":
-                                {
-                                    // The ObservingConditions Hub is un-configured on initial installation and so has a special test mode that fakes a valid configuration
-                                    // This unpublicised Action initiates the test mode
-                                    returnString = Conversions.ToString(DeviceObject.Action("SetTestMode", ""));
-                                    TL.LogMessage("TestSimulator", "Observing conditions hub test mode request returned: " + returnString);
-                                    DeviceObject.Connected = true;
-                                    Compare("TestSimulator", "Connected OK", "True", "True"); // Everything else should be Connected 
-                                    break;
-                                }
-
-                            default:
+                                try
                                 {
                                     DeviceObject.Connected = true;
                                     Compare("TestSimulator", "Connected OK", "True", "True");
-                                    break;
                                 }
+                                catch (RuntimeBinderException) // Could be a Platform 5 driver that uses "Link" instead of "Connected"
+                                {
+                                    DeviceObject.Link = true; // Try Link, if it fails the outer try will catch the exception
+                                    Compare("TestSimulator", "Linked OK", "True", "True");
+                                }
+
+                                // Disable temperature compensation if its available
+                                try
+                                {
+                                    DeviceObject.TempComp = false;
+                                    Compare("TestSimulator", "Temperature compensation disabled OK", "True", "True");
+                                }
+                                catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
+                                {
+                                    Compare("TestSimulator", "Setting TempComp false threw a not implemented exception, which the interface specification allows.", "True", "True");
+                                }
+                                catch (PropertyNotImplementedException)
+                                {
+                                    Compare("TestSimulator", "Setting TempComp false threw a not implemented exception, which the interface specification allows.", "True", "True");
+                                }
+                                catch (Exception ex1)
+                                {
+                                    LogException("TestSimulator", "Exception setting temperature compensation: " + ex1.ToString());
+                                }
+
+                                break;
+
+                            case "ObservingConditionsHub":
+                                // The ObservingConditions Hub is un-configured on initial installation and so has a special test mode that fakes a valid configuration
+                                // This unpublicised Action initiates the test mode
+                                returnString = Conversions.ToString(DeviceObject.Action("SetTestMode", ""));
+                                TL.LogMessage("TestSimulator", "Observing conditions hub test mode request returned: " + returnString);
+                                DeviceObject.Connected = true;
+                                Compare("TestSimulator", "Connected OK", "True", "True"); // Everything else should be Connected 
+                                break;
+
+                            default:
+                                DeviceObject.Connected = true;
+                                Compare("TestSimulator", "Connected OK", "True", "True");
+                                break;
                         }
 
                         Thread.Sleep(1000);
+
+                        #endregion
+
+                        #region Check common methods
 
                         try
                         {
@@ -1788,7 +1826,7 @@ namespace ASCOM.Utilities
                         try
                         {
                             RetValString = DeviceObject.Description;
-                            Compare("TestSimulator", "Description member is present in Platform 6 Simulator", "True", "True");
+                            Compare("TestSimulator", "Description member is present in Platform Simulator", "True", "True");
                             NMatches += 1;
                         }
                         catch (NotSupportedException ex1)
@@ -1821,7 +1859,7 @@ namespace ASCOM.Utilities
                         try
                         {
                             RetValString = DeviceObject.DriverInfo;
-                            Compare("TestSimulator", "DriverInfo member is present in Platform 6 Simulator", "True", "True");
+                            Compare("TestSimulator", "DriverInfo member is present in Platform Simulator", "True", "True");
                         }
                         catch (NotSupportedException ex1)
                         {
@@ -1853,7 +1891,7 @@ namespace ASCOM.Utilities
                         try
                         {
                             RetValString = DeviceObject.Name;
-                            Compare("TestSimulator", "Name member is present in Platform 6 Simulator", "True", "True");
+                            Compare("TestSimulator", "Name member is present in Platform Simulator", "True", "True");
                         }
                         catch (NotSupportedException ex1)
                         {
@@ -1920,156 +1958,147 @@ namespace ASCOM.Utilities
                             LogException("TestSimulator", "DriverVersion Exception: " + ex1.ToString());
                         }
 
+                        #endregion
+
+                        #region Check device specific methods
+
                         switch (Sim.DeviceType ?? "")
                         {
                             case "Telescope":
+                                DeviceTest("Telescope", "UnPark");
+                                DeviceTest("Telescope", "TrackingTrue");
+                                DeviceTest("Telescope", "SiderealTime");
+                                DeviceTest("Telescope", "TargetDeclination");
+                                DeviceTest("Telescope", "TargetRightAscension");
+                                DeviceTest("Telescope", "Slew");
+                                DeviceTest("Telescope", "TrackingRates");
+                                DeviceAxisRates = DeviceTest("Telescope", "AxisRates");
+                                try
                                 {
-                                    DeviceTest("Telescope", "UnPark");
-                                    DeviceTest("Telescope", "TrackingTrue");
-                                    DeviceTest("Telescope", "SiderealTime");
-                                    DeviceTest("Telescope", "TargetDeclination");
-                                    DeviceTest("Telescope", "TargetRightAscension");
-                                    DeviceTest("Telescope", "Slew");
-                                    DeviceTest("Telescope", "TrackingRates");
-                                    DeviceAxisRates = DeviceTest("Telescope", "AxisRates");
-                                    try
+                                    // The maximum slew rate is a user configurable value so we need to read it here in order to conduct slew rate value tests
+                                    // Get the maximum slew rate stored in the simulator Profile for use in relative rates tests
+                                    using (Profile profileSlew = new())
                                     {
-                                        // The maximum slew rate is a user configurable value so we need to read it here in order to conduct slew rate value tests
-                                        // Get the maximum slew rate stored in the simulator Profile for use in relative rates tests
-                                        using (Profile profileSlew = new())
-                                        {
-                                            // Handle the possibility that the Platform 6 simulator has never been started and so a max slew rate doesn't exist.
-                                            string maxSlewRateString = profileSlew.GetValue(Sim.ProgID, MAX_SLEW_RATE_PROFILE_NAME); // Get the max slew rate string
+                                        // Handle the possibility that the Platform 6 simulator has never been started and so a max slew rate doesn't exist.
+                                        string maxSlewRateString = profileSlew.GetValue(Sim.ProgID, MAX_SLEW_RATE_PROFILE_NAME); // Get the max slew rate string
 
-                                            // Check whether the max slew rate has a value
-                                            if (!string.IsNullOrEmpty(maxSlewRateString)) // There is a value
-                                                MaxSlewRate = Conversions.Tofloat(maxSlewRateString);
-                                            else // There is no value so set a low value that should be OK
-                                                MaxSlewRate = 1.0;
-                                        }
-
-                                        ct = Conversions.ToInteger(DeviceObject.InterfaceVersion());
-                                        ct = 0;
-                                        foreach (dynamic AxRte in (IEnumerable)DeviceAxisRates)
-                                        {
-                                            // Get the minimum rate
-                                            float minimum = AxRte.Minimum;
-
-                                            // If we get here a maximum value could be read OK
-                                            TL.LogMessage("TestSimulator", $"Got minimum rate OK: {AxRte.Minimum}");
-                                            NMatches += 1;
-
-                                            // Get the maximum rate
-                                            float maximum = AxRte.Maximum;
-
-                                            // If we get here a maximum value could be read OK
-                                            TL.LogMessage("TestSimulator", $"Got maximum rate OK: {AxRte.Maximum}");
-                                            NMatches += 1;
-                                        }
-                                    }
-                                    catch (COMException ex1)
-                                    {
-                                        if (ex1.ErrorCode == int.MinValue + 0x00040400)
-                                        {
-                                            Compare("TestSimulator", "TrackingRates - Simulator is in Interface V1 mode", "True", "True");
-                                        }
+                                        // Check whether the max slew rate has a value
+                                        if (!string.IsNullOrEmpty(maxSlewRateString)) // There is a value
+                                            MaxSlewRate = Conversions.ToDouble(maxSlewRateString);
+                                        else // There is no value so set a low value that should be OK
+                                            MaxSlewRate = 1.0;
                                     }
 
-                                    break;
+                                    ct = Conversions.ToInteger(DeviceObject.InterfaceVersion());
+                                    ct = 0;
+                                    foreach (dynamic AxRte in (IEnumerable)DeviceAxisRates)
+                                    {
+                                        // Get the minimum rate
+                                        double minimum = AxRte.Minimum;
+
+                                        // If we get here a maximum value could be read OK
+                                        TL.LogMessage("TestSimulator", $"Got minimum rate OK: {AxRte.Minimum}");
+                                        NMatches += 1;
+
+                                        // Get the maximum rate
+                                        double maximum = AxRte.Maximum;
+
+                                        // If we get here a maximum value could be read OK
+                                        TL.LogMessage("TestSimulator", $"Got maximum rate OK: {AxRte.Maximum}");
+                                        NMatches += 1;
+                                    }
                                 }
+                                catch (COMException ex1)
+                                {
+                                    if (ex1.ErrorCode == int.MinValue + 0x00040400)
+                                    {
+                                        Compare("TestSimulator", "TrackingRates - Simulator is in Interface V1 mode", "True", "True");
+                                    }
+                                }
+                                break;
 
                             case "Camera":
-                                {
-                                    DeviceTest("Camera", "StartExposure");
-                                    break;
-                                }
+                                DeviceTest("Camera", "StartExposure");
+                                break;
+
                             case "CoverCalibrator":
+                                coverState = (CoverStatus)Conversions.ToInteger(DeviceObject.CoverState); // Confirm that these  properties can be read and then they can be used to determine which tests to apply
+                                calibratorState = (CalibratorStatus)Conversions.ToInteger(DeviceObject.CalibratorState);
+
+                                // If we get here we have successfully read the two status properties
+                                NMatches += 2;
+                                TL.LogMessage("CoverCalibrator", $"CoverState: {coverState}, CalibratorState: {calibratorState}");
+
+                                if (calibratorState != CalibratorStatus.NotPresent) // The Calibrator capability is active so test these properties
                                 {
-                                    coverState = (CoverStatus)Conversions.ToInteger(DeviceObject.CoverState); // Confirm that these  properties can be read and then they can be used to determine which tests to apply
-                                    calibratorState = (CalibratorStatus)Conversions.ToInteger(DeviceObject.CalibratorState);
-
-                                    // If we get here we have successfully read the two status properties
-                                    NMatches += 2;
-                                    TL.LogMessage("CoverCalibrator", $"CoverState: {coverState}, CalibratorState: {calibratorState}");
-
-                                    if (calibratorState != CalibratorStatus.NotPresent) // The Calibrator capability is active so test these properties
-                                    {
-                                        DeviceTest("CoverCalibrator", "Brightness");
-                                        DeviceTest("CoverCalibrator", "MaxBrightness");
-                                    }
-
-                                    break;
+                                    DeviceTest("CoverCalibrator", "Brightness");
+                                    DeviceTest("CoverCalibrator", "MaxBrightness");
                                 }
+                                break;
+
                             case "FilterWheel":
-                                {
-                                    DeviceTest("FilterWheel", "Position");
-                                    break;
-                                }
-                            case "Focuser":
-                                {
-                                    DeviceTest("Focuser", "Move");
-                                    break;
-                                }
-                            case "SafetyMonitor":
-                                {
-                                    DeviceTest("SafetyMonitor", "IsSafe");
-                                    break;
-                                }
-                            case "Switch":
-                                {
-                                    if (Sim.IsPlatform5)
-                                    {
-                                        DeviceTest("Switch", "GetSwitch");
-                                        DeviceTest("Switch", "GetSwitchName");
-                                    }
-                                    else // Is Platform v6.1
-                                    {
-                                        DeviceTest("Switch", "MaxSwitch");
-                                        DeviceTest("Switch", "CanWrite");
-                                        DeviceTest("Switch", "GetSwitch");
-                                        DeviceTest("Switch", "GetSwitchDescription");
-                                        DeviceTest("Switch", "GetSwitchName");
-                                        DeviceTest("Switch", "GetSwitchValue");
-                                        DeviceTest("Switch", "MaxSwitchValue");
-                                        DeviceTest("Switch", "MinSwitchValue");
-                                        DeviceTest("Switch", "SwitchStep");
-                                    }
+                                DeviceTest("FilterWheel", "Position");
+                                break;
 
-                                    break;
+                            case "Focuser":
+                                DeviceTest("Focuser", "Move");
+                                break;
+
+                            case "SafetyMonitor":
+                                DeviceTest("SafetyMonitor", "IsSafe");
+                                break;
+
+                            case "Switch":
+                                if (Sim.IsPlatform5)
+                                {
+                                    DeviceTest("Switch", "GetSwitch");
+                                    DeviceTest("Switch", "GetSwitchName");
                                 }
+                                else // Is Platform v6.1
+                                {
+                                    DeviceTest("Switch", "MaxSwitch");
+                                    DeviceTest("Switch", "CanWrite");
+                                    DeviceTest("Switch", "GetSwitch");
+                                    DeviceTest("Switch", "GetSwitchDescription");
+                                    DeviceTest("Switch", "GetSwitchName");
+                                    DeviceTest("Switch", "GetSwitchValue");
+                                    DeviceTest("Switch", "MaxSwitchValue");
+                                    DeviceTest("Switch", "MinSwitchValue");
+                                    DeviceTest("Switch", "SwitchStep");
+                                }
+                                break;
+
                             case "Dome":
-                                {
-                                    DeviceTest("Dome", "ShutterStatus");
-                                    DeviceTest("Dome", "Slewing");
-                                    DeviceTest("Dome", "OpenShutter");
-                                    DeviceTest("Dome", "CloseShutter");
-                                    DeviceTest("Dome", "SlewToAltitude");
-                                    DeviceTest("Dome", "SlewToAzimuth");
-                                    break;
-                                }
+                                DeviceTest("Dome", "ShutterStatus");
+                                DeviceTest("Dome", "Slewing");
+                                DeviceTest("Dome", "OpenShutter");
+                                DeviceTest("Dome", "CloseShutter");
+                                DeviceTest("Dome", "SlewToAltitude");
+                                DeviceTest("Dome", "SlewToAzimuth");
+                                break;
+
                             case "Video":
-                                {
-                                    DeviceTest("Video", "BitDepth");
-                                    DeviceTest("Video", "CanConfigureDeviceProperties");
-                                    DeviceTest("Video", "ExposureMin");
-                                    DeviceTest("Video", "Height");
-                                    DeviceTest("Video", "Width");
-                                    break;
-                                }
+                                DeviceTest("Video", "BitDepth");
+                                DeviceTest("Video", "CanConfigureDeviceProperties");
+                                DeviceTest("Video", "ExposureMin");
+                                DeviceTest("Video", "Height");
+                                DeviceTest("Video", "Width");
+                                break;
+
                             case "ObservingConditions":
                             case "ObservingConditionsHub":
-                                {
-                                    DeviceTest("ObservingConditions", "AveragePeriod");
-                                    DeviceTest("ObservingConditions", "TimeSinceLastUpdate");
-                                    break;
-                                }
+                                DeviceTest("ObservingConditions", "AveragePeriod");
+                                DeviceTest("ObservingConditions", "TimeSinceLastUpdate");
+                                break;
 
                             default:
-                                {
-                                    LogException("TestSimulator", "Unknown device type: " + Sim.DeviceType);
-                                    break;
-                                }
+                                LogException("TestSimulator", "Unknown device type: " + Sim.DeviceType);
+                                break;
                         }
+
+                        #endregion
+
+                        #region Disconnect from the device
 
                         // Disconnect the device
                         switch (Sim.DeviceType ?? "")
@@ -2098,6 +2127,9 @@ namespace ASCOM.Utilities
                                     break;
                                 }
                         }
+
+                        #endregion
+
                         TL.LogMessage("TestSimulator", "Completed Device: " + Sim.ProgID + " OK");
                     }
                     catch (Exception ex)
@@ -2134,7 +2166,7 @@ namespace ASCOM.Utilities
         private object DeviceTest(string Device, string Test)
         {
             object RetVal = null;
-            float SiderealTime, RetValfloat, TargetRA;
+            double SiderealTime, RetValDouble, TargetRA;
             DateTime StartTime;
             object DeviceTrackingRates;
             int FocuserMax, FocuserPosition;
@@ -2151,751 +2183,643 @@ namespace ASCOM.Utilities
                 switch (Device ?? "")
                 {
                     case "CoverCalibrator":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "Brightness":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, Conversions.ToBoolean(Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.Brightness, 0, false)), true);
-                                        break;
-                                    }
-                                case "MaxBrightness":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, Conversions.ToBoolean(Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.MaxBrightness, 1, false)), true);
-                                        break;
-                                    }
+                            case "Brightness":
+                                CompareBoolean("DeviceTest", Test, Conversions.ToBoolean(Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.Brightness, 0, false)), true);
+                                break;
 
-                                default:
-                                    {
-                                        LogException("DeviceTest", "Unknown Test: " + Test);
-                                        break;
-                                    }
-                            }
+                            case "MaxBrightness":
+                                CompareBoolean("DeviceTest", Test, Conversions.ToBoolean(Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.MaxBrightness, 1, false)), true);
+                                break;
 
-                            break;
+                            default:
+                                LogException("DeviceTest", "Unknown Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "SafetyMonitor":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "IsSafe":
-                                    {
-                                        Compare("DeviceTest", Test, Conversions.ToString(DeviceObject.IsSafe), "False");
-                                        break;
-                                    }
+                            case "IsSafe":
+                                Compare("DeviceTest", Test, Conversions.ToString(string.IsNullOrEmpty(DeviceObject.IsSafe.ToString())), "False");
+                                break;
 
-                                default:
-                                    {
-                                        LogException("DeviceTest", "Unknown Test: " + Test);
-                                        break;
-                                    }
-                            }
-
-                            break;
+                            default:
+                                LogException("DeviceTest", "Unknown Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "Switch":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "MaxSwitch":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, Conversions.ToBoolean(Operators.ConditionalCompareObjectGreater(DeviceObject.MaxSwitch, 0, false)), true);
-                                        break;
-                                    }
-                                case "CanWrite":
-                                    {
-                                        Compare("DeviceTest", Test, Interaction.IIf(Conversions.ToBoolean(DeviceObject.CanWrite((object)0)), "OK", "OK").ToString(), "OK");
-                                        break;
-                                    }
-                                case "GetSwitch":
-                                    {
-                                        Compare("DeviceTest", Test, Interaction.IIf(Conversions.ToBoolean(DeviceObject.GetSwitch((object)0)), "OK", "OK").ToString(), "OK");
-                                        break;
-                                    }
-                                case "GetSwitchName":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, string.IsNullOrEmpty(Conversions.ToString(DeviceObject.GetSwitchName((object)0))), false);
-                                        break;
-                                    }
-                                case "GetSwitchDescription":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, string.IsNullOrEmpty(Conversions.ToString(DeviceObject.GetSwitchDescription((object)0))), false);
-                                        break;
-                                    }
-                                case "GetSwitchValue":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, Information.IsNumeric(DeviceObject.GetSwitchValue((object)0)), true);
-                                        break;
-                                    }
-                                case "MaxSwitchValue":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, Information.IsNumeric(DeviceObject.MaxSwitchValue((object)0)), true);
-                                        break;
-                                    }
-                                case "MinSwitchValue":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, Information.IsNumeric(DeviceObject.MinSwitchValue((object)0)), true);
-                                        break;
-                                    }
-                                case "SwitchStep":
-                                    {
-                                        CompareBoolean("DeviceTest", Test, Information.IsNumeric(DeviceObject.SwitchStep((object)0)), true);
-                                        break;
-                                    }
+                            case "MaxSwitch":
+                                CompareBoolean("DeviceTest", Test, Conversions.ToBoolean(Operators.ConditionalCompareObjectGreater(DeviceObject.MaxSwitch, 0, false)), true);
+                                break;
 
-                                default:
-                                    {
-                                        LogException("DeviceTest", "Unknown Test: " + Test);
-                                        break;
-                                    }
-                            }
+                            case "CanWrite":
+                                Compare("DeviceTest", Test, Interaction.IIf(Conversions.ToBoolean(DeviceObject.CanWrite((object)0)), "OK", "OK").ToString(), "OK");
+                                break;
 
-                            break;
+                            case "GetSwitch":
+                                Compare("DeviceTest", Test, Interaction.IIf(Conversions.ToBoolean(DeviceObject.GetSwitch((object)0)), "OK", "OK").ToString(), "OK");
+                                break;
+
+                            case "GetSwitchName":
+                                CompareBoolean("DeviceTest", Test, string.IsNullOrEmpty(Conversions.ToString(DeviceObject.GetSwitchName((object)0))), false);
+                                break;
+
+                            case "GetSwitchDescription":
+                                CompareBoolean("DeviceTest", Test, string.IsNullOrEmpty(Conversions.ToString(DeviceObject.GetSwitchDescription((object)0))), false);
+                                break;
+
+                            case "GetSwitchValue":
+                                CompareBoolean("DeviceTest", Test, Information.IsNumeric(DeviceObject.GetSwitchValue((object)0)), true);
+                                break;
+
+                            case "MaxSwitchValue":
+                                CompareBoolean("DeviceTest", Test, Information.IsNumeric(DeviceObject.MaxSwitchValue((object)0)), true);
+                                break;
+
+                            case "MinSwitchValue":
+                                CompareBoolean("DeviceTest", Test, Information.IsNumeric(DeviceObject.MinSwitchValue((object)0)), true);
+                                break;
+
+                            case "SwitchStep":
+                                CompareBoolean("DeviceTest", Test, Information.IsNumeric(DeviceObject.SwitchStep((object)0)), true);
+                                break;
+
+                            default:
+                                LogException("DeviceTest", "Unknown Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "FilterWheel":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "Position":
-                                    {
-                                        int numberOfOffsets, testFilter;
-                                        testFilter = 0; // Initialise test filter number
+                            case "Position":
+                                int numberOfOffsets, testFilter;
+                                testFilter = 0; // Initialise test filter number
 
-                                        // Determine a valid filter wheel position to run the test
-                                        numberOfOffsets = ((Array)DeviceObject.FocusOffsets).Length;
+                                // Determine a valid filter wheel position to run the test
+                                numberOfOffsets = ((Array)DeviceObject.FocusOffsets).Length;
 
-                                        switch (numberOfOffsets)
-                                        {
-                                            case 0: // No filtgers so this is an error because we can't run the test.
-                                                {
-                                                    LogError("DeviceTest", "There are no filters defined, unable to test the FilterWheel position property.");
-                                                    break;
-                                                }
-                                            case 1: // Only 1 so choose position 0 - the only option!
-                                                {
-                                                    testFilter = 0;
-                                                    break;
-                                                }
-                                            case 2: // 2 filters so choose the lat one, position 1
-                                                {
-                                                    testFilter = 1; // More than 2 filters so go with one less than maximum (note filter position is 0 based!)
-                                                    break;
-                                                }
-
-                                            default:
-                                                {
-                                                    testFilter = numberOfOffsets - 2;
-                                                    break;
-                                                }
-                                        }
-                                        TL.LogMessage("DeviceTest", $"Number of filter wheel filters: {numberOfOffsets}, Chosen wheel: {testFilter}");
-
-                                        // Select the desired filter
-                                        DeviceObject.Position = (object)testFilter;
-
-                                        // Wait for the wheel to stop moving
-                                        do
-                                        {
-                                            Thread.Sleep(100);
-                                            Application.DoEvents();
-                                            Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds);
-                                        }
-                                        while (!Operators.ConditionalCompareObjectGreater(DeviceObject.Position, -1, false));
-
-                                        // Test the outcome.
-                                        Comparefloat("DeviceTest", Test, Conversions.Tofloat(DeviceObject.Position), testFilter, 0.000001d);
+                                switch (numberOfOffsets)
+                                {
+                                    case 0: // No filters so this is an error because we can't run the test.
+                                        LogError("DeviceTest", "There are no filters defined, unable to test the FilterWheel position property.");
                                         break;
-                                    }
 
-                                default:
-                                    {
-                                        LogException("DeviceTest", "Unknown Test: " + Test);
+                                    case 1: // Only 1 so choose position 0 - the only option!
+                                        testFilter = 0;
                                         break;
-                                    }
-                            }
 
-                            break;
+                                    case 2: // 2 filters so choose the lat one, position 1
+                                        testFilter = 1; // More than 2 filters so go with one less than maximum (note filter position is 0 based!)
+                                        break;
+
+                                    default:
+                                        testFilter = numberOfOffsets - 2;
+                                        break;
+                                }
+                                TL.LogMessage("DeviceTest", $"Number of filter wheel filters: {numberOfOffsets}, Chosen wheel: {testFilter}");
+
+                                // Select the desired filter
+                                DeviceObject.Position = (object)testFilter;
+
+                                // Wait for the wheel to stop moving
+                                do
+                                {
+                                    Thread.Sleep(100);
+                                    Application.DoEvents();
+                                    Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds);
+                                }
+                                while (!Operators.ConditionalCompareObjectGreater(DeviceObject.Position, -1, false));
+
+                                // Test the outcome.
+                                CompareDouble("DeviceTest", Test, Conversions.ToDouble(DeviceObject.Position), testFilter, 0.000001d);
+                                break;
+
+                            default:
+                                LogException("DeviceTest", "Unknown Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "Focuser":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "Move":
+                            case "Move":
+                                // Handle absolute and relative mode behaviours
+                                if (DeviceObject.Absolute) // Absolute mode
+                                {
+                                    // Find the larger of either 0 to Position or Position to MaxStep and then move to half of that
+                                    // Calculate the upper portion size, the lower portion size is given by Position
+                                    // 0.................................................Pos..........................Max
+                                    // Lower Portion                               Upper Portion
+
+                                    FocuserMax = Conversions.ToInteger(DeviceObject.MaxStep);
+                                    FocuserPosition = Conversions.ToInteger(DeviceObject.Position);
+                                    TL.LogMessage("DeviceTest", "Focuser Position: " + FocuserPosition + ", Focuser Maximum: " + FocuserMax);
+
+                                    FocuserUpperPortion = FocuserMax - FocuserPosition;
+
+                                    if (FocuserUpperPortion > FocuserPosition) // Upper portion is larger
                                     {
-                                        // Handle absolute and relative mode behaviours
-                                        if (DeviceObject.Absolute) // Absolute mode
-                                        {
-                                            // Find the larger of either 0 to Position or Position to MaxStep and then move to half of that
-                                            // Calculate the upper portion size, the lower portion size is given by Position
-                                            // 0.................................................Pos..........................Max
-                                            // Lower Portion                               Upper Portion
-
-                                            FocuserMax = Conversions.ToInteger(DeviceObject.MaxStep);
-                                            FocuserPosition = Conversions.ToInteger(DeviceObject.Position);
-                                            TL.LogMessage("DeviceTest", "Focuser Position: " + FocuserPosition + ", Focuser Maximum: " + FocuserMax);
-
-                                            FocuserUpperPortion = FocuserMax - FocuserPosition;
-
-                                            if (FocuserUpperPortion > FocuserPosition) // Upper portion is larger
-                                            {
-                                                FocuserTargetPosition = FocuserPosition + (int)Math.Round(FocuserUpperPortion / 2d);
-                                                TL.LogMessage("DeviceTest", "Moving upward to: " + FocuserTargetPosition.ToString());
-                                                DeviceObject.Move(FocuserTargetPosition);
-                                            }
-                                            else // Lower portion is larger
-                                            {
-                                                FocuserTargetPosition = (int)Math.Round(FocuserPosition / 2d);
-                                                TL.LogMessage("DeviceTest", "Moving downward to: " + FocuserTargetPosition.ToString());
-                                                DeviceObject.Move(FocuserTargetPosition);
-                                            }
-
-                                            do
-                                            {
-                                                Thread.Sleep(200);
-                                                Application.DoEvents();
-                                                Action(Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Test + " ", DeviceObject.Position), " / "), FocuserTargetPosition))); // Now.Subtract(StartTime).Seconds)
-                                            }
-                                            while (DeviceObject.IsMoving);
-                                            CompareInteger("DeviceTest", Test, Conversions.ToInteger(DeviceObject.Position), FocuserTargetPosition);
-                                            TL.LogMessage("DeviceTest", string.Format("Temperature compensation is available: {0} and enabled: {1}", DeviceObject.TempCompAvailable, DeviceObject.TempComp));
-                                        }
-                                        else // Relative mode
-                                        {
-                                            DeviceObject.Move(20);
-                                            do
-                                            {
-                                                Thread.Sleep(200);
-                                                Application.DoEvents();
-                                                Action("Moving relative focuser by +20 steps."); // Now.Subtract(StartTime).Seconds)
-                                            }
-                                            while (DeviceObject.IsMoving);
-                                            TL.LogMessage("DeviceTest", "Successfully moved the relative focuser by +20 steps.");
-                                            NMatches += 1;
-                                        }
-                                        break;
+                                        FocuserTargetPosition = FocuserPosition + (int)Math.Round(FocuserUpperPortion / 2d);
+                                        TL.LogMessage("DeviceTest", "Moving upward to: " + FocuserTargetPosition.ToString());
+                                        DeviceObject.Move(FocuserTargetPosition);
+                                    }
+                                    else // Lower portion is larger
+                                    {
+                                        FocuserTargetPosition = (int)Math.Round(FocuserPosition / 2d);
+                                        TL.LogMessage("DeviceTest", "Moving downward to: " + FocuserTargetPosition.ToString());
+                                        DeviceObject.Move(FocuserTargetPosition);
                                     }
 
-                                default:
+                                    do
                                     {
-                                        LogException("DeviceTest", "Unknown Test: " + Test);
-                                        break;
+                                        Thread.Sleep(200);
+                                        Application.DoEvents();
+                                        Action(Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Test + " ", DeviceObject.Position), " / "), FocuserTargetPosition))); // Now.Subtract(StartTime).Seconds)
                                     }
-                            }
+                                    while (DeviceObject.IsMoving);
+                                    CompareInteger("DeviceTest", Test, Conversions.ToInteger(DeviceObject.Position), FocuserTargetPosition);
+                                    TL.LogMessage("DeviceTest", string.Format("Temperature compensation is available: {0} and enabled: {1}", DeviceObject.TempCompAvailable, DeviceObject.TempComp));
+                                }
+                                else // Relative mode
+                                {
+                                    DeviceObject.Move(20);
+                                    do
+                                    {
+                                        Thread.Sleep(200);
+                                        Application.DoEvents();
+                                        Action("Moving relative focuser by +20 steps."); // Now.Subtract(StartTime).Seconds)
+                                    }
+                                    while (DeviceObject.IsMoving);
+                                    TL.LogMessage("DeviceTest", "Successfully moved the relative focuser by +20 steps.");
+                                    NMatches += 1;
+                                }
+                                break;
 
-                            break;
+                            default:
+                                LogException("DeviceTest", "Unknown Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "Camera":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "StartExposure":
-                                    {
-                                        StartTime = DateTime.Now;
-                                        DeviceObject.StartExposure(3.0d, true);
-                                        TL.LogMessage(Device, "Start exposure duration: " + DateTime.Now.Subtract(StartTime).TotalSeconds);
+                            case "StartExposure":
+                                StartTime = DateTime.Now;
+                                DeviceObject.StartExposure(3.0d, true);
+                                TL.LogMessage(Device, "Start exposure duration: " + DateTime.Now.Subtract(StartTime).TotalSeconds);
 
-                                        // Wait until exposure phase is complete and the simulator moves to the Downloading state
-                                        do
-                                        {
-                                            Thread.Sleep(100);
-                                            Application.DoEvents();
-                                            Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds");
-                                        }
-                                        while (!Operators.OrObject(Operators.ConditionalCompareObjectNotEqual(DeviceObject.CameraState, CameraStates.cameraExposing, false), DateTime.Now.Subtract(StartTime).TotalSeconds > 15.0d));
-                                        Comparefloat(Device, "StartExposure", DateTime.Now.Subtract(StartTime).TotalSeconds, 3.0d, 0.2d);
+                                // Wait until exposure phase is complete and the simulator moves to the Downloading state
+                                do
+                                {
+                                    Thread.Sleep(100);
+                                    Application.DoEvents();
+                                    Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds");
+                                }
+                                while (!Operators.OrObject(Operators.ConditionalCompareObjectNotEqual(DeviceObject.CameraState, CameraStates.cameraExposing, false), DateTime.Now.Subtract(StartTime).TotalSeconds > 15.0d));
+                                CompareDouble(Device, "StartExposure", DateTime.Now.Subtract(StartTime).TotalSeconds, 3.0d, 0.2d);
 
-                                        // Wait until the camera is idle before testing ImageReady
-                                        do
-                                        {
-                                            Thread.Sleep(100);
-                                            Application.DoEvents();
-                                            Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds");
-                                        }
-                                        while (!Operators.OrObject(Operators.ConditionalCompareObjectEqual(DeviceObject.CameraState, CameraStates.cameraIdle, false), DateTime.Now.Subtract(StartTime).TotalSeconds > 15.0d));
-                                        Compare(Device, "ImageReady", Conversions.ToString(DeviceObject.ImageReady), Conversions.ToString(true));
-                                        break;
-                                    }
+                                // Wait until the camera is idle before testing ImageReady
+                                do
+                                {
+                                    Thread.Sleep(100);
+                                    Application.DoEvents();
+                                    Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds");
+                                }
+                                while (!Operators.OrObject(Operators.ConditionalCompareObjectEqual(DeviceObject.CameraState, CameraStates.cameraIdle, false), DateTime.Now.Subtract(StartTime).TotalSeconds > 15.0d));
+                                Compare(Device, "ImageReady", Conversions.ToString(DeviceObject.ImageReady), Conversions.ToString(true));
+                                break;
 
-                                default:
-                                    {
-                                        LogException("DeviceTest", "Unknown Test: " + Test);
-                                        break;
-                                    }
-                            }
-
-                            break;
+                            default:
+                                LogException("DeviceTest", "Unknown Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "Telescope":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "UnPark":
+                            case "UnPark":
+                                canUnpark = Conversions.ToBoolean(DeviceObject.CanUnpark);
+                                Compare(Device, "CanUnPark - Simulator does return a value from CanUnpark.", "True", "True");
+                                if (canUnpark) // Test Unpark if it is supported
+                                {
+                                    try
                                     {
-                                        canUnpark = Conversions.ToBoolean(DeviceObject.CanUnpark);
-                                        Compare(Device, "CanUnPark - Simulator does return a value from CanUnpark.", "True", "True");
-                                        if (canUnpark) // Test Unpark if it is supported
-                                        {
-                                            try
-                                            {
-                                                DeviceObject.UnPark();
-                                                Compare(Device, Test, Conversions.ToString(DeviceObject.AtPark), "False");
-                                            }
-                                            catch (COMException ex1)
-                                            {
-                                                if (ex1.ErrorCode == int.MinValue + 0x00040400)
-                                                {
-                                                    Compare(Device, "UnPark - Simulator is in Interface V1 mode", "True", "True");
-                                                }
-                                            }
-                                        }
-
-                                        break;
+                                        DeviceObject.UnPark();
+                                        Compare(Device, Test, Conversions.ToString(DeviceObject.AtPark), "False");
                                     }
-                                case "TrackingTrue":
+                                    catch (COMException ex1)
                                     {
-                                        if (canUnpark)
-                                            DeviceObject.UnPark();
-                                        canSetTracking = Conversions.ToBoolean(DeviceObject.CanSetTracking);
-                                        Compare(Device, "CanSetTracking - Simulator does return a value from CanSetTracking.", "True", "True");
-                                        if (canSetTracking)
+                                        if (ex1.ErrorCode == int.MinValue + 0x00040400)
                                         {
-                                            DeviceObject.Tracking = (object)true;
-                                            Compare(Device, Test, Conversions.ToString(DeviceObject.Tracking), "True");
+                                            Compare(Device, "UnPark - Simulator is in Interface V1 mode", "True", "True");
+                                        }
+                                    }
+                                }
+                                break;
+
+                            case "TrackingTrue":
+                                if (canUnpark)
+                                    DeviceObject.UnPark();
+                                canSetTracking = Conversions.ToBoolean(DeviceObject.CanSetTracking);
+                                Compare(Device, "CanSetTracking - Simulator does return a value from CanSetTracking.", "True", "True");
+
+                                if (canSetTracking)
+                                {
+                                    DeviceObject.Tracking = (object)true;
+                                    Compare(Device, Test, Conversions.ToString(DeviceObject.Tracking), "True");
+                                }
+                                else
+                                {
+                                    TL.LogMessage(Device, "Tracking test skipped because CanSetTrackling is False");
+                                }
+                                break;
+
+                            case "SiderealTime":
+                                try
+                                {
+                                    SiderealTime = Conversions.ToDouble(DeviceObject.SiderealTime);
+                                    canReadSiderealTime = true;
+                                    Compare(Device, "SiderealTime - Simulator does return a value from SiderealTime.", "True", "True");
+
+                                    TL.LogMessage(Device, "Received Sidereal time from telescope: " + SiderealTime);
+                                    RetValDouble = Conversions.ToDouble(DeviceObject.SiderealTime);
+                                    CompareDouble(Device, Test, RetValDouble, SiderealTime, TOLERANCE_5_SECONDS, DoubleType.Hours0To24);
+                                }
+
+                                catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
+                                {
+                                    Compare(Device, "SiderealTime - Property is configured not to return a value.", "True", "True");
+                                }
+                                catch (PropertyNotImplementedException)
+                                {
+                                    Compare(Device, "SiderealTime - Property is configured not to return a value.", "True", "True");
+                                }
+                                break;
+
+                            case "TargetDeclination":
+                                try
+                                {
+                                    DeviceObject.TargetDeclination = (object)0.0d;
+                                    canSetTargetDeclination = true;
+                                    RetValDouble = Conversions.ToDouble(DeviceObject.TargetDeclination);
+                                    CompareDouble(Device, Test, RetValDouble, 0.0d, TOLERANCE_5_SECONDS, DoubleType.DegreesMinus180ToPlus180);
+                                }
+                                catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
+                                {
+                                    Compare(Device, "TargetDeclination - Property is configured not to return a value.", "True", "True");
+                                }
+                                catch (PropertyNotImplementedException)
+                                {
+                                    Compare(Device, "TargetDeclination - Property is configured not to return a value.", "True", "True");
+                                }
+                                break;
+
+                            case "TargetRightAscension":
+                                if (canReadSiderealTime)
+                                {
+                                    SiderealTime = Conversions.ToDouble(DeviceObject.SiderealTime);
+                                    TL.LogMessage(Device, "Received Sidereal time from telescope: " + AscomUtil.HoursToHMS(SiderealTime, ":", ":", "", 3));
+                                    try
+                                    {
+                                        DeviceObject.TargetRightAscension = (object)SiderealTime;
+                                        canSetTargetRightAscension = true;
+                                        TL.LogMessage(Device, Conversions.ToString(Operators.ConcatenateObject("Target RA set to: ", DeviceObject.TargetRightAscension)));
+                                        RetValDouble = Conversions.ToDouble(DeviceObject.TargetRightAscension);
+                                        CompareDouble(Device, Test, RetValDouble, SiderealTime, TOLERANCE_5_SECONDS, DoubleType.Hours0To24);
+                                    }
+                                    catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
+                                    {
+                                        Compare(Device, "TargetRightAscension - Property is configured not to return a value.", "True", "True");
+                                    }
+                                    catch (PropertyNotImplementedException)
+                                    {
+                                        Compare(Device, "TargetRightAscension - Property is configured not to return a value.", "True", "True");
+                                    }
+                                }
+                                else
+                                {
+                                    TL.LogMessage(Device, "TargetRightAscension test skipped because can't read sidereal time");
+                                }
+                                break;
+
+                            case "Slew":
+                                if (canUnpark & canSetTracking & canReadSiderealTime & canSetTargetRightAscension & canSetTargetDeclination)
+                                {
+                                    DeviceObject.UnPark();
+                                    DeviceObject.Tracking = (object)true;
+                                    SiderealTime = Conversions.ToDouble(DeviceObject.SiderealTime);
+                                    TL.LogMessage(Device, "Received Sidereal time from telescope: " + AscomUtil.HoursToHMS(SiderealTime, ":", ":", "", 3));
+                                    TargetRA = AstroUtil.ConditionRA(SiderealTime - 1.0d); // Set the RA target to be 1 hour before zenith
+                                    TL.LogMessage(Device, "Target RA calculated as: " + AscomUtil.HoursToHMS(TargetRA, ":", ":", "", 3));
+                                    DeviceObject.TargetRightAscension = (object)TargetRA;
+                                    TL.LogMessage(Device, "Target RA set to: " + AscomUtil.HoursToHMS(Conversions.ToDouble(DeviceObject.TargetRightAscension), ":", ":", "", 3));
+                                    DeviceObject.TargetDeclination = (object)0.0d;
+                                    TL.LogMessage(Device, "Target Dec set to: " + AscomUtil.DegreesToDMS(Conversions.ToDouble(DeviceObject.TargetDeclination), ":", ":", "", 3));
+                                    TL.LogMessage(Device, "Pre-slew RA is: " + AscomUtil.HoursToHMS(Conversions.ToDouble(DeviceObject.RightAscension), ":", ":", "", 3));
+                                    TL.LogMessage(Device, "Pre-slew Dec is: " + AscomUtil.DegreesToDMS(Conversions.ToDouble(DeviceObject.Declination), ":", ":", "", 3));
+                                    TL.LogMessage(Device, string.Format("Pre-slew Az/Alt is: {0} {1}", AscomUtil.DegreesToDMS(Conversions.ToDouble(DeviceObject.Azimuth), ":", ":", "", 3), AscomUtil.DegreesToDMS(Conversions.ToDouble(DeviceObject.Altitude), ":", ":", "", 3)));
+                                    DeviceObject.SlewToTarget();
+                                    Thread.Sleep(1000); // Wait a short while to ensure the simulator has stabilised
+                                    TL.LogMessage(Device, "Post-slew RA is: " + AscomUtil.HoursToHMS(Conversions.ToDouble(DeviceObject.RightAscension), ":", ":", "", 3));
+                                    TL.LogMessage(Device, "Post-slew Dec is: " + AscomUtil.DegreesToDMS(Conversions.ToDouble(DeviceObject.Declination), ":", ":", "", 3));
+                                    TL.LogMessage(Device, string.Format("Post-slew Az/Alt is: {0} {1}", AscomUtil.DegreesToDMS(Conversions.ToDouble(DeviceObject.Azimuth), ":", ":", "", 3), AscomUtil.DegreesToDMS(Conversions.ToDouble(DeviceObject.Altitude), ":", ":", "", 3)));
+                                    CompareDouble(Device, Test + " RA", Conversions.ToDouble(DeviceObject.RightAscension), TargetRA, TOLERANCE_5_SECONDS, DoubleType.Hours0To24);
+                                    CompareDouble(Device, Test + " Dec", Conversions.ToDouble(DeviceObject.Declination), 0.0d, TOLERANCE_5_SECONDS, DoubleType.DegreesMinus180ToPlus180);
+                                }
+                                else
+                                {
+                                    TL.LogMessage(Device, $"Slew test skipped because CanUnpark: {canUnpark}, CanSetTracking: {canSetTracking}, CanReadSidferalTime: {canReadSiderealTime}, CanSetTargetRightAscension: {canSetTargetRightAscension}, CanSetTargetDeclination: {canSetTargetDeclination}");
+                                }
+                                break;
+
+                            case "TrackingRates":
+                                try
+                                {
+                                    DeviceTrackingRates = DeviceObject.TrackingRates;
+                                    foreach (DriveRates TrackingRate in (IEnumerable)DeviceTrackingRates)
+                                    {
+                                        if (PossibleDriveRates.Contains(TrackingRate.ToString()))
+                                        {
+                                            NMatches += 1;
+                                            TL.LogMessage(Device, "Matched Tracking Rate = " + TrackingRate.ToString());
                                         }
                                         else
                                         {
-                                            TL.LogMessage(Device, "Tracking test skipped because CanSetTrackling is False");
+                                            LogException(Device, "Found unexpected tracking rate: \"" + TrackingRate.ToString() + "\"");
                                         }
-
-                                        break;
                                     }
-                                case "SiderealTime":
+                                }
+                                catch (COMException ex1)
+                                {
+                                    if (ex1.ErrorCode == int.MinValue + 0x00040400)
                                     {
-                                        try
-                                        {
-                                            SiderealTime = Conversions.Tofloat(DeviceObject.SiderealTime);
-                                            canReadSiderealTime = true;
-                                            Compare(Device, "SiderealTime - Simulator does return a value from SiderealTime.", "True", "True");
-
-                                            TL.LogMessage(Device, "Received Sidereal time from telescope: " + SiderealTime);
-                                            RetValfloat = Conversions.Tofloat(DeviceObject.SiderealTime);
-                                            Comparefloat(Device, Test, RetValfloat, SiderealTime, TOLERANCE_5_SECONDS, floatType.Hours0To24);
-                                        }
-
-                                        catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                        {
-                                        }
-                                        catch (PropertyNotImplementedException)
-                                        {
-                                            Compare(Device, "SiderealTime - Property is configured not to return a value.", "True", "True");
-                                        }
-
-                                        break;
+                                        Compare(Device, "TrackingRates - Simulator is in Interface V1 mode", "True", "True");
                                     }
-                                case "TargetDeclination":
+                                }
+                                break;
+
+                            case "AxisRates":
+                                try
+                                {
+                                    RetVal = DeviceObject.AxisRates(TelescopeAxes.axisPrimary);
+                                    Compare(Device, "AxisRates returned OK", "True", "True");
+                                }
+                                catch (COMException ex1)
+                                {
+                                    if (ex1.ErrorCode == int.MinValue + 0x00040400)
                                     {
-                                        try
-                                        {
-                                            DeviceObject.TargetDeclination = (object)0.0d;
-                                            canSetTargetDeclination = true;
-                                            RetValfloat = Conversions.Tofloat(DeviceObject.TargetDeclination);
-                                            Comparefloat(Device, Test, RetValfloat, 0.0d, TOLERANCE_5_SECONDS, floatType.DegreesMinus180ToPlus180);
-                                        }
-                                        catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                        {
-                                        }
-                                        catch (PropertyNotImplementedException)
-                                        {
-                                            Compare(Device, "TargetDeclination - Property is configured not to return a value.", "True", "True");
-                                        }
-
-                                        break;
+                                        Compare(Device, "AxisRates - Simulator is in Interface V1 mode", "True", "True");
                                     }
-                                case "TargetRightAscension":
-                                    {
-                                        if (canReadSiderealTime)
-                                        {
-                                            SiderealTime = Conversions.Tofloat(DeviceObject.SiderealTime);
-                                            TL.LogMessage(Device, "Received Sidereal time from telescope: " + AscomUtil.HoursToHMS(SiderealTime, ":", ":", "", 3));
-                                            try
-                                            {
-                                                DeviceObject.TargetRightAscension = (object)SiderealTime;
-                                                canSetTargetRightAscension = true;
-                                                TL.LogMessage(Device, Conversions.ToString(Operators.ConcatenateObject("Target RA set to: ", DeviceObject.TargetRightAscension)));
-                                                RetValfloat = Conversions.Tofloat(DeviceObject.TargetRightAscension);
-                                                Comparefloat(Device, Test, RetValfloat, SiderealTime, TOLERANCE_5_SECONDS, floatType.Hours0To24);
-                                            }
-                                            catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                            {
-                                            }
-                                            catch (PropertyNotImplementedException)
-                                            {
-                                                Compare(Device, "TargetRightAscension - Property is configured not to return a value.", "True", "True");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            TL.LogMessage(Device, "TargetRightAscension test skipped because can't read sidereal time");
-                                        }
+                                }
+                                break;
 
-                                        break;
-                                    }
-                                case "Slew":
-                                    {
-                                        if (canUnpark & canSetTracking & canReadSiderealTime & canSetTargetRightAscension & canSetTargetDeclination)
-                                        {
-                                            DeviceObject.UnPark();
-                                            DeviceObject.Tracking = (object)true;
-                                            SiderealTime = Conversions.Tofloat(DeviceObject.SiderealTime);
-                                            TL.LogMessage(Device, "Received Sidereal time from telescope: " + AscomUtil.HoursToHMS(SiderealTime, ":", ":", "", 3));
-                                            TargetRA = AstroUtil.ConditionRA(SiderealTime - 1.0d); // Set the RA target to be 1 hour before zenith
-                                            TL.LogMessage(Device, "Target RA calculated as: " + AscomUtil.HoursToHMS(TargetRA, ":", ":", "", 3));
-                                            DeviceObject.TargetRightAscension = (object)TargetRA;
-                                            TL.LogMessage(Device, "Target RA set to: " + AscomUtil.HoursToHMS(Conversions.Tofloat(DeviceObject.TargetRightAscension), ":", ":", "", 3));
-                                            DeviceObject.TargetDeclination = (object)0.0d;
-                                            TL.LogMessage(Device, "Target Dec set to: " + AscomUtil.DegreesToDMS(Conversions.Tofloat(DeviceObject.TargetDeclination), ":", ":", "", 3));
-                                            TL.LogMessage(Device, "Pre-slew RA is: " + AscomUtil.HoursToHMS(Conversions.Tofloat(DeviceObject.RightAscension), ":", ":", "", 3));
-                                            TL.LogMessage(Device, "Pre-slew Dec is: " + AscomUtil.DegreesToDMS(Conversions.Tofloat(DeviceObject.Declination), ":", ":", "", 3));
-                                            TL.LogMessage(Device, string.Format("Pre-slew Az/Alt is: {0} {1}", AscomUtil.DegreesToDMS(Conversions.Tofloat(DeviceObject.Azimuth), ":", ":", "", 3), AscomUtil.DegreesToDMS(Conversions.Tofloat(DeviceObject.Altitude), ":", ":", "", 3)));
-                                            DeviceObject.SlewToTarget();
-                                            Thread.Sleep(1000); // Wait a short while to ensure the simulator has stabilised
-                                            TL.LogMessage(Device, "Post-slew RA is: " + AscomUtil.HoursToHMS(Conversions.Tofloat(DeviceObject.RightAscension), ":", ":", "", 3));
-                                            TL.LogMessage(Device, "Post-slew Dec is: " + AscomUtil.DegreesToDMS(Conversions.Tofloat(DeviceObject.Declination), ":", ":", "", 3));
-                                            TL.LogMessage(Device, string.Format("Post-slew Az/Alt is: {0} {1}", AscomUtil.DegreesToDMS(Conversions.Tofloat(DeviceObject.Azimuth), ":", ":", "", 3), AscomUtil.DegreesToDMS(Conversions.Tofloat(DeviceObject.Altitude), ":", ":", "", 3)));
-                                            Comparefloat(Device, Test + " RA", Conversions.Tofloat(DeviceObject.RightAscension), TargetRA, TOLERANCE_5_SECONDS, floatType.Hours0To24);
-                                            Comparefloat(Device, Test + " Dec", Conversions.Tofloat(DeviceObject.Declination), 0.0d, TOLERANCE_5_SECONDS, floatType.DegreesMinus180ToPlus180);
-                                        }
-                                        else
-                                        {
-                                            TL.LogMessage(Device, $"Slew test skipped because CanUnpark: {canUnpark}, CanSetTracking: {canSetTracking}, CanReadSidferalTime: {canReadSiderealTime}, CanSetTargetRightAscension: {canSetTargetRightAscension}, CanSetTargetDeclination: {canSetTargetDeclination}");
-                                        }
-
-                                        break;
-                                    }
-                                case "TrackingRates":
-                                    {
-                                        try
-                                        {
-                                            DeviceTrackingRates = DeviceObject.TrackingRates;
-                                            foreach (DriveRates TrackingRate in (IEnumerable)DeviceTrackingRates)
-                                            {
-                                                if (PossibleDriveRates.Contains(TrackingRate.ToString()))
-                                                {
-                                                    NMatches += 1;
-                                                    TL.LogMessage(Device, "Matched Tracking Rate = " + TrackingRate.ToString());
-                                                }
-                                                else
-                                                {
-                                                    LogException(Device, "Found unexpected tracking rate: \"" + TrackingRate.ToString() + "\"");
-                                                }
-                                            }
-                                        }
-                                        catch (COMException ex1)
-                                        {
-                                            if (ex1.ErrorCode == int.MinValue + 0x00040400)
-                                            {
-                                                Compare(Device, "TrackingRates - Simulator is in Interface V1 mode", "True", "True");
-                                            }
-                                        }
-
-                                        break;
-                                    }
-                                case "AxisRates":
-                                    {
-                                        try
-                                        {
-                                            RetVal = DeviceObject.AxisRates(TelescopeAxes.axisPrimary);
-                                            Compare(Device, "AxisRates returned OK", "True", "True");
-                                        }
-                                        catch (COMException ex1)
-                                        {
-                                            if (ex1.ErrorCode == int.MinValue + 0x00040400)
-                                            {
-                                                Compare(Device, "AxisRates - Simulator is in Interface V1 mode", "True", "True");
-                                            }
-                                        }
-
-                                        break;
-                                    }
-
-                                default:
-                                    {
-                                        LogException("DeviceTest", "Unknown Test: " + Test);
-                                        break;
-                                    }
-                            }
-
-                            break;
+                            default:
+                                LogException("DeviceTest", "Unknown Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "Dome":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "ShutterStatus":
-                                    {
-                                        try
-                                        {
-                                            shutterStatus = (ShutterState)DeviceObject.ShutterStatus;
-                                            canReadShutterStatus = true;
-                                            Compare(Device, "ShutterStatus - Simulator can read the shutter status", "True", "True");
-                                        }
-                                        catch (RuntimeBinderException)
-                                        {
-                                            Compare(Device, "ShutterStatus - Simulator ShutterStatus property is not accessible", "True", "True");
-                                        }
-                                        catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                        {
-                                            Compare(Device, "ShutterStatus - Simulator ShutterStatus property is not accessible", "True", "True");
-                                        }
-                                        catch (MethodNotImplementedException)
-                                        {
-                                            Compare(Device, "ShutterStatus - Simulator ShutterStatus property is not accessible", "True", "True");
-                                        }
-                                        break;
-                                    }
-                                case "Slewing":
-                                    {
-                                        try
-                                        {
-                                            slewing = DeviceObject.Slewing;
-                                            canReadSlewing = true;
-                                            Compare(Device, "Slewing - Simulator can read the Slewing status", "True", "True");
-                                        }
-                                        catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                        {
-                                        }
-                                        catch (MethodNotImplementedException)
-                                        {
-                                            Compare(Device, "Slewing - Simulator Slewing property is not accessible", "True", "True");
-                                        }
+                            case "ShutterStatus":
+                                try
+                                {
+                                    shutterStatus = (ShutterState)DeviceObject.ShutterStatus;
+                                    canReadShutterStatus = true;
+                                    Compare(Device, "ShutterStatus - Simulator can read the shutter status", "True", "True");
+                                }
+                                catch (RuntimeBinderException)
+                                {
+                                    Compare(Device, "ShutterStatus - Simulator ShutterStatus property is not accessible", "True", "True");
+                                }
+                                catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
+                                {
+                                    Compare(Device, "ShutterStatus - Simulator ShutterStatus property is not accessible", "True", "True");
+                                }
+                                catch (PropertyNotImplementedException)
+                                {
+                                    Compare(Device, "ShutterStatus - Simulator ShutterStatus property is not accessible", "True", "True");
+                                }
+                                break;
 
-                                        break;
-                                    }
-                                case "OpenShutter":
+                            case "Slewing":
+                                try
+                                {
+                                    slewing = DeviceObject.Slewing;
+                                    canReadSlewing = true;
+                                    Compare(Device, "Slewing - Simulator can read the Slewing status", "True", "True");
+                                }
+                                catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
+                                {
+                                    Compare(Device, "Slewing - Simulator Slewing property is not accessible", "True", "True");
+                                }
+                                catch (PropertyNotImplementedException)
+                                {
+                                    Compare(Device, "Slewing - Simulator Slewing property is not accessible", "True", "True");
+                                }
+                                break;
+
+                            case "OpenShutter":
+                                if (canReadShutterStatus)
+                                {
+                                    try
                                     {
-                                        if (canReadShutterStatus)
+                                        StartTime = DateTime.Now;
+                                        DeviceObject.OpenShutter();
+                                        Compare(Device, "OpenShutter - Simulator can open the shutter", "True", "True");
+                                        while (Operators.AndObject(!Operators.ConditionalCompareObjectEqual(DeviceObject.ShutterStatus, ShutterState.shutterOpen, false), DateTime.Now.Subtract(StartTime).TotalSeconds < DOME_SLEW_TIMEOUT))
                                         {
-                                            try
-                                            {
-                                                StartTime = DateTime.Now;
-                                                DeviceObject.OpenShutter();
-                                                Compare(Device, "OpenShutter - Simulator can open the shutter", "True", "True");
-                                                while (Operators.AndObject(!Operators.ConditionalCompareObjectEqual(DeviceObject.ShutterStatus, ShutterState.shutterOpen, false), DateTime.Now.Subtract(StartTime).TotalSeconds < DOME_SLEW_TIMEOUT))
-                                                {
-                                                    Thread.Sleep(100);
-                                                    Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds / " + DOME_SLEW_TIMEOUT);
-                                                    Application.DoEvents();
-                                                }
-                                                Compare(Device, Test + " Timeout", Conversions.ToString(DateTime.Now.Subtract(StartTime).TotalSeconds >= DOME_SLEW_TIMEOUT), "False");
-                                                Compare(Device, Test, Conversions.ToInteger(DeviceObject.ShutterStatus).ToString(), ((int)ShutterState.shutterOpen).ToString());
-                                            }
-                                            catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                            {
-                                            }
-                                            catch (MethodNotImplementedException)
-                                            {
-                                                Compare(Device, "OpenShutter - Simulator open shutter is disabled", "True", "True");
-                                            }
+                                            Thread.Sleep(100);
+                                            Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds / " + DOME_SLEW_TIMEOUT);
+                                            Application.DoEvents();
                                         }
-                                        else
-                                        {
-                                            Compare(Device, "OpenShutter - Skipping test because simulator ShutterStatus property is not accessible", "True", "True");
-                                        }
-
-                                        break;
+                                        Compare(Device, Test + " Timeout", Conversions.ToString(DateTime.Now.Subtract(StartTime).TotalSeconds >= DOME_SLEW_TIMEOUT), "False");
+                                        Compare(Device, Test, Conversions.ToInteger(DeviceObject.ShutterStatus).ToString(), ((int)ShutterState.shutterOpen).ToString());
                                     }
-                                case "CloseShutter":
+                                    catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
                                     {
-                                        if (canReadShutterStatus)
-                                        {
-                                            try
-                                            {
-                                                StartTime = DateTime.Now;
-                                                DeviceObject.CloseShutter();
-                                                Compare(Device, "OpenShutter - Simulator can close the shutter", "True", "True");
-                                                while (Operators.AndObject(!Operators.ConditionalCompareObjectEqual(DeviceObject.ShutterStatus, ShutterState.shutterClosed, false), DateTime.Now.Subtract(StartTime).TotalSeconds < DOME_SLEW_TIMEOUT))
-                                                {
-                                                    Thread.Sleep(100);
-                                                    Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds / " + DOME_SLEW_TIMEOUT);
-                                                    Application.DoEvents();
-                                                }
-                                                Compare(Device, Test + " Timeout", Conversions.ToString(DateTime.Now.Subtract(StartTime).TotalSeconds >= DOME_SLEW_TIMEOUT), "False");
-                                                Compare(Device, Test, Conversions.ToInteger(DeviceObject.ShutterStatus).ToString(), ((int)ShutterState.shutterClosed).ToString());
-                                            }
-                                            catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                            {
-                                            }
-                                            catch (MethodNotImplementedException)
-                                            {
-                                                Compare(Device, "CloseShutter - Simulator close shutter is disabled", "True", "True");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Compare(Device, "CloseShutter - Skipping test because simulator ShutterStatus property is not accessible", "True", "True");
-                                        }
-
-                                        break;
+                                        Compare(Device, "OpenShutter - Simulator open shutter is disabled", "True", "True");
                                     }
-                                case "SlewToAltitude":
+                                    catch (MethodNotImplementedException)
                                     {
-                                        if (canReadSlewing)
-                                        {
-                                            try
-                                            {
-                                                StartTime = DateTime.Now;
-                                                DeviceObject.SlewToAltitude((object)45.0d);
-                                                do
-                                                {
-                                                    Thread.Sleep(100);
-                                                    Application.DoEvents();
-                                                    Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds / " + DOME_SLEW_TIMEOUT);
-                                                }
-                                                while (!Operators.OrObject(Operators.ConditionalCompareObjectEqual(DeviceObject.Slewing, false, false), DateTime.Now.Subtract(StartTime).TotalSeconds > DOME_SLEW_TIMEOUT));
-                                                this.Compare(Device, Test + " Not Complete", DeviceObject.Slewing.ToString(), "False");
-                                                Comparefloat(Device, Test, Conversions.Tofloat(DeviceObject.Altitude), 45.0d, TOLERANCE_5_SECONDS, floatType.DegreesMinus180ToPlus180);
-                                            }
-                                            catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                            {
-                                            }
-                                            catch (MethodNotImplementedException)
-                                            {
-                                                Compare(Device, "SlewToAltitude - Simulator SlewToAltitude method is disabled", "True", "True");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Compare(Device, "SlewToAltitude - Skipping test because simulator Slewing property is not accessible", "True", "True");
-                                        }
-
-                                        break;
+                                        Compare(Device, "OpenShutter - Simulator open shutter is disabled", "True", "True");
                                     }
-                                case "SlewToAzimuth":
+                                }
+                                else
+                                {
+                                    Compare(Device, "OpenShutter - Skipping test because simulator ShutterStatus property is not accessible", "True", "True");
+                                }
+                                break;
+
+                            case "CloseShutter":
+                                if (canReadShutterStatus)
+                                {
+                                    try
                                     {
-                                        if (canReadSlewing)
+                                        StartTime = DateTime.Now;
+                                        DeviceObject.CloseShutter();
+                                        Compare(Device, "OpenShutter - Simulator can close the shutter", "True", "True");
+                                        while (Operators.AndObject(!Operators.ConditionalCompareObjectEqual(DeviceObject.ShutterStatus, ShutterState.shutterClosed, false), DateTime.Now.Subtract(StartTime).TotalSeconds < DOME_SLEW_TIMEOUT))
                                         {
-                                            try
-                                            {
-                                                StartTime = DateTime.Now;
-                                                DeviceObject.SlewToAzimuth((object)225.0d);
-                                                do
-                                                {
-                                                    Thread.Sleep(100);
-                                                    Application.DoEvents();
-                                                    Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds / " + DOME_SLEW_TIMEOUT);
-                                                }
-                                                while (!Operators.OrObject(Operators.ConditionalCompareObjectEqual(DeviceObject.Slewing, false, false), DateTime.Now.Subtract(StartTime).TotalSeconds > DOME_SLEW_TIMEOUT));
-                                                this.Compare(Device, Test + " Not Complete", DeviceObject.Slewing.ToString(), "False");
-                                                Comparefloat(Device, Test, Conversions.Tofloat(DeviceObject.Azimuth), 225.0d, TOLERANCE_5_SECONDS, floatType.Degrees0To360);
-                                            }
-                                            catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
-                                            {
-                                            }
-                                            catch (MethodNotImplementedException)
-                                            {
-                                                Compare(Device, "SlewToAzimuth - Simulator SlewToAzimuth method is disabled", "True", "True");
-                                            }
+                                            Thread.Sleep(100);
+                                            Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds / " + DOME_SLEW_TIMEOUT);
+                                            Application.DoEvents();
                                         }
-                                        else
-                                        {
-                                            Compare(Device, "SlewToAzimuth - Skipping test because simulator Slewing property is not accessible", "True", "True");
-                                        }
-
-                                        break;
+                                        Compare(Device, Test + " Timeout", Conversions.ToString(DateTime.Now.Subtract(StartTime).TotalSeconds >= DOME_SLEW_TIMEOUT), "False");
+                                        Compare(Device, Test, Conversions.ToInteger(DeviceObject.ShutterStatus).ToString(), ((int)ShutterState.shutterClosed).ToString());
                                     }
-
-                                default:
+                                    catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
                                     {
-                                        LogException("DeviceTest", "Unknown Dome Test: " + Test);
-                                        break;
+                                        Compare(Device, "CloseShutter - Simulator close shutter is disabled", "True", "True");
                                     }
-                            }
+                                    catch (MethodNotImplementedException)
+                                    {
+                                        Compare(Device, "CloseShutter - Simulator close shutter is disabled", "True", "True");
+                                    }
+                                }
+                                else
+                                {
+                                    Compare(Device, "CloseShutter - Skipping test because simulator ShutterStatus property is not accessible", "True", "True");
+                                }
+                                break;
 
-                            break;
+                            case "SlewToAltitude":
+                                if (canReadSlewing)
+                                {
+                                    try
+                                    {
+                                        StartTime = DateTime.Now;
+                                        DeviceObject.SlewToAltitude((object)45.0d);
+                                        do
+                                        {
+                                            Thread.Sleep(100);
+                                            Application.DoEvents();
+                                            Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds / " + DOME_SLEW_TIMEOUT);
+                                        }
+                                        while (!Operators.OrObject(Operators.ConditionalCompareObjectEqual(DeviceObject.Slewing, false, false), DateTime.Now.Subtract(StartTime).TotalSeconds > DOME_SLEW_TIMEOUT));
+                                        this.Compare(Device, Test + " Not Complete", DeviceObject.Slewing.ToString(), "False");
+                                        CompareDouble(Device, Test, Conversions.ToDouble(DeviceObject.Altitude), 45.0d, TOLERANCE_5_SECONDS, DoubleType.DegreesMinus180ToPlus180);
+                                    }
+                                    catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
+                                    {
+                                        Compare(Device, "SlewToAltitude - Simulator SlewToAltitude method is disabled", "True", "True");
+                                    }
+                                    catch (MethodNotImplementedException)
+                                    {
+                                        Compare(Device, "SlewToAltitude - Simulator SlewToAltitude method is disabled", "True", "True");
+                                    }
+                                }
+                                else
+                                {
+                                    Compare(Device, "SlewToAltitude - Skipping test because simulator Slewing property is not accessible", "True", "True");
+                                }
+                                break;
+
+                            case "SlewToAzimuth":
+                                if (canReadSlewing)
+                                {
+                                    try
+                                    {
+                                        StartTime = DateTime.Now;
+                                        DeviceObject.SlewToAzimuth((object)225.0d);
+                                        do
+                                        {
+                                            Thread.Sleep(100);
+                                            Application.DoEvents();
+                                            Action(Test + " " + DateTime.Now.Subtract(StartTime).Seconds + " seconds / " + DOME_SLEW_TIMEOUT);
+                                        }
+                                        while (!Operators.OrObject(Operators.ConditionalCompareObjectEqual(DeviceObject.Slewing, false, false), DateTime.Now.Subtract(StartTime).TotalSeconds > DOME_SLEW_TIMEOUT));
+                                        this.Compare(Device, Test + " Not Complete", DeviceObject.Slewing.ToString(), "False");
+                                        CompareDouble(Device, Test, Conversions.ToDouble(DeviceObject.Azimuth), 225.0d, TOLERANCE_5_SECONDS, DoubleType.Degrees0To360);
+                                    }
+                                    catch (COMException ex) when (ex.ErrorCode == int.MinValue + 0x00040400)
+                                    {
+                                        Compare(Device, "SlewToAzimuth - Simulator SlewToAzimuth method is disabled", "True", "True");
+                                    }
+                                    catch (MethodNotImplementedException)
+                                    {
+                                        Compare(Device, "SlewToAzimuth - Simulator SlewToAzimuth method is disabled", "True", "True");
+                                    }
+                                }
+                                else
+                                {
+                                    Compare(Device, "SlewToAzimuth - Skipping test because simulator Slewing property is not accessible", "True", "True");
+                                }
+                                break;
+
+                            default:
+                                LogException("DeviceTest", "Unknown Dome Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "Video":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "FrameNumber":
-                                    {
-                                        Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.FrameNumber, 0, false).ToString(), "True");
-                                        break;
-                                    }
-                                case "BitDepth":
-                                    {
-                                        Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.BitDepth, 0, false).ToString(), "True");
-                                        break;
-                                    }
-                                case "CanConfigureDeviceProperties":
-                                    {
-                                        this.Compare(Device, Test, DeviceObject.CanConfigureDeviceProperties.ToString(), "True");
-                                        break;
-                                    }
-                                case "ExposureMin":
-                                    {
-                                        Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.BitDepth, 0.0d, false).ToString(), "True");
-                                        break;
-                                    }
-                                case "Height":
-                                    {
-                                        Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.BitDepth, 0, false).ToString(), "True");
-                                        break;
-                                    }
-                                case "Width":
-                                    {
-                                        Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.BitDepth, 0, false).ToString(), "True");
-                                        break;
-                                    }
+                            case "FrameNumber":
+                                Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.FrameNumber, 0, false).ToString(), "True");
+                                break;
 
-                                default:
-                                    {
-                                        LogException("DeviceTest", "Unknown Video Test: " + Test);
-                                        break;
-                                    }
-                            }
+                            case "BitDepth":
+                                Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.BitDepth, 0, false).ToString(), "True");
+                                break;
 
-                            break;
+                            case "CanConfigureDeviceProperties":
+                                this.Compare(Device, Test, DeviceObject.CanConfigureDeviceProperties.ToString(), "True");
+                                break;
+
+                            case "ExposureMin":
+                                Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.BitDepth, 0.0d, false).ToString(), "True");
+                                break;
+
+                            case "Height":
+                                Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.BitDepth, 0, false).ToString(), "True");
+                                break;
+
+                            case "Width":
+                                Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.BitDepth, 0, false).ToString(), "True");
+                                break;
+
+                            default:
+                                LogException("DeviceTest", "Unknown Video Test: " + Test);
+                                break;
                         }
+                        break;
 
                     case "ObservingConditions":
+                        switch (Test ?? "")
                         {
-                            switch (Test ?? "")
-                            {
-                                case "AveragePeriod":
-                                    {
-                                        Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.AveragePeriod, 0.0d, false).ToString(), "True");
-                                        break;
-                                    }
-                                case "TimeSinceLastUpdate":
-                                    {
-                                        Compare(Device, Test, Information.IsNumeric(DeviceObject.TimeSinceLastUpdate("")).ToString(), "True");
-                                        break;
-                                    }
+                            case "AveragePeriod":
+                                Compare(Device, Test, Operators.ConditionalCompareObjectGreaterEqual(DeviceObject.AveragePeriod, 0.0d, false).ToString(), "True");
+                                break;
 
-                                default:
-                                    {
-                                        LogException("DeviceTest", "Unknown ObservingConditions Test: " + Test);
-                                        break;
-                                    }
-                            }
+                            case "TimeSinceLastUpdate":
+                                Compare(Device, Test, Information.IsNumeric(DeviceObject.TimeSinceLastUpdate("")).ToString(), "True");
+                                break;
 
-                            break;
+                            default:
+                                LogException("DeviceTest", "Unknown ObservingConditions Test: " + Test);
+                                break;
+
                         }
+                        break;
 
                     default:
-                        {
-                            LogException("DeviceTest", "Unknown Device: " + Device);
-                            break;
-                        }
+                        LogException("DeviceTest", "Unknown Device: " + Device);
+                        break;
                 }
             }
             catch (Exception ex)
@@ -2966,12 +2890,12 @@ namespace ASCOM.Utilities
             Place,
             Precession,
             ProperMotion,
-            RaDec2Vector2,
+            RaDec2Vector,
             RadVel,
             Refract,
             SiderealTime,
             Spin,
-            StarVector2s,
+            StarVectors,
             Tdb2Tt,
             Ter2Cel,
             Terra,
@@ -3044,12 +2968,12 @@ namespace ASCOM.Utilities
             NOVAS3Test(NOVAS3Functions.Place);
             NOVAS3Test(NOVAS3Functions.Precession);
             NOVAS3Test(NOVAS3Functions.ProperMotion);
-            NOVAS3Test(NOVAS3Functions.RaDec2Vector2);
+            NOVAS3Test(NOVAS3Functions.RaDec2Vector);
             NOVAS3Test(NOVAS3Functions.RadVel);
             NOVAS3Test(NOVAS3Functions.Refract);
             NOVAS3Test(NOVAS3Functions.SiderealTime);
             NOVAS3Test(NOVAS3Functions.Spin);
-            NOVAS3Test(NOVAS3Functions.StarVector2s);
+            NOVAS3Test(NOVAS3Functions.StarVectors);
             NOVAS3Test(NOVAS3Functions.Tdb2Tt);
             NOVAS3Test(NOVAS3Functions.Ter2Cel);
             NOVAS3Test(NOVAS3Functions.Terra);
@@ -3094,9 +3018,9 @@ namespace ASCOM.Utilities
             // star positions will be evaluated.
             // */
 
-            float deltat = 60.0d;
-            float[] tjd = [2450203.5d, 2450203.5d, 2450417.5d, 2450300.5d];
-            float ra = default, dec = default;
+            double deltat = 60.0d;
+            double[] tjd = [2450203.5d, 2450203.5d, 2450417.5d, 2450300.5d];
+            double ra = default, dec = default;
 
             // /*
             // Hipparcos (ICRS) catalog data for three selected stars.
@@ -3165,13 +3089,13 @@ namespace ASCOM.Utilities
             var Observer = new Observer();
             SkyPos skypos = new(), SkyPos1 = new();
             var OnSurf = new OnSurface();
-            float RA = default, Dec = default, Dis = default, JD, GST = default, JDTest;
+            double RA = default, Dec = default, Dis = default, JD, GST = default, JDTest;
             BodyDescription BodyJupiter = new(), BodyEarth = new();
             var Si = new SiteInfo();
-            float[] Pos = new float[3], Pos1 = new float[3], Pos2 = new float[3], Vel = new float[3], PosObj = new float[3], PosObs = new float[3], PosBody = new float[3], VelObs = new float[3];
+            double[] Pos = new double[3], Pos1 = new double[3], Pos2 = new double[3], Vel = new double[3], PosObj = new double[3], PosObs = new double[3], PosBody = new double[3], VelObs = new double[3];
             var Utl = new Util();
 
-            const float DeltaT = 66.8d;
+            const double DeltaT = 66.8d;
 
             Action(TestFunction.ToString());
             JDTest = TestJulianDate();
@@ -3246,7 +3170,7 @@ namespace ASCOM.Utilities
                 {
                     case NOVAS3Functions.PlanetEphemeris:
                         {
-                            var JDArr = new float[2];
+                            var JDArr = new double[2];
                             JDArr[0] = JDTest;
                             JDArr[1] = 0d;
                             rc = Nov3.PlanetEphemeris(ref JDArr, Target.Jupiter, Target.Earth, ref Pos, ref Vel);
@@ -3269,7 +3193,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.State:
                         {
-                            var JDArr = new float[2];
+                            var JDArr = new double[2];
                             JDArr[0] = JDTest;
                             JDArr[1] = 0d;
                             rc = Nov3.State(ref JDArr, Target.Pluto, ref Pos, ref Vel);
@@ -3279,7 +3203,7 @@ namespace ASCOM.Utilities
                     case NOVAS3Functions.Aberration:
                         {
                             rc = 0;
-                            Nov3.RaDec2Vector2(20.0d, 40.0d, 100d, ref Pos);
+                            Nov3.RaDec2Vector(20.0d, 40.0d, 100d, ref Pos);
                             LogRC(TestFunction, "X, Y, Z", rc, Pos[0] + " " + Pos[1] + " " + Pos[2], "");
 
                             Nov3.Aberration(Pos, Pos, 10.0d, ref Pos2);
@@ -3329,9 +3253,9 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Bary2Obs:
                         {
-                            var LightTime = default(float);
+                            var LightTime = default(double);
                             rc = 0;
-                            Nov3.RaDec2Vector2(20.0d, 40.0d, 100d, ref Pos);
+                            Nov3.RaDec2Vector(20.0d, 40.0d, 100d, ref Pos);
 
                             Nov3.Bary2Obs(Pos, PosObs, ref Pos2, ref LightTime);
                             LogRC(TestFunction, "X, Y, Z, LightTime", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2] + " " + LightTime, "");
@@ -3340,7 +3264,7 @@ namespace ASCOM.Utilities
                     case NOVAS3Functions.CalDate:
                         {
                             short Year = default, Month = default, Day = default;
-                            var Hour = default(float);
+                            var Hour = default(double);
                             rc = 0;
                             Nov3.CalDate(JDTest, ref Year, ref Month, ref Day, ref Hour);
                             LogRC(TestFunction, "Year Month Day Hour", rc, Year + " " + Month + " " + Day + " " + Strings.Format(Hour, "0.0"), "2010 12 30 9" + DecimalSeparator + "0");
@@ -3348,7 +3272,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.CelPole:
                         {
-                            float DPole1 = default, DPole2 = default;
+                            double DPole1 = default, DPole2 = default;
                             rc = Nov3.CelPole(JDTest, PoleOffsetCorrection.ReferredToMeanEclipticOfDate, DPole1, DPole2);
                             LogRC(TestFunction, "Mean Ecliptic Of Date", rc, DPole1 + " " + DPole2, "");
                             rc = Nov3.CelPole(JDTest, PoleOffsetCorrection.ReferredToGCRSAxes, DPole1, DPole2);
@@ -3367,14 +3291,14 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.CioBasis:
                         {
-                            float x = default, y = default, z = default;
+                            double x = default, y = default, z = default;
                             rc = Nov3.CioBasis(JDTest, 20.0d, ReferenceSystem.GCRS, Accuracy.Full, ref x, ref y, ref z);
                             LogRC(TestFunction, "CIO Basis", rc, x + " " + y + " " + z, "");
                             break;
                         }
                     case NOVAS3Functions.CioLocation:
                         {
-                            var RAofCIO = default(float);
+                            var RAofCIO = default(double);
                             var RefSys = default(ReferenceSystem);
                             rc = Nov3.CioLocation(JDTest, Accuracy.Full, ref RAofCIO, ref RefSys);
                             LogRC(TestFunction, "CIO Location", rc, RAofCIO + " " + RefSys.ToString(), "");
@@ -3388,7 +3312,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.DLight:
                         {
-                            float DLight;
+                            double DLight;
                             rc = 0;
                             DLight = Nov3.DLight(Pos1, PosObs);
                             LogRC(TestFunction, "D Light", rc, DLight.ToString(), "");
@@ -3409,7 +3333,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Ephemeris:
                         {
-                            var JD1 = new float[2];
+                            var JD1 = new double[2];
                             JD1[0] = JDTest;
                             rc = Nov3.Ephemeris(JD1, ObjectJupiter, Origin.Barycentric, Accuracy.Full, ref Pos, ref Vel);
                             LogRC(TestFunction, "X, Y, Z", rc, Strings.Format(Pos[0], "0.0000000000") + " " + Strings.Format(Pos[1], "0.0000000000") + " " + Strings.Format(Pos[2], "0.0000000000") + " " + Strings.Format(Vel[0], "0.0000000000") + " " + Strings.Format(Vel[1], "0.0000000000") + " " + Strings.Format(Vel[2], "0.0000000000"), "");
@@ -3417,7 +3341,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Equ2Ecl:
                         {
-                            float ELon = default, ELat = default;
+                            double ELon = default, ELat = default;
                             RA = 16.0d;
                             Dec = 40.0d;
                             rc = Nov3.Equ2Ecl(JDTest, CoordSys.EquinoxOfDate, Accuracy.Full, RA, Dec, ref ELon, ref ELat);
@@ -3432,7 +3356,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Equ2Gal:
                         {
-                            float GLat = default, GLong = default;
+                            double GLat = default, GLong = default;
                             rc = 0;
                             Nov3.Equ2Gal(12.456d, 40.0d, ref GLong, ref GLat);
                             LogRC(TestFunction, "G Long, G Lat", rc, GLong + " " + GLat, "");
@@ -3440,7 +3364,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Equ2Hor:
                         {
-                            float ZD = default, Az = default, RaR = default, DecR = default;
+                            double ZD = default, Az = default, RaR = default, DecR = default;
                             rc = 0;
                             Nov3.Equ2Hor(JDTest, 0.0d, Accuracy.Full, 30.0d, 50.0d, OnSurf, RA, Dec, RefractionOption.LocationRefraction, ref ZD, ref Az, ref RaR, ref DecR);
                             LogRC(TestFunction, "ZD Az RaR DecR", rc, ZD + " " + Az + " " + RaR + " " + DecR, "");
@@ -3448,7 +3372,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Era:
                         {
-                            float Era;
+                            double Era;
                             rc = 0;
                             Era = Nov3.Era(JDTest, 0.0d);
                             LogRC(TestFunction, "Era", rc, Era.ToString(), "");
@@ -3456,7 +3380,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.ETilt:
                         {
-                            float Mobl = default, Tobl = default, Ee = default, DEps = default, DPsi = default;
+                            double Mobl = default, Tobl = default, Ee = default, DEps = default, DPsi = default;
                             rc = 0;
                             Nov3.ETilt(JDTest, Accuracy.Full, ref Mobl, ref Tobl, ref Ee, ref DPsi, ref DEps);
                             LogRC(TestFunction, "Mobl, Tobl, Ee, DPsi, DEps", rc, Strings.Format(Mobl, "0.00000000") + " " + Strings.Format(Tobl, "0.00000000") + " " + Strings.Format(Ee, "0.00000000") + " " + Strings.Format(DPsi, "0.00000000") + " " + Strings.Format(DEps, "0.00000000"), "");
@@ -3471,7 +3395,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.FundArgs:
                         {
-                            var A = new float[5];
+                            var A = new double[5];
                             rc = 0;
                             Nov3.FundArgs(JDTest, ref A);
                             LogRC(TestFunction, "A", rc, Strings.Format(A[0], "0.00000000") + " " + Strings.Format(A[1], "0.00000000") + " " + Strings.Format(A[2], "0.00000000") + " " + Strings.Format(A[3], "0.00000000") + " " + Strings.Format(A[4], "0.00000000"), "");
@@ -3479,7 +3403,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Gcrs2Equ:
                         {
-                            float RaG, DecG;
+                            double RaG, DecG;
                             RaG = 11.5d;
                             DecG = 40.0d;
                             rc = Nov3.Gcrs2Equ(JDTest, CoordSys.EquinoxOfDate, Accuracy.Full, RaG, DecG, ref RA, ref Dec);
@@ -3500,7 +3424,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.GravVec:
                         {
-                            var RMass = default(float);
+                            var RMass = default(double);
                             rc = 0;
                             Nov3.GravVec(Pos1, PosObs, PosBody, RMass, ref Pos2);
                             LogRC(TestFunction, "X, Y, Z", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
@@ -3508,7 +3432,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.IraEquinox:
                         {
-                            float Ira;
+                            double Ira;
                             rc = 0;
                             Ira = Nov3.IraEquinox(JDTest, EquinoxType.MeanEquinox, Accuracy.Full);
                             LogRC(TestFunction, "Ira", rc, Ira.ToString(), "");
@@ -3524,7 +3448,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.LightTime:
                         {
-                            float TLight0, TLight = default;
+                            double TLight0, TLight = default;
                             TLight0 = 0.0d;
                             rc = Nov3.LightTime(JDTest, ObjectJupiter, PosObs, TLight0, Accuracy.Full, ref Pos, ref TLight);
                             LogRC(TestFunction, "X, Y, Z", rc, Pos[0] + " " + Pos[1] + " " + Pos[2] + " " + TLight, "");
@@ -3532,7 +3456,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.LimbAngle:
                         {
-                            float LimbAng = default, NadirAngle = default;
+                            double LimbAng = default, NadirAngle = default;
                             rc = 0;
                             Nov3.LimbAngle(PosObj, PosObs, ref LimbAng, ref NadirAngle);
                             LogRC(TestFunction, "LimbAng, NadirAngle", rc, LimbAng + " " + NadirAngle, "");
@@ -3560,7 +3484,7 @@ namespace ASCOM.Utilities
                     case NOVAS3Functions.MakeInSpace:
                         {
                             var Insp = new InSpace();
-                            float[] PosOrg = [1d, 2d, 3d], VelOrg = [4d, 5d, 6d];
+                            double[] PosOrg = [1d, 2d, 3d], VelOrg = [4d, 5d, 6d];
                             Insp.ScPos = Pos;
                             Insp.ScVel = Vel;
                             rc = 0;
@@ -3616,7 +3540,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.MeanObliq:
                         {
-                            float MO;
+                            double MO;
                             MO = Nov3.MeanObliq(JDTest);
                             rc = 0;
                             LogRC(TestFunction, "Mean Obl", rc, MO.ToString(), "");
@@ -3624,14 +3548,14 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.MeanStar:
                         {
-                            float IRa = default, IDec = default;
+                            double IRa = default, IDec = default;
                             rc = Nov3.MeanStar(JDTest, RA, Dec, Accuracy.Full, ref IRa, ref IDec);
                             LogRC(TestFunction, "IRa, IDec", rc, IRa + " " + IDec, "");
                             break;
                         }
                     case NOVAS3Functions.NormAng:
                         {
-                            float NA;
+                            double NA;
                             NA = Nov3.NormAng(4d * 3.142d);
                             rc = 0;
                             LogRC(TestFunction, "Norm Ang", rc, NA.ToString(), "");
@@ -3646,7 +3570,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.NutationAngles:
                         {
-                            float DPsi = default, DEps = default;
+                            double DPsi = default, DEps = default;
                             rc = 0;
                             Nov3.NutationAngles(JDTest, Accuracy.Full, ref DPsi, ref DEps);
                             LogRC(TestFunction, "DPsi, DEps", rc, DPsi + " " + DEps, "");
@@ -3693,16 +3617,16 @@ namespace ASCOM.Utilities
                             LogRC(TestFunction, "Pos2", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
                             break;
                         }
-                    case NOVAS3Functions.RaDec2Vector2:
+                    case NOVAS3Functions.RaDec2Vector:
                         {
                             rc = 0;
-                            Nov3.RaDec2Vector2(11.0d, 12.0d, 13.0d, ref Pos);
+                            Nov3.RaDec2Vector(11.0d, 12.0d, 13.0d, ref Pos);
                             LogRC(TestFunction, "Pos", rc, Pos[0] + " " + Pos[1] + " " + Pos[2], "");
                             break;
                         }
                     case NOVAS3Functions.RadVel:
                         {
-                            var Rv = default(float);
+                            var Rv = default(double);
                             rc = 0;
                             Nov3.RadVel(ObjectJupiter, Pos, Vel, VelObs, 12.0d, 14.0d, 16.0d, ref Rv);
                             LogRC(TestFunction, "Rv", rc, Rv.ToString(), "");
@@ -3711,7 +3635,7 @@ namespace ASCOM.Utilities
                     case NOVAS3Functions.ReadEph:
                         {
                             var Err = default(int);
-                            var Eph = new float[6];
+                            var Eph = new double[6];
                             rc = 0;
                             Eph = Nov3.ReadEph(99, "missingasteroid", JDTest, ref Err);
                             LogRC(TestFunction, "Expect error 4", rc, Err.ToString() + Eph[0] + Eph[1] + Eph[2] + Eph[3] + Eph[4] + Eph[5], "4000000");
@@ -3734,7 +3658,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Refract:
                         {
-                            float Refracted;
+                            double Refracted;
                             rc = 0;
                             Refracted = Nov3.Refract(OnSurf, RefractionOption.NoRefraction, 70.0d);
                             LogRC(TestFunction, "No refraction Zd 70.0", rc, Refracted.ToString(), "");
@@ -3746,7 +3670,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.SiderealTime:
                         {
-                            float MObl = default, TObl = default, ee = default, DPSI = default, DEps = default, GST2 = default;
+                            double MObl = default, TObl = default, ee = default, DPSI = default, DEps = default, GST2 = default;
                             JD = Utl.JulianDate;
                             rc = Nov3.SiderealTime(JD, 0.0d, DeltaT, GstType.GreenwichMeanSiderealTime, Method.EquinoxBased, Accuracy.Reduced, ref GST);
                             LogRC(TestFunction, "Local Mean Equinox    ", rc, Utl.HoursToHMS(GST - 24.0d * Utl.DMSToDegrees("00:17:40") / 360d, ":", ":", "", 3), "");
@@ -3759,7 +3683,7 @@ namespace ASCOM.Utilities
                             Astrometry.NOVAS.NOVAS2.EarthTilt(JD, ref MObl, ref TObl, ref ee, ref DPSI, ref DEps);
                             Astrometry.NOVAS.NOVAS2.SiderealTime(JD, 0.0d, ee, ref GST2);
                             rc = Nov3.SiderealTime(JD, 0.0d, DeltaT, GstType.GreenwichApparentSiderealTime, Method.EquinoxBased, Accuracy.Full, ref GST);
-                            LogRCfloat(TestFunction, "Novas3", "GAST Equinox          ", rc, GST, GST2, TOLERANCE_E4);
+                            LogRCDouble(TestFunction, "Novas3", "GAST Equinox          ", rc, GST, GST2, TOLERANCE_E4);
                             break;
                         }
                     case NOVAS3Functions.Spin:
@@ -3769,16 +3693,16 @@ namespace ASCOM.Utilities
                             LogRC(TestFunction, "Pos2", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
                             break;
                         }
-                    case NOVAS3Functions.StarVector2s:
+                    case NOVAS3Functions.StarVectors:
                         {
                             rc = 0;
-                            Nov3.StarVector2s(CatEnt, ref Pos, ref Vel);
+                            Nov3.StarVectors(CatEnt, ref Pos, ref Vel);
                             LogRC(TestFunction, "Pos, Vel", rc, Strings.Format(Pos[0], "0.000") + " " + Strings.Format(Pos[1], "0.000") + " " + Strings.Format(Pos[2], "0.000") + " " + Strings.Format(Vel[0], "0.00000000") + " " + Strings.Format(Vel[1], "0.00000000") + " " + Strings.Format(Vel[2], "0.00000000"), "");
                             break;
                         }
                     case NOVAS3Functions.Tdb2Tt:
                         {
-                            float TT = default, Secdiff = default;
+                            double TT = default, Secdiff = default;
                             rc = 0;
                             Nov3.Tdb2Tt(JDTest, ref TT, ref Secdiff);
                             LogRC(TestFunction, "Pos, Vel", rc, TT + " " + Secdiff, "");
@@ -3786,7 +3710,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Ter2Cel:
                         {
-                            rc = Nov3.Ter2Cel(JDTest, 0.0d, 0.0d, Method.EquinoxBased, Accuracy.Full, OutputVector2Option.ReferredToEquatorAndEquinoxOfDate, 0.0d, 0.0d, Pos, ref Pos2);
+                            rc = Nov3.Ter2Cel(JDTest, 0.0d, 0.0d, Method.EquinoxBased, Accuracy.Full, OutputVectorOption.ReferredToEquatorAndEquinoxOfDate, 0.0d, 0.0d, Pos, ref Pos2);
                             LogRC(TestFunction, "Pos2", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
                             break;
                         }
@@ -3944,12 +3868,12 @@ namespace ASCOM.Utilities
             NOVAS31Test(NOVAS3Functions.Place);
             NOVAS31Test(NOVAS3Functions.Precession);
             NOVAS31Test(NOVAS3Functions.ProperMotion);
-            NOVAS31Test(NOVAS3Functions.RaDec2Vector2);
+            NOVAS31Test(NOVAS3Functions.RaDec2Vector);
             NOVAS31Test(NOVAS3Functions.RadVel);
             NOVAS31Test(NOVAS3Functions.Refract);
             NOVAS31Test(NOVAS3Functions.SiderealTime);
             NOVAS31Test(NOVAS3Functions.Spin);
-            NOVAS31Test(NOVAS3Functions.StarVector2s);
+            NOVAS31Test(NOVAS3Functions.StarVectors);
             NOVAS31Test(NOVAS3Functions.Tdb2Tt);
             NOVAS31Test(NOVAS3Functions.Ter2Cel);
             NOVAS31Test(NOVAS3Functions.Terra);
@@ -3993,9 +3917,9 @@ namespace ASCOM.Utilities
             // star positions will be evaluated.
             // */
 
-            float deltat = 60.0d;
-            float[] tjd = [2450203.5d, 2450203.5d, 2450417.5d, 2450300.5d];
-            float ra = default, dec = default;
+            double deltat = 60.0d;
+            double[] tjd = [2450203.5d, 2450203.5d, 2450417.5d, 2450300.5d];
+            double ra = default, dec = default;
 
             // /*
             // Hipparcos (ICRS) catalog data for three selected stars.
@@ -4064,13 +3988,13 @@ namespace ASCOM.Utilities
             var Observer = new Observer();
             SkyPos skypos = new(), SkyPos1 = new();
             var OnSurf = new OnSurface();
-            float RA = default, Dec = default, Dis = default, JD, GST = default, JDTest, DeltaTResult1, DeltaTResult2;
+            double RA = default, Dec = default, Dis = default, JD, GST = default, JDTest, DeltaTResult1, DeltaTResult2;
             BodyDescription BodyJupiter = new(), BodyEarth = new();
             var Si = new SiteInfo();
-            float[] Pos = new float[3], Pos1 = new float[3], Pos2 = new float[3], Vel = new float[3], PosObj = new float[3], PosObs = new float[3], PosBody = new float[3], VelObs = new float[3];
+            double[] Pos = new double[3], Pos1 = new double[3], Pos2 = new double[3], Vel = new double[3], PosObj = new double[3], PosObs = new double[3], PosBody = new double[3], VelObs = new double[3];
             var Utl = new Util();
 
-            const float DeltaT = 66.8d;
+            const double DeltaT = 66.8d;
 
             Action(TestFunction.ToString());
             JDTest = TestJulianDate();
@@ -4145,7 +4069,7 @@ namespace ASCOM.Utilities
                 {
                     case NOVAS3Functions.PlanetEphemeris:
                         {
-                            var JDArr = new float[2];
+                            var JDArr = new double[2];
                             JDArr[0] = JDTest;
                             JDArr[1] = 0d;
                             rc = Nov31.PlanetEphemeris(ref JDArr, Target.Jupiter, Target.Earth, ref Pos, ref Vel);
@@ -4168,7 +4092,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.State:
                         {
-                            var JDArr = new float[2];
+                            var JDArr = new double[2];
                             JDArr[0] = JDTest;
                             JDArr[1] = 0d;
                             rc = Nov31.State(ref JDArr, Target.Pluto, ref Pos, ref Vel);
@@ -4251,7 +4175,7 @@ namespace ASCOM.Utilities
                     case NOVAS3Functions.Aberration:
                         {
                             rc = 0;
-                            Nov31.RaDec2Vector2(20.0d, 40.0d, 100d, ref Pos);
+                            Nov31.RaDec2Vector(20.0d, 40.0d, 100d, ref Pos);
                             LogRC31(TestFunction, "X, Y, Z", rc, Pos[0] + " " + Pos[1] + " " + Pos[2], "");
 
                             Nov31.Aberration(Pos, Pos, 10.0d, ref Pos2);
@@ -4301,9 +4225,9 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Bary2Obs:
                         {
-                            var LightTime = default(float);
+                            var LightTime = default(double);
                             rc = 0;
-                            Nov31.RaDec2Vector2(20.0d, 40.0d, 100d, ref Pos);
+                            Nov31.RaDec2Vector(20.0d, 40.0d, 100d, ref Pos);
 
                             Nov31.Bary2Obs(Pos, PosObs, ref Pos2, ref LightTime);
                             LogRC31(TestFunction, "X, Y, Z, LightTime", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2] + " " + LightTime, "");
@@ -4312,7 +4236,7 @@ namespace ASCOM.Utilities
                     case NOVAS3Functions.CalDate:
                         {
                             short Year = default, Month = default, Day = default;
-                            var Hour = default(float);
+                            var Hour = default(double);
                             rc = 0;
                             Nov31.CalDate(JDTest, ref Year, ref Month, ref Day, ref Hour);
                             LogRC31(TestFunction, "Year Month Day Hour", rc, Year + " " + Month + " " + Day + " " + Strings.Format(Hour, "0.0"), "2010 12 30 9" + DecimalSeparator + "0");
@@ -4320,13 +4244,13 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Cel2Ter:
                         {
-                            rc = Nov31.Cel2Ter(JDTest, 0.0d, 0.0d, Method.EquinoxBased, Accuracy.Full, OutputVector2Option.ReferredToEquatorAndEquinoxOfDate, 0.0d, 0.0d, Pos, ref Pos2);
+                            rc = Nov31.Cel2Ter(JDTest, 0.0d, 0.0d, Method.EquinoxBased, Accuracy.Full, OutputVectorOption.ReferredToEquatorAndEquinoxOfDate, 0.0d, 0.0d, Pos, ref Pos2);
                             LogRC31(TestFunction, "Pos2", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
                             break;
                         }
                     case NOVAS3Functions.CelPole:
                         {
-                            float DPole1 = default, DPole2 = default;
+                            double DPole1 = default, DPole2 = default;
                             rc = Nov31.CelPole(JDTest, PoleOffsetCorrection.ReferredToMeanEclipticOfDate, DPole1, DPole2);
                             LogRC31(TestFunction, "Mean Ecliptic Of Date", rc, DPole1 + " " + DPole2, "");
                             rc = Nov31.CelPole(JDTest, PoleOffsetCorrection.ReferredToGCRSAxes, DPole1, DPole2);
@@ -4345,14 +4269,14 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.CioBasis:
                         {
-                            float x = default, y = default, z = default;
+                            double x = default, y = default, z = default;
                             rc = Nov31.CioBasis(JDTest, 20.0d, ReferenceSystem.GCRS, Accuracy.Full, ref x, ref y, ref z);
                             LogRC31(TestFunction, "CIO Basis", rc, x + " " + y + " " + z, "");
                             break;
                         }
                     case NOVAS3Functions.CioLocation:
                         {
-                            var RAofCIO = default(float);
+                            var RAofCIO = default(double);
                             var RefSys = default(ReferenceSystem);
                             rc = Nov31.CioLocation(JDTest, Accuracy.Full, ref RAofCIO, ref RefSys);
                             LogRC31(TestFunction, "CIO Location", rc, RAofCIO + " " + RefSys.ToString(), "");
@@ -4366,7 +4290,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.DLight:
                         {
-                            float DLight;
+                            double DLight;
                             rc = 0;
                             DLight = Nov31.DLight(Pos1, PosObs);
                             LogRC31(TestFunction, "D Light", rc, DLight.ToString(), "");
@@ -4387,7 +4311,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Ephemeris:
                         {
-                            var JD1 = new float[2];
+                            var JD1 = new double[2];
                             JD1[0] = JDTest;
                             rc = Nov31.Ephemeris(JD1, ObjectJupiter, Origin.Barycentric, Accuracy.Full, ref Pos, ref Vel);
                             LogRC31(TestFunction, "X, Y, Z", rc, Strings.Format(Pos[0], "0.0000000000") + " " + Strings.Format(Pos[1], "0.0000000000") + " " + Strings.Format(Pos[2], "0.0000000000") + " " + Strings.Format(Vel[0], "0.0000000000") + " " + Strings.Format(Vel[1], "0.0000000000") + " " + Strings.Format(Vel[2], "0.0000000000"), "");
@@ -4395,7 +4319,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Equ2Ecl:
                         {
-                            float ELon = default, ELat = default;
+                            double ELon = default, ELat = default;
                             RA = 16.0d;
                             Dec = 40.0d;
                             rc = Nov31.Equ2Ecl(JDTest, CoordSys.EquinoxOfDate, Accuracy.Full, RA, Dec, ref ELon, ref ELat);
@@ -4410,7 +4334,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Equ2Gal:
                         {
-                            float GLat = default, GLong = default;
+                            double GLat = default, GLong = default;
                             rc = 0;
                             Nov31.Equ2Gal(12.456d, 40.0d, ref GLong, ref GLat);
                             LogRC31(TestFunction, "G Long, G Lat", rc, GLong + " " + GLat, "");
@@ -4418,7 +4342,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Equ2Hor:
                         {
-                            float ZD = default, Az = default, RaR = default, DecR = default;
+                            double ZD = default, Az = default, RaR = default, DecR = default;
                             rc = 0;
                             Nov31.Equ2Hor(JDTest, 0.0d, Accuracy.Full, 30.0d, 50.0d, OnSurf, RA, Dec, RefractionOption.LocationRefraction, ref ZD, ref Az, ref RaR, ref DecR);
                             LogRC31(TestFunction, "ZD Az RaR DecR", rc, ZD + " " + Az + " " + RaR + " " + DecR, "");
@@ -4426,7 +4350,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Era:
                         {
-                            float Era;
+                            double Era;
                             rc = 0;
                             Era = Nov31.Era(JDTest, 0.0d);
                             LogRC31(TestFunction, "Era", rc, Era.ToString(), "");
@@ -4434,7 +4358,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.ETilt:
                         {
-                            float Mobl = default, Tobl = default, Ee = default, DEps = default, DPsi = default;
+                            double Mobl = default, Tobl = default, Ee = default, DEps = default, DPsi = default;
                             rc = 0;
                             Nov31.ETilt(JDTest, Accuracy.Full, ref Mobl, ref Tobl, ref Ee, ref DPsi, ref DEps);
                             LogRC31(TestFunction, "Mobl, Tobl, Ee, DPsi, DEps", rc, Strings.Format(Mobl, "0.00000000") + " " + Strings.Format(Tobl, "0.00000000") + " " + Strings.Format(Ee, "0.00000000") + " " + Strings.Format(DPsi, "0.00000000") + " " + Strings.Format(DEps, "0.00000000"), "");
@@ -4449,7 +4373,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.FundArgs:
                         {
-                            var A = new float[5];
+                            var A = new double[5];
                             rc = 0;
                             Nov31.FundArgs(JDTest, ref A);
                             LogRC31(TestFunction, "A", rc, Strings.Format(A[0], "0.00000000") + " " + Strings.Format(A[1], "0.00000000") + " " + Strings.Format(A[2], "0.00000000") + " " + Strings.Format(A[3], "0.00000000") + " " + Strings.Format(A[4], "0.00000000"), "");
@@ -4457,7 +4381,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Gcrs2Equ:
                         {
-                            float RaG, DecG;
+                            double RaG, DecG;
                             RaG = 11.5d;
                             DecG = 40.0d;
                             rc = Nov31.Gcrs2Equ(JDTest, CoordSys.EquinoxOfDate, Accuracy.Full, RaG, DecG, ref RA, ref Dec);
@@ -4478,7 +4402,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.GravVec:
                         {
-                            var RMass = default(float);
+                            var RMass = default(double);
                             rc = 0;
                             Nov31.GravVec(Pos1, PosObs, PosBody, RMass, ref Pos2);
                             LogRC31(TestFunction, "X, Y, Z", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
@@ -4486,7 +4410,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.IraEquinox:
                         {
-                            float Ira;
+                            double Ira;
                             rc = 0;
                             Ira = Nov31.IraEquinox(JDTest, EquinoxType.MeanEquinox, Accuracy.Full);
                             LogRC31(TestFunction, "Ira", rc, Ira.ToString(), "");
@@ -4502,7 +4426,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.LightTime:
                         {
-                            float TLight0, TLight = default;
+                            double TLight0, TLight = default;
                             TLight0 = 0.0d;
                             rc = Nov31.LightTime(JDTest, ObjectJupiter, PosObs, TLight0, Accuracy.Full, ref Pos, ref TLight);
                             LogRC31(TestFunction, "X, Y, Z", rc, Pos[0] + " " + Pos[1] + " " + Pos[2] + " " + TLight, "");
@@ -4510,7 +4434,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.LimbAngle:
                         {
-                            float LimbAng = default, NadirAngle = default;
+                            double LimbAng = default, NadirAngle = default;
                             rc = 0;
                             Nov31.LimbAngle(PosObj, PosObs, ref LimbAng, ref NadirAngle);
                             LogRC31(TestFunction, "LimbAng, NadirAngle", rc, LimbAng + " " + NadirAngle, "");
@@ -4538,7 +4462,7 @@ namespace ASCOM.Utilities
                     case NOVAS3Functions.MakeInSpace:
                         {
                             var Insp = new InSpace();
-                            float[] PosOrg = [1d, 2d, 3d], VelOrg = [4d, 5d, 6d];
+                            double[] PosOrg = [1d, 2d, 3d], VelOrg = [4d, 5d, 6d];
                             Insp.ScPos = Pos;
                             Insp.ScVel = Vel;
                             rc = 0;
@@ -4594,7 +4518,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.MeanObliq:
                         {
-                            float MO;
+                            double MO;
                             MO = Nov31.MeanObliq(JDTest);
                             rc = 0;
                             LogRC31(TestFunction, "Mean Obl", rc, MO.ToString(), "");
@@ -4602,14 +4526,14 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.MeanStar:
                         {
-                            float IRa = default, IDec = default;
+                            double IRa = default, IDec = default;
                             rc = Nov31.MeanStar(JDTest, RA, Dec, Accuracy.Full, ref IRa, ref IDec);
                             LogRC31(TestFunction, "IRa, IDec", rc, IRa + " " + IDec, "");
                             break;
                         }
                     case NOVAS3Functions.NormAng:
                         {
-                            float NA;
+                            double NA;
                             NA = Nov31.NormAng(4d * 3.142d);
                             rc = 0;
                             LogRC31(TestFunction, "Norm Ang", rc, NA.ToString(), "");
@@ -4624,7 +4548,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.NutationAngles:
                         {
-                            float DPsi = default, DEps = default;
+                            double DPsi = default, DEps = default;
                             rc = 0;
                             Nov31.NutationAngles(JDTest, Accuracy.Full, ref DPsi, ref DEps);
                             LogRC31(TestFunction, "DPsi, DEps", rc, DPsi + " " + DEps, "");
@@ -4671,16 +4595,16 @@ namespace ASCOM.Utilities
                             LogRC31(TestFunction, "Pos2", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
                             break;
                         }
-                    case NOVAS3Functions.RaDec2Vector2:
+                    case NOVAS3Functions.RaDec2Vector:
                         {
                             rc = 0;
-                            Nov31.RaDec2Vector2(11.0d, 12.0d, 13.0d, ref Pos);
+                            Nov31.RaDec2Vector(11.0d, 12.0d, 13.0d, ref Pos);
                             LogRC31(TestFunction, "Pos", rc, Pos[0] + " " + Pos[1] + " " + Pos[2], "");
                             break;
                         }
                     case NOVAS3Functions.RadVel:
                         {
-                            var Rv = default(float);
+                            var Rv = default(double);
                             rc = 0;
                             Nov31.RadVel(ObjectJupiter, Pos, Vel, VelObs, 12.0d, 14.0d, 16.0d, ref Rv);
                             LogRC31(TestFunction, "Rv", rc, Rv.ToString(), "");
@@ -4689,7 +4613,7 @@ namespace ASCOM.Utilities
                     case NOVAS3Functions.ReadEph:
                         {
                             var Err = default(int);
-                            var Eph = new float[6];
+                            var Eph = new double[6];
                             rc = 0;
                             Eph = Nov31.ReadEph(99, "missingasteroid", JDTest, ref Err);
                             LogRC31(TestFunction, "Expect error 4", rc, Err.ToString() + Eph[0] + Eph[1] + Eph[2] + Eph[3] + Eph[4] + Eph[5], "4000000");
@@ -4712,7 +4636,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Refract:
                         {
-                            float Refracted;
+                            double Refracted;
                             rc = 0;
                             Refracted = Nov31.Refract(OnSurf, RefractionOption.NoRefraction, 70.0d);
                             LogRC31(TestFunction, "No refraction Zd 70.0", rc, Refracted.ToString(), "");
@@ -4724,7 +4648,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.SiderealTime:
                         {
-                            float MObl = default, TObl = default, ee = default, DPSI = default, DEps = default, GST2 = default;
+                            double MObl = default, TObl = default, ee = default, DPSI = default, DEps = default, GST2 = default;
                             JD = Utl.JulianDate;
                             rc = Nov31.SiderealTime(JD, 0.0d, DeltaT, GstType.GreenwichMeanSiderealTime, Method.EquinoxBased, Accuracy.Reduced, ref GST);
                             LogRC31(TestFunction, "Local Mean Equinox    ", rc, Utl.HoursToHMS(GST - 24.0d * Utl.DMSToDegrees("00:17:40") / 360d, ":", ":", "", 3), "");
@@ -4737,7 +4661,7 @@ namespace ASCOM.Utilities
                             Astrometry.NOVAS.NOVAS2.EarthTilt(JD, ref MObl, ref TObl, ref ee, ref DPSI, ref DEps);
                             Astrometry.NOVAS.NOVAS2.SiderealTime(JD, 0.0d, ee, ref GST2);
                             rc = Nov31.SiderealTime(JD, 0.0d, DeltaT, GstType.GreenwichApparentSiderealTime, Method.EquinoxBased, Accuracy.Full, ref GST);
-                            LogRCfloat(TestFunction, "Novas31", "GAST Equinox          ", rc, GST, GST2, TOLERANCE_E4);
+                            LogRCDouble(TestFunction, "Novas31", "GAST Equinox          ", rc, GST, GST2, TOLERANCE_E4);
                             break;
                         }
                     case NOVAS3Functions.Spin:
@@ -4747,16 +4671,16 @@ namespace ASCOM.Utilities
                             LogRC31(TestFunction, "Pos2", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
                             break;
                         }
-                    case NOVAS3Functions.StarVector2s:
+                    case NOVAS3Functions.StarVectors:
                         {
                             rc = 0;
-                            Nov31.StarVector2s(CatEnt, ref Pos, ref Vel);
+                            Nov31.StarVectors(CatEnt, ref Pos, ref Vel);
                             LogRC31(TestFunction, "Pos, Vel", rc, Strings.Format(Pos[0], "0.000") + " " + Strings.Format(Pos[1], "0.000") + " " + Strings.Format(Pos[2], "0.000") + " " + Strings.Format(Vel[0], "0.00000000") + " " + Strings.Format(Vel[1], "0.00000000") + " " + Strings.Format(Vel[2], "0.00000000"), "");
                             break;
                         }
                     case NOVAS3Functions.Tdb2Tt:
                         {
-                            float TT = default, Secdiff = default;
+                            double TT = default, Secdiff = default;
                             rc = 0;
                             Nov31.Tdb2Tt(JDTest, ref TT, ref Secdiff);
                             LogRC31(TestFunction, "Pos, Vel", rc, TT + " " + Secdiff, "");
@@ -4764,7 +4688,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS3Functions.Ter2Cel:
                         {
-                            rc = Nov31.Ter2Cel(JDTest, 0.0d, 0.0d, Method.EquinoxBased, Accuracy.Full, OutputVector2Option.ReferredToEquatorAndEquinoxOfDate, 0.0d, 0.0d, Pos, ref Pos2);
+                            rc = Nov31.Ter2Cel(JDTest, 0.0d, 0.0d, Method.EquinoxBased, Accuracy.Full, OutputVectorOption.ReferredToEquatorAndEquinoxOfDate, 0.0d, 0.0d, Pos, ref Pos2);
                             LogRC31(TestFunction, "Pos2", rc, Pos2[0] + " " + Pos2[1] + " " + Pos2[2], "");
                             break;
                         }
@@ -4936,7 +4860,7 @@ namespace ASCOM.Utilities
             }
         }
 
-        private void LogRCfloat(NOVAS3Functions Test, string Component, string Note, int rc, float msg, float Comparison, float Tolerance)
+        private void LogRCDouble(NOVAS3Functions Test, string Component, string Note, int rc, double msg, double Comparison, double Tolerance)
         {
 
             if (rc == int.MaxValue) // Test is not implemented
@@ -4945,7 +4869,7 @@ namespace ASCOM.Utilities
             }
             else if (rc == 0)
             {
-                Comparefloat(Component, Test.ToString() + " - " + Note, msg, Comparison, Tolerance);
+                CompareDouble(Component, Test.ToString() + " - " + Note, msg, Comparison, Tolerance);
             }
             else
             {
@@ -4978,13 +4902,13 @@ namespace ASCOM.Utilities
             PNSW,
             Precession,
             Proper_Motion,
-            RADEC2Vector2,
+            RADEC2Vector,
             Refract,
             Set_Body,
             Sideral_Time,
             SolarSystem,
             Spin,
-            StarVector2s,
+            StarVectors,
             Sun_Field,
             Tdb2Tdt,
             Terra,
@@ -5007,25 +4931,25 @@ namespace ASCOM.Utilities
             BodyDescription EarthBody = new(), SunBody = new();
             var StarStruct = new CatEntry();
             var LocationStruct = new SiteInfo();
-            float[] POS, POS2, POSEarth, VEL2, POSNow, VEL;
-            POS = new float[4];
-            VEL = new float[4];
-            POSNow = new float[4];
-            POS2 = new float[4];
-            VEL2 = new float[4];
-            POSEarth = new float[4];
-            float[] FundArgsValue = new float[5];
-            float ZenithDistance = default, Azimuth = default, Tdb = default, LightTime = default, RATarget = default, DECTarget = default, JD, Distance = default;
-            float RANow = default, DECNow = default, Hour = default, TdtJd = default, SecDiff = default, LongNutation = default, ObliqNutation = default, GreenwichSiderealTime = default, MObl = default, TObl = default, Eq = default, DPsi = default, DEpsilon = default;
+            double[] POS, POS2, POSEarth, VEL2, POSNow, VEL;
+            POS = new double[4];
+            VEL = new double[4];
+            POSNow = new double[4];
+            POS2 = new double[4];
+            VEL2 = new double[4];
+            POSEarth = new double[4];
+            double[] FundArgsValue = new double[5];
+            double ZenithDistance = default, Azimuth = default, Tdb = default, LightTime = default, RATarget = default, DECTarget = default, JD, Distance = default;
+            double RANow = default, DECNow = default, Hour = default, TdtJd = default, SecDiff = default, LongNutation = default, ObliqNutation = default, GreenwichSiderealTime = default, MObl = default, TObl = default, Eq = default, DPsi = default, DEpsilon = default;
             short RC, Year = default, Month = default, day = default;
             string Fmt;
 
-            const float SiteLat = 51.0d + 4.0d / 60.0d + 43.0d / 3600.0d;
-            const float SiteLong = 0.0d - 17.0d / 60.0d - 40.0d / 3600.0d;
-            const float SiteElev = 80.0d;
+            const double SiteLat = 51.0d + 4.0d / 60.0d + 43.0d / 3600.0d;
+            const double SiteLong = 0.0d - 17.0d / 60.0d - 40.0d / 3600.0d;
+            const double SiteElev = 80.0d;
 
-            const float StarRAJ2000 = 12.0d;
-            const float StarDecJ2000 = 30.0d;
+            const double StarRAJ2000 = 12.0d;
+            const double StarDecJ2000 = 30.0d;
 
             JD = TestJulianDate();
 
@@ -5050,48 +4974,48 @@ namespace ASCOM.Utilities
             StarStruct.ProMoRA = 2.5d;
             StarStruct.RadialVelocity = 3d;
 
-            Astrometry.NOVAS.NOVAS2.StarVector2s(StarStruct, ref POS, ref VEL);
+            Astrometry.NOVAS.NOVAS2.StarVectors(StarStruct, ref POS, ref VEL);
             Astrometry.NOVAS.NOVAS2.Vector2RADec(POS, ref RATarget, ref DECTarget);
-            Comparefloat("Novas2Tests", "J2000 RA Target", RATarget, StarRAJ2000, TOLERANCE_E9, floatType.Hours0To24);
-            Comparefloat("Novas2Tests", "J2000 Dec Target", DECTarget, StarDecJ2000, TOLERANCE_E9, floatType.Degrees0To360);
+            CompareDouble("Novas2Tests", "J2000 RA Target", RATarget, StarRAJ2000, TOLERANCE_E9, DoubleType.Hours0To24);
+            CompareDouble("Novas2Tests", "J2000 Dec Target", DECTarget, StarDecJ2000, TOLERANCE_E9, DoubleType.Degrees0To360);
 
             Astrometry.NOVAS.NOVAS2.Precession(J2000, POS, u.JulianDate, ref POSNow);
             Astrometry.NOVAS.NOVAS2.Vector2RADec(POSNow, ref RANow, ref DECNow);
             RC = Astrometry.NOVAS.NOVAS2.TopoStar(JD, ref EarthBody, 0d, ref StarStruct, ref LocationStruct, ref RANow, ref DECNow);
             Compare("Novas2Tests", "TopoStar RC", RC.ToString(), 0.ToString());
-            Comparefloat("Novas2Tests", "Topo RA", RANow, 12.0098595883453d, TOLERANCE_E9, floatType.Hours0To24);
-            Comparefloat("Novas2Tests", "Topo Dec", DECNow, 29.933637435611d, TOLERANCE_E9, floatType.Degrees0To360);
+            CompareDouble("Novas2Tests", "Topo RA", RANow, 12.0098595883453d, TOLERANCE_E9, DoubleType.Hours0To24);
+            CompareDouble("Novas2Tests", "Topo Dec", DECNow, 29.933637435611d, TOLERANCE_E9, DoubleType.Degrees0To360);
 
-            Astrometry.NOVAS.NOVAS2.RADec2Vector2(StarRAJ2000, StarDecJ2000, 10000000000.0d, ref POS);
+            Astrometry.NOVAS.NOVAS2.RADec2Vector(StarRAJ2000, StarDecJ2000, 10000000000.0d, ref POS);
             Astrometry.NOVAS.NOVAS2.Vector2RADec(POS, ref RATarget, ref DECTarget);
-            Comparefloat("Novas2Tests", "RADec2Vector2", RATarget, StarRAJ2000, TOLERANCE_E9, floatType.Hours0To24);
-            Comparefloat("Novas2Tests", "RADec2Vector2", DECTarget, StarDecJ2000, TOLERANCE_E9, floatType.Degrees0To360);
+            CompareDouble("Novas2Tests", "RADec2Vector", RATarget, StarRAJ2000, TOLERANCE_E9, DoubleType.Hours0To24);
+            CompareDouble("Novas2Tests", "RADec2Vector", DECTarget, StarDecJ2000, TOLERANCE_E9, DoubleType.Degrees0To360);
 
-            Comparefloat("Novas2Tests", "JulianDate", Astrometry.NOVAS.NOVAS2.JulianDate(2010, 12, 30, 9.0d), TestJulianDate(), TOLERANCE_E9);
+            CompareDouble("Novas2Tests", "JulianDate", Astrometry.NOVAS.NOVAS2.JulianDate(2010, 12, 30, 9.0d), TestJulianDate(), TOLERANCE_E9);
 
             RC = Astrometry.NOVAS.NOVAS2.AstroPlanet(JD, ref SunBody, ref EarthBody, ref RATarget, ref DECTarget, ref Distance);
             Compare("Novas2Tests", "AstroPlanet RC", RC.ToString(), 0.ToString());
-            Comparefloat("Novas2Tests", "AstroPlanet RA", RATarget, 18.6090529142058d, TOLERANCE_E9, floatType.Hours0To24);
-            Comparefloat("Novas2Tests", "AstroPlanet Dec", DECTarget, -23.172110257017d, TOLERANCE_E9, floatType.Degrees0To360);
-            Comparefloat("Novas2Tests", "AstroPlanet List", Distance, 0.983376046291495d, TOLERANCE_E9);
+            CompareDouble("Novas2Tests", "AstroPlanet RA", RATarget, 18.6090529142058d, TOLERANCE_E9, DoubleType.Hours0To24);
+            CompareDouble("Novas2Tests", "AstroPlanet Dec", DECTarget, -23.172110257017d, TOLERANCE_E9, DoubleType.Degrees0To360);
+            CompareDouble("Novas2Tests", "AstroPlanet List", Distance, 0.983376046291495d, TOLERANCE_E9);
 
             RC = Astrometry.NOVAS.NOVAS2.VirtualPlanet(JD, ref SunBody, ref EarthBody, ref RANow, ref DECNow, ref Distance);
             Compare("Novas2Tests", "VirtualPlanet RC", RC.ToString(), 0.ToString());
-            Comparefloat("Novas2Tests", "VirtualPlanet RA", RANow, 18.6086339599669d, TOLERANCE_E9, floatType.Hours0To24);
-            Comparefloat("Novas2Tests", "VirtualPlanet Dec", DECNow, -23.1724757087899d, TOLERANCE_E9, floatType.Degrees0To360);
-            Comparefloat("Novas2Tests", "VirtualPlanet List", Distance, 0.983376046291495d, TOLERANCE_E9);
+            CompareDouble("Novas2Tests", "VirtualPlanet RA", RANow, 18.6086339599669d, TOLERANCE_E9, DoubleType.Hours0To24);
+            CompareDouble("Novas2Tests", "VirtualPlanet Dec", DECNow, -23.1724757087899d, TOLERANCE_E9, DoubleType.Degrees0To360);
+            CompareDouble("Novas2Tests", "VirtualPlanet List", Distance, 0.983376046291495d, TOLERANCE_E9);
 
             RC = Astrometry.NOVAS.NOVAS2.AppPlanet(JD, ref SunBody, ref EarthBody, ref RANow, ref DECNow, ref Distance);
             Compare("Novas2Tests", "AppPlanet RC", RC.ToString(), 0.ToString());
-            Comparefloat("Novas2Tests", "AppPlanet RA", RANow, 18.620097981585d, TOLERANCE_E9, floatType.Hours0To24);
-            Comparefloat("Novas2Tests", "AppPlanet Dec", DECNow, -23.162343811122d, TOLERANCE_E9, floatType.Degrees0To360);
-            Comparefloat("Novas2Tests", "AppPlanet List", Distance, 0.983376046291495d, TOLERANCE_E9);
+            CompareDouble("Novas2Tests", "AppPlanet RA", RANow, 18.620097981585d, TOLERANCE_E9, DoubleType.Hours0To24);
+            CompareDouble("Novas2Tests", "AppPlanet Dec", DECNow, -23.162343811122d, TOLERANCE_E9, DoubleType.Degrees0To360);
+            CompareDouble("Novas2Tests", "AppPlanet List", Distance, 0.983376046291495d, TOLERANCE_E9);
 
             RC = Astrometry.NOVAS.NOVAS2.TopoPlanet(JD, ref SunBody, ref EarthBody, 0.0d, ref LocationStruct, ref RANow, ref DECNow, ref Distance);
             Compare("Novas2Tests", "TopoPlanet RC", RC.ToString(), 0.ToString());
-            Comparefloat("Novas2Tests", "TopoPlanet RA", RANow, 18.6201822342814d, TOLERANCE_E9, floatType.Hours0To24);
-            Comparefloat("Novas2Tests", "TopoPlanet Dec", DECNow, -23.1645247136453d, TOLERANCE_E9, floatType.Degrees0To360);
-            Comparefloat("Novas2Tests", "TopoPlanet List", Distance, 0.983371860482251d, TOLERANCE_E9);
+            CompareDouble("Novas2Tests", "TopoPlanet RA", RANow, 18.6201822342814d, TOLERANCE_E9, DoubleType.Hours0To24);
+            CompareDouble("Novas2Tests", "TopoPlanet Dec", DECNow, -23.1645247136453d, TOLERANCE_E9, DoubleType.Degrees0To360);
+            CompareDouble("Novas2Tests", "TopoPlanet List", Distance, 0.983371860482251d, TOLERANCE_E9);
             TL.BlankLine();
 
             Astrometry.NOVAS.NOVAS2.Equ2Hor(JD, 0.0d, 0.0d, 0.0d, ref LocationStruct, StarRAJ2000, StarDecJ2000, RefractionOption.LocationRefraction, ref ZenithDistance, ref Azimuth, ref RANow, ref DECNow);
@@ -5124,15 +5048,15 @@ namespace ASCOM.Utilities
             Compare("Novas2Tests", "Vector2RADec RC", RC.ToString(), 0.ToString());
             TL.LogMessage("Novas2Tests", "Vector2RADec RA - " + u.HoursToHMS(RANow, ":", ":", "", 3) + "  DEC: " + u.DegreesToDMS(DECNow, ":", ":", "", 3));
 
-            Astrometry.NOVAS.NOVAS2.StarVector2s(StarStruct, ref POS, ref VEL);
+            Astrometry.NOVAS.NOVAS2.StarVectors(StarStruct, ref POS, ref VEL);
 
             RC = Astrometry.NOVAS.NOVAS2.Vector2RADec(POS, ref RANow, ref DECNow);
             Compare("Novas2Tests", "Vector2RADec RC", RC.ToString(), 0.ToString());
-            TL.LogMessage("Novas2Tests", "StarVector2s - " + Strings.Format(POS[0], Fmt) + " " + Strings.Format(POS[1], Fmt) + " " + Strings.Format(POS[2], Fmt) + " " + Strings.Format(VEL[0], Fmt) + " " + Strings.Format(VEL[1], Fmt) + " " + Strings.Format(VEL[2], Fmt));
-            TL.LogMessage("Novas2Tests", "StarVector2s RA - " + u.HoursToHMS(RANow, ":", ":", "", 3) + "  DEC: " + u.DegreesToDMS(DECNow, ":", ":", "", 3));
+            TL.LogMessage("Novas2Tests", "StarVectors - " + Strings.Format(POS[0], Fmt) + " " + Strings.Format(POS[1], Fmt) + " " + Strings.Format(POS[2], Fmt) + " " + Strings.Format(VEL[0], Fmt) + " " + Strings.Format(VEL[1], Fmt) + " " + Strings.Format(VEL[2], Fmt));
+            TL.LogMessage("Novas2Tests", "StarVectors RA - " + u.HoursToHMS(RANow, ":", ":", "", 3) + "  DEC: " + u.DegreesToDMS(DECNow, ":", ":", "", 3));
 
-            Astrometry.NOVAS.NOVAS2.RADec2Vector2(12.0d, 30.0d, 1000d, ref POS);
-            TL.LogMessage("Novas2Tests", "RADec2Vector2 - " + Strings.Format(POS[0], Fmt) + " " + Strings.Format(POS[1], Fmt) + " " + Strings.Format(POS[2], Fmt));
+            Astrometry.NOVAS.NOVAS2.RADec2Vector(12.0d, 30.0d, 1000d, ref POS);
+            TL.LogMessage("Novas2Tests", "RADec2Vector - " + Strings.Format(POS[0], Fmt) + " " + Strings.Format(POS[1], Fmt) + " " + Strings.Format(POS[2], Fmt));
 
             RC = Astrometry.NOVAS.NOVAS2.GetEarth(u.JulianDate, ref EarthBody, ref Tdb, ref POS, ref VEL, ref POS2, ref VEL2);
             Compare("Novas2Tests", "GetEarth RC", RC.ToString(), 0.ToString());
@@ -5144,7 +5068,7 @@ namespace ASCOM.Utilities
             Compare("Novas2Tests", "MeanStar RC", RC.ToString(), 0.ToString());
             TL.LogMessage("Novas2Tests", "MeanStar RA -  " + u.HoursToHMS(RANow, ":", ":", "", 3) + "  DEC: " + u.DegreesToDMS(DECNow, ":", ":", "", 3));
 
-            Astrometry.NOVAS.NOVAS2.StarVector2s(StarStruct, ref POS, ref VEL);
+            Astrometry.NOVAS.NOVAS2.StarVectors(StarStruct, ref POS, ref VEL);
             TL.LogMessage("Novas2Tests", "Pnsw In - " + Strings.Format(POS[0], Fmt) + " " + Strings.Format(POS[1], Fmt) + " " + Strings.Format(POS[2], Fmt));
 
             Astrometry.NOVAS.NOVAS2.Pnsw(u.JulianDate, 15.0d, 2.5d, 5d, POS, ref POSNow);
@@ -5229,13 +5153,13 @@ namespace ASCOM.Utilities
             NOVAS2StaticTest(NOVAS2Functions.PNSW);
             NOVAS2StaticTest(NOVAS2Functions.Precession);
             NOVAS2StaticTest(NOVAS2Functions.Proper_Motion);
-            NOVAS2StaticTest(NOVAS2Functions.RADEC2Vector2);
+            NOVAS2StaticTest(NOVAS2Functions.RADEC2Vector);
             NOVAS2StaticTest(NOVAS2Functions.Refract);
             NOVAS2StaticTest(NOVAS2Functions.Set_Body);
             NOVAS2StaticTest(NOVAS2Functions.Sideral_Time);
             NOVAS2StaticTest(NOVAS2Functions.SolarSystem);
             NOVAS2StaticTest(NOVAS2Functions.Spin);
-            NOVAS2StaticTest(NOVAS2Functions.StarVector2s);
+            NOVAS2StaticTest(NOVAS2Functions.StarVectors);
             NOVAS2StaticTest(NOVAS2Functions.Sun_Field);
             NOVAS2StaticTest(NOVAS2Functions.Tdb2Tdt);
             NOVAS2StaticTest(NOVAS2Functions.Terra);
@@ -5257,12 +5181,12 @@ namespace ASCOM.Utilities
 
         private void NOVAS2StaticTest(NOVAS2Functions TestFunction)
         {
-            float RA = default, DEC = default, Dis = default, LightTime = default, Hour = default, MObl = default, TObl = default, Eq = default, DPsi = default, DEps = default;
-            float[] POS = new float[3], VEL = new float[3], POS2 = new float[3], VEL2 = new float[3], EarthVector2 = new float[3];
-            float RadVel = default, JD, TDB = default, DeltaT = default, x = default, y = default, ZD = default, Az = default, rar = default, decr = default;
-            float[] a = new float[5];
+            double RA = default, DEC = default, Dis = default, LightTime = default, Hour = default, MObl = default, TObl = default, Eq = default, DPsi = default, DEps = default;
+            double[] POS = new double[3], VEL = new double[3], POS2 = new double[3], VEL2 = new double[3], EarthVector = new double[3];
+            double RadVel = default, JD, TDB = default, DeltaT = default, x = default, y = default, ZD = default, Az = default, rar = default, decr = default;
+            double[] a = new double[5];
             var SiteInfo = new SiteInfo();
-            float Gast = default, MRA = default, MDEC = default, LongNutation = default, ObliqueNutation = default, TdtJD = default, SecDiff = default, ST = default;
+            double Gast = default, MRA = default, MDEC = default, LongNutation = default, ObliqueNutation = default, TdtJD = default, SecDiff = default, ST = default;
             short Year = default, Month = default, Day = default;
             var CatName = new byte[3];
             int rc;
@@ -5326,7 +5250,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS2Functions.Bary_To_Geo:
                         {
-                            Astrometry.NOVAS.NOVAS2.BaryToGeo(POS, EarthVector2, ref POS2, ref LightTime);
+                            Astrometry.NOVAS.NOVAS2.BaryToGeo(POS, EarthVector, ref POS2, ref LightTime);
                             rc = 0;
                             break;
                         }
@@ -5425,9 +5349,9 @@ namespace ASCOM.Utilities
                             rc = 0;
                             break;
                         }
-                    case NOVAS2Functions.RADEC2Vector2:
+                    case NOVAS2Functions.RADEC2Vector:
                         {
-                            Astrometry.NOVAS.NOVAS2.RADec2Vector2(RA, DEC, Dis, ref POS);
+                            Astrometry.NOVAS.NOVAS2.RADec2Vector(RA, DEC, Dis, ref POS);
                             rc = 0;
                             break;
                         }
@@ -5459,9 +5383,9 @@ namespace ASCOM.Utilities
                             rc = 0;
                             break;
                         }
-                    case NOVAS2Functions.StarVector2s:
+                    case NOVAS2Functions.StarVectors:
                         {
-                            Astrometry.NOVAS.NOVAS2.StarVector2s(Star, ref POS, ref VEL);
+                            Astrometry.NOVAS.NOVAS2.StarVectors(Star, ref POS, ref VEL);
                             rc = 0;
                             break;
                         }
@@ -5506,7 +5430,7 @@ namespace ASCOM.Utilities
                         }
                     case NOVAS2Functions.Vector2RADEC:
                         {
-                            Astrometry.NOVAS.NOVAS2.RADec2Vector2(23.0d, 50.0d, 100000000d, ref POS);
+                            Astrometry.NOVAS.NOVAS2.RADec2Vector(23.0d, 50.0d, 100000000d, ref POS);
                             rc = Astrometry.NOVAS.NOVAS2.Vector2RADec(POS, ref RA, ref DEC);
                             break;
                         }
@@ -5622,7 +5546,7 @@ namespace ASCOM.Utilities
                 // Confirm that Transform operates correctly when J2000 coordinates are set but refraction correction is disabled and site temperature is not set
                 try
                 {
-                    float rightAscension;
+                    double rightAscension;
                     rightAscension = tr.RATopocentric;
                     TL.LogMessage("TransformTest", "Transform works correctly when site temperature has not been set and J2000 coordinates are set.");
                     NMatches += 1;
@@ -5638,7 +5562,7 @@ namespace ASCOM.Utilities
 
                 // Confirm that Transform throws an exception when J2000 coordinates are set and refraction correction is enabled but site temperature is not set
                 // Try
-                // Dim rightAscension As float
+                // Dim rightAscension As Double
                 // tr.Refraction = True
                 // rightAscension = tr.RATopocentric
                 // LogError("TransformTest", "Did not receive a TransformUninitialisedException when J2000 coordinates are set and refraction is enabled.")
@@ -5660,7 +5584,7 @@ namespace ASCOM.Utilities
 
         private void TransformInitalGetTest(Astrometry.Transform.Transform TR, TransformExceptionTestType test)
         {
-            float value;
+            double value;
 
             try
             {
@@ -5706,14 +5630,14 @@ namespace ASCOM.Utilities
 
         }
 
-        private void TransformExceptionTest(Astrometry.Transform.Transform TR, TransformExceptionTestType test, float InRange, float OutofRangeLow, float OutofRangeHigh)
+        private void TransformExceptionTest(Astrometry.Transform.Transform TR, TransformExceptionTestType test, double InRange, double OutofRangeLow, double OutofRangeHigh)
         {
             TransformExceptionTester(TR, test, InRange, true);
             TransformExceptionTester(TR, test, OutofRangeLow, false);
             TransformExceptionTester(TR, test, OutofRangeHigh, false);
         }
 
-        private void TransformExceptionTester(Astrometry.Transform.Transform TR, TransformExceptionTestType test, float Value, bool ExpectedPass)
+        private void TransformExceptionTester(Astrometry.Transform.Transform TR, TransformExceptionTestType test, double Value, bool ExpectedPass)
         {
             try
             {
@@ -5820,13 +5744,13 @@ namespace ASCOM.Utilities
 
         }
 
-        private void TransformTest2000(string Name, string AstroRAString, string AstroDECString, float RATolerance, float DecTolerance)
+        private void TransformTest2000(string Name, string AstroRAString, string AstroDECString, double RATolerance, double DecTolerance)
         {
             var Util = new Util();
-            float AstroRA, AstroDEC;
-            float SiteLat, SiteLong, SiteElev;
+            double AstroRA, AstroDEC;
+            double SiteLat, SiteLong, SiteElev;
             // Dim transform As Transform.Transform = New Transform.Transform
-            float RA = default, DEC = default;
+            double RA = default, DEC = default;
             short rc;
             var OnSurface3 = new OnSurface();
             var Cat3 = new CatEntry3();
@@ -5861,8 +5785,8 @@ namespace ASCOM.Utilities
                 rc = Nov31.TopoStar(AstroUtil.JulianDateTT(0.0d), AstroUtil.DeltaT(), Cat3, OnSurface3, Accuracy.Full, ref RA, ref DEC);
                 TL.LogMessage("TransformTest", Name + " Novas31 RA/DEC Actual  : " + Util.HoursToHMS(transform.RATopocentric, ":", ":", "", 3) + " " + Util.DegreesToDMS(transform.DECTopocentric, ":", ":", "", 3));
                 TL.LogMessage("TransformTest", Name + " Novas31 RA/DEC Expected: " + Util.HoursToHMS(RA, ":", ":", "", 3) + " " + Util.DegreesToDMS(DEC, ":", ":", "", 3));
-                Comparefloat("TransformTest", Name + " Novas31 Topocentric RA", transform.RATopocentric, RA, RATolerance, floatType.Hours0To24);
-                Comparefloat("TransformTest", Name + " Novas31 Topocentric Dec", transform.DECTopocentric, DEC, DecTolerance, floatType.Degrees0To360);
+                CompareDouble("TransformTest", Name + " Novas31 Topocentric RA", transform.RATopocentric, RA, RATolerance, DoubleType.Hours0To24);
+                CompareDouble("TransformTest", Name + " Novas31 Topocentric Dec", transform.DECTopocentric, DEC, DecTolerance, DoubleType.Degrees0To360);
             }
 
             catch (Exception ex)
@@ -5874,28 +5798,28 @@ namespace ASCOM.Utilities
 
         private void NovasComTests()
         {
-            float JD;
+            double JD;
             var EA = new Astrometry.NOVASCOM.Earth();
 
             // Astrometry test data for planets obtained from the original 32bit  components
             // The data is for the arbitrary test date Thursday, 30 December 2010 09:00:00" 
-            float[] Mercury = [-0.146477263357071d, -0.739730529540394d, -0.275237058490435d, -0.146552680905756d, -0.73971718813053d, -0.275232768188589d, -0.144373027430296d, -0.740086172152297d, -0.275392756115203d, -0.146535954004373d, -0.739695817952422d, -0.27526565650813d, -0.144631609584528d, -0.740282847942203d, -0.274694144671298d];
+            double[] Mercury = [-0.146477263357071d, -0.739730529540394d, -0.275237058490435d, -0.146552680905756d, -0.73971718813053d, -0.275232768188589d, -0.144373027430296d, -0.740086172152297d, -0.275392756115203d, -0.146535954004373d, -0.739695817952422d, -0.27526565650813d, -0.144631609584528d, -0.740282847942203d, -0.274694144671298d];
 
-            float[] Venus = [-0.372100971951828d, -0.449343256389233d, -0.154902566021356d, -0.372134026409355d, -0.449318563980132d, -0.154894786229779d, -0.370822518399929d, -0.450260651717891d, -0.155303914026952d, -0.372117531588399d, -0.449297391719315d, -0.154927789061455d, -0.370858459989012d, -0.450324120624622d, -0.154965842632926d];
+            double[] Venus = [-0.372100971951828d, -0.449343256389233d, -0.154902566021356d, -0.372134026409355d, -0.449318563980132d, -0.154894786229779d, -0.370822518399929d, -0.450260651717891d, -0.155303914026952d, -0.372117531588399d, -0.449297391719315d, -0.154927789061455d, -0.370858459989012d, -0.450324120624622d, -0.154965842632926d];
 
-            float[] Earth = [-0.147896190667482d, 0.892857938625284d, 0.387075601638547d, -0.0173032744107731d, -0.00236387487195205d, -0.00102513648587834d, -0.143537477185852d, 0.892578667572019d, 0.386954522818712d, -0.0173040812547209d, -0.00235851019511069d, -0.00102281061381548d, 2455560.875d, 1.06091018181116d, 23.437861319031d, 17.3476127157785d, -0.0796612008211573d, 23.4378391909196d];
+            double[] Earth = [-0.147896190667482d, 0.892857938625284d, 0.387075601638547d, -0.0173032744107731d, -0.00236387487195205d, -0.00102513648587834d, -0.143537477185852d, 0.892578667572019d, 0.386954522818712d, -0.0173040812547209d, -0.00235851019511069d, -0.00102281061381548d, 2455560.875d, 1.06091018181116d, 23.437861319031d, 17.3476127157785d, -0.0796612008211573d, 23.4378391909196d];
 
-            float[] Mars = [0.693859781031977d, -2.07097170353203d, -0.942316778727103d, 0.693632762626122d, -2.07103494950845d, -0.942344911675691d, 0.699920307729267d, -2.06926836488007d, -0.941576391467848d, 0.693650157043109d, -2.07101326327704d, -0.942377215846966d, 0.694585522035482d, -2.07602310877394d, -0.930591370257697d];
+            double[] Mars = [0.693859781031977d, -2.07097170353203d, -0.942316778727103d, 0.693632762626122d, -2.07103494950845d, -0.942344911675691d, 0.699920307729267d, -2.06926836488007d, -0.941576391467848d, 0.693650157043109d, -2.07101326327704d, -0.942377215846966d, 0.694585522035482d, -2.07602310877394d, -0.930591370257697d];
 
-            float[] Jupiter = [5.05143975731352d, -0.264744225667142d, -0.237337980646129d, 5.05143226054377d, -0.264839400889264d, -0.237391349301542d, 5.05234611594448d, -0.252028458651431d, -0.231824986961043d, 5.05144816590343d, -0.264820597160675d, -0.237424161148292d, 5.05236200971188d, -0.252009614615973d, -0.231857781296635d];
+            double[] Jupiter = [5.05143975731352d, -0.264744225667142d, -0.237337980646129d, 5.05143226054377d, -0.264839400889264d, -0.237391349301542d, 5.05234611594448d, -0.252028458651431d, -0.231824986961043d, 5.05144816590343d, -0.264820597160675d, -0.237424161148292d, 5.05236200971188d, -0.252009614615973d, -0.231857781296635d];
 
-            float[] Saturn = [-9.26931711919579d, -2.66882658902422d, -0.715270438185988d, -9.2693570741403d, -2.66869165249896d, -0.715256117911115d, -9.26176606870019d, -2.69218837105073d, -0.725464045762982d, -9.2693389177143d, -2.66867733760923d, -0.71528954188717d, -9.26144908836291d, -2.69455677562765d, -0.720448748375586d];
+            double[] Saturn = [-9.26931711919579d, -2.66882658902422d, -0.715270438185988d, -9.2693570741403d, -2.66869165249896d, -0.715256117911115d, -9.26176606870019d, -2.69218837105073d, -0.725464045762982d, -9.2693389177143d, -2.66867733760923d, -0.71528954188717d, -9.26144908836291d, -2.69455677562765d, -0.720448748375586d];
 
-            float[] Uranus = [20.2306046509148d, -0.944778087940209d, -0.693874737147122d, 20.2305809175823d, -0.945147799559502d, -0.694063183048263d, 20.233665104794d, -0.893841634639764d, -0.671770710247389d, 20.2305964586587d, -0.945137337897977d, -0.694095638580723d, 20.2336806550414d, -0.893831133568696d, -0.671803148655406d];
+            double[] Uranus = [20.2306046509148d, -0.944778087940209d, -0.693874737147122d, 20.2305809175823d, -0.945147799559502d, -0.694063183048263d, 20.233665104794d, -0.893841634639764d, -0.671770710247389d, 20.2305964586587d, -0.945137337897977d, -0.694095638580723d, 20.2336806550414d, -0.893831133568696d, -0.671803148655406d];
 
-            float[] Neptune = [25.5771370144156d, -15.409403535665d, -6.96191248591339d, 25.5759958639324d, -15.4109792947898d, -6.96261684888268d, 25.6226500915255d, -15.3460649228334d, -6.93440511594961d, 25.5760116932439d, -15.4109610670775d, -6.96264327213014d, 25.6226659036666d, -15.3460466550117d, -6.93443152177256d];
+            double[] Neptune = [25.5771370144156d, -15.409403535665d, -6.96191248591339d, 25.5759958639324d, -15.4109792947898d, -6.96261684888268d, 25.6226500915255d, -15.3460649228334d, -6.93440511594961d, 25.5760116932439d, -15.4109610670775d, -6.96264327213014d, 25.6226659036666d, -15.3460466550117d, -6.93443152177256d];
 
-            float[] Pluto = [2.92990303317673d, -31.0320730022551d, -10.6309560278551d, 2.92658680141819d, -31.0323439400104d, -10.6310785882777d, 3.01698355034971d, -31.0248119250537d, -10.627792242015d, 2.92662685257385d, -31.0323223789174d, -10.6311050132883d, 2.99849040874885d, -31.0401256627947d, -10.5882115993866d];
+            double[] Pluto = [2.92990303317673d, -31.0320730022551d, -10.6309560278551d, 2.92658680141819d, -31.0323439400104d, -10.6310785882777d, 3.01698355034971d, -31.0248119250537d, -10.627792242015d, 2.92662685257385d, -31.0323223789174d, -10.6311050132883d, 2.99849040874885d, -31.0401256627947d, -10.5882115993866d];
 
             try
             {
@@ -5903,7 +5827,7 @@ namespace ASCOM.Utilities
                 // Create the Julian date corresponding to the arbitrary test date
                 JD = TestJulianDate();
                 TL.LogMessage("NovasCom Tests", "Julian Date = " + JD + " = " + TEST_DATE);
-                Comparefloat("NovasCom", "JulianDate", JD, 2455560.875d, TOLERANCE_E9);
+                CompareDouble("NovasCom", "JulianDate", JD, 2455560.875d, TOLERANCE_E9);
 
                 var s = new Astrometry.NOVASCOM.Site()
                 {
@@ -5913,59 +5837,59 @@ namespace ASCOM.Utilities
                     Pressure = 1000.0d,
                     Temperature = 10.0d
                 };
-                var pv = new Astrometry.NOVASCOM.PositionVector2();
+                var pv = new Astrometry.NOVASCOM.PositionVector();
                 pv.SetFromSite(s, 11.0d);
-                Comparefloat("NovasCom", "SetFromSite X", pv.x, -0.0000259698466733494d, TOLERANCE_E9);
-                Comparefloat("NovasCom", "SetFromSite Y", pv.y, 0.00000695859944368407d, TOLERANCE_E9);
-                Comparefloat("NovasCom", "SetFromSite Z", pv.z, 0.0000329791401243054d, TOLERANCE_E9);
-                Comparefloat("NovasCom", "SetFromSite LightTime", pv.LightTime, 0.000000245746690359414d, TOLERANCE_E9);
+                CompareDouble("NovasCom", "SetFromSite X", pv.x, -0.0000259698466733494d, TOLERANCE_E9);
+                CompareDouble("NovasCom", "SetFromSite Y", pv.y, 0.00000695859944368407d, TOLERANCE_E9);
+                CompareDouble("NovasCom", "SetFromSite Z", pv.z, 0.0000329791401243054d, TOLERANCE_E9);
+                CompareDouble("NovasCom", "SetFromSite LightTime", pv.LightTime, 0.000000245746690359414d, TOLERANCE_E9);
 
                 var st = new Astrometry.NOVASCOM.Star();
                 st.Set(9.0d, 25.0d, 0.0d, 0.0d, 0.0d, 0.0d);
 
                 JD = TestJulianDate();
                 pv = st.GetAstrometricPosition(JD);
-                float[] AstroResults = [9.0d, 25.0d, 2062648062470.13d, 0.0d, 11912861640.6606d, -1321861174769.38d, 1321861174768.63d, 871712738743.913d, 9.0d, 25.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d];
+                double[] AstroResults = [9.0d, 25.0d, 2062648062470.13d, 0.0d, 11912861640.6606d, -1321861174769.38d, 1321861174768.63d, 871712738743.913d, 9.0d, 25.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d];
                 ComparePosVec("NovasCom Astrometric", st, pv, AstroResults, false, TOLERANCE_E9);
 
-                float[] TopoNoReractResults = [9.01140781883559d, 24.9535152700125d, 2062648062470.13d, 14.2403113213804d, 11912861640.6606d, -1326304233902.68d, 1318405625773.8d, 870195790998.564d, 9.0d, 25.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d];
+                double[] TopoNoReractResults = [9.01140781883559d, 24.9535152700125d, 2062648062470.13d, 14.2403113213804d, 11912861640.6606d, -1326304233902.68d, 1318405625773.8d, 870195790998.564d, 9.0d, 25.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d];
                 pv = st.GetTopocentricPosition(JD, s, false);
                 ComparePosVec("NovasCom Topo/NoRefract", st, pv, TopoNoReractResults, true, TOLERANCE_E7);
                 pv = st.GetTopocentricPosition(JD, s, true);
 
-                float[] TopoReractResults = [9.01438008140491d, 25.0016930437008d, 2062648062470.13d, 14.3031953401364d, 11912861640.6606d, -1326809918883.5d, 1316857267239.29d, 871767977436.204d, 9.0d, 25.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d];
+                double[] TopoReractResults = [9.01438008140491d, 25.0016930437008d, 2062648062470.13d, 14.3031953401364d, 11912861640.6606d, -1326809918883.5d, 1316857267239.29d, 871767977436.204d, 9.0d, 25.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d];
 
                 ComparePosVec("NovasCom Topo/Refract", st, pv, TopoReractResults, true, TOLERANCE_E7);
 
-                NovasComTest("Mercury", (float)Body.Mercury, JD, Mercury, TOLERANCE_E6); // Test Neptune prediction
-                NovasComTest("Venus", (float)Body.Venus, JD, Venus, TOLERANCE_E7); // Test Neptune prediction
-                NovasComTest("Mars", (float)Body.Mars, JD, Mars, TOLERANCE_E8); // Test Neptune prediction
-                NovasComTest("Jupiter", (float)Body.Jupiter, JD, Jupiter, TOLERANCE_E8); // Test Neptune prediction
-                NovasComTest("Saturn", (float)Body.Saturn, JD, Saturn, TOLERANCE_E9); // Test Neptune prediction
-                NovasComTest("Uranus", (float)Body.Uranus, JD, Uranus, TOLERANCE_E9); // Test Uranus prediction
-                NovasComTest("Neptune", (float)Body.Neptune, JD, Neptune, TOLERANCE_E9); // Test Neptune prediction
-                NovasComTest("Pluto", (float)Body.Pluto, JD, Pluto, TOLERANCE_E9); // Test Pluto Prediction
+                NovasComTest("Mercury", (double)Body.Mercury, JD, Mercury, TOLERANCE_E6); // Test Neptune prediction
+                NovasComTest("Venus", (double)Body.Venus, JD, Venus, TOLERANCE_E7); // Test Neptune prediction
+                NovasComTest("Mars", (double)Body.Mars, JD, Mars, TOLERANCE_E8); // Test Neptune prediction
+                NovasComTest("Jupiter", (double)Body.Jupiter, JD, Jupiter, TOLERANCE_E8); // Test Neptune prediction
+                NovasComTest("Saturn", (double)Body.Saturn, JD, Saturn, TOLERANCE_E9); // Test Neptune prediction
+                NovasComTest("Uranus", (double)Body.Uranus, JD, Uranus, TOLERANCE_E9); // Test Uranus prediction
+                NovasComTest("Neptune", (double)Body.Neptune, JD, Neptune, TOLERANCE_E9); // Test Neptune prediction
+                NovasComTest("Pluto", (double)Body.Pluto, JD, Pluto, TOLERANCE_E9); // Test Pluto Prediction
 
                 Action("Earth");
                 EA.SetForTime(JD); // Test earth properties
-                Comparefloat("NovasCom", "Earth BaryPos x", EA.BarycentricPosition.x, Earth[0], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth BaryPos y", EA.BarycentricPosition.y, Earth[1], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth BaryPos z", EA.BarycentricPosition.z, Earth[2], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth BaryVel x", EA.BarycentricVelocity.x, Earth[3], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth BaryVel y", EA.BarycentricVelocity.y, Earth[4], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth BaryVel z", EA.BarycentricVelocity.z, Earth[5], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth HeliPos x", EA.HeliocentricPosition.x, Earth[6], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth HeliPos y", EA.HeliocentricPosition.y, Earth[7], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth HeliPos z", EA.HeliocentricPosition.z, Earth[8], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth HeliVel x", EA.HeliocentricVelocity.x, Earth[9], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth HeliVel y", EA.HeliocentricVelocity.y, Earth[10], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Earth HeliVel z", EA.HeliocentricVelocity.z, Earth[11], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Barycentric Time", EA.BarycentricTime, Earth[12], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Equation Of Equinoxes", EA.EquationOfEquinoxes, Earth[13], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Mean Obliquity", EA.MeanObliquity, Earth[14], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Nutation in Longitude", EA.NutationInLongitude, Earth[15], TOLERANCE_E9);
-                Comparefloat("NovasCom", "Nutation in Obliquity", EA.NutationInObliquity, Earth[16], TOLERANCE_E9);
-                Comparefloat("NovasCom", "True Obliquity", EA.TrueObliquity, Earth[17], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth BaryPos x", EA.BarycentricPosition.x, Earth[0], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth BaryPos y", EA.BarycentricPosition.y, Earth[1], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth BaryPos z", EA.BarycentricPosition.z, Earth[2], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth BaryVel x", EA.BarycentricVelocity.x, Earth[3], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth BaryVel y", EA.BarycentricVelocity.y, Earth[4], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth BaryVel z", EA.BarycentricVelocity.z, Earth[5], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth HeliPos x", EA.HeliocentricPosition.x, Earth[6], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth HeliPos y", EA.HeliocentricPosition.y, Earth[7], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth HeliPos z", EA.HeliocentricPosition.z, Earth[8], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth HeliVel x", EA.HeliocentricVelocity.x, Earth[9], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth HeliVel y", EA.HeliocentricVelocity.y, Earth[10], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Earth HeliVel z", EA.HeliocentricVelocity.z, Earth[11], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Barycentric Time", EA.BarycentricTime, Earth[12], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Equation Of Equinoxes", EA.EquationOfEquinoxes, Earth[13], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Mean Obliquity", EA.MeanObliquity, Earth[14], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Nutation in Longitude", EA.NutationInLongitude, Earth[15], TOLERANCE_E9);
+                CompareDouble("NovasCom", "Nutation in Obliquity", EA.NutationInObliquity, Earth[16], TOLERANCE_E9);
+                CompareDouble("NovasCom", "True Obliquity", EA.TrueObliquity, Earth[17], TOLERANCE_E9);
 
                 TL.BlankLine();
             }
@@ -5976,43 +5900,43 @@ namespace ASCOM.Utilities
             Status("");
         }
 
-        private void ComparePosVec(string TestName, Astrometry.NOVASCOM.Star st, Astrometry.NOVASCOM.PositionVector2 pv, float[] Results, bool TestAzEl, float Tolerance)
+        private void ComparePosVec(string TestName, Astrometry.NOVASCOM.Star st, Astrometry.NOVASCOM.PositionVector pv, double[] Results, bool TestAzEl, double Tolerance)
         {
-            Comparefloat(TestName, "RA Pos", pv.RightAscension, Results[0], Tolerance);
-            Comparefloat(TestName, "DEC Pos", pv.Declination, Results[1], Tolerance);
-            Comparefloat(TestName, "List", pv.Distance, Results[2], Tolerance);
+            CompareDouble(TestName, "RA Pos", pv.RightAscension, Results[0], Tolerance);
+            CompareDouble(TestName, "DEC Pos", pv.Declination, Results[1], Tolerance);
+            CompareDouble(TestName, "List", pv.Distance, Results[2], Tolerance);
             if (TestAzEl)
             {
-                Comparefloat(TestName, "Elev", pv.Elevation, Results[3], Tolerance);
+                CompareDouble(TestName, "Elev", pv.Elevation, Results[3], Tolerance);
             }
-            Comparefloat(TestName, "LightT", pv.LightTime, Results[4], Tolerance);
-            Comparefloat(TestName, "x", pv.x, Results[5], Tolerance);
-            Comparefloat(TestName, "y", pv.y, Results[6], Tolerance);
-            Comparefloat(TestName, "z", pv.z, Results[7], Tolerance);
-            Comparefloat(TestName, "RA", st.RightAscension, Results[8], Tolerance);
-            Comparefloat(TestName, "DEC", st.Declination, Results[9], Tolerance);
-            Comparefloat(TestName, "Number", st.Number, Results[10], Tolerance);
-            Comparefloat(TestName, "Parallax", st.Parallax, Results[11], Tolerance);
-            Comparefloat(TestName, "PrMoDec", st.ProperMotionDec, Results[12], Tolerance);
-            Comparefloat(TestName, "PrMoRA", st.ProperMotionRA, Results[13], Tolerance);
-            Comparefloat(TestName, "RadVel", st.RadialVelocity, Results[14], Tolerance);
+            CompareDouble(TestName, "LightT", pv.LightTime, Results[4], Tolerance);
+            CompareDouble(TestName, "x", pv.x, Results[5], Tolerance);
+            CompareDouble(TestName, "y", pv.y, Results[6], Tolerance);
+            CompareDouble(TestName, "z", pv.z, Results[7], Tolerance);
+            CompareDouble(TestName, "RA", st.RightAscension, Results[8], Tolerance);
+            CompareDouble(TestName, "DEC", st.Declination, Results[9], Tolerance);
+            CompareDouble(TestName, "Number", st.Number, Results[10], Tolerance);
+            CompareDouble(TestName, "Parallax", st.Parallax, Results[11], Tolerance);
+            CompareDouble(TestName, "PrMoDec", st.ProperMotionDec, Results[12], Tolerance);
+            CompareDouble(TestName, "PrMoRA", st.ProperMotionRA, Results[13], Tolerance);
+            CompareDouble(TestName, "RadVel", st.RadialVelocity, Results[14], Tolerance);
         }
 
-        private float TestJulianDate()
+        private double TestJulianDate()
         {
             // Create the Julian date corresponding to the arbitrary test date
             var Util = new Util();
-            float JD;
+            double JD;
             JD = Util.DateUTCToJulian(DateTime.ParseExact(TEST_DATE, "F", CultureInfo.InvariantCulture));
             Util.Dispose();
             return JD;
         }
 
-        private void NovasComTest(string p_Name, float p_Num, float JD, float[] Results, float Tolerance)
+        private void NovasComTest(string p_Name, double p_Num, double JD, double[] Results, double Tolerance)
         {
             var pl = new Astrometry.NOVASCOM.Planet();
             Astrometry.Kepler.Ephemeris KE = new();
-            Astrometry.NOVASCOM.PositionVector2 pv;
+            Astrometry.NOVASCOM.PositionVector pv;
             var site = new Astrometry.NOVASCOM.Site();
 
             try
@@ -6033,29 +5957,29 @@ namespace ASCOM.Utilities
                 pl.Type = BodyType.MajorPlanet;
 
                 pv = pl.GetAstrometricPosition(JD);
-                Comparefloat("NovasCom", p_Name + " Astro x", pv.x, Results[0], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Astro y", pv.y, Results[1], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Astro z", pv.z, Results[2], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Astro x", pv.x, Results[0], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Astro y", pv.y, Results[1], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Astro z", pv.z, Results[2], Tolerance);
 
                 pv = pl.GetVirtualPosition(JD);
-                Comparefloat("NovasCom", p_Name + " Virtual x", pv.x, Results[3], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Virtual y", pv.y, Results[4], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Virtual z", pv.z, Results[5], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Virtual x", pv.x, Results[3], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Virtual y", pv.y, Results[4], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Virtual z", pv.z, Results[5], Tolerance);
 
                 pv = pl.GetApparentPosition(JD);
-                Comparefloat("NovasCom", p_Name + " Apparent x", pv.x, Results[6], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Apparent y", pv.y, Results[7], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Apparent z", pv.z, Results[8], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Apparent x", pv.x, Results[6], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Apparent y", pv.y, Results[7], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Apparent z", pv.z, Results[8], Tolerance);
 
                 pv = pl.GetLocalPosition(JD, site);
-                Comparefloat("NovasCom", p_Name + " Local x", pv.x, Results[9], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Local y", pv.y, Results[10], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Local z", pv.z, Results[11], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Local x", pv.x, Results[9], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Local y", pv.y, Results[10], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Local z", pv.z, Results[11], Tolerance);
 
                 pv = pl.GetTopocentricPosition(JD, site, true);
-                Comparefloat("NovasCom", p_Name + " Topo x", pv.x, Results[12], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Topo y", pv.y, Results[13], Tolerance);
-                Comparefloat("NovasCom", p_Name + " Topo z", pv.z, Results[14], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Topo x", pv.x, Results[12], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Topo y", pv.y, Results[13], Tolerance);
+                CompareDouble("NovasCom", p_Name + " Topo z", pv.z, Results[14], Tolerance);
                 Action("");
             }
             catch (Exception ex)
@@ -6066,39 +5990,39 @@ namespace ASCOM.Utilities
 
         private void KeplerTests()
         {
-            float JD;
-            float[,] MercuryPosVecs = new float[,] { { -0.273826054895093d, -0.332907079792611d, -0.149433886467295d, 0.0168077277855921d, -0.0131641564589086d, -0.00877483629689174d }, { 0.341715100611224d, -0.15606206441965d, -0.118796704430727d, 0.00818341889620433d, 0.0231859105741514d, 0.0115367662530341d }, { -0.290111477510344d, 0.152752021696643d, 0.11167615364006d, -0.0208610666648984d, -0.0207283399022831d, -0.00890975564191571d }, { -0.0948016996541467d, -0.407064938162915d, -0.207618339106762d, 0.0218998992953613d, -0.00301004943316363d, -0.00387841048587606d }, { 0.335104649167322d, 0.0711444942030144d, 0.00326561005720837d, -0.0109228475729584d, 0.0251353246085599d, 0.0145593566074213d } };
+            double JD;
+            double[,] MercuryPosVecs = new double[,] { { -0.273826054895093d, -0.332907079792611d, -0.149433886467295d, 0.0168077277855921d, -0.0131641564589086d, -0.00877483629689174d }, { 0.341715100611224d, -0.15606206441965d, -0.118796704430727d, 0.00818341889620433d, 0.0231859105741514d, 0.0115367662530341d }, { -0.290111477510344d, 0.152752021696643d, 0.11167615364006d, -0.0208610666648984d, -0.0207283399022831d, -0.00890975564191571d }, { -0.0948016996541467d, -0.407064938162915d, -0.207618339106762d, 0.0218998992953613d, -0.00301004943316363d, -0.00387841048587606d }, { 0.335104649167322d, 0.0711444942030144d, 0.00326561005720837d, -0.0109228475729584d, 0.0251353246085599d, 0.0145593566074213d } };
             Status("Kepler Tests");
             JD = TestJulianDate();
-            KeplerTest("Mercury", Body.Mercury, JD, MercuryPosVecs, TOLERANCE_E9); // Test Mercury position Vector2s
+            KeplerTest("Mercury", Body.Mercury, JD, MercuryPosVecs, TOLERANCE_E9); // Test Mercury position vectors
             TL.BlankLine();
         }
 
-        private void KeplerTest(string p_Name, Body p_KepNum, float JD, float[,] Results, float Tolerance)
+        private void KeplerTest(string p_Name, Body p_KepNum, double JD, double[,] Results, double Tolerance)
         {
             var K = new Astrometry.Kepler.Ephemeris();
-            float[] POSVEC;
+            double[] POSVEC;
             int JDIndex = 0;
 
-            const float STEPSIZE = 1000.0d;
+            const double STEPSIZE = 1000.0d;
 
-            for (float jdate = -2.0d * STEPSIZE; jdate <= +2.0d * STEPSIZE; jdate += STEPSIZE)
+            for (double jdate = -2.0d * STEPSIZE; jdate <= +2.0d * STEPSIZE; jdate += STEPSIZE)
             {
                 K.BodyType = BodyType.MajorPlanet;
                 K.Number = p_KepNum;
                 K.Name = p_Name;
                 POSVEC = K.GetPositionAndVelocity(JD + jdate);
                 for (int i = 0; i <= 5; i++)
-                    Comparefloat("Kepler", p_Name + " " + jdate + " PV(" + i + ")", POSVEC[i], Results[JDIndex, i], Tolerance);
+                    CompareDouble("Kepler", p_Name + " " + jdate + " PV(" + i + ")", POSVEC[i], Results[JDIndex, i], Tolerance);
                 JDIndex += 1;
             }
         }
 
         private void TimerTests()
         {
-            const float RunTime = 10.0d; // Test runtime in seconds
+            const double RunTime = 10.0d; // Test runtime in seconds
             const int TimerInterval = 3000; // Timer interval
-            float ElapsedTime;
+            double ElapsedTime;
             int LastSecond = -1;
 
             TL.LogMessage("TimerTests", "Started");
@@ -6156,11 +6080,11 @@ namespace ASCOM.Utilities
 
         private void Cnt_TickNet()
         {
-            float Duration;
+            double Duration;
 
             Duration = DateTime.Now.Subtract(StartTime).TotalSeconds;
             NumberOfTicks += 1;
-            Comparefloat("TimerTests Tick ", "Tick", Duration, NumberOfTicks * 3.0d, 0.1d);
+            CompareDouble("TimerTests Tick ", "Tick", Duration, NumberOfTicks * 3.0d, 0.1d);
             // TL.LogMessage("TimerTests", "Fired Net - " & Now.Subtract(StartTime).Seconds & " seconds")
             // Application.DoEvents()
         }
@@ -6780,14 +6704,14 @@ namespace ASCOM.Utilities
             }
         }
 
-        private void Comparefloat(string p_Section, string p_Name, float p_New, float p_Orig, float p_Tolerance)
+        private void CompareDouble(string p_Section, string p_Name, double p_New, double p_Orig, double p_Tolerance)
         {
-            Comparefloat(p_Section, p_Name, p_New, p_Orig, p_Tolerance, floatType.Number);
+            CompareDouble(p_Section, p_Name, p_New, p_Orig, p_Tolerance, DoubleType.Number);
         }
 
-        private void Comparefloat(string SectionName, string ValueName, float ActualValue, float ExpectedValue, float Tolerance, floatType CompareType)
+        private void CompareDouble(string SectionName, string ValueName, double ActualValue, double ExpectedValue, double Tolerance, DoubleType CompareType)
         {
-            float Divisor, ComparisonValue, LowerValue, HigherValue;
+            double Divisor, ComparisonValue, LowerValue, HigherValue;
             string DisplayNew;
             string DisplayOriginal;
             string DisplayTolerance;
@@ -6809,7 +6733,7 @@ namespace ASCOM.Utilities
 
             switch (CompareType)
             {
-                case floatType.Degrees0To360:
+                case DoubleType.Degrees0To360:
                     {
                         if (HigherValue > 270.0d & LowerValue < 90.0d) // We are comparing across the 0/360 degree discontinuity so we need to add the distances from 0/360 discontinuity of each value
                         {
@@ -6826,7 +6750,7 @@ namespace ASCOM.Utilities
                         break;
                     }
 
-                case floatType.Degrees0To360InRadians:
+                case DoubleType.Degrees0To360InRadians:
                     {
                         ActualValue *= RADIANS_TO_DEGREES; // Convert from radians to degrees
                         ExpectedValue *= RADIANS_TO_DEGREES;
@@ -6845,7 +6769,7 @@ namespace ASCOM.Utilities
                         break;
                     }
 
-                case floatType.DegreesMinus180ToPlus180:
+                case DoubleType.DegreesMinus180ToPlus180:
                     {
                         if (HigherValue > 90.0d & LowerValue < -90.0d) // We are comparing across the -180/+180 degree discontinuity so we need to make both numbers fall onto a continuous stream
                         {
@@ -6862,7 +6786,7 @@ namespace ASCOM.Utilities
                         break;
                     }
 
-                case floatType.DegreesMinus180ToPlus180InRadians:
+                case DoubleType.DegreesMinus180ToPlus180InRadians:
                     {
                         ActualValue *= RADIANS_TO_DEGREES; // Convert from radians to degrees
                         ExpectedValue *= RADIANS_TO_DEGREES;
@@ -6881,7 +6805,7 @@ namespace ASCOM.Utilities
                         break;
                     }
 
-                case floatType.Hours0To24:
+                case DoubleType.Hours0To24:
                     {
                         if (HigherValue > 18.0d & LowerValue < 6.0d) // We are comparing across the 0/24 hour discontinuity so we need to make both numbers fall onto a continuous stream
                         {
@@ -6898,7 +6822,7 @@ namespace ASCOM.Utilities
                         break;
                     }
 
-                case floatType.Hours0To24InRadians:
+                case DoubleType.Hours0To24InRadians:
                     {
                         ActualValue *= RADIANS_TO_HOURS; // Convert from radians to hours
                         ExpectedValue *= RADIANS_TO_HOURS;
@@ -6917,7 +6841,7 @@ namespace ASCOM.Utilities
                         break;
                     }
 
-                case floatType.HoursMinus12ToPlus12:
+                case DoubleType.HoursMinus12ToPlus12:
                     {
                         if (HigherValue > 6.0d & LowerValue < -6.0d) // We are comparing across the -12.0/+12.0 hour discontinuity so we need to make both numbers fall onto a continuous stream
                         {
@@ -6934,7 +6858,7 @@ namespace ASCOM.Utilities
                         break;
                     }
 
-                case floatType.HoursMinus12ToPlus12InRadians:
+                case DoubleType.HoursMinus12ToPlus12InRadians:
                     {
                         ActualValue *= RADIANS_TO_HOURS; // Convert from radians to hours
                         ExpectedValue *= RADIANS_TO_HOURS;
@@ -6953,7 +6877,7 @@ namespace ASCOM.Utilities
                         break;
                     }
 
-                case floatType.Number:
+                case DoubleType.Number:
                     {
                         ComparisonValue = Math.Abs((ActualValue - ExpectedValue) / Divisor); // For other numbers we will look at the % difference
                         DisplayNew = ActualValue.ToString();
@@ -6964,7 +6888,7 @@ namespace ASCOM.Utilities
 
                 default:
                     {
-                        LogError(SectionName, string.Format("The floatType value: {0} is not configured in Sub Comparefloat - this must be fixed before release!", CompareType.ToString()));
+                        LogError(SectionName, string.Format("The DoubleType value: {0} is not configured in Sub CompareDouble - this must be fixed before release!", CompareType.ToString()));
                         return;
                     }
             }
@@ -6980,7 +6904,7 @@ namespace ASCOM.Utilities
             }
         }
 
-        private void CompareWithin(string p_Section, string p_Name, float p_Value, float p_LowerBound, float p_UpperBound)
+        private void CompareWithin(string p_Section, string p_Name, double p_Value, double p_LowerBound, double p_UpperBound)
         {
             string ErrMsg;
             if (p_Value >= p_LowerBound & p_Value <= p_UpperBound)
@@ -7330,7 +7254,7 @@ namespace ASCOM.Utilities
             Cache cache2 = null;
             Cache cache3 = null;
             Cache cache4 = null;
-            float returnfloat;
+            double returnDouble;
             int returnInt = default, removedItemCount, numerOfClearItemsToTest;
             bool returnBool, errorOccured = default;
             string returnString;
@@ -7339,8 +7263,8 @@ namespace ASCOM.Utilities
             const int NUMBER_OF_CLEAR_CACHE_ITEMS = 1000;
             const int TEST_INTEGER = 23;
             const string TEST_INTEGER_KEY = "IntKey";
-            const float TEST_float = 45.639d;
-            const string TEST_float_KEY = "TEST_float_KEY";
+            const double TEST_DOUBLE = 45.639d;
+            const string TEST_DOUBLE_KEY = "TEST_DOUBLE_KEY";
             const bool TEST_BOOL = true;
             const string TEST_BOOL_KEY = "BoolKey";
             const string TEST_STRING = "Cache test string.";
@@ -7350,7 +7274,7 @@ namespace ASCOM.Utilities
 
             Status("Running Cache functional tests");
 
-            // Test cached floats
+            // Test cached doubles
             try
             {
                 LogTimerResolution("Start of cache tests");
@@ -7359,29 +7283,29 @@ namespace ASCOM.Utilities
 
                 try
                 {
-                    Action("Test floats");
-                    cache.Setfloat(TEST_float_KEY, TEST_float, 0.1d); // Set a value with a 100ms lifetime
-                    returnfloat = cache.Getfloat(TEST_float_KEY);
-                    Comparefloat(TestName, "Get float", returnfloat, TEST_float, TOLERANCE_E6);
+                    Action("Test Doubles");
+                    cache.SetDouble(TEST_DOUBLE_KEY, TEST_DOUBLE, 0.1d); // Set a value with a 100ms lifetime
+                    returnDouble = cache.GetDouble(TEST_DOUBLE_KEY);
+                    CompareDouble(TestName, "Get Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
                 }
                 catch (Exception ex)
                 {
-                    LogException(TestName, "Error getting float value: " + ex.ToString());
+                    LogException(TestName, "Error getting double value: " + ex.ToString());
                     errorOccured = true;
                 }
                 Thread.Sleep(150); // Now wait until the value has timed out and been removed from the cache then test again to make sure an exception is generated
                 try
                 {
-                    returnfloat = cache.Getfloat(TEST_float_KEY);
+                    returnDouble = cache.GetDouble(TEST_DOUBLE_KEY);
                 }
                 catch (NotInCacheException)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, "InvalidOperationException thrown as expected for expired float value.");
+                    TL.LogMessage(TestName, "InvalidOperationException thrown as expected for expired double value.");
                 }
                 catch (Exception ex)
                 {
-                    LogException(TestName, "Error getting expired float value: " + ex.ToString());
+                    LogException(TestName, "Error getting expired double value: " + ex.ToString());
                     errorOccured = true;
                 }
 
@@ -7674,113 +7598,113 @@ namespace ASCOM.Utilities
                     errorOccured = true;
                 }
 
-                // Test Getfloat Key - empty string
+                // Test GetDouble Key - empty string
                 try
                 {
-                    Action("Test invalid values - Getfloat Key Empty");
-                    cache.Getfloat("");
-                    LogError(TestName, "InvalidValueException was not thrown when supplying an empty Getfloat key string.");
+                    Action("Test invalid values - GetDouble Key Empty");
+                    cache.GetDouble("");
+                    LogError(TestName, "InvalidValueException was not thrown when supplying an empty GetDouble key string.");
                     errorOccured = true;
                 }
                 catch (InvalidValueException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying an empty Getfloat key string: \"{0}\"", ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying an empty GetDouble key string: \"{0}\"", ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, "An unexpected exception was thrown when supplying an empty Getfloat key string." + ex.ToString());
+                    LogError(TestName, "An unexpected exception was thrown when supplying an empty GetDouble key string." + ex.ToString());
                     errorOccured = true;
                 }
 
-                // Test Getfloat Key - null value
+                // Test GetDouble Key - null value
                 try
                 {
-                    Action("Test invalid values - Getfloat Key Null");
-                    cache.Getfloat(null);
-                    LogError(TestName, "InvalidValueException was not thrown when supplying a null value as Getfloat key.");
+                    Action("Test invalid values - GetDouble Key Null");
+                    cache.GetDouble(null);
+                    LogError(TestName, "InvalidValueException was not thrown when supplying a null value as GetDouble key.");
                     errorOccured = true;
                 }
                 catch (InvalidValueException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a null value as Getfloat key: \"{0}\"", ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a null value as GetDouble key: \"{0}\"", ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, "An unexpected exception was thrown when supplying a null value as Getfloat key." + ex.ToString());
+                    LogError(TestName, "An unexpected exception was thrown when supplying a null value as GetDouble key." + ex.ToString());
                     errorOccured = true;
                 }
 
-                // Test Getfloat MaximumCallFrequency
+                // Test GetDouble MaximumCallFrequency
                 try
                 {
-                    Action("Test invalid values - Getfloat MaximumCallFrequency");
-                    cache.Getfloat(TEST_float_KEY, -1.0d);
-                    LogError(TestName, "InvalidValueException was not thrown when supplying a Getfloat negative MaximumCallFrequency value.");
+                    Action("Test invalid values - GetDouble MaximumCallFrequency");
+                    cache.GetDouble(TEST_DOUBLE_KEY, -1.0d);
+                    LogError(TestName, "InvalidValueException was not thrown when supplying a GetDouble negative MaximumCallFrequency value.");
                     errorOccured = true;
                 }
                 catch (InvalidValueException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a Getfloat negative MaximumCallFrequency value: \"{0}\"", ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a GetDouble negative MaximumCallFrequency value: \"{0}\"", ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, "An unexpected exception was thrown when supplying a negative Getfloat MaximumCallFrequency value." + ex.ToString());
+                    LogError(TestName, "An unexpected exception was thrown when supplying a negative GetDouble MaximumCallFrequency value." + ex.ToString());
                     errorOccured = true;
                 }
 
-                // Test Setfloat Key - empty string
+                // Test SetDouble Key - empty string
                 try
                 {
-                    Action("Test invalid values - Setfloat Key Empty");
-                    cache.Setfloat("", 0.0d, 0.0d);
-                    LogError(TestName, "InvalidValueException was not thrown when supplying an empty Setfloat key string.");
+                    Action("Test invalid values - SetDouble Key Empty");
+                    cache.SetDouble("", 0.0d, 0.0d);
+                    LogError(TestName, "InvalidValueException was not thrown when supplying an empty SetDouble key string.");
                     errorOccured = true;
                 }
                 catch (InvalidValueException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying an empty Setfloat key string: \"{0}\"", ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying an empty SetDouble key string: \"{0}\"", ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, "An unexpected exception was thrown when supplying an empty Setfloat key string." + ex.ToString());
+                    LogError(TestName, "An unexpected exception was thrown when supplying an empty SetDouble key string." + ex.ToString());
                     errorOccured = true;
                 }
 
-                // Test Setfloat Key - null value
+                // Test SetDouble Key - null value
                 try
                 {
-                    Action("Test invalid values - Setfloat Key Null");
-                    cache.Setfloat(null, 0.0d, 0.0d);
-                    LogError(TestName, "InvalidValueException was not thrown when supplying a null value as Setfloat key.");
+                    Action("Test invalid values - SetDouble Key Null");
+                    cache.SetDouble(null, 0.0d, 0.0d);
+                    LogError(TestName, "InvalidValueException was not thrown when supplying a null value as SetDouble key.");
                     errorOccured = true;
                 }
                 catch (InvalidValueException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a null value as Setfloat key: \"{0}\"", ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a null value as SetDouble key: \"{0}\"", ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, "An unexpected exception was thrown when supplying a null value as Setfloat key." + ex.ToString());
+                    LogError(TestName, "An unexpected exception was thrown when supplying a null value as SetDouble key." + ex.ToString());
                     errorOccured = true;
                 }
 
-                // Test Setfloat CacheTime
+                // Test SetDouble CacheTime
                 try
                 {
                     Action("Test invalid values - CacheTime");
-                    cache.Setfloat(TEST_float_KEY, 123.45d, -1.0d);
+                    cache.SetDouble(TEST_DOUBLE_KEY, 123.45d, -1.0d);
                     LogError(TestName, "InvalidValueException was not thrown when supplying a negative CacheTime value.");
                     errorOccured = true;
                 }
                 catch (InvalidValueException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a negative Setfloat CacheTime value: \"{0}\"", ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a negative SetDouble CacheTime value: \"{0}\"", ex.Message));
                 }
                 catch (Exception ex)
                 {
@@ -7788,22 +7712,22 @@ namespace ASCOM.Utilities
                     errorOccured = true;
                 }
 
-                // Test Setfloat MaximumCallFrequency
+                // Test SetDouble MaximumCallFrequency
                 try
                 {
-                    Action("Test invalid values - Setfloat MaximumCallFrequency");
-                    cache.Setfloat(TEST_float_KEY, 0.0d, 1.0d, -1.0d);
-                    LogError(TestName, "InvalidValueException was not thrown when supplying a negative Setfloat MaximumCallFrequency value.");
+                    Action("Test invalid values - SetDouble MaximumCallFrequency");
+                    cache.SetDouble(TEST_DOUBLE_KEY, 0.0d, 1.0d, -1.0d);
+                    LogError(TestName, "InvalidValueException was not thrown when supplying a negative SetDouble MaximumCallFrequency value.");
                     errorOccured = true;
                 }
                 catch (InvalidValueException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a negative Setfloat MaximumCallFrequency value: \"{0}\"", ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidValueException correctly generated when supplying a negative SetDouble MaximumCallFrequency value: \"{0}\"", ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, "An unexpected exception was thrown when supplying a negative Setfloat MaximumCallFrequency value." + ex.ToString());
+                    LogError(TestName, "An unexpected exception was thrown when supplying a negative SetDouble MaximumCallFrequency value." + ex.ToString());
                     errorOccured = true;
                 }
 
@@ -7847,82 +7771,82 @@ namespace ASCOM.Utilities
 
                 try
                 {
-                    cache.Setfloat(TEST_float_KEY, TEST_float, 1.0d);
-                    returnInt = cache.GetInt(TEST_float_KEY);
-                    LogError(TestName, string.Format("Getting a float value as an integer worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
+                    cache.SetDouble(TEST_DOUBLE_KEY, TEST_DOUBLE, 1.0d);
+                    returnInt = cache.GetInt(TEST_DOUBLE_KEY);
+                    LogError(TestName, string.Format("Getting a double value as an integer worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
                 }
                 catch (InvalidCastException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting a float value as an integer. {0} - {1}", ex.GetType().Name, ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting a double value as an integer. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a float value and retrieving it as an integer. {0} - {1}", ex.GetType().Name, ex.Message));
+                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a double value and retrieving it as an integer. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
 
                 try
                 {
                     cache.SetInt(TEST_INTEGER_KEY, TEST_INTEGER, 1.0d);
-                    returnfloat = cache.Getfloat(TEST_INTEGER_KEY);
-                    LogError(TestName, string.Format("Getting an integer value as a float worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
+                    returnDouble = cache.GetDouble(TEST_INTEGER_KEY);
+                    LogError(TestName, string.Format("Getting an integer value as a double worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
                 }
                 catch (InvalidCastException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting an integer value as a float. {0} - {1}", ex.GetType().Name, ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting an integer value as a double. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, string.Format("An unexpected exception was thrown when setting an integer value and retrieving it as a float. {0} - {1}", ex.GetType().Name, ex.Message));
+                    LogError(TestName, string.Format("An unexpected exception was thrown when setting an integer value and retrieving it as a double. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
 
                 try
                 {
                     cache.SetString(TEST_STRING_KEY, TEST_STRING, 1.0d);
-                    returnfloat = cache.Getfloat(TEST_STRING_KEY);
-                    LogError(TestName, string.Format("Getting a string value as a float worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
+                    returnDouble = cache.GetDouble(TEST_STRING_KEY);
+                    LogError(TestName, string.Format("Getting a string value as a double worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
                 }
                 catch (InvalidCastException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting a string value as a float. {0} - {1}", ex.GetType().Name, ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting a string value as a double. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a string value and retrieving it as a float. {0} - {1}", ex.GetType().Name, ex.Message));
+                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a string value and retrieving it as a double. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
 
                 try
                 {
-                    cache.Set(TEST_float_KEY, TEST_float, 1.0d);
-                    returnString = cache.GetString(TEST_float_KEY);
-                    LogError(TestName, string.Format("Getting a float object as a string worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
+                    cache.Set(TEST_DOUBLE_KEY, TEST_DOUBLE, 1.0d);
+                    returnString = cache.GetString(TEST_DOUBLE_KEY);
+                    LogError(TestName, string.Format("Getting a double object as a string worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
                 }
                 catch (InvalidCastException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting a float object as a string. {0} - {1}", ex.GetType().Name, ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting a double object as a string. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a string value and retrieving it as a float. {0} - {1}", ex.GetType().Name, ex.Message));
+                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a string value and retrieving it as a double. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
 
                 try
                 {
-                    cache.Set(TEST_float_KEY, TEST_float, 1.0d);
-                    returnInt = cache.GetInt(TEST_float_KEY);
-                    LogError(TestName, string.Format("Getting a float object as an integer worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
+                    cache.Set(TEST_DOUBLE_KEY, TEST_DOUBLE, 1.0d);
+                    returnInt = cache.GetInt(TEST_DOUBLE_KEY);
+                    LogError(TestName, string.Format("Getting a double object as an integer worked but it should have thrown an InvalidCastException! Retrieved value: \"{0}\"", returnInt));
                 }
                 catch (InvalidCastException ex)
                 {
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting a float object as an integer. {0} - {1}", ex.GetType().Name, ex.Message));
+                    TL.LogMessage(TestName, string.Format("InvalidCastException correctly generated when getting a double object as an integer. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a float object and retrieving it as an integer. {0} - {1}", ex.GetType().Name, ex.Message));
+                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a double object and retrieving it as an integer. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
 
                 try
@@ -7943,38 +7867,38 @@ namespace ASCOM.Utilities
 
                 try
                 {
-                    cache.Set(TEST_float_KEY, TEST_float, 1.0d);
-                    returnInt = Conversions.ToInteger(cache.Get(TEST_float_KEY));
+                    cache.Set(TEST_DOUBLE_KEY, TEST_DOUBLE, 1.0d);
+                    returnInt = Conversions.ToInteger(cache.Get(TEST_DOUBLE_KEY));
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("Successfully retrieved a float object: {0} as an integer object: {1}", TEST_float, returnInt));
+                    TL.LogMessage(TestName, string.Format("Successfully retrieved a double object: {0} as an integer object: {1}", TEST_DOUBLE, returnInt));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a float object and retrieving it as an integer object. {0} - {1}", ex.GetType().Name, ex.Message));
+                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a double object and retrieving it as an integer object. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
 
                 try
                 {
-                    cache.Set(TEST_float_KEY, TEST_float, 1.0d);
-                    returnString = Conversions.ToString(cache.Get(TEST_float_KEY));
+                    cache.Set(TEST_DOUBLE_KEY, TEST_DOUBLE, 1.0d);
+                    returnString = Conversions.ToString(cache.Get(TEST_DOUBLE_KEY));
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("Successfully retrieved a float object: {0} as a string object: {1}", TEST_float, returnString));
+                    TL.LogMessage(TestName, string.Format("Successfully retrieved a double object: {0} as a string object: {1}", TEST_DOUBLE, returnString));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a float object and retrieving it as a string object. {0} - {1}", ex.GetType().Name, ex.Message));
+                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a double object and retrieving it as a string object. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
 
                 try
                 {
-                    cache.Set(TEST_float_KEY, TEST_float, 1.0d);
-                    returnBool = Conversions.ToBoolean(cache.Get(TEST_float_KEY));
+                    cache.Set(TEST_DOUBLE_KEY, TEST_DOUBLE, 1.0d);
+                    returnBool = Conversions.ToBoolean(cache.Get(TEST_DOUBLE_KEY));
                     NMatches += 1;
-                    TL.LogMessage(TestName, string.Format("Successfully retrieved a float object: {0} as a boolean object: {1}", TEST_float, returnBool));
+                    TL.LogMessage(TestName, string.Format("Successfully retrieved a double object: {0} as a boolean object: {1}", TEST_DOUBLE, returnBool));
                 }
                 catch (Exception ex)
                 {
-                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a float object and retrieving it as a boolean object. {0} - {1}", ex.GetType().Name, ex.Message));
+                    LogError(TestName, string.Format("An unexpected exception was thrown when setting a double object and retrieving it as a boolean object. {0} - {1}", ex.GetType().Name, ex.Message));
                 }
             }
 
@@ -8004,27 +7928,27 @@ namespace ASCOM.Utilities
                 cache3 = new Cache();
                 cache4 = new Cache();
                 TL.LogMessage(TestName, string.Format("Setting cache values"));
-                cache1.Set(TEST_float_KEY + "1", TEST_float, 10.0d);
-                cache2.Set(TEST_float_KEY + "2", TEST_float, 10.0d);
-                cache3.Set(TEST_float_KEY + "3", TEST_float, 10.0d);
-                cache4.Set(TEST_float_KEY + "4", TEST_float, 10.0d);
+                cache1.Set(TEST_DOUBLE_KEY + "1", TEST_DOUBLE, 10.0d);
+                cache2.Set(TEST_DOUBLE_KEY + "2", TEST_DOUBLE, 10.0d);
+                cache3.Set(TEST_DOUBLE_KEY + "3", TEST_DOUBLE, 10.0d);
+                cache4.Set(TEST_DOUBLE_KEY + "4", TEST_DOUBLE, 10.0d);
                 TL.LogMessage(TestName, string.Format("Getting cache values"));
-                returnfloat = cache1.Getfloat(TEST_float_KEY + "1", 2d);
-                Comparefloat(TestName, "Get Cache1 float", returnfloat, TEST_float, TOLERANCE_E6);
-                returnfloat = cache1.Getfloat(TEST_float_KEY + "1", 2d);
-                Comparefloat(TestName, "Get Cache1 float", returnfloat, TEST_float, TOLERANCE_E6);
-                returnfloat = cache2.Getfloat(TEST_float_KEY + "2", 2d);
-                Comparefloat(TestName, "Get Cache2 float", returnfloat, TEST_float, TOLERANCE_E6);
-                returnfloat = cache2.Getfloat(TEST_float_KEY + "2", 2d);
-                Comparefloat(TestName, "Get Cache2 float", returnfloat, TEST_float, TOLERANCE_E6);
-                returnfloat = cache3.Getfloat(TEST_float_KEY + "3", 2d);
-                Comparefloat(TestName, "Get Cache3 float", returnfloat, TEST_float, TOLERANCE_E6);
-                returnfloat = cache3.Getfloat(TEST_float_KEY + "3", 2d);
-                Comparefloat(TestName, "Get Cache3 float", returnfloat, TEST_float, TOLERANCE_E6);
-                returnfloat = cache4.Getfloat(TEST_float_KEY + "4", 2d);
-                Comparefloat(TestName, "Get Cache4 float", returnfloat, TEST_float, TOLERANCE_E6);
-                returnfloat = cache4.Getfloat(TEST_float_KEY + "4", 2d);
-                Comparefloat(TestName, "Get Cache4 float", returnfloat, TEST_float, TOLERANCE_E6);
+                returnDouble = cache1.GetDouble(TEST_DOUBLE_KEY + "1", 2d);
+                CompareDouble(TestName, "Get Cache1 Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
+                returnDouble = cache1.GetDouble(TEST_DOUBLE_KEY + "1", 2d);
+                CompareDouble(TestName, "Get Cache1 Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
+                returnDouble = cache2.GetDouble(TEST_DOUBLE_KEY + "2", 2d);
+                CompareDouble(TestName, "Get Cache2 Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
+                returnDouble = cache2.GetDouble(TEST_DOUBLE_KEY + "2", 2d);
+                CompareDouble(TestName, "Get Cache2 Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
+                returnDouble = cache3.GetDouble(TEST_DOUBLE_KEY + "3", 2d);
+                CompareDouble(TestName, "Get Cache3 Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
+                returnDouble = cache3.GetDouble(TEST_DOUBLE_KEY + "3", 2d);
+                CompareDouble(TestName, "Get Cache3 Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
+                returnDouble = cache4.GetDouble(TEST_DOUBLE_KEY + "4", 2d);
+                CompareDouble(TestName, "Get Cache4 Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
+                returnDouble = cache4.GetDouble(TEST_DOUBLE_KEY + "4", 2d);
+                CompareDouble(TestName, "Get Cache4 Double", returnDouble, TEST_DOUBLE, TOLERANCE_E6);
             }
             catch (Exception ex)
             {
@@ -8081,34 +8005,34 @@ namespace ASCOM.Utilities
             TL.LogMessage("TimerResolution", string.Format("{0} - Current resolution: {1}, Minimum resolution: {2}, Maximum resolution: {3}", message, CurrentResolution / 10000.0d, MinimumResolution / 10000.0d, MaximimResolution / 10000.0d));
         }
 
-        private void TestThrottling(Cache cache, float CallsPerSecond, int PumpMessagesInterval)
+        private void TestThrottling(Cache cache, double CallsPerSecond, int PumpMessagesInterval)
         {
-            float returnfloat;
+            double returnDouble;
             int numberOfLoops;
             int throttleTarget;
 
             // Set upper and lower test pass limits. These are quite wide to allow for systems where sleep time precision is low e.g. when timer resolution is 15.67ms e.g. on laptops and low power devices
             // They also don't need to be that precise given that the purpose is only to slow down the rate of client calls
-            const float ACCEPTABLE_LOWER_BOUND = 4500.0d; // Minimum overall test time for a pass (milliseconds) = 110% of expected 5000ms
-            const float ACCEPTABLE_UPPER_BOUND = 6000.0d; // Maximum overall test time for a pass (milliseconds) = 120% of expected 5000ms
+            const double ACCEPTABLE_LOWER_BOUND = 4500.0d; // Minimum overall test time for a pass (milliseconds) = 110% of expected 5000ms
+            const double ACCEPTABLE_UPPER_BOUND = 6000.0d; // Maximum overall test time for a pass (milliseconds) = 120% of expected 5000ms
 
-            const float testfloat = 45.639d;
-            const string TEST_float_KEY = "TEST_float_KEY";
+            const double testDouble = 45.639d;
+            const string TEST_DOUBLE_KEY = "TEST_DOUBLE_KEY";
 
             // Test throttling 
             numberOfLoops = (int)Math.Round(5d * CallsPerSecond);
             try
             {
-                cache.Setfloat(TEST_float_KEY, testfloat, 100.0d); // Set a value with a 100 second lifetime, so it doesn't time out within the text
+                cache.SetDouble(TEST_DOUBLE_KEY, testDouble, 100.0d); // Set a value with a 100 second lifetime, so it doesn't time out within the text
                 cache.PumpMessagesInterval = PumpMessagesInterval;
-                returnfloat = cache.Getfloat(TEST_float_KEY); // Do a first get outside the loop so that all subsequent gets will be throttled 
+                returnDouble = cache.GetDouble(TEST_DOUBLE_KEY); // Do a first get outside the loop so that all subsequent gets will be throttled 
 
                 // Make NUMBER_OF_THROTTLING_TEST_LOOPS calls that should be limited to CallsPerSecond calls per second, i.e. the overall test should take about 10 / CallsPerSecond seconds
                 sw.Restart();
                 for (int i = 1, loopTo = numberOfLoops; i <= loopTo; i++)
                 {
                     Action(string.Format("Throttling test ({0} per second, pump = {1}ms)  {2}/{3}", CallsPerSecond, PumpMessagesInterval, i, numberOfLoops));
-                    returnfloat = cache.Getfloat(TEST_float_KEY, CallsPerSecond); // Get the value with a maximum rate of 2 calls per second
+                    returnDouble = cache.GetDouble(TEST_DOUBLE_KEY, CallsPerSecond); // Get the value with a maximum rate of 2 calls per second
                 }
                 sw.Stop();
 
@@ -8132,7 +8056,7 @@ namespace ASCOM.Utilities
 
         private void UtilTests()
         {
-            float t;
+            double t;
             string ts;
             Type HelperType;
             int i;
@@ -8141,7 +8065,7 @@ namespace ASCOM.Utilities
             Util Utl;
 
             DateTime TestDate = DateTime.Parse("2010-06-01 16:37:00");
-            const float TestJulianDate = 2455551.0d;
+            const double TestJulianDate = 2455551.0d;
 
             try
             {
@@ -8235,9 +8159,9 @@ namespace ASCOM.Utilities
                     TL.BlankLine();
 
                     Compare("UtilTests", "TimeZoneName", Utl.TimeZoneName.ToString(), GetTimeZoneName());
-                    Comparefloat("UtilTests", "TimeZoneOffset", Utl.TimeZoneOffset, -TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).TotalHours, 0.017d); // 1 minute tolerance
+                    CompareDouble("UtilTests", "TimeZoneOffset", Utl.TimeZoneOffset, -TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).TotalHours, 0.017d); // 1 minute tolerance
                     Compare("UtilTests", "UTCDate", Utl.UTCDate.ToString(), Conversions.ToString(DateTime.UtcNow));
-                    this.Comparefloat("UtilTests", "Julian date", Utl.JulianDate, DateTime.UtcNow.ToOADate() + Astrometry.GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET, 0.00002d); // 1 second tolerance
+                    this.CompareDouble("UtilTests", "Julian date", Utl.JulianDate, DateTime.UtcNow.ToOADate() + Astrometry.GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET, 0.00002d); // 1 second tolerance
                     TL.BlankLine();
 
                     Compare("UtilTests", "DateJulianToLocal", Strings.Format(Utl.DateJulianToLocal(TestJulianDate).Subtract(TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now)), "dd MMM yyyy hh:mm:ss.ffff"), "20 " + AbbreviatedMonthNames[11] + " 2010 12:00:00.0000");
@@ -8341,9 +8265,9 @@ namespace ASCOM.Utilities
                     TL.BlankLine();
 
                     this.Compare("UtilTests", "TimeZoneName", Utl.TimeZoneName.ToString(), g_Util2.TimeZoneName.ToString());
-                    Comparefloat("UtilTests", "TimeZoneOffset", Utl.TimeZoneOffset, Conversions.Tofloat(g_Util2.TimeZoneOffset), 0.017d); // 1 minute tolerance
+                    CompareDouble("UtilTests", "TimeZoneOffset", Utl.TimeZoneOffset, Conversions.ToDouble(g_Util2.TimeZoneOffset), 0.017d); // 1 minute tolerance
                     this.Compare("UtilTests", "UTCDate", Utl.UTCDate.ToString(), g_Util2.UTCDate.ToString());
-                    Comparefloat("UtilTests", "Julian date", Utl.JulianDate, Conversions.Tofloat(g_Util2.JulianDate), 0.00002d); // 1 second tolerance
+                    CompareDouble("UtilTests", "Julian date", Utl.JulianDate, Conversions.ToDouble(g_Util2.JulianDate), 0.00002d); // 1 second tolerance
                     TL.BlankLine();
 
                     Compare("UtilTests", "DateJulianToLocal", Strings.Format(Utl.DateJulianToLocal(TestJulianDate), "dd MMM yyyy hh:mm:ss.ffff"), Strings.Format(g_Util2.DateJulianToLocal((object)TestJulianDate), "dd MMM yyyy hh:mm:ss.ffff"));
@@ -8435,11 +8359,11 @@ namespace ASCOM.Utilities
                 TL.BlankLine();
 
                 // Test conversion functions
-                Comparefloat("UtilTests", "DewPoint2Humidity", Utl.DewPoint2Humidity(20.0d, 25.0d), 73.81d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "Humidity2DewPoint", Utl.Humidity2DewPoint(45.0d, 5.0d), -5.948d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "DewPoint2Humidity", Utl.DewPoint2Humidity(20.0d, 25.0d), 73.81d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "Humidity2DewPoint", Utl.Humidity2DewPoint(45.0d, 5.0d), -5.948d, TOLERANCE_E4);
 
                 // Test that invalid values are rejected by dewpoint and humidity conversion functions
-                float result;
+                double result;
                 string ErrMsg;
 
                 try
@@ -8626,35 +8550,35 @@ namespace ASCOM.Utilities
                     ErrorList.Add("UtilTests" + " - " + ErrMsg);
                 }
 
-                Comparefloat("UtilTests", "metresPerSecond==>metresPerSecond", Utl.ConvertUnits(10.0d, Units.metresPerSecond, Units.metresPerSecond), 10.0d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "metresPerSecond==>milesPerHour", Utl.ConvertUnits(10.0d, Units.metresPerSecond, Units.milesPerHour), 22.36936d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "metresPerSecond==>knots", Utl.ConvertUnits(10.0d, Units.metresPerSecond, Units.knots), 19.438461718d, TOLERANCE_E4); // These are Knots and not UK or US admiralty knots, which are slightly different!
-                Comparefloat("UtilTests", "milesPerHour==>metresPerSecond", Utl.ConvertUnits(10.0d, Units.milesPerHour, Units.metresPerSecond), 4.4704d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "knots==>metresPerSecond", Utl.ConvertUnits(10.0d, Units.knots, Units.metresPerSecond), 5.14444d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "metresPerSecond==>metresPerSecond", Utl.ConvertUnits(10.0d, Units.metresPerSecond, Units.metresPerSecond), 10.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "metresPerSecond==>milesPerHour", Utl.ConvertUnits(10.0d, Units.metresPerSecond, Units.milesPerHour), 22.36936d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "metresPerSecond==>knots", Utl.ConvertUnits(10.0d, Units.metresPerSecond, Units.knots), 19.438461718d, TOLERANCE_E4); // These are Knots and not UK or US admiralty knots, which are slightly different!
+                CompareDouble("UtilTests", "milesPerHour==>metresPerSecond", Utl.ConvertUnits(10.0d, Units.milesPerHour, Units.metresPerSecond), 4.4704d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "knots==>metresPerSecond", Utl.ConvertUnits(10.0d, Units.knots, Units.metresPerSecond), 5.14444d, TOLERANCE_E4);
 
-                Comparefloat("UtilTests", "Degrees K==>Degrees K", Utl.ConvertUnits(300.0d, Units.degreesKelvin, Units.degreesKelvin), 300.0d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "Degrees K==>Degrees F", Utl.ConvertUnits(300.0d, Units.degreesKelvin, Units.degreesFahrenheit), 80.33d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "Degrees K==>Degrees C", Utl.ConvertUnits(300.0d, Units.degreesKelvin, Units.degreesCelsius), 26.85d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "Degrees F==>Degrees K", Utl.ConvertUnits(70.0d, Units.degreesFahrenheit, Units.degreesKelvin), 294.26d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "Degrees C==>Degrees K", Utl.ConvertUnits(20.0d, Units.degreesCelsius, Units.degreesKelvin), 293.15d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "Degrees K==>Degrees K", Utl.ConvertUnits(300.0d, Units.degreesKelvin, Units.degreesKelvin), 300.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "Degrees K==>Degrees F", Utl.ConvertUnits(300.0d, Units.degreesKelvin, Units.degreesFahrenheit), 80.33d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "Degrees K==>Degrees C", Utl.ConvertUnits(300.0d, Units.degreesKelvin, Units.degreesCelsius), 26.85d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "Degrees F==>Degrees K", Utl.ConvertUnits(70.0d, Units.degreesFahrenheit, Units.degreesKelvin), 294.26d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "Degrees C==>Degrees K", Utl.ConvertUnits(20.0d, Units.degreesCelsius, Units.degreesKelvin), 293.15d, TOLERANCE_E4);
 
-                Comparefloat("UtilTests", "hPa==>hPa", Utl.ConvertUnits(1000.0d, Units.hPa, Units.hPa), 1000.0d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "hPa==>mBar", Utl.ConvertUnits(1000.0d, Units.hPa, Units.mBar), 1000.0d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "hPa==>mmHg", Utl.ConvertUnits(1000.0d, Units.hPa, Units.mmHg), 750.0615d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "hPa==>inHg", Utl.ConvertUnits(1000.0d, Units.hPa, Units.inHg), 29.53d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "mBar==>hPa", Utl.ConvertUnits(1000.0d, Units.mBar, Units.hPa), 1000.0d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "mmHg==>hPa", Utl.ConvertUnits(800.0d, Units.mmHg, Units.hPa), 1066.58d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "inHg==>hPa", Utl.ConvertUnits(30.0d, Units.inHg, Units.hPa), 1015.92d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "hPa==>hPa", Utl.ConvertUnits(1000.0d, Units.hPa, Units.hPa), 1000.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "hPa==>mBar", Utl.ConvertUnits(1000.0d, Units.hPa, Units.mBar), 1000.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "hPa==>mmHg", Utl.ConvertUnits(1000.0d, Units.hPa, Units.mmHg), 750.0615d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "hPa==>inHg", Utl.ConvertUnits(1000.0d, Units.hPa, Units.inHg), 29.53d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "mBar==>hPa", Utl.ConvertUnits(1000.0d, Units.mBar, Units.hPa), 1000.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "mmHg==>hPa", Utl.ConvertUnits(800.0d, Units.mmHg, Units.hPa), 1066.58d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "inHg==>hPa", Utl.ConvertUnits(30.0d, Units.inHg, Units.hPa), 1015.92d, TOLERANCE_E4);
 
-                Comparefloat("UtilTests", "mmPerHour==>mmPerHour", Utl.ConvertUnits(100.0d, Units.mmPerHour, Units.mmPerHour), 100.0d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "mmPerHour==>inPerHour", Utl.ConvertUnits(100.0d, Units.mmPerHour, Units.inPerHour), 3.937d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "inPerHour==>mmPerHour", Utl.ConvertUnits(10.0d, Units.inPerHour, Units.mmPerHour), 254.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "mmPerHour==>mmPerHour", Utl.ConvertUnits(100.0d, Units.mmPerHour, Units.mmPerHour), 100.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "mmPerHour==>inPerHour", Utl.ConvertUnits(100.0d, Units.mmPerHour, Units.inPerHour), 3.937d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "inPerHour==>mmPerHour", Utl.ConvertUnits(10.0d, Units.inPerHour, Units.mmPerHour), 254.0d, TOLERANCE_E4);
 
-                Comparefloat("UtilTests", "ConvertPressure 0.0 ==> 0.0", Utl.ConvertPressure(1000.0d, 0.0d, 0.0d), 1000.0d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "ConvertPressure 3000.0 ==> 3000.0", Utl.ConvertPressure(1000.0d, 3000.0d, 3000.0d), 1000.0d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "ConvertPressure 0.0 ==> 3000.0", Utl.ConvertPressure(1000.0d, 0.0d, 3000.0d), 691.92d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "ConvertPressure 3000.0 ==> 0.0", Utl.ConvertPressure(700.0d, 3000.0d, 0.0d), 1011.68d, TOLERANCE_E4);
-                Comparefloat("UtilTests", "ConvertPressure 3000.0 ==> 1000.0", Utl.ConvertPressure(700.0d, 3000.0d, 1000.0d), 897.35d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "ConvertPressure 0.0 ==> 0.0", Utl.ConvertPressure(1000.0d, 0.0d, 0.0d), 1000.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "ConvertPressure 3000.0 ==> 3000.0", Utl.ConvertPressure(1000.0d, 3000.0d, 3000.0d), 1000.0d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "ConvertPressure 0.0 ==> 3000.0", Utl.ConvertPressure(1000.0d, 0.0d, 3000.0d), 691.92d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "ConvertPressure 3000.0 ==> 0.0", Utl.ConvertPressure(700.0d, 3000.0d, 0.0d), 1011.68d, TOLERANCE_E4);
+                CompareDouble("UtilTests", "ConvertPressure 3000.0 ==> 1000.0", Utl.ConvertPressure(700.0d, 3000.0d, 1000.0d), 897.35d, TOLERANCE_E4);
 
                 TestUnitsInvalidOperation(Utl, Units.metresPerSecond, Units.degreesCelsius);
                 TestUnitsInvalidOperation(Utl, Units.metresPerSecond, Units.hPa);
@@ -8716,7 +8640,7 @@ namespace ASCOM.Utilities
 
         private void TestUnitsInvalidOperation(Util Util, Units FromUnit, Units ToUnit)
         {
-            float result;
+            double result;
             string ErrMsg;
 
             try
@@ -9437,6 +9361,10 @@ namespace ASCOM.Utilities
                 {
                     TL.LogMessage("RecurseProgramFiles 1", "PathTooLongException in directory; " + Folder);
                 }
+                catch (DirectoryNotFoundException)
+                {
+                    TL.LogMessage("RecurseProgramFiles 1", "DirectoryNotFoundException in directory; " + Folder);
+                }
                 catch (Exception ex)
                 {
                     LogException("RecurseProgramFiles 1", "Exception: " + ex.ToString());
@@ -9456,6 +9384,10 @@ namespace ASCOM.Utilities
                 {
                     TL.LogMessage("RecurseProgramFiles 2", "PathTooLongException in directory; " + Folder);
                 }
+                catch (DirectoryNotFoundException)
+                {
+                    TL.LogMessage("RecurseProgramFiles 2", "DirectoryNotFoundException in directory; " + Folder);
+                }
                 catch (Exception ex)
                 {
                     LogException("RecurseProgramFiles 2", "Exception: " + ex.ToString());
@@ -9470,6 +9402,10 @@ namespace ASCOM.Utilities
             catch (PathTooLongException)
             {
                 TL.LogMessage("RecurseProgramFiles 3", "PathTooLongException in directory; " + Folder);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                TL.LogMessage("RecurseProgramFiles 3", "DirectoryNotFoundException in directory; " + Folder);
             }
             catch (Exception ex)
             {
@@ -9862,10 +9798,10 @@ namespace ASCOM.Utilities
                 GetCOMRegistration("ASCOM.Astrometry.NOVAS.NOVAS3");
                 GetCOMRegistration("ASCOM.Astrometry.NOVASCOM.Earth");
                 GetCOMRegistration("ASCOM.Astrometry.NOVASCOM.Planet");
-                GetCOMRegistration("ASCOM.Astrometry.NOVASCOM.PositionVector2");
+                GetCOMRegistration("ASCOM.Astrometry.NOVASCOM.PositionVector");
                 GetCOMRegistration("ASCOM.Astrometry.NOVASCOM.Site");
                 GetCOMRegistration("ASCOM.Astrometry.NOVASCOM.Star");
-                GetCOMRegistration("ASCOM.Astrometry.NOVASCOM.VelocityVector2");
+                GetCOMRegistration("ASCOM.Astrometry.NOVASCOM.VelocityVector");
                 GetCOMRegistration("ASCOM.Astrometry.Transform.Transform");
 
                 // Get COM registration for all registered devices 
@@ -11002,7 +10938,7 @@ namespace ASCOM.Utilities
         {
             var InstallInfo = new SortedList<string, string>();
 
-            try // Platform 7 installer GUID, should always be present in Platform 6
+            try // Platform 7 installer GUID, should always be present in Platform 7
             {
                 InstallInfo = GetInstallInformation(ProductCode, Required, Force32, MSIInstaller);
                 if (InstallInfo.Count > 0)
@@ -11267,7 +11203,7 @@ namespace ASCOM.Utilities
         {
             RiseSet Events;
             // Dim Nov31 As New NOVAS.NOVAS31
-            float TimeDifference, DUT1, DT0, DTDUT1, JDUtc;
+            double TimeDifference, DUT1, DT0, DTDUT1, JDUtc;
 
             try
             {
@@ -11297,7 +11233,7 @@ namespace ASCOM.Utilities
                     TL.LogMessage("AstroUtilTests", string.Format("AstroUtils.JulianDateUT1(0.0): {0}", DT0));
                     TL.LogMessage("AstroUtilTests", string.Format("AstroUtils.JulianDateUT1(DeltaUT1): {0}", DTDUT1));
                     TL.LogMessage("AstroUtilTests", string.Format("AstroUtils.JulianDateUT1 Difference: {0} seconds", TimeDifference));
-                    Comparefloat("AstroUtilTests", "JulianDateUT1", DT0, DTDUT1, TOLERANCE_E3);
+                    CompareDouble("AstroUtilTests", "JulianDateUT1", DT0, DTDUT1, TOLERANCE_E3);
 
                     DT0 = AstroUtil.JulianDateTT(0.0d);
                     DTDUT1 = AstroUtil.JulianDateTT(DUT1);
@@ -11305,7 +11241,7 @@ namespace ASCOM.Utilities
                     TL.LogMessage("AstroUtilTests", string.Format("AstroUtils.JulianDateTT(0.0): {0}", DT0));
                     TL.LogMessage("AstroUtilTests", string.Format("AstroUtils.JulianDateTT(DeltaUT1): {0}", DTDUT1));
                     TL.LogMessage("AstroUtilTests", string.Format("AstroUtils.JulianDateTT Difference: {0} seconds", TimeDifference));
-                    Comparefloat("AstroUtilTests", "JulianDateTT", DT0, DTDUT1, TOLERANCE_E3);
+                    CompareDouble("AstroUtilTests", "JulianDateTT", DT0, DTDUT1, TOLERANCE_E3);
                 }
                 else // Invalid value produced so skip this test, which will raise an exception if DUT1 is outside the valid range
                 {
@@ -11314,23 +11250,23 @@ namespace ASCOM.Utilities
                 TL.LogMessage("", "");
 
                 // Range Tests
-                Comparefloat("AstroUtilTests", "ConditionHA -12.0", AstroUtil.ConditionHA(-12.0d), -12.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "ConditionHA 0.0", AstroUtil.ConditionHA(0.0d), 0.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "ConditionHA 12.0", AstroUtil.ConditionHA(12.0d), 12.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "ConditionHA -13.0", AstroUtil.ConditionHA(-13.0d), 11.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "ConditionHA 13.0", AstroUtil.ConditionHA(13.0d), -11.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionHA -12.0", AstroUtil.ConditionHA(-12.0d), -12.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionHA 0.0", AstroUtil.ConditionHA(0.0d), 0.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionHA 12.0", AstroUtil.ConditionHA(12.0d), 12.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionHA -13.0", AstroUtil.ConditionHA(-13.0d), 11.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionHA 13.0", AstroUtil.ConditionHA(13.0d), -11.0d, TOLERANCE_E6);
 
-                Comparefloat("AstroUtilTests", "ConditionRA 0.0", AstroUtil.ConditionRA(0.0d), 0.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "ConditionRA 12.0", AstroUtil.ConditionRA(12.0d), 12.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "ConditionRA 23.999", AstroUtil.ConditionRA(23.999d), 23.999d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "ConditionRA -1.0", AstroUtil.ConditionRA(-1.0d), 23.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "ConditionRA 25.0", AstroUtil.ConditionRA(25.0d), 1.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "Range 0:359.999 0.0", AstroUtil.Range(0.0d, 0.0d, true, 360.0d, false), 0.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "Range 0:359.999 359.0", AstroUtil.Range(359.0d, 0.0d, true, 360.0d, false), 359.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "Range 0:359.999 -30.0", AstroUtil.Range(-30.0d, 0.0d, true, 360.0d, false), 330.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "Range 0:359.999 390.0", AstroUtil.Range(390.0d, 0.0d, true, 360.0d, false), 30.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "Range 0:359.999 360.0", AstroUtil.Range(360.0d, 0.0d, true, 360.0d, false), 0.0d, TOLERANCE_E6);
-                Comparefloat("AstroUtilTests", "Range 0:360.0 360.0", AstroUtil.Range(360.0d, 0.0d, true, 360.0d, true), 360.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionRA 0.0", AstroUtil.ConditionRA(0.0d), 0.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionRA 12.0", AstroUtil.ConditionRA(12.0d), 12.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionRA 23.999", AstroUtil.ConditionRA(23.999d), 23.999d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionRA -1.0", AstroUtil.ConditionRA(-1.0d), 23.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "ConditionRA 25.0", AstroUtil.ConditionRA(25.0d), 1.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "Range 0:359.999 0.0", AstroUtil.Range(0.0d, 0.0d, true, 360.0d, false), 0.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "Range 0:359.999 359.0", AstroUtil.Range(359.0d, 0.0d, true, 360.0d, false), 359.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "Range 0:359.999 -30.0", AstroUtil.Range(-30.0d, 0.0d, true, 360.0d, false), 330.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "Range 0:359.999 390.0", AstroUtil.Range(390.0d, 0.0d, true, 360.0d, false), 30.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "Range 0:359.999 360.0", AstroUtil.Range(360.0d, 0.0d, true, 360.0d, false), 0.0d, TOLERANCE_E6);
+                CompareDouble("AstroUtilTests", "Range 0:360.0 360.0", AstroUtil.Range(360.0d, 0.0d, true, 360.0d, true), 360.0d, TOLERANCE_E6);
 
                 CompareWithin("AstroUtilTests", "DeltaT", AstroUtil.DeltaT(), 67.0d, 71.0d); // Upper bound increased because DeltaT has reached the original upper bound value! PWGS 9/10/2017
                 CompareWithin("AstroUtilTests", "DeltaUT", AstroUtil.DeltaUT(AstroUtil.JulianDateTT(0.0d)), -1.0d, 1.0d);
@@ -11339,45 +11275,45 @@ namespace ASCOM.Utilities
                 CompareBoolean("AstroUtilTests", "Events Sun Risen at Midnight", Events.RisenAtMidnight, false);
                 CompareInteger("AstroUtilTests", "Events Sun Rise Count", Events.RiseTime.Count, 1);
                 CompareInteger("AstroUtilTests", "Events Sun Set Count", Events.SetTime.Count, 1);
-                Comparefloat("AstroUtilTests", "Events Sun Rise", Events.RiseTime[0], 3.54149185233954d, TOLERANCE_E5);
-                Comparefloat("AstroUtilTests", "Events Sun Set", Events.SetTime[0], 18.6397113427123d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Events Sun Rise", Events.RiseTime[0], 3.54149185233954d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Events Sun Set", Events.SetTime[0], 18.6397113427123d, TOLERANCE_E5);
 
                 Events = GetEvents(EventType.SunRiseSunset, 19, 3, 2012, -80.0d, 85.0d, 11.0d);
 
                 CompareBoolean("AstroUtilTests", "Events Sun Risen at Midnight", Events.RisenAtMidnight, true);
                 CompareInteger("AstroUtilTests", "Events Sun Rise Count", Events.RiseTime.Count, 1);
                 CompareInteger("AstroUtilTests", "Events Sun Set Count", Events.SetTime.Count, 2);
-                Comparefloat("AstroUtilTests", "Events Sun Rise", Events.RiseTime[0], 10.9587287503168d, TOLERANCE_E5);
-                Comparefloat("AstroUtilTests", "Events Sun Set", Events.SetTime[0], 0.0368674126801114d, TOLERANCE_E2); // Smaller tolerance because the expected value is smaller
-                Comparefloat("AstroUtilTests", "Events Sun Set", Events.SetTime[1], 23.8850069460075d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Events Sun Rise", Events.RiseTime[0], 10.9587287503168d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Events Sun Set", Events.SetTime[0], 0.0368674126801114d, TOLERANCE_E2); // Smaller tolerance because the expected value is smaller
+                CompareDouble("AstroUtilTests", "Events Sun Set", Events.SetTime[1], 23.8850069460075d, TOLERANCE_E5);
 
                 Events = GetEvents(EventType.MoonRiseMoonSet, 5, 8, 2012, 51.0d, -60.0d, -5.0d);
 
                 CompareBoolean("AstroUtilTests", "Events Moon Risen at Midnight", Events.RisenAtMidnight, true);
                 CompareInteger("AstroUtilTests", "Events Moon Rise Count", Events.RiseTime.Count, 1);
                 CompareInteger("AstroUtilTests", "Events Moon Set Count", Events.SetTime.Count, 1);
-                Comparefloat("AstroUtilTests", "Events Moon Rise", Events.RiseTime[0], 19.6212523985916d, TOLERANCE_E5);
-                Comparefloat("AstroUtilTests", "Events Moon Set", Events.SetTime[0], 7.84782661271154d, TOLERANCE_E4);
+                CompareDouble("AstroUtilTests", "Events Moon Rise", Events.RiseTime[0], 19.6212523985916d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Events Moon Set", Events.SetTime[0], 7.84782661271154d, TOLERANCE_E4);
 
                 Events = GetEvents(EventType.MoonRiseMoonSet, 15, 1, 2012, -80.0d, 85.0d, 11.0d);
 
                 CompareBoolean("AstroUtilTests", "Events Moon Risen at Midnight", Events.RisenAtMidnight, false);
                 CompareInteger("AstroUtilTests", "Events Moon Rise Count", Events.RiseTime.Count, 2);
                 CompareInteger("AstroUtilTests", "Events Moon Set Count", Events.SetTime.Count, 1);
-                Comparefloat("AstroUtilTests", "Events Moon Rise", Events.RiseTime[0], 1.83185022577189d, TOLERANCE_E4);
-                Comparefloat("AstroUtilTests", "Events Moon Rise", Events.RiseTime[1], 23.803310377656d, TOLERANCE_E5);
-                Comparefloat("AstroUtilTests", "Events Moon Set", Events.SetTime[0], 20.2772693138778d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Events Moon Rise", Events.RiseTime[0], 1.83185022577189d, TOLERANCE_E4);
+                CompareDouble("AstroUtilTests", "Events Moon Rise", Events.RiseTime[1], 23.803310377656d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Events Moon Set", Events.SetTime[0], 20.2772693138778d, TOLERANCE_E5);
 
                 Events = GetEvents(EventType.AstronomicalTwilight, 18, 5, 2012, 51.0d, 0.0d, 0.0d);
 
                 CompareBoolean("AstroUtilTests", "Events Astronomical Twilight Sun Risen at Midnight", Events.RisenAtMidnight, false);
                 CompareInteger("AstroUtilTests", "Events Astronomical Twilight Start Count", Events.RiseTime.Count, 1);
                 CompareInteger("AstroUtilTests", "Events Astronomical Twilight End Count", Events.SetTime.Count, 1);
-                Comparefloat("AstroUtilTests", "Events Astronomical Twilight Start", Events.RiseTime[0], 1.01115193589165d, TOLERANCE_E4);
-                Comparefloat("AstroUtilTests", "Events Astronomical Twilight End", Events.SetTime[0], 22.9472021943943d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Events Astronomical Twilight Start", Events.RiseTime[0], 1.01115193589165d, TOLERANCE_E4);
+                CompareDouble("AstroUtilTests", "Events Astronomical Twilight End", Events.SetTime[0], 22.9472021943943d, TOLERANCE_E5);
 
-                Comparefloat("AstroUtilTests", "Moon Illumination", AstroUtil.MoonIllumination(Nov31.JulianDate(2012, 8, 5, 12.0d)), 0.872250725459045d, TOLERANCE_E5);
-                Comparefloat("AstroUtilTests", "Moon Phase", AstroUtil.MoonPhase(Nov31.JulianDate(2012, 8, 5, 12.0d)), -142.145753888332d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Moon Illumination", AstroUtil.MoonIllumination(Nov31.JulianDate(2012, 8, 5, 12.0d)), 0.872250725459045d, TOLERANCE_E5);
+                CompareDouble("AstroUtilTests", "Moon Phase", AstroUtil.MoonPhase(Nov31.JulianDate(2012, 8, 5, 12.0d)), -142.145753888332d, TOLERANCE_E5);
 
                 CompareWithin("AstroUtilTests", "DeltaUT1 - Day of start of leap second January 1961", AstroUtil.DeltaUT(2437300.5d), -0.9d, 0.9d);
                 CompareWithin("AstroUtilTests", "DeltaUT1 - Day of start of leap second March 1965", AstroUtil.DeltaUT(2438820.5d), -0.9d, 0.9d);
@@ -11399,7 +11335,7 @@ namespace ASCOM.Utilities
 
                 var parameters = new EarthRotationParameters();
 
-                foreach (KeyValuePair<float, float> HistoricLeapSecond in parameters.DownloadedLeapSeconds)
+                foreach (KeyValuePair<double, double> HistoricLeapSecond in parameters.DownloadedLeapSeconds)
                 {
                     var LeapSecondDateTime = DateTime.FromOADate(HistoricLeapSecond.Key - Astrometry.GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET);
                     TL.LogMessage("AstroUtilTests", string.Format("Found historic leap second value {0} which came into effect on JD {1} ({2})", HistoricLeapSecond.Value, HistoricLeapSecond.Key, LeapSecondDateTime.ToString(Astrometry.GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
@@ -11424,11 +11360,11 @@ namespace ASCOM.Utilities
         private struct RiseSet
         {
             public bool RisenAtMidnight;
-            public List<float> RiseTime;
-            public List<float> SetTime;
+            public List<double> RiseTime;
+            public List<double> SetTime;
         }
 
-        private RiseSet GetEvents(EventType TypeOfEvent, int Day, int Month, int Year, float Latitude, float Longitude, float TimeZone)
+        private RiseSet GetEvents(EventType TypeOfEvent, int Day, int Month, int Year, double Latitude, double Longitude, double TimeZone)
         {
             ArrayList Events;
             var Retval = new RiseSet();
@@ -11436,8 +11372,8 @@ namespace ASCOM.Utilities
 
             Events = AstroUtil.EventTimes(TypeOfEvent, Day, Month, Year, Latitude, Longitude, TimeZone);
             Retval.RisenAtMidnight = Conversions.ToBoolean(Events[0]);
-            Retval.RiseTime = new List<float>();
-            Retval.SetTime = new List<float>();
+            Retval.RiseTime = new List<double>();
+            Retval.SetTime = new List<double>();
 
             NumberOfRises = Conversions.ToInteger(Events[1]); // Retrieve the number of sunrises
             NumberOfSets = Conversions.ToInteger(Events[2]); // Retrieve the number of sunsets
@@ -11452,13 +11388,13 @@ namespace ASCOM.Utilities
                         }
                     case 1: // 1 sunrise so add the value
                         {
-                            Retval.RiseTime.Add(Conversions.Tofloat(Events[3]));
+                            Retval.RiseTime.Add(Conversions.ToDouble(Events[3]));
                             break;
                         }
                     case 2: // 2 sunrises so add both values
                         {
-                            Retval.RiseTime.Add(Conversions.Tofloat(Events[3]));
-                            Retval.RiseTime.Add(Conversions.Tofloat(Events[4]));
+                            Retval.RiseTime.Add(Conversions.ToDouble(Events[3]));
+                            Retval.RiseTime.Add(Conversions.ToDouble(Events[4]));
                             break;
                         }
                 }
@@ -11470,13 +11406,13 @@ namespace ASCOM.Utilities
                         }
                     case 1: // 1 sunset so add the value
                         {
-                            Retval.SetTime.Add(Conversions.Tofloat(Events[NumberOfRises + 3]));
+                            Retval.SetTime.Add(Conversions.ToDouble(Events[NumberOfRises + 3]));
                             break;
                         }
                     case 2: // 2 sunsets so build up message lines 1 and 2
                         {
-                            Retval.SetTime.Add(Conversions.Tofloat(Events[NumberOfRises + 3]));
-                            Retval.SetTime.Add(Conversions.Tofloat(Events[NumberOfRises + 4]));
+                            Retval.SetTime.Add(Conversions.ToDouble(Events[NumberOfRises + 3]));
+                            Retval.SetTime.Add(Conversions.ToDouble(Events[NumberOfRises + 4]));
                             break;
                         }
                 }
@@ -11712,6 +11648,10 @@ namespace ASCOM.Utilities
             // Set the check for updates check marks
             OptionsCheckForPlatformReleases.Checked = Utilities.Global.GetBool(Utilities.Global.CHECK_FOR_RELEASE_UPDATES, Utilities.Global.CHECK_FOR_RELEASE_UPDATES_DEFAULT);
             OptionsCheckForPlatformPreReleases.Checked = Utilities.Global.GetBool(Utilities.Global.CHECK_FOR_RELEASE_CANDIDATES, Utilities.Global.CHECK_FOR_RELEASE_CANDIDATES_DEFAULT);
+            LogInternal("RefreshTraceItems", $"OptionsCheckForPlatformReleases.Checked: {OptionsCheckForPlatformReleases.Checked}, " +
+                $"Registry: {Utilities.Global.GetBool(Utilities.Global.CHECK_FOR_RELEASE_UPDATES, Utilities.Global.CHECK_FOR_RELEASE_UPDATES_DEFAULT)}" +
+                $"OptionsCheckForPlatformPreReleases.Checked: {OptionsCheckForPlatformPreReleases.Checked}, " +
+                $"Registry: {Utilities.Global.GetBool(Utilities.Global.CHECK_FOR_RELEASE_CANDIDATES, Utilities.Global.CHECK_FOR_RELEASE_CANDIDATES_DEFAULT)}");
 
             // Set the Is using Omni-Simulators check mark
             OptionsUseOmniSimulators.Checked = SimulatorManager.IsUsingOmniSimulators(tlInternal);
@@ -12069,12 +12009,16 @@ namespace ASCOM.Utilities
             try
             {
                 LogInternal("DiagnosticsUpdateCheck", "Diagnostics is checking for updates");
+                LogInternal("DiagnosticsUpdateCheck", $"OptionsCheckForPlatformReleases.Checked: {OptionsCheckForPlatformReleases.Checked}, " +
+                    $"Registry: {Utilities.Global.GetBool(Utilities.Global.CHECK_FOR_RELEASE_UPDATES, Utilities.Global.CHECK_FOR_RELEASE_UPDATES_DEFAULT)}" +
+                    $"OptionsCheckForPlatformPreReleases.Checked: {OptionsCheckForPlatformPreReleases.Checked}, " +
+                    $"Registry: {Utilities.Global.GetBool(Utilities.Global.CHECK_FOR_RELEASE_CANDIDATES, Utilities.Global.CHECK_FOR_RELEASE_CANDIDATES_DEFAULT)}");
 
                 // Check whether updates are to be checked at all
-                if (OptionsCheckForPlatformPreReleases.Checked | OptionsCheckForPlatformPreReleases.Checked) // Either release or pre-release updates are to be checked
+                if (OptionsCheckForPlatformReleases.Checked | OptionsCheckForPlatformPreReleases.Checked) // Either release or pre-release updates are to be checked
                 {
-                    // Delay for a few seconds to allow the GUI to initialise
-                    LogInternal("DiagnosticsUpdateCheck", $"Entered Delaying...");
+                    // Delay for a second to allow the GUI to initialise
+                    LogInternal("DiagnosticsUpdateCheck", $"Starting 1 second Delay...");
                     Thread.Sleep(1000);
                     LogInternal("DiagnosticsUpdateCheck", $"Running update check");
 

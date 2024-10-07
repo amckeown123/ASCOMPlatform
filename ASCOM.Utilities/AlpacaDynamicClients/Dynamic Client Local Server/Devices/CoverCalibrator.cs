@@ -1,5 +1,4 @@
 ﻿using ASCOM.Alpaca.Clients;
-using ASCOM.Common;
 using ASCOM.DeviceInterface;
 using ASCOM.Common.Interfaces;
 using ASCOM.Tools;
@@ -18,7 +17,7 @@ namespace ASCOM.DynamicClients
     public class CoverCalibrator : ReferenceCountedObjectBase, ICoverCalibratorV2, IDisposable
     {
         // Set the device type of this device
-        private const DeviceTypes deviceType = DeviceTypes.CoverCalibrator;
+        private const Common.DeviceTypes deviceType = Common.DeviceTypes.CoverCalibrator;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaCoverCalibrator client;
@@ -638,19 +637,19 @@ namespace ASCOM.DynamicClients
         public void OpenCover()
         {
             client.OpenCover();
-            TL.LogMessage("AbortSlew", "Cover opened OK");
+            LogMessage("AbortSlew", "Cover opened OK");
         }
 
         public void CloseCover()
         {
             client.CloseCover();
-            TL.LogMessage("AbortSlew", "Cover closed OK");
+            LogMessage("AbortSlew", "Cover closed OK");
         }
 
         public void HaltCover()
         {
             client.HaltCover();
-            TL.LogMessage("AbortSlew", "Cover halted OK");
+            LogMessage("AbortSlew", "Cover halted OK");
         }
 
         public void CalibratorOn(int brightness)
@@ -661,7 +660,7 @@ namespace ASCOM.DynamicClients
         public void CalibratorOff()
         {
             client.CalibratorOff();
-            TL.LogMessage("AbortSlew", $"Calibrator off OK");
+            LogMessage("AbortSlew", $"Calibrator off OK");
         }
 
         #endregion
@@ -675,7 +674,7 @@ namespace ASCOM.DynamicClients
                 // Call the device's CalibratorChanging property if this is a Platform 7 or later device, otherwise use CalibratorState
                 if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(deviceType, InterfaceVersion)) // We are presenting a Platform 7 or later device so call the CalibratorChanging property
                 {
-                    TL.LogMessage("CalibratorChanging", "Issuing CalibratorChanging command");
+                    LogMessage("CalibratorChanging", "Issuing CalibratorChanging command");
                     return client.CalibratorChanging;
                 }
 
@@ -691,7 +690,7 @@ namespace ASCOM.DynamicClients
                 // Call the device's CoverMoving property if this is a Platform 7 or later device, otherwise use CoverState
                 if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(deviceType, InterfaceVersion)) // We are presenting a Platform 7 or later device so call the CoverMoving property
                 {
-                    TL.LogMessage("CoverMoving", "Issuing CoverMoving command");
+                    LogMessage("CoverMoving", "Issuing CoverMoving command");
                     return client.CoverMoving;
                 }
 
@@ -726,7 +725,7 @@ namespace ASCOM.DynamicClients
         private void LogMessage(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Information, identifier, message);
+            TL?.LogMessage(identifier, message);
         }
 
         /// <summary>
@@ -737,7 +736,7 @@ namespace ASCOM.DynamicClients
         private void LogDebug(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Debug, identifier, message);
+            TL?.LogMessage(identifier, message);
         }
 
         #endregion

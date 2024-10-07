@@ -1,5 +1,4 @@
 ﻿using ASCOM.Alpaca.Clients;
-using ASCOM.Common;
 using ASCOM.DeviceInterface;
 using ASCOM.Common.Interfaces;
 using ASCOM.Tools;
@@ -18,7 +17,7 @@ namespace ASCOM.DynamicClients
     public class Camera : ReferenceCountedObjectBase, ICameraV4, IDisposable
     {
         // Set the device type of this device
-        private const DeviceTypes deviceType = DeviceTypes.Camera;
+        private const Common.DeviceTypes deviceType = Common.DeviceTypes.Camera;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaCamera client;
@@ -1030,13 +1029,13 @@ namespace ASCOM.DynamicClients
             get
             {
                 List<string> gains = client.Gains.ToList<string>();
-                TL.LogMessage("Gains", string.Format("Returning {0} gains", gains.Count));
+                LogMessage("Gains", string.Format("Returning {0} gains", gains.Count));
 
                 ArrayList returnValues = new ArrayList();
                 foreach (string gain in gains)
                 {
                     returnValues.Add(gain);
-                    TL.LogMessage("Gains", string.Format("Returning gain: {0}", gain));
+                    LogMessage("Gains", string.Format("Returning gain: {0}", gain));
                 }
 
                 return returnValues;
@@ -1069,13 +1068,13 @@ namespace ASCOM.DynamicClients
             get
             {
                 List<string> modes = client.ReadoutModes.ToList<string>();
-                TL.LogMessage("ReadoutModes", string.Format("Returning {0} modes", modes.Count));
+                LogMessage("ReadoutModes", string.Format("Returning {0} modes", modes.Count));
 
                 ArrayList returnValues = new ArrayList();
                 foreach (string gain in modes)
                 {
                     returnValues.Add(gain);
-                    TL.LogMessage("ReadoutModes", string.Format("Returning mode: {0}", gain));
+                    LogMessage("ReadoutModes", string.Format("Returning mode: {0}", gain));
                 }
 
                 return returnValues;
@@ -1135,13 +1134,13 @@ namespace ASCOM.DynamicClients
             get
             {
                 List<string> offsets = client.Offsets.ToList<string>();
-                TL.LogMessage("Offsets", string.Format("Returning {0} Offsets", offsets.Count));
+                LogMessage("Offsets", string.Format("Returning {0} Offsets", offsets.Count));
 
                 ArrayList returnValues = new ArrayList();
                 foreach (string offset in offsets)
                 {
                     returnValues.Add(offset);
-                    TL.LogMessage("Offsets", string.Format("Returning Offset: {0}", offset));
+                    LogMessage("Offsets", string.Format("Returning Offset: {0}", offset));
                 }
 
                 return returnValues;
@@ -1186,7 +1185,7 @@ namespace ASCOM.DynamicClients
         private void LogMessage(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Information, identifier, message);
+            TL?.LogMessage(identifier, message);
         }
 
         /// <summary>
@@ -1197,7 +1196,7 @@ namespace ASCOM.DynamicClients
         private void LogDebug(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Debug, identifier, message);
+            TL?.LogMessage(identifier, message);
         }
 
         #endregion

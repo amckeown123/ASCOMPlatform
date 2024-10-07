@@ -6,7 +6,7 @@
 			<content>
 				<para>
 					In line with previous Platform installers, 7.0 is a cumulative release that contains all enhancements and fixes from previous Platform releases and service packs. The Platform
-					environment pre-requisites are listed here <link xlink:href="#PreReqs70">Platform Prerequisites</link>.
+					environment pre-requisites are listed here <link xlink:href="7d9253c2-fdfd-4c0d-8225-a96bddb49731#PreReqs70">Platform Prerequisites</link>.
 				</para>
 			</content>
 		</section>
@@ -82,10 +82,30 @@
 						</list>
 					</listItem>
 					<listItem>
-						The Dynamic Clients now provide access to the Alpaca device's HTML configuration pages though the SetupDialog method when the Alpaca device is connected.
-						Previously all access was blocked.
+						Dynamic Clients
+						<list class="bullet">
+							<listItem>
+								The Dynamic Clients now provide access to the Alpaca device's HTML configuration pages though the SetupDialog method when the Alpaca device is connected.
+								Previously all access was blocked.
+							</listItem>
+							<listItem>
+								When connecting to an Alpaca device that cannot be reached, the Dynamic Clients now time out in about 4 seconds rather than the 10 second delay in Platform 6.
+								The quicker return on fail now also applies to the InterfaceVersion property, which some applications call before connecting, and which suffered from a 30 second 
+								delay before reporting a failed connection.
+							</listItem>
+						</list>
 					</listItem>
-
+					<listItem>
+						Device Hub
+						<list class="bullet">
+							<listItem>
+								The activity log page now has a "Save Settings" button to save the current logging configuration, which will be restored when the activity log is next used.
+							</listItem>
+							<listItem>
+								The telescope rate offset fields and "Send to telescope" buttons are now enabled only when tracking at sidereal rate in line with the interface specification.
+							</listItem>
+						</list>
+					</listItem>
 				</list>
 			</content>
 		</section>
@@ -106,8 +126,23 @@
 						PropertyNotImplementedExcetion when tracking rates are configured to be not available.
 					</listItem>
 					<listItem>Profile Explorer - The visual appearance has been improved when the application starts and is re-sized.</listItem>
-					<listItem>Device Hub - Changed the default dome radius in the dome geometry configuration from 0.0 to 2000.0 to ensure that dome synchronisation works "out of the box".</listItem>
-					<listItem>Diagnostics - Fixed a bug where a non-existent directory could cause an unexpected Diagnostics error.</listItem>
+					<listItem>
+						Device Hub
+						<list class="bullet">
+							<listItem>Changed the default dome radius in the dome geometry configuration from 0.0 to 2000.0 to ensure that dome synchronisation works "out of the box".</listItem>
+							<listItem>When a device does not supply an expected numeric value, the displayed text is now "Unavailable" rather than "NaN".</listItem>
+						</list>
+					</listItem>
+					<listItem>
+						Diagnostics
+						<list class="bullet">
+							<listItem>
+								Diagnostics - Fixed a bug where a non-existent directory could cause an unexpected Diagnostics error.
+							</listItem>
+							<listItem>Fixed issues being reported when some telescope simulator settings were not at their default values.</listItem>
+						</list>
+					</listItem>
+					<listItem>Chooser - Fixed exception when starting the Alpaca device manager application when no device was selected in the Chooser drop-down list.</listItem>
 				</list>
 			</content>
 		</section>

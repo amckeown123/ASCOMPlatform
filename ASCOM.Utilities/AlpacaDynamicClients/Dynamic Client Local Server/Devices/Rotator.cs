@@ -1,5 +1,4 @@
 ﻿using ASCOM.Alpaca.Clients;
-using ASCOM.Common;
 using ASCOM.DeviceInterface;
 using ASCOM.Common.Interfaces;
 using ASCOM.Tools;
@@ -18,7 +17,7 @@ namespace ASCOM.DynamicClients
     public class Rotator : ReferenceCountedObjectBase, IRotatorV4, IDisposable
     {
         // Set the device type of this device
-        private const DeviceTypes deviceType = DeviceTypes.Rotator;
+        private const Common.DeviceTypes deviceType = Common.DeviceTypes.Rotator;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaRotator client;
@@ -665,19 +664,19 @@ namespace ASCOM.DynamicClients
         public void Halt()
         {
             client.Halt();
-            TL.LogMessage("Halt", "Rotator halted OK");
+            LogMessage("Halt", "Rotator halted OK");
         }
 
         public void Move(float Position)
         {
             client.Move(Position);
-            TL.LogMessage("Move", string.Format("Rotator moved to relative position {0} OK", Position));
+            LogMessage("Move", string.Format("Rotator moved to relative position {0} OK", Position));
         }
 
         public void MoveAbsolute(float Position)
         {
             client.MoveAbsolute(Position);
-            TL.LogMessage("MoveAbsolute", string.Format("Rotator moved to absolute position {0} OK", Position));
+            LogMessage("MoveAbsolute", string.Format("Rotator moved to absolute position {0} OK", Position));
         }
 
         #endregion
@@ -695,13 +694,13 @@ namespace ASCOM.DynamicClients
         public void Sync(float Position)
         {
             client.Sync(Position);
-            TL.LogMessage("Sync", string.Format("Rotator synced to sky position {0} OK", Position));
+            LogMessage("Sync", string.Format("Rotator synced to sky position {0} OK", Position));
         }
 
         public void MoveMechanical(float Position)
         {
             client.MoveMechanical(Position);
-            TL.LogMessage("MoveMechanical", string.Format("Rotator moved to mechanical position {0} OK", Position));
+            LogMessage("MoveMechanical", string.Format("Rotator moved to mechanical position {0} OK", Position));
         }
 
         #endregion
@@ -730,7 +729,7 @@ namespace ASCOM.DynamicClients
         private void LogMessage(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Information, identifier, message);
+            TL?.LogMessage(identifier, message);
         }
 
         /// <summary>
@@ -741,7 +740,7 @@ namespace ASCOM.DynamicClients
         private void LogDebug(string identifier, string message)
         {
             // Write to the log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            TL?.LogMessage(LogLevel.Debug, identifier, message);
+            TL?.LogMessage(identifier, message);
         }
 
         #endregion

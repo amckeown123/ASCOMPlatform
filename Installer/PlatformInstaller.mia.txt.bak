@@ -34,6 +34,7 @@ Set Variable FILEEXISTS to
 Set Variable UNINSTALLER to 
 Set Variable ACTION to 
 Set Variable CLEARCACHE to 
+Set Variable DEVICEHUB_DOME_RADIUS to 
  
 Comment: Set a variable indicating whether the installer was started from a stand alone exe or from the control panel
 Set Variable STARTEDFROMCONTROLPANEL to FALSE
@@ -147,6 +148,7 @@ Set Variable INSTALLCACHEEXISTS to
 Set Variable INSTALLCACHEDIRECTORY to 
 Set Variable VC32_REBOOT_REQUIRED to 
 Set Variable VC64_REBOOT_REQUIRED to 
+Set Variable DEVICEHUB_DOME_RADIUS to 
  
 Comment: Component installed state variables
 Set Variable INSTALL_PLATFORM to 
@@ -405,7 +407,7 @@ Comment: Check that we are not running on an OS earlier than Windows 10 1809 Oct
 Get System Setting Windows 10 October 2018 Update into CHECKSYSTEM
 if Variable CHECKSYSTEM not Equals TRUE
   Write into Text File $SETUPLOG$ from Value $TIME$ Found a Windows version earlier than 10 1809 October 2018 Update, terminating installation. (at end of file)
-  MessageBox: $TITLE$ - OS Requirement, ASCOM Platform is not compatible with this operating system, it needs Windows 10 1809 (October 2018) or later to operate correctly.$NEWLINE$$NEWLINE$ASCOM Platform 6.6 SP2 is the latest version that is compatible with Windows 7.$NEWLINE$$NEWLINE$ASCOM Platform 6.4 SP1 is the latest version that is compatible with Windows XP.$NEWLINE$$NEWLINE$The installer will now close.
+  MessageBox: $TITLE$ - OS Requirement, ASCOM Platform is not compatible with this operating system and only runs correctly on Windows 10 1809 (October 2018) and later operating systems.$NEWLINE$$NEWLINE$ASCOM Platform 6.6 SP2 is the latest version that is compatible with Windows 7.$NEWLINE$$NEWLINE$ASCOM Platform 6.4 SP1 is the latest version that is compatible with Windows XP.$NEWLINE$$NEWLINE$The installer will now close.
   Terminate Installation
 end
  
@@ -770,9 +772,13 @@ end
 [DEFINE REGION: Remove any items left from previous instals]
  
 Set Variable MYPROGRESS to 23
-Comment: Clean up start menu entries that may not have been aren't removed by the uninstaller.
 Set Variable NATIVE_ENGINE to TRUE
+ 
+Comment: Clean up start menu entries that may not have been aren't removed by the uninstaller.
 Recursively Delete Files $SHORTCUTFILESALL$ASCOM Diagnostics.lnk
+Recursively Delete Files $SHORTCUTFILESALL$ASCOM Omni-Simulators.lnk
+Recursively Delete Files $SHORTCUTFILESALL$ASCOM Remote Server.lnk
+Recursively Delete Files $SHORTCUTFILESALL$ASCOM Profile Explorer.lnk
  
 Remove Directory (including all its files and subfolders) $SHORTCUTFILES$$PLATFORMMENU$
 Write into Text File $SETUPLOG$ from Value $TIME$ Removed folder $SHORTCUTFILES$$PLATFORMMENU$ (at end of file)
@@ -1118,8 +1124,13 @@ if Variable REMOVE Equals TRUE
     Comment: Switch to 64bit mode on a 64bit OS
     Set x64 - Native 64 bit Windows, AMD64, EM64T, and ARM64 Architectures - installation mode
      
-    Comment: Remove Omni-Simulators and ASCOM Remote
+    Comment: Remove 64bit Omni-Simulator files
     Remove Directory (including all its files and subfolders) $PROGRAMFILES64$ASCOM\OmniSimulator
+     
+    Comment: Remove 32bit Omni-Simulator files
+    Remove Directory (including all its files and subfolders) $PROGRAMFILES$ASCOM\OmniSimulator
+     
+    Comment: Remove ASCOM Remote files
     Remove Directory (including all its files and subfolders) $PROGRAMFILES64$ASCOM\RemoteServer
      
     Comment: Remove other Platform 7 content
@@ -2007,16 +2018,39 @@ Write Registry Key HKLM\SOFTWARE\ASCOM\Platform\Developer Tools Product Code, $P
 Write Registry Key HKLM\SOFTWARE\ASCOM\Platform\Developer Tools Revision Code, $REVISIONCODE$
 Write Registry Key HKLM\SOFTWARE\ASCOM\Platform\Developer Tools Version, $VERSION$
  
-Comment: Update Camera and Telescope interface version numbers to Platform 7 versions if they are set to Platform 6 versions
-Read Registry Key HKLM\SOFTWARE\ASCOM\Camera Drivers\ASCOM.Simulator.Camera\InterfaceVersion into INTERFACEVERSION
-if Variable INTERFACEVERSION Equals 3
-  Write Registry Key HKLM\SOFTWARE\ASCOM\Camera Drivers\ASCOM.Simulator.Camera\InterfaceVersion, 4
+Comment: One time only - Update Camera interface version number to Platform 7 version. One time only in case the user intentionally reverts the change post install.
+Read Registry Key HKLM\SOFTWARE\ASCOM\Camera Drivers\ASCOM.Simulator.Camera\PlatformInstaller\InterfaceVersionUpdated into INTERFACEVERSION_UPDATED
+if Variable INTERFACEVERSION_UPDATED Equals 
+  Comment: This is a first time Platform install so update the interface version and set a flag that it has been updated.
+  Write Registry Key HKLM\SOFTWARE\ASCOM\Camera Drivers\ASCOM.Simulator.Camera\InterfaceVersion, 4 (permanent)
+  Write Registry Key HKLM\SOFTWARE\ASCOM\Camera Drivers\ASCOM.Simulator.Camera\PlatformInstaller\InterfaceVersionUpdated, True (permanent)
   Write into Text File $SETUPLOG$ from Value $TIME$ Updating camera simulator interface version to 4 (at end of file)
+else
+  Comment: Not a first time install so no action to take.
+  Write into Text File $SETUPLOG$ from Value $TIME$ Camera simulator interface version has already been updated once, taking no action. (at end of file)
 end
-Read Registry Key HKLM\SOFTWARE\ASCOM\Telescope Drivers\ASCOM.Simulator.Telescope\InterfaceVersion into INTERFACEVERSION
-if Variable INTERFACEVERSION Equals 3
-  Write Registry Key HKLM\SOFTWARE\ASCOM\Telescope Drivers\ASCOM.Simulator.Telescope\InterfaceVersion, 4
+ 
+Comment: One time only - Update Telescope interface version number to Platform 7 version. One time only in case the user intentionally reverts the change post install.
+Read Registry Key HKLM\SOFTWARE\ASCOM\Telescope Drivers\ASCOM.Simulator.Telescope\PlatformInstaller\InterfaceVersionUpdated into INTERFACEVERSION_UPDATED
+if Variable INTERFACEVERSION_UPDATED Equals 
+  Comment: This is a first time Platform install so update the interface version and set a flag that it has been updated.
+  Write Registry Key HKLM\SOFTWARE\ASCOM\Telescope Drivers\ASCOM.Simulator.Telescope\InterfaceVersion, 4 (permanent)
+  Write Registry Key HKLM\SOFTWARE\ASCOM\Telescope Drivers\ASCOM.Simulator.Telescope\PlatformInstaller\InterfaceVersionUpdated, True (permanent)
   Write into Text File $SETUPLOG$ from Value $TIME$ Updating telescope simulator interface version to 4 (at end of file)
+else
+  Comment: Not a first time install so no action to take.
+  Write into Text File $SETUPLOG$ from Value $TIME$ Telescope simulator interface version has already been updated once, taking no action. (at end of file)
+end
+ 
+Comment: Update the Device Hub default dcome radius to 2000 if currently set at the Platform 6 default value of zero. A value of zero causes dome synchronisation to fail, a bad out of the box experience.
+Read Registry Key HKLM\SOFTWARE\ASCOM\Dome Drivers\ASCOM.DeviceHub.Dome\Dome Radius into DEVICEHUB_DOME_RADIUS
+Write into Text File $SETUPLOG$ from Value $TIME$ Current Device Hub Dome Radius: '$DEVICEHUB_DOME_RADIUS$' (at end of file)
+if Variable DEVICEHUB_DOME_RADIUS Equals 0
+  Comment: Platform 6 default value detected
+  Write into Text File $SETUPLOG$ from Value $TIME$ Updating Device Hub Dome Radius to: 2000. (at end of file)
+  Write Registry Key HKLM\SOFTWARE\ASCOM\Dome Drivers\ASCOM.DeviceHub.Dome\Dome Radius, 2000 (permanent)
+else
+  Write into Text File $SETUPLOG$ from Value $TIME$ Retaining current Device Hub Dome Radius: $DEVICEHUB_DOME_RADIUS$ (at end of file)
 end
  
 [END REGION]
@@ -2044,11 +2078,11 @@ Create Shortcut $SHORTCUTFILESALL$\ASCOM Diagnostics to $TARGETDIR$\Tools\ASCOM 
 Create Shortcut $SHORTCUTFILESALL$\ASCOM Omni-Simulators to $PROGRAMFILES64$ASCOM\OmniSimulator\ascom.alpaca.simulators.exe
 Create Shortcut $SHORTCUTFILESALL$\ASCOM Remote Server to $PROGRAMFILES64$ASCOM\RemoteServer\RemoteServer.exe
 Create Shortcut $SHORTCUTFILESALL$\ASCOM Profile Explorer to $TARGETDIR$\Tools\ProfileExplorer.exe
-Create Shortcut $SHORTCUTFOLDER$\Compatible Software to http://ascom-standards.org/Community/Partners.htm
-Create Shortcut $SHORTCUTFOLDER$\Drivers and Downloads to http://www.ascom-standards.org/Downloads/Index.htm
+Create Shortcut $SHORTCUTFOLDER$\Compatible Software to https://ascom-standards.org/Community/Partners.htm
+Create Shortcut $SHORTCUTFOLDER$\Drivers and Downloads to https://www.ascom-standards.org/Downloads/Index.htm
 Create Shortcut $SHORTCUTFOLDER$\ASCOM User Guide to $TARGETDIR$\Docs\ASCOM User Guide.pdf
 Create Shortcut $SHORTCUTFOLDER$\ASCOM Platform Help to $TARGETDIR$\Docs\PlatformHelp.chm
-Create Shortcut $SHORTCUTFOLDER$\How to get support to http://ascom-standards.org/Support/Index.htm
+Create Shortcut $SHORTCUTFOLDER$\How to get support to https://ascom-standards.org/Support/Index.htm
  
 Comment: Install simulator shortcuts if required
 if Variable INSTALL_SIMULATOR_SHORTCUTS Equals TRUE

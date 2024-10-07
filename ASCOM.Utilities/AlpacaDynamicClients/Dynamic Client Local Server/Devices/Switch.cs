@@ -1,5 +1,4 @@
 ﻿using ASCOM.Alpaca.Clients;
-using ASCOM.Common;
 using ASCOM.DeviceInterface;
 using ASCOM.Tools;
 using System;
@@ -17,7 +16,7 @@ namespace ASCOM.DynamicClients
     public class Switch : ReferenceCountedObjectBase, ISwitchV3, IDisposable
     {
         // Set the device type of this device
-        private const DeviceTypes deviceType = DeviceTypes.Switch;
+        private const Common.DeviceTypes deviceType = Common.DeviceTypes.Switch;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaSwitch client;
@@ -673,7 +672,7 @@ namespace ASCOM.DynamicClients
             // Call the device's SetAsync method if this is a Platform 7 or later device, otherwise throw a MethodNotImplementedException.
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(deviceType, InterfaceVersion)) // We are presenting a Platform 7 or later device so call the device's method
             {
-                TL.LogMessage("SetAsync", "Issuing SetAsync command");
+                LogMessage("SetAsync", "Issuing SetAsync command");
                 client.SetAsync(id, state);
                 return;
             }
@@ -687,7 +686,7 @@ namespace ASCOM.DynamicClients
             // Call the device's SetAsyncValue method if this is a Platform 7 or later device, otherwise throw a MethodNotImplementedException.
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(deviceType, InterfaceVersion)) // We are presenting a Platform 7 or later device so call the device's method
             {
-                TL.LogMessage("SetAsyncValue", "Issuing SetAsyncValue command");
+                LogMessage("SetAsyncValue", "Issuing SetAsyncValue command");
                 client.SetAsyncValue(id, value);
                 return;
             }
@@ -701,7 +700,7 @@ namespace ASCOM.DynamicClients
             // Call the device's SetAsyncValue method if this is a Platform 7 or later device, otherwise return false to indicate no async capability.
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(deviceType, InterfaceVersion)) // We are presenting a Platform 7 or later device so call the device's method
             {
-                TL.LogMessage("CanAsync", "Getting CanAsync property");
+                LogMessage("CanAsync", "Getting CanAsync property");
                 return client.CanAsync(id);
             }
 
@@ -714,7 +713,7 @@ namespace ASCOM.DynamicClients
             // Call the device's StateChangeComplete method if this is a Platform 7 or later device, otherwise throw a MethodNotImplementedException.
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(deviceType, InterfaceVersion)) // We are presenting a Platform 7 or later device so call the device's method
             {
-                TL.LogMessage("StateChangeComplete", "Getting StateChangeComplete property");
+                LogMessage("StateChangeComplete", "Getting StateChangeComplete property");
                 return client.StateChangeComplete(id);
             }
 
@@ -727,7 +726,7 @@ namespace ASCOM.DynamicClients
             // Call the device's CancelAsync method if this is a Platform 7 or later device, otherwise throw a MethodNotImplementedException.
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(deviceType, InterfaceVersion)) // We are presenting a Platform 7 or later device so call the device's method
             {
-                TL.LogMessage("CancelAsync", "Issuing CancelAsync command");
+                LogMessage("CancelAsync", "Issuing CancelAsync command");
                 client.CancelAsync(id);
                 return;
             }
