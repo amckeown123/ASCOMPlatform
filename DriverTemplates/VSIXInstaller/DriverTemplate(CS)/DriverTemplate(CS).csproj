@@ -43,12 +43,6 @@
     <Content Include="Resources\ASCOM.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ASCOM Device Driver CS.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="TemplateProperties\AssemblyInfo.cs" />
   </ItemGroup>
 </Project>

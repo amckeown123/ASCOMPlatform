@@ -37,18 +37,15 @@
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-  </PropertyGroup>
+    </PropertyGroup>
   <ItemGroup>
     <Content Include="ASCOM.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities.csproj" />
+    <PackageReference Include="ASCOM.Com.Components" Version="2.0.2" />
+    <PackageReference Include="ASCOM.Common.Components" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ASCOM.Common">
-      <HintPath>..\..\..\..\ASCOMLibrary\ASCOM.Alpaca.Device\bin\Release\net6.0\ASCOM.Common.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
-
- 
 </Project>

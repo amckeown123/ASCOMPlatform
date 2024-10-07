@@ -25,20 +25,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="ASCOM.Alpaca">
-      <HintPath>..\..\..\ASCOMLibrary\ASCOM.Alpaca\bin\Release\net6.0\ASCOM.Alpaca.dll</HintPath>
-    </Reference>
-    <Reference Include="ASCOM.Alpaca.Device">
-      <HintPath>..\..\..\ASCOMLibrary\ASCOM.Alpaca.Device\bin\Release\net6.0\ASCOM.Alpaca.Device.dll</HintPath>
-    </Reference>
-    <Reference Include="ASCOM.Common">
-      <HintPath>..\..\..\ASCOMLibrary\ASCOM.Alpaca.Device\bin\Release\net6.0\ASCOM.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ASCOM.Exceptions">
-      <HintPath>..\..\..\ASCOM.Exceptions\bin\Release\net6.0\ASCOM.Exceptions.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-</Project>
+ </Project>

@@ -46,6 +46,7 @@
     <ProjectReference Include="..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities.Video\ASCOM.Utilities.Video.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Cache\ASCOM.Cache.csproj" />
+    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities\FusionLib\FusionLib.csproj" />
   </ItemGroup>
   <ItemGroup>
