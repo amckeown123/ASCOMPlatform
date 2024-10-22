@@ -22,4 +22,15 @@
     <StartAction>Program</StartAction>
     <StartProgram>C:\Users\Chris\Documents\Visual Studio 2010\Projects\domeconsole\bin\Debug\ASCOM.test.Test.exe</StartProgram>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="HandboxForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SetupDialogForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ShowTrafficForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

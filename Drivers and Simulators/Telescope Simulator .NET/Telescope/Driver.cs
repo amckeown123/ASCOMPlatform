@@ -957,10 +957,10 @@ namespace ASCOM.Simulator
                     switch (Axis)
                     {
                         case TelescopeAxes.axisPrimary:
-                            TelescopeHardware.rateMoveAxes.X = Rate;
+                            TelescopeHardware.rateMoveAxes.X = (float)Rate;
                             break;
                         case TelescopeAxes.axisSecondary:
-                            TelescopeHardware.rateMoveAxes.Y = Rate;
+                            TelescopeHardware.rateMoveAxes.Y = (float)Rate;
                             break;
                         case TelescopeAxes.axisTertiary:
                             // not implemented
@@ -1055,26 +1055,26 @@ namespace ASCOM.Simulator
                             case GuideDirections.guideNorth:
                                 TelescopeHardware.guideRate.Y = Math.Abs(TelescopeHardware.guideRate.Y);
                                 TelescopeHardware.isPulseGuidingDec = true;
-                                TelescopeHardware.guideDuration.Y = Duration / 1000.0;
+                                TelescopeHardware.guideDuration.Y = (float)(Duration / 1000.0);
                                 break;
                             case GuideDirections.guideSouth:
                                 TelescopeHardware.guideRate.Y = -Math.Abs(TelescopeHardware.guideRate.Y);
                                 //TelescopeHardware.pulseGuideDecEndTime = endTime;
                                 TelescopeHardware.isPulseGuidingDec = true;
-                                TelescopeHardware.guideDuration.Y = Duration / 1000.0;
+                                TelescopeHardware.guideDuration.Y = (float)(Duration / 1000.0);
                                 break;
 
                             case GuideDirections.guideEast:
                                 TelescopeHardware.guideRate.X = -Math.Abs(TelescopeHardware.guideRate.X);
                                 //TelescopeHardware.pulseGuideRaEndTime = endTime;
                                 TelescopeHardware.isPulseGuidingRa = true;
-                                TelescopeHardware.guideDuration.X = Duration / 1000.0;
+                                TelescopeHardware.guideDuration.X = (float)(Duration / 1000.0);
                                 break;
                             case GuideDirections.guideWest:
                                 TelescopeHardware.guideRate.X = Math.Abs(TelescopeHardware.guideRate.X);
                                 //TelescopeHardware.pulseGuideRaEndTime = endTime;
                                 TelescopeHardware.isPulseGuidingRa = true;
-                                TelescopeHardware.guideDuration.X = Duration / 1000.0;
+                                TelescopeHardware.guideDuration.X = (float)(Duration / 1000.0);
                                 break;
                         }
                     }

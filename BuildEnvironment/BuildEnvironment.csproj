@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<TargetFrameworks>net35;net40</TargetFrameworks>
+		<TargetFramework>net481</TargetFramework>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>../ASCOM.snk</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
@@ -21,10 +21,6 @@ THE EXECUTABLES IN THIS PACKAGE SHOULD NEVER BE DISTRIBUTED AS PART OF A DRIVER 
 		<IncludeReferencedProjects>true</IncludeReferencedProjects>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<Compile Include="..\AssemblyVersionInfo.cs" Link="Properties\AssemblyVersionInfo.cs" />
-		<Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\ASCOM.Exceptions\ASCOMBoarderless.png">
@@ -62,31 +58,7 @@ THE EXECUTABLES IN THIS PACKAGE SHOULD NEVER BE DISTRIBUTED AS PART OF A DRIVER 
 		<PackageReadmeFile>package.md</PackageReadmeFile>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net35|AnyCPU'">
-	  <NoWarn>1701;1702;3274;3258;3268</NoWarn>
-	  <WarningLevel>0</WarningLevel>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net35|AnyCPU'">
-	  <NoWarn>1701;1702;3274;3258;3268</NoWarn>
-	  <WarningLevel>0</WarningLevel>
-	  <Optimize>False</Optimize>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">
-	  <NoWarn>1701;1702;3274;3258;3268</NoWarn>
-	  <WarningLevel>0</WarningLevel>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net472|AnyCPU'">
-	  <NoWarn>1701;1702;3274;3258;3268</NoWarn>
-	  <WarningLevel>0</WarningLevel>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net40|AnyCPU'">
-	  <Optimize>False</Optimize>
-	</PropertyGroup>
-
+	
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
 		<ItemGroup>
 			<!-- Filter out unnecessary files -->

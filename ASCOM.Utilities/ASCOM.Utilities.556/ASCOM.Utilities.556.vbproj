@@ -1,13 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
     <ProjectType>Local</ProjectType>
     <MyType>Windows</MyType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{44F1B424-F0FC-4471-8C0B-54E2AAF41032}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AssemblyName>ASCOM.Utilities</AssemblyName>
     <OutputType>Library</OutputType>
     <AssemblyMajorVersion>5</AssemblyMajorVersion>
@@ -17,16 +12,9 @@
     <AssemblyCompanyName>ASCOM Initiative</AssemblyCompanyName>
     <StartWithIE>False</StartWithIE>
     <RootNamespace>ASCOM.Utilities</RootNamespace>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ASCOM.snk</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <OptionStrict>Off</OptionStrict>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -41,51 +29,35 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
-    <DebugSymbols>True</DebugSymbols>
-    <DefineDebug>True</DefineDebug>
-    <DefineTrace>True</DefineTrace>
-    <DefineConstants>
-    </DefineConstants>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants></DefineConstants>
     <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>full</DebugType>
     <RegisterForComInterop>false</RegisterForComInterop>
     <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>false</DefineTrace>
-    <DefineConstants>
-    </DefineConstants>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants></DefineConstants>
     <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>Full</DebugType>
     <RegisterForComInterop>false</RegisterForComInterop>
-    <Optimize>true</Optimize>
     <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
     <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
     <CodeAnalysisLogFile>bin\Debug\ASCOM.Utilities.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
@@ -96,97 +68,39 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
-    <Optimize>true</Optimize>
     <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>Full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
     <CodeAnalysisLogFile>bin\Release\ASCOM.Utilities.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System">
+    <Reference Update="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.Drawing">
+    <Reference Update="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
-    <Reference Include="System.Windows.Forms">
-      <Name>System.Windows.Forms</Name>
-    </Reference>
-    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllUsersFileSystemProvider.vb" />
-    <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="..\..\AssemblyVersionInfo.vb">
       <Link>My Project\AssemblyVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Chooser.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ChooserForm.Designer.vb">
-      <SubType>Code</SubType>
-      <DependentUpon>ChooserForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ChooserForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KeyValuePair.vb" />
-    <Compile Include="RegistryAccess.vb" />
-    <Compile Include="Exceptions.vb" />
-    <Compile Include="Interfaces.vb" />
-    <Compile Include="UtilitiesSettings.vb" />
-    <Compile Include="SharedConstantsAndCode.vb" />
-    <Compile Include="CommonConstants.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
+    <Compile Update="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
+    <Compile Update="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Profile.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Serial.vb">
-    </Compile>
-    <Compile Include="Timer.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TraceLogger.vb" />
-    <Compile Include="Util.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VB6Support\VB6COMErrors.vb" />
-    <EmbeddedResource Include="ChooserForm.resX">
-      <DependentUpon>ChooserForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="My Project\Settings.settings">
-      <CustomToolNamespace>My</CustomToolNamespace>
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -221,23 +135,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Resources\ASCOM.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="NamespaceDocumentation.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
-      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
-      <Name>ASCOM.Exceptions</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Support\AllUsersFileSystemProvider.vb" />
+    <Compile Remove="Support\CommonConstants.vb" />
+    <Compile Remove="Support\Exceptions.vb" />
+    <Compile Remove="Support\Interfaces.vb" />
+    <Compile Remove="Support\SharedConstantsAndCode.vb" />
+    <Compile Remove="Support\UtilitiesSettings.vb" />
+    <Compile Remove="Support\XMLAccess.vb" />
+  </ItemGroup>
+  <PropertyGroup />
 </Project>

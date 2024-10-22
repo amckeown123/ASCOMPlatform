@@ -411,7 +411,7 @@ namespace ASCOM.DriverAccess
         /// <inheritdoc/>
         public double GuideRateRightAscension
         {
-            get { return Convert.ToDouble(memberFactory.CallMember(1, "GuideRateRightAscension", new Type[] { }, new object[] { })); }
+            get { return (float)Convert.ToDouble(memberFactory.CallMember(1, "GuideRateRightAscension", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "GuideRateRightAscension", new Type[] { }, new object[] { value }); }
         }
 

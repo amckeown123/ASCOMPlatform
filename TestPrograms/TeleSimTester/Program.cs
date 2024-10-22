@@ -6,6 +6,7 @@ using ASCOM.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 using System.Threading;
 using System.Windows;
 
@@ -782,17 +783,17 @@ namespace TeleSimTester
         #endregion
 
         #region AxisCalcTests
-        internal static Vector ConvertRaDecToAxes(Vector raDec, bool preserveSop = false)
+        internal static Vector2 ConvertRaDecToAxes(Vector2 raDec, bool preserveSop = false)
         {
-            LogMessage("ConvertRaDecToAxes", Outcome.INFO, $"Received RA: {raDec.X.ToHMS()}, Declination: {raDec.Y.ToDMS()}");
+            LogMessage("ConvertRaDecToAxes", Outcome.INFO, $"Received RA: {((double)raDec.X).ToHMS()}, Declination: {((double)raDec.Y).ToDMS()}");
 
-            Vector axes = new Vector();
+            Vector2 axes = new Vector2();
             PierSide sop = TelescopeHardware.SideOfPier;
-            axes.X = (TelescopeHardware.SiderealTime - raDec.X) * 15.0 / TelescopeHardware.SIDEREAL_SECONDS_TO_SI_SECONDS;
-            LogMessage("ConvertRaDecToAxes 1", Outcome.INFO, $"Axis X: {axes.X.ToDMS()} ({axes.X})");
+            axes.X = (float)((TelescopeHardware.SiderealTime - raDec.X) * 15.0 / TelescopeHardware.SIDEREAL_SECONDS_TO_SI_SECONDS);
+            LogMessage("ConvertRaDecToAxes 1", Outcome.INFO, $"Axis X: {((double)axes.X).ToDMS()} ({axes.X})");
 
             //axes.X = RangeAzm(axes.X);
-            LogMessage("ConvertRaDecToAxes 2", Outcome.INFO, $"Axis X: {axes.X.ToDMS()} ({axes.X})");
+            LogMessage("ConvertRaDecToAxes 2", Outcome.INFO, $"Axis X: {((double)axes.X).ToDMS()} ({axes.X})");
 
             axes.Y = (TelescopeHardware.Latitude >= 0) ? raDec.Y : -raDec.Y;
 
@@ -802,40 +803,40 @@ namespace TeleSimTester
                 axes.X += 180;
                 axes.Y = 180 - axes.Y;
             }
-            LogMessage("ConvertRaDecToAxes 3", Outcome.INFO, $"Axis X: {axes.X.ToDMS()} ({axes.X}) {(150.0 - axes.X).ToDMS()}");
+            LogMessage("ConvertRaDecToAxes 3", Outcome.INFO, $"Axis X: {((double)axes.X).ToDMS()} ({axes.X}) {(150.0 - axes.X).ToDMS()}");
 
             axes = RangeAxes(axes);
-            LogMessage("ConvertRaDecToAxes 4", Outcome.INFO, $"Axis X: {axes.X.ToDMS()} ({axes.X}) {(150.0 - axes.X).ToDMS()}");
+            LogMessage("ConvertRaDecToAxes 4", Outcome.INFO, $"Axis X: {((double)axes.X).ToDMS()} ({axes.X}) {(150.0 - axes.X).ToDMS()}");
             LogMessage("", Outcome.INFO, "");
             return axes;
         }
 
-        internal static Vector ConvertAxesToRaDec(Vector axes)
+        internal static Vector2 ConvertAxesToRaDec(Vector2 axes)
         {
-            LogMessage("ConvertAxesToRaDec", Outcome.INFO, $"Received Primary axis: {axes.X.ToDMS()}, Secondary axis: {axes.Y.ToDMS()}");
+            LogMessage("ConvertAxesToRaDec", Outcome.INFO, $"Received Primary axis: {((double)axes.X).ToDMS()} ,Secondary axis: {((double)axes.Y).ToDMS()}");
 
-            Vector raDec = new Vector();
+            Vector2 raDec = new Vector2();
             // undo through the pole
             if (axes.Y > 90)
             {
-                axes.X += 180.0;
-                LogMessage("ConvertAxesToRaDec 0a", Outcome.INFO, $"Primary axis: {axes.X.ToDMS()} ({axes.X}), Secondary axis: {axes.Y.ToDMS()} ({axes.Y})");
+                axes.X += 180.0f;
+                LogMessage("ConvertAxesToRaDec 0a", Outcome.INFO, $"Primary axis: {((double)axes.X).ToDMS()} ({axes.X}), Secondary axis: {((double)axes.Y).ToDMS()} ({axes.Y})");
                 //axes.X = RangeHaDegrees(axes.X);
-                axes.X = astroUtils.Range(axes.X, -180.0, false, 180.0, true);
-                LogMessage("ConvertAxesToRaDec 0b", Outcome.INFO, $"Primary axis: {axes.X.ToDMS()} ({axes.X}), Secondary axis: {axes.Y.ToDMS()} ({axes.Y})");
+                axes.X = (float)astroUtils.Range(axes.X, -180.0, false, 180.0, true);
+                LogMessage("ConvertAxesToRaDec 0b", Outcome.INFO, $"Primary axis: {((double)axes.X).ToDMS()} ({axes.X}), Secondary axis: {((double)axes.Y).ToDMS()} ({axes.Y})");
 
                 axes.Y = 180 - axes.Y;
-                axes.Y = RangeDec(axes.Y);
+                axes.Y = (float)RangeDec(axes.Y);
                 //axes = RangeAltAzm(axes);
             }
-            LogMessage("ConvertAxesToRaDec 1", Outcome.INFO, $"Primary axis: {axes.X.ToDMS()} ({axes.X}), Secondary axis: {axes.Y.ToDMS()} ({axes.Y})");
+            LogMessage("ConvertAxesToRaDec 1", Outcome.INFO, $"Primary axis: {((double)axes.X).ToDMS()} ({axes.X}), Secondary axis: {((double)axes.Y).ToDMS()} ({axes.Y})");
 
-            raDec.X = TelescopeHardware.SiderealTime - (axes.X * TelescopeHardware.SIDEREAL_SECONDS_TO_SI_SECONDS / 15.0); //* TelescopeHardware.SIDEREAL_SECONDS_TO_SI_SECONDS / 15.0) ;
-            LogMessage("ConvertAxesToRaDec 2", Outcome.INFO, $"RA: {raDec.X.ToHMS()} ({raDec.X}), Declination: {raDec.Y.ToDMS()} ({raDec.Y})");
+            raDec.X = (float)(TelescopeHardware.SiderealTime - (axes.X * TelescopeHardware.SIDEREAL_SECONDS_TO_SI_SECONDS / 15.0)); //* TelescopeHardware.SIDEREAL_SECONDS_TO_SI_SECONDS / 15.0) ;
+            LogMessage("ConvertAxesToRaDec 2", Outcome.INFO, $"RA: {((double)raDec.X).ToHMS()} ({raDec.X}), Declination: {((double)raDec.Y).ToDMS()} ({raDec.Y})");
             raDec.Y = (TelescopeHardware.Latitude >= 0) ? axes.Y : -axes.Y;
 
             raDec = RangeRaDec(raDec);
-            LogMessage("ConvertAxesToRaDec 3", Outcome.INFO, $"RA: {raDec.X.ToHMS()} ({raDec.X}), Declination: {raDec.Y.ToDMS()} ({raDec.Y})");
+            LogMessage("ConvertAxesToRaDec 3", Outcome.INFO, $"RA: {((double)raDec.X).ToHMS()} ({raDec.X}), Declination: {((double)raDec.Y).ToDMS()} ({raDec.Y})");
 
             return raDec;
         }
@@ -860,27 +861,27 @@ namespace TeleSimTester
         /// forces a ra dec value to the range 0 to 24.0 and -90 to 90
         /// </summary>
         /// <param name="raDec">The ra dec.</param>
-        private static Vector RangeRaDec(Vector raDec)
+        private static Vector2 RangeRaDec(Vector2 raDec)
         {
-            return new Vector(RangeHa(raDec.X), RangeDec(raDec.Y));
+            return new Vector2((float)RangeHa(raDec.X), (float)RangeDec(raDec.Y));
         }
 
         /// <summary>
         /// forces an altz value the the range 0 to 360 for azimuth and -90 to 90 for altitude
         /// </summary>
         /// <param name="altAzm"></param>
-        private static Vector RangeAltAzm(Vector altAzm)
+        private static Vector2 RangeAltAzm(Vector2 altAzm)
         {
-            return new Vector(RangeAzm(altAzm.X), RangeDec(altAzm.Y));
+            return new Vector2((float)RangeAzm(altAzm.X), (float)RangeDec(altAzm.Y));
         }
 
         /// <summary>
         /// forces axis values to the range 0 to 360 and -90 to 270
         /// </summary>
         /// <param name="axes"></param>
-        private static Vector RangeAxes(Vector axes)
+        private static Vector2 RangeAxes(Vector2 axes)
         {
-            return new Vector(RangeAzm(axes.X), RangeDecx(axes.Y));
+            return new Vector2((float)RangeAzm(axes.X), (float)RangeDecx(axes.Y));
         }
 
         /// <summary>

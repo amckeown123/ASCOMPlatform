@@ -116,12 +116,12 @@ namespace ASCOM.Simulator
 
         private void BtnOK_Click(object sender, EventArgs e)
         {
-            TelescopeHardware.StartCoordinates.X = double.Parse(txtStartAzimuth.Text);
-            TelescopeHardware.StartCoordinates.Y = double.Parse(txtStartAltitude.Text);
+            TelescopeHardware.StartCoordinates.X = (float)double.Parse(txtStartAzimuth.Text);
+            TelescopeHardware.StartCoordinates.Y = (float)double.Parse(txtStartAltitude.Text);
             TelescopeHardware.ParkAzimuth = double.Parse(txtParkAzimuth.Text);
             TelescopeHardware.ParkAltitude = double.Parse(txtParkAltitude.Text);
-            TelescopeHardware.HomePosition.X = double.Parse(TxtHomeAzimuth.Text);
-            TelescopeHardware.HomePosition.Y = double.Parse(TxtHomeAltitude.Text);
+            TelescopeHardware.HomePosition.X = (float)double.Parse(TxtHomeAzimuth.Text);
+            TelescopeHardware.HomePosition.Y = (float)double.Parse(TxtHomeAltitude.Text);
             using (Profile profile = new Profile())
             {
                 profile.WriteValue(SharedResources.PROGRAM_ID, "HomeAzimuth", TelescopeHardware.HomePosition.X.ToString(CultureInfo.InvariantCulture));
