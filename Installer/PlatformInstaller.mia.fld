@@ -1,6 +1,5 @@
 ﻿Check Application Requirements
 Main Setup Dialogue
-Install complete dialogue
 Check Application Pre-Requisites
 Set Registry Keys
 Remove Previous Platform install if present
@@ -16,3 +15,4 @@ Set Profile ACL
 Post install activities - 64bit only
 Post install activities - 32bit only
 Validate installation
+Post install activities - 32bit and 64bit

@@ -128,6 +128,7 @@ namespace ASCOM.Utilities
         private ToolTip createAlpacaDeviceToolTip;
         private ToolStripLabel alpacaStatusToolstripLabel;
         private System.Windows.Forms.Timer _AlpacaStatusIndicatorTimer;
+        private bool warningTooltipVisible = false;
 
         private System.Windows.Forms.Timer AlpacaStatusIndicatorTimer
         {
@@ -250,6 +251,9 @@ namespace ASCOM.Utilities
                 chooserPropertiesToolTip.ToolTipTitle = TOOLTIP_PROPERTIES_TITLE;
                 chooserPropertiesToolTip.SetToolTip(BtnProperties, TOOLTIP_PROPERTIES_MESSAGE);
 
+                // Add an event handler for the Properties tooltip so we can suppress the tooltip when a warning message is displayed
+                chooserPropertiesToolTip.Popup += ChooserPropertiesToolTip_Popup;
+
                 // Create Alpaca information tooltip 
                 createAlpacaDeviceToolTip = new ToolTip();
 
@@ -277,6 +281,13 @@ namespace ASCOM.Utilities
                 Interaction.MsgBox("ChooserForm Load " + ex.ToString());
                 LogEvent("ChooserForm Load ", ex.ToString(), EventLogEntryType.Error, EventLogErrors.ChooserFormLoad, ex.ToString());
             }
+        }
+
+        private void ChooserPropertiesToolTip_Popup(object sender, PopupEventArgs e)
+        {
+            // Prevent the properties tooltip from displaying when a warning message is visible
+            if (warningTooltipVisible)
+                e.Cancel = true;
         }
 
         private void ChooserForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -1726,52 +1737,45 @@ namespace ASCOM.Utilities
         {
             string deviceInitialised;
 
-            if (!string.IsNullOrEmpty(progId))
+            // Check whether a driver has been selected
+            if (string.IsNullOrEmpty(progId)) // No driver has been selected so return
+                return;
+
+            // If we get here a driver has been selected
+
+            // Hide any previous message
+            WarningTooltipClear();
+
+            TL.LogMessage("ValidateDriver", "ProgID:" + progId + ", Bitness: " + ApplicationBits().ToString());
+
+            // Get compatibility warning message, if any
+            driverIsCompatible = DriverCompatibilityMessage(progId, ApplicationBits(), TL);
+
+            if (!string.IsNullOrEmpty(driverIsCompatible)) // This is an incompatible driver so we need to prevent access
             {
-
-                if (!string.IsNullOrEmpty(progId)) // Something selected
-                {
-
-                    WarningTooltipClear(); // Hide any previous message
-
-                    TL.LogMessage("ValidateDriver", "ProgID:" + progId + ", Bitness: " + ApplicationBits().ToString());
-                    driverIsCompatible = DriverCompatibilityMessage(progId, ApplicationBits(), TL); // Get compatibility warning message, if any
-
-                    if (!string.IsNullOrEmpty(driverIsCompatible)) // This is an incompatible driver so we need to prevent access
-                    {
-                        EnablePropertiesButton(false);
-                        EnableOkButton(false);
-                        TL.LogMessage("ValidateDriver", "Showing incompatible driver message");
-                        WarningToolTipShow("Incompatible Driver (" + progId + ")", driverIsCompatible);
-                    }
-                    else // This is a compatible driver
-                    {
-                        EnablePropertiesButton(true); // Turn on Properties
-                        deviceInitialised = registryAccess.GetProfile("Chooser", progId + " Init");
-                        if (Strings.LCase(deviceInitialised) == "true") // This device has been initialized
-                        {
-                            EnableOkButton(true);
-                            currentWarningMesage = "";
-                            TL.LogMessage("ValidateDriver", "Driver is compatible and configured so no message");
-                        }
-                        else // This device has not been initialised
-                        {
-                            selectedProgIdValue = "";
-                            EnableOkButton(false); // Ensure OK is disabled
-                            TL.LogMessage("ValidateDriver", "Showing first time configuration required message");
-                            WarningToolTipShow(TOOLTIP_PROPERTIES_TITLE, TOOLTIP_PROPERTIES_FIRST_TIME_MESSAGE);
-                        }
-                    }
-                }
-                else // Nothing has been selected
-                {
-                    TL.LogMessage("ValidateDriver", "Nothing has been selected");
-                    selectedProgIdValue = "";
-                    EnablePropertiesButton(false);
-                    EnableOkButton(false);
-                } // Ensure OK is disabled
+                EnablePropertiesButton(false);
+                EnableOkButton(false);
+                TL.LogMessage("ValidateDriver", "Showing incompatible driver message");
+                WarningToolTipShow("Incompatible Driver (" + progId + ")", driverIsCompatible);
             }
-
+            else // This is a compatible driver
+            {
+                EnablePropertiesButton(true); // Turn on Properties
+                deviceInitialised = registryAccess.GetProfile("Chooser", progId + " Init");
+                if (Strings.LCase(deviceInitialised) == "true") // This device has been initialized
+                {
+                    EnableOkButton(true);
+                    currentWarningMesage = "";
+                    TL.LogMessage("ValidateDriver", "Driver is compatible and configured so no message");
+                }
+                else // This device has not been initialised
+                {
+                    selectedProgIdValue = "";
+                    EnableOkButton(false); // Ensure OK is disabled
+                    TL.LogMessage("ValidateDriver", "Showing first time configuration required message");
+                    WarningToolTipShow(TOOLTIP_PROPERTIES_TITLE, TOOLTIP_PROPERTIES_FIRST_TIME_MESSAGE);
+                }
+            }
         }
 
         private void WarningToolTipShow(string Title, string Message)
@@ -1790,6 +1794,8 @@ namespace ASCOM.Utilities
             chooserWarningToolTip.ToolTipTitle = Title;
             currentWarningTitle = Title;
             currentWarningMesage = Message;
+
+            warningTooltipVisible = true;
 
             if (Message.Contains(Microsoft.VisualBasic.Constants.vbCrLf))
             {
@@ -1857,6 +1863,7 @@ namespace ASCOM.Utilities
             chooserWarningToolTip.RemoveAll();
             currentWarningTitle = "";
             currentWarningMesage = "";
+            warningTooltipVisible = false;
         }
 
 
