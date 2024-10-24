@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace PlatformUpdateChecker
 {
-    internal class UpdateCheck
+    public class UpdateCheck
     {
         // Path and file name in the local application data folder for the file containing "skip this release" data
         private const string SKIP_DATA_PATH = @"ASCOM\Platform";

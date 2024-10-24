@@ -1743,7 +1743,7 @@ namespace ASCOM.Utilities
                             Logger.LogFinish(Received);
                         }
                     }
-                    catch (InvalidValueException )
+                    catch (InvalidValueException)
                     {
                         Logger.LogMessage("ReceiveTerminatedWorker ", FormatIDs(TData.TransactionID) + "EXCEPTION - Terminator cannot be a null string");
                         throw;
@@ -1898,7 +1898,7 @@ namespace ASCOM.Utilities
                             Logger.LogFinish(Received, true);
                         }
                     }
-                    catch (InvalidValueException )
+                    catch (InvalidValueException)
                     {
                         Logger.LogMessage("ReceiveTerminatedBinaryWorker ", FormatIDs(TData.TransactionID) + "EXCEPTION - Terminator cannot be a null string");
                         throw;
@@ -2363,7 +2363,7 @@ namespace ASCOM.Utilities
                             else if (DebugTrace)
                                 Logger.LogMessage("AvailableCOMPortsWorker", FormatIDs(TData.TransactionID) + "Skiping probe as port  " + PortName + " is already known to exist");
                         }
-                        catch (UnauthorizedAccessException )
+                        catch (UnauthorizedAccessException)
                         {
                             // Port exists but is in use so add it to the list
                             RetVal.Add(PortName);

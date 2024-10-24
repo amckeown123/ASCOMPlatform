@@ -6,11 +6,12 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using System.Windows.Forms;
-using System.Management;
 using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Globalization;
+using ASCOM.Utilities;
+using System.Management;
 
 namespace FinaliseInstall
 {
@@ -35,7 +36,7 @@ namespace FinaliseInstall
 
         static private Type tProfile; // Late bound Helper.Profile type
         static private object oProfile; // Late bound Helper.Profile
-        static private Utilities.TraceLogger TL; // Trace logger
+        static private TraceLogger TL; // Trace logger
         private const string sMsgTitle = "ASCOM Platform 6 Install Finaliser";
         static private int ReturnCode = 0; // Code to return to the calling application
 
@@ -115,7 +116,7 @@ namespace FinaliseInstall
         {
             try
             {
-                TL = new Utilities.TraceLogger("FinaliseInstall")
+                TL = new TraceLogger("FinaliseInstall")
                 {
                     Enabled = true
                 }; // Create a trace logger so we can log what happens

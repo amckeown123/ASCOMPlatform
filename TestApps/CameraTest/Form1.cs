@@ -5,11 +5,11 @@ using System.IO;
 using System.Windows.Forms;
 using ASCOM.DriverAccess;
 using CameraTest.Properties;
-using nom.tam.fits;
-using nom.tam.util;
 using System.Globalization;
 using System.Collections;
 using System.Threading;
+using nom.tam.util;
+using nom.tam.fits;
 
 //[assembly: CLSCompliant(true)]
 namespace CameraTest

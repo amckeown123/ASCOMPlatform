@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net481</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>DriverTemplate_VB_</RootNamespace>
     <AssemblyName>DriverTemplate%28VB%29</AssemblyName>
@@ -18,24 +18,6 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DefineDebug>false</DefineDebug>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-  </PropertyGroup>
-  <ItemGroup>
-    <Content Include="MyProjectTemplate\AssemblyInfo.vb" />
-    <Compile Update="MyProjectTemplate\Settings1.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="SetupDialogForm.Designer.vb">
-      <DependentUpon>SetupDialogForm.vb</DependentUpon>
-    </Compile>
-  </ItemGroup>
   <ItemGroup>
     <VSTemplate Include="DriverTemplate(VB).vstemplate" />
   </ItemGroup>
@@ -46,18 +28,12 @@
     <Content Include="ReadMe.htm" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ASCOM Device Driver VB.vbproj" />
+    <Compile Remove="MyProjectTemplate\AssemblyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\ASCOM.Astrometry\ASCOM.Astrometry\ASCOM.Astrometry.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="MyProjectTemplate\AssemblyInfo.vb" />
   </ItemGroup>
 </Project>

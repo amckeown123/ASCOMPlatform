@@ -6,14 +6,15 @@ Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports ASCOM.Utilities.Interfaces
 Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
 
 ''' <summary>
 ''' Provides a set of utility functions for ASCOM clients and drivers
 ''' </summary>
 ''' <remarks></remarks>
-<Guid("E861C6D8-B55B-494a-BC59-0F27F981CA98"), _
-ComVisible(True), _
-ClassInterface(ClassInterfaceType.None)> _
+<Guid("E861C6D8-B55B-494a-BC59-0F27F981CA98"),
+ComVisible(True),
+ClassInterface(ClassInterfaceType.None)>
 Public Class Util
     Implements IUtil, IUtilExtra, IDisposable
     '---------------------------------------------------------------------
@@ -256,7 +257,7 @@ Public Class Util
     ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Public Overloads Function DegreesToDMS(ByVal Degrees As Double) As String Implements IUtilExtra.DegreesToDMS
         Return DegreesToDMS(Degrees, "° ", "' ", """", 0)
     End Function
@@ -274,7 +275,7 @@ Public Class Util
     ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Public Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String) As String Implements IUtilExtra.DegreesToDMS
         Return DegreesToDMS(Degrees, DegDelim, "' ", """", 0)
     End Function
@@ -293,7 +294,7 @@ Public Class Util
     ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Public Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String) As String Implements IUtilExtra.DegreesToDMS
         Return DegreesToDMS(Degrees, DegDelim, MinDelim, """", 0)
     End Function
@@ -313,8 +314,8 @@ Public Class Util
     ''' "DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String)"
     ''' with suitable parameters to achieve this effect.</para>
     ''' </remarks>
-    <ComVisible(False)> _
-        Public Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String Implements IUtilExtra.DegreesToDMS
+    <ComVisible(False)>
+    Public Overloads Function DegreesToDMS(ByVal Degrees As Double, ByVal DegDelim As String, ByVal MinDelim As String, ByVal SecDelim As String) As String Implements IUtilExtra.DegreesToDMS
         Return DegreesToDMS(Degrees, DegDelim, MinDelim, SecDelim, 0)
     End Function
 

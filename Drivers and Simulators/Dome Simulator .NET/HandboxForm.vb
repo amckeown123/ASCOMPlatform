@@ -104,7 +104,7 @@ Public Class HandboxForm
 
             Me.Visible = False                       ' May float over setup
 
-            If SetupDialog.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If SetupDialog.ShowDialog() = DialogResult.OK Then
                 With SetupDialog
                     g_dOCDelay = .OCDelay
                     g_dAltRate = .AltRate
@@ -127,7 +127,7 @@ Public Class HandboxForm
                     g_bCanSetPark = (.chkCanSetPark.Checked)
                     g_bCanSyncAzimuth = (.chkCanSyncAzimuth.Checked)
                 End With
-                
+
 
                 UpdateConfig()
             End If

@@ -4,7 +4,8 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Utilities;
+using ASCOM.Utilities;
+
 
 namespace RemoveOldTemplates
 {

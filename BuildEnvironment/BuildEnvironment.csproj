@@ -1,76 +1,68 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<TargetFramework>net481</TargetFramework>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>../ASCOM.snk</AssemblyOriginatorKeyFile>
-		<DelaySign>false</DelaySign>
-		<PackageProjectUrl>https://ascom-standards.org/</PackageProjectUrl>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Authors>Tim Long, Peter Simpson</Authors>
-		<Copyright>(c) ASCOM Initiative 2024</Copyright>
-		<PackageIcon>ASCOMBoarderless.png</PackageIcon>
-		<PackageId>ASCOM7.BuildEnvironment.Support</PackageId>
-		<Description>This package contains ASCOM run-time executables that are normally installed by ASCOM Platform 7. Most ASCOM application and driver authors DO NOT need this package.
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>../ASCOM.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <PackageProjectUrl>https://ascom-standards.org/</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Tim Long, Peter Simpson</Authors>
+    <Copyright>(c) ASCOM Initiative 2024</Copyright>
+    <PackageIcon>ASCOMBoarderless.png</PackageIcon>
+    <PackageId>ASCOM7.BuildEnvironment.Support</PackageId>
+    <Description>This package contains ASCOM run-time executables that are normally installed by ASCOM Platform 7. Most ASCOM application and driver authors DO NOT need this package.
 
 This package is only of use in application and driver build environments requiring ASCOM functionality but where the ASCOM Platform is NOT installed.
 
 THE EXECUTABLES IN THIS PACKAGE SHOULD NEVER BE DISTRIBUTED AS PART OF A DRIVER OR APPLICATION .		</Description>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<IncludeReferencedProjects>true</IncludeReferencedProjects>
-	</PropertyGroup>
-
-
-	<ItemGroup>
-		<None Include="..\ASCOM.Exceptions\ASCOMBoarderless.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="install.ps1">
-			<Pack>True</Pack>
-			<PackagePath>\content</PackagePath>
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Include="package.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\ASCOM.Astrometry\ASCOM.Astrometry\ASCOM.Astrometry.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\ASCOM.Attributes\ASCOM.Attributes.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\ASCOM.Controls\ASCOM.Controls\ASCOM.Controls.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-		<ProjectReference Include="..\ASCOM.Internal.Extensions\ASCOM.Internal.Extensions.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\ASCOM.SettingsProvider\ASCOM.SettingsProvider\ASCOM.SettingsProvider.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
-	</ItemGroup>
-
-	<PropertyGroup>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-		<Title>ASCOM Platform 7 support files for build environments where the Platform is not installed.</Title>
-		<Product>ASCOM Platform 7 Build Environment Support Files</Product>
-		<Company>The ASCOM Initiative</Company>
-		<PackageReadmeFile>package.md</PackageReadmeFile>
-	</PropertyGroup>
-
-	
-	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
-		<ItemGroup>
-			<!-- Filter out unnecessary files -->
-			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
-		</ItemGroup>
-
-		<!-- Print batches for debug purposes -->
-		<Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''" />
-
-		<ItemGroup>
-			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
-			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
-		</ItemGroup>
-	</Target>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeReferencedProjects>true</IncludeReferencedProjects>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\ASCOM.Exceptions\ASCOMBoarderless.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="install.ps1">
+      <Pack>True</Pack>
+      <PackagePath>\content</PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="package.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ASCOM.Astrometry\ASCOM.Astrometry\ASCOM.Astrometry.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ASCOM.Attributes\ASCOM.Attributes.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ASCOM.Controls\ASCOM.Controls\ASCOM.Controls.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
+    <ProjectReference Include="..\ASCOM.Internal.Extensions\ASCOM.Internal.Extensions.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ASCOM.SettingsProvider\ASCOM.SettingsProvider\ASCOM.SettingsProvider.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <Title>ASCOM Platform 7 support files for build environments where the Platform is not installed.</Title>
+    <Product>ASCOM Platform 7 Build Environment Support Files</Product>
+    <Company>The ASCOM Initiative</Company>
+    <PackageReadmeFile>package.md</PackageReadmeFile>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+    <ItemGroup>
+      <!-- Filter out unnecessary files -->
+      <_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
+    </ItemGroup>
+    <!-- Print batches for debug purposes -->
+    <Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''" />
+    <ItemGroup>
+      <!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
+      <BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
+    </ItemGroup>
+  </Target>
 </Project>

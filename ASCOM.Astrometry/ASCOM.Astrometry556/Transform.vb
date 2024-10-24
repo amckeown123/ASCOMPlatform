@@ -1,12 +1,6 @@
 ﻿'Transform component implementation
 
-Imports System.Math
-Imports ASCOM.Utilities
-Imports ASCOM.Utilities.Interfaces
-Imports System.Runtime.InteropServices
-Imports ASCOM.Astrometry.NOVAS.NOVAS2
-Imports ASCOM.Astrometry.Kepler
-Imports System.Reflection
+
 
 Namespace Transform
     ''' <summary>

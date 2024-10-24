@@ -1,4 +1,5 @@
 using System;
+using System.IO.Ports;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ASCOM.Utilities;
@@ -63,7 +64,7 @@ namespace ASCOM.TEMPLATEDEVICENAME
             chkTrace.Checked = tl.Enabled;
             // set the list of com ports to those that are currently available
             comboBoxComPort.Items.Clear();
-            comboBoxComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());      // use System.IO because it's static
+            comboBoxComPort.Items.AddRange(SerialPort.GetPortNames());      // use System.IO because it's static
             // select the current port if possible
             if (comboBoxComPort.Items.Contains(TEMPLATEDEVICECLASS.comPort))
             {

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net481</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ASCOM.LocalServer.Server</RootNamespace>
     <AssemblyName>ASCOM.JustAHub</AssemblyName>
@@ -74,7 +74,8 @@
     <PackageReference Include="ASCOM.Common.Components">
       <Version>2.0.5</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
-  <PropertyGroup />
+  <PropertyGroup>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
 </Project>

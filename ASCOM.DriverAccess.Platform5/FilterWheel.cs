@@ -5,7 +5,6 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
-using ASCOM.Interface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -17,7 +16,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to FilterWheel drivers
     /// </summary>
-    public class FilterWheel : IFilterWheel, IDisposable
+    public class FilterWheel : FilterWheel, IDisposable
     {
         TraceLogger TL;
         #region FilterWheel constructors

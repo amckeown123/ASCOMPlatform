@@ -5,7 +5,6 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
-using ASCOM.Interface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 

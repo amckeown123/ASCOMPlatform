@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using ASCOM.Interface;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -16,7 +16,7 @@ namespace ASCOM.DriverAccess
 	/// <summary>
     /// Implements a telescope class to access any registered ASCOM telescope
     /// </summary>
-    public class Telescope : ITelescope, IDisposable 
+    public class Telescope : Telescope, IDisposable 
     {
         private TraceLogger TL;
         //object objScopeLateBound;
@@ -1385,7 +1385,7 @@ namespace ASCOM.DriverAccess
     /// It is possible that the Rate.Maximum and Rate.Minimum properties will be equal. In this case, the Rate object expresses a single discrete rate. 
     /// Both the Rate.Maximum and Rate.Minimum properties are always expressed in units of degrees per second. 
     /// </summary>
-    public class AxisRates : ASCOM.Interface.IAxisRates
+    public class AxisRates :IAxisRates
     {
         //ASCOM.Interface.TelescopeAxes m_Axis;
         List<Rate> m_Rates = new List<Rate>();        //' Empty array, but an array nonetheless

@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using static ASCOM.Utilities.Global;
 using static ASCOM.Utilities.RegistryAccess;
 
+
 namespace ASCOM.Utilities
 {
     /// <summary>

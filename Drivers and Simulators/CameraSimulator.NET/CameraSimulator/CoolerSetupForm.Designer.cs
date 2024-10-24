@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoolerSetupForm));
             this.NumAmbientTemperature = new System.Windows.Forms.NumericUpDown();
             this.NumCCDSetPoint = new System.Windows.Forms.NumericUpDown();

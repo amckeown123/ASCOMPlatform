@@ -1,24 +1,7 @@
 ﻿// Uncomment to debug this code, otherwise leave false!
 //#define DEBUG_TRACE
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Management;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using ASCOM.Astrometry;
 using ASCOM.Astrometry.Exceptions;
 using ASCOM.DeviceInterface;
@@ -31,10 +14,25 @@ using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Win32;
 using PlatformUpdateChecker;
 using Semver;
-using static System.Collections.Specialized.BitVector32;
-
-
-//using Semver;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.IO.Ports;
+using System.Linq;
+using System.Management;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using static ASCOM.Utilities.Global;
 using static ASCOM.Utilities.RegistryAccess;
 using static ASCOM.Utilities.Serial;
@@ -10656,9 +10654,9 @@ namespace ASCOM.Utilities
             {
                 // First list out the ports we can see through .NET
                 Status("Scanning Serial Ports");
-                if (System.IO.Ports.SerialPort.GetPortNames().Length > 0)
+                if (SerialPort.GetPortNames().Length > 0)
                 {
-                    foreach (string Port in System.IO.Ports.SerialPort.GetPortNames())
+                    foreach (string Port in SerialPort.GetPortNames())
                         TL.LogMessage("Serial Ports (.NET)", Port);
                 }
                 else
@@ -11990,7 +11988,7 @@ namespace ASCOM.Utilities
 
                     // Check for updates, running the ShowUpdateAvailable method if an update is available. 
                     // The CheckForUpdates relaseAction parameter is a one parameter action but the parameter is only used by the PlatformUpdateChecker executable and not by the Diagnostics form
-                    PlatformUpdateChecker.UpdateCheck.CheckForUpdates((x) => ShowUpdateAvailable(new SemVersion(0)), tlInternal);
+                    UpdateCheck.CheckForUpdates((x) => ShowUpdateAvailable(new SemVersion(0)), tlInternal);
 
                     LogInternal("DiagnosticsUpdateCheck", $"Update check complete");
                     LogInternal(" ", $" ");

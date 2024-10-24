@@ -5,9 +5,11 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
-using ASCOM.Interface;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using Aspose.Slides;
 using static ASCOM.Utilities.Global;
+using TraceLogger = ASCOM.Utilities.TraceLogger;
 
 namespace ASCOM.DriverAccess
 {
@@ -898,6 +900,10 @@ namespace ASCOM.DriverAccess
             get { return (short) _memberFactory.CallMember(1, "SensorName", new Type[] {}, new object[] {}); }
         }
 
+        public CameraPresetType CameraType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public float FieldOfViewAngle { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public float Zoom { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         #endregion
 
         #region IDisposable Members
@@ -912,6 +918,16 @@ namespace ASCOM.DriverAccess
             _memberFactory.Dispose();
             TL.Enabled=false;
             TL.Dispose();
+        }
+
+        public void SetRotation(float latitude, float longitude, float revolution)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public float[] GetRotation()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net481</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>DriverTemplate_CS_</RootNamespace>
     <AssemblyName>DriverTemplate%28CS%29</AssemblyName>
@@ -17,12 +17,12 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="PackageIconCSharp.ico">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="TemplateProperties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <VSTemplate Include="DriverTemplate(CS).vstemplate" />
@@ -34,15 +34,11 @@
     <Content Include="Resources\ASCOM.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ASCOM Device Driver CS.csproj" />
+    <Compile Remove="TemplateProperties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\ASCOM.Astrometry\ASCOM.Astrometry\ASCOM.Astrometry.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="TemplateProperties\AssemblyInfo.cs" />
   </ItemGroup>
 </Project>

@@ -1,69 +1,56 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<ProjectGuid>{350A73BD-60D1-03E4-2EDC-A617D2D79CE3}</ProjectGuid>
-		<RootNamespace>ASCOM.DeviceInterface</RootNamespace>
-		<AssemblyName>ASCOM.DeviceInterfaces</AssemblyName>
-		<MyType>Windows</MyType>
-		<TargetFramework>net481</TargetFramework>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\ASCOM.snk</AssemblyOriginatorKeyFile>
-		<FileUpgradeFlags />
-		<UpgradeBackupLocation />
-		<DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
-		<AssemblyTitle>ASCOM Device Interfaces</AssemblyTitle>
-		<Company>ASCOM</Company>
-		<Product>ASCOM.DeviceInterfaces</Product>
-		<Description>ASCOM device interfaces for Platform 7</Description>
-		<Copyright>Copyright © ASCOM Initiative 2024</Copyright>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<RegisterForComInterop>false</RegisterForComInterop>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Title>ASCOM device interfaces for Platform 7.</Title>
-		<Authors>Peter Simpson</Authors>
-		<PackageIcon>Bug 300 Borderless.png</PackageIcon>
-		<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
-		<PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-	</PropertyGroup>
-	<ItemGroup>
-		<None Remove="ASCOM.DeviceInterfaces.xml" />
-		<None Remove="oldvbproject" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="..\AssemblyVersionInfo.cs" Link="Properties\AssemblyVersionInfo.cs" />
-	</ItemGroup>
-
-	<!-- NOTE PrivateAssets=All prevents the Utilities / Tools dependencies from being included as package dependencies in the output DeviceInterface package. 
+  <PropertyGroup>
+    <ProjectGuid>{350A73BD-60D1-03E4-2EDC-A617D2D79CE3}</ProjectGuid>
+    <RootNamespace>ASCOM.DeviceInterface</RootNamespace>
+    <AssemblyName>ASCOM.DeviceInterfaces</AssemblyName>
+    <MyType>Windows</MyType>
+    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ASCOM.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags />
+    <UpgradeBackupLocation />
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    <AssemblyTitle>ASCOM Device Interfaces</AssemblyTitle>
+    <Company>ASCOM</Company>
+    <Product>ASCOM.DeviceInterfaces</Product>
+    <Description>ASCOM device interfaces for Platform 7</Description>
+    <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Title>ASCOM device interfaces for Platform 7.</Title>
+    <Authors>Peter Simpson</Authors>
+    <PackageIcon>Bug 300 Borderless.png</PackageIcon>
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+    <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="ASCOM.DeviceInterfaces.xml" />
+    <None Remove="oldvbproject" />
+  </ItemGroup>
+  <!-- NOTE PrivateAssets=All prevents the Utilities / Tools dependencies from being included as package dependencies in the output DeviceInterface package. 
 		 NOTE The dependencies are only required in order to support links to utility methods within the XML help text. 
 		 NOTE The links are only required to work when the Help files are built at compile time and are not required to work at runtime. -->
-
-	<!-- Select the correct reference depending on which framework is being built -->
-	<PropertyGroup>
-		<IncludeReference>true</IncludeReference>
-	</PropertyGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net35' And '$(IncludeReference)'=='true'">
-		<ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net472' And '$(IncludeReference)'=='true'">
-		<ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<None Include="..\ASCOM Art\Bug 300 Borderless.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="ReadMe.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	</ItemGroup>
+  <!-- Select the correct reference depending on which framework is being built -->
+  <PropertyGroup>
+    <IncludeReference>true</IncludeReference>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\ASCOM Art\Bug 300 Borderless.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

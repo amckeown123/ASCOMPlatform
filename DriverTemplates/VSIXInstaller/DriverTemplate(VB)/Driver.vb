@@ -31,19 +31,14 @@
 ' This definition is used to select code that's only applicable for one device type
 #Const Device = "TEMPLATEDEVICECLASS"
 
-Imports ASCOM
-Imports ASCOM.Astrometry
-Imports ASCOM.Astrometry.AstroUtils
-Imports ASCOM.DeviceInterface
-Imports ASCOM.Utilities
 
-Imports System
-Imports System.Collections
-Imports System.Collections.Generic
-Imports System.Globalization
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Windows.Forms
+Imports ASCOM
+Imports ASCOM.Astrometry
+Imports ASCOM.Astrometry.AstroUtils
+Imports ASCOM.Utilities
 
 <Guid("3A02C211-FA08-4747-B0BD-4B00EB159297")>
 <ClassInterface(ClassInterfaceType.None)>

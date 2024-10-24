@@ -10,6 +10,7 @@ using ASCOM.Utilities;
 using System.Collections;
 using System.Reflection;
 using System.Globalization;
+using TraceLogger = ASCOM.Utilities.TraceLogger;
 
 namespace ASCOM.DriverAccess
 {
@@ -197,7 +198,7 @@ namespace ASCOM.DriverAccess
 
                     try
                     {
-                        ASCOM.Interface.IAxisRates AxisRatesP5 = (ASCOM.Interface.IAxisRates)ReturnValue;
+                        IAxisRates AxisRatesP5 = (IAxisRates)ReturnValue;
                         AxisRatesP6 = new AxisRates(AxisRatesP5, TL); //Create a new P6 compliant shell that presents the P5 object
                         TL.LogMessage("AxisRates", "Number of returned AxisRates: " + AxisRatesP5.Count);
 
@@ -968,7 +969,7 @@ namespace ASCOM.DriverAccess
         TraceLogger TL;
         int CurrentPosition;
 
-        ASCOM.Interface.IAxisRates AxisRatesP5;
+        AxisRates AxisRatesP5;
 
         /// <summary>
         /// Creates an empty AxisRates object
@@ -979,12 +980,12 @@ namespace ASCOM.DriverAccess
             TL = null;
         }
 
-        internal AxisRates(ASCOM.Interface.IAxisRates AxisRates, TraceLogger traceLogger)
+        internal AxisRates(IAxisRates AxisRates, TraceLogger traceLogger)
         {
             TL = traceLogger;
-            AxisRatesP5 = AxisRates;
+            AxisRatesP5 = (AxisRates)AxisRates;
             this.Reset();
-            foreach (ASCOM.Interface.IRate Rate in AxisRates)
+            foreach (IRate Rate in AxisRates)
             {
                 if (!(TL == null)) TL.LogMessage("AxisRates Class P5 New", "Adding rate: - Minimum: " + Rate.Minimum + ", Maximum: " + Rate.Maximum);
                 //m_Rates.Add(new Rate(Rate.Minimum, Rate.Maximum));

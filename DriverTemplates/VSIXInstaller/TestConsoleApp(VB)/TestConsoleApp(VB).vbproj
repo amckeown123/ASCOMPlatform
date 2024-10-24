@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net481</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>TestConsoleApp_VB_</RootNamespace>
     <AssemblyName>TestConsoleApp%28VB%29</AssemblyName>
@@ -37,9 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ASCOM Test Console App %28VB%29.vbproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="TemplateMyProject\AssemblyInfo.vb" />

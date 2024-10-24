@@ -5,7 +5,6 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
-using ASCOM.Interface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -18,7 +17,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to Rotator drivers
     /// </summary>
-    public class Rotator : IRotator, IDisposable
+    public class Rotator : Rotator, IDisposable
     {
         private TraceLogger TL;
         #region IRotator constructors

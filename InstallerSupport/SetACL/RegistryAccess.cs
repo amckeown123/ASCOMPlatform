@@ -1,12 +1,12 @@
-﻿using System;
+﻿using ASCOM.Utilities;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 // Class to read and write profile values to the registry
 
 using System.Security.AccessControl;
 using System.Security.Principal;
-using Microsoft.Win32;
-using Utilities;
 
 namespace SetACL
 {
