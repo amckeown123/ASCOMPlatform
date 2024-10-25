@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <ProjectType>Local</ProjectType>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
@@ -34,19 +34,18 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
-    <PropertyGroup>
+  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
-  
   <ItemGroup>
-      <EmbeddedResource Include="FolderBrowser.bmp" />
+    <EmbeddedResource Include="FolderBrowser.bmp" />
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <None Include="..\..\ASCOM.snk">
       <Link>ASCOM.snk</Link>
     </None>
   </ItemGroup>
   <PropertyGroup>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 </Project>

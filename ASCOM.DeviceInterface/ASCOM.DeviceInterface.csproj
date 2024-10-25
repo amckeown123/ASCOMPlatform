@@ -4,7 +4,7 @@
     <RootNamespace>ASCOM.DeviceInterface</RootNamespace>
     <AssemblyName>ASCOM.DeviceInterfaces</AssemblyName>
     <MyType>Windows</MyType>
-    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ASCOM.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags />
@@ -36,7 +36,7 @@
   <!-- Select the correct reference depending on which framework is being built -->
   <PropertyGroup>
     <IncludeReference>true</IncludeReference>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\ASCOM Art\Bug 300 Borderless.png">

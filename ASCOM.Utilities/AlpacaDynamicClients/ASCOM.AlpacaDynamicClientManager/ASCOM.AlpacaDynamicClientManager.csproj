@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ProjectGuid>{97967194-9DD9-44DF-846C-E2D8D504DF2E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ASCOM.DynamicRemoteClients</RootNamespace>
     <AssemblyName>ASCOM.AlpacaDynamicClientManager</AssemblyName>
-    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>Alpaca Dynamic Client Manager</AssemblyTitle>
     <Product>ASCOM.AlpacaDynamicClientManager</Product>
-    <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
+    <Copyright>Copyright Â© ASCOM Initiative 2024</Copyright>
     <AssemblyVersion>7.0.0.0</AssemblyVersion>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
     <PropertyGroup>
@@ -30,7 +30,9 @@
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
   </PropertyGroup>
+  <ItemGroup>
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>

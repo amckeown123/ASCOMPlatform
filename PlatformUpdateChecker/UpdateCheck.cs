@@ -50,9 +50,7 @@ namespace PlatformUpdateChecker
             try
             {
                 // Initialise the list of skipped releases
-                List<string> skippedReleases = new 
-                    
-                    List<string>();
+                List<string> skippedReleases = new List<string>();
 
                 try
                 {

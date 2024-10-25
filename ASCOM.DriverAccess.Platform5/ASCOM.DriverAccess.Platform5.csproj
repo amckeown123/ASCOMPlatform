@@ -1,12 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <ProjectGuid>{96FE4339-269D-4908-A161-47F8F7DF838B}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ASCOM.DriverAccess</RootNamespace>
     <AssemblyName>ASCOM.DriverAccess</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ASCOM.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -21,25 +30,49 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+ 
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj">
+      <Project>{350a73bd-60d1-03e4-2edc-a617d2d79ce3}</Project>
+      <Name>ASCOM.DeviceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
+    <ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
+      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
+      <Name>ASCOM.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
+      <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
+      <Name>ASCOM.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\ASCOM.snk">
       <Link>ASCOM.snk</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="SafetyMonitor.cs" />
+    <PackageReference Include="ASCOM.DeviceInterfaces" Version="7.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Aspose.Slides.NET" Version="24.10.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
-    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-    <ProjectReference Include="..\Drivers and Simulators\ASCOM Device Hub\DeviceHub\DeviceHub.csproj" />
-    <ProjectReference Include="..\Drivers and Simulators\FilterWheel Simulator .NET\FilterWheelDriver\FilterWheelSimDriver.vbproj" />
-    <ProjectReference Include="..\Drivers and Simulators\Rotator Simulator\RotatorDriver\RotatorDriver.csproj" />
-  </ItemGroup>
+
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

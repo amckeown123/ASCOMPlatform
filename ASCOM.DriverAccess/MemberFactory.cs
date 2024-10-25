@@ -15,7 +15,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// A factory class to access any registered driver members
     /// </summary>
-    internal class MemberFactory : IDisposable
+    public partial class MemberFactory : IDisposable
     {
         #region MemberFactory
 

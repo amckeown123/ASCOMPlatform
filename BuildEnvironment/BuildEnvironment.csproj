@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../ASCOM.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
@@ -51,7 +51,7 @@ THE EXECUTABLES IN THIS PACKAGE SHOULD NEVER BE DISTRIBUTED AS PART OF A DRIVER 
     <Product>ASCOM Platform 7 Build Environment Support Files</Product>
     <Company>The ASCOM Initiative</Company>
     <PackageReadmeFile>package.md</PackageReadmeFile>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
     <ItemGroup>

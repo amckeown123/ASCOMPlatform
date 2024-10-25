@@ -3,7 +3,7 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <OutputType>WinExe</OutputType>
     <AssemblyName>DynamicClientServer</AssemblyName>
-    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <FileUpgradeFlags />
     <UpgradeBackupLocation />
@@ -38,7 +38,7 @@
     <PreBuildEvent />
     <PostBuildEvent />
   </PropertyGroup>
-    <PropertyGroup>
+  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
@@ -48,9 +48,9 @@
     <PreBuildEvent />
     <PostBuildEvent />
     <RootNamespace>ASCOM.DynamicClients</RootNamespace>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
   </PropertyGroup>
-    <ItemGroup>
+  <ItemGroup>
     <Content Include="ASCOM.ico" />
     <Content Include="ASCOM.png" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ASCOM.Simulator</RootNamespace>
     <AssemblyName>ASCOM.Simulator.Server</AssemblyName>
@@ -69,5 +69,7 @@
     <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
-  <PropertyGroup />
+  <PropertyGroup>
+    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
 </Project>
