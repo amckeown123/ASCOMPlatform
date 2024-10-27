@@ -5,6 +5,8 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
+using System.Collections;
+using ASCOM.Interface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -16,7 +18,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     ///   Provides universal access to Switch drivers
     /// </summary>
-    public class Switch: ASCOM.Interface.ISwitch, IDisposable
+    public class Switch : ISwitch, IDisposable
     {
         private TraceLogger TL;
         #region Switch constructors
@@ -46,8 +48,8 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool Connected
         {
-            get { return (bool) _memberFactory.CallMember(1, "Connected", new Type[] {}, new object[] {}); }
-            set { _memberFactory.CallMember(2, "Connected", new Type[] {}, new object[] {value}); }
+            get { return (bool)_memberFactory.CallMember(1, "Connected", new Type[] { }, new object[] { }); }
+            set { _memberFactory.CallMember(2, "Connected", new Type[] { }, new object[] { value }); }
         }
 
         /// <summary>
@@ -55,7 +57,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public string Description
         {
-            get { return (string) _memberFactory.CallMember(1, "Description", new Type[] {}, new object[] {}); }
+            get { return (string)_memberFactory.CallMember(1, "Description", new Type[] { }, new object[] { }); }
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public string DriverInfo
         {
-            get { return (string) _memberFactory.CallMember(1, "DriverInfo", new Type[] {}, new object[] {}); }
+            get { return (string)_memberFactory.CallMember(1, "DriverInfo", new Type[] { }, new object[] { }); }
         }
 
         /// <summary>
@@ -71,7 +73,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public string DriverVersion
         {
-            get { return (string) _memberFactory.CallMember(1, "DriverVersion", new Type[] {}, new object[] {}); }
+            get { return (string)_memberFactory.CallMember(1, "DriverVersion", new Type[] { }, new object[] { }); }
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public short InterfaceVersion
         {
-            get { return Convert.ToInt16(_memberFactory.CallMember(1, "InterfaceVersion", new Type[] {}, new object[] {})); }
+            get { return Convert.ToInt16(_memberFactory.CallMember(1, "InterfaceVersion", new Type[] { }, new object[] { })); }
         }
 
         /// <summary>
@@ -87,7 +89,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public string Name
         {
-            get { return (string) _memberFactory.CallMember(1, "Name", new Type[] {}, new object[] {}); }
+            get { return (string)_memberFactory.CallMember(1, "Name", new Type[] { }, new object[] { }); }
         }
 
         /// <summary>
@@ -107,7 +109,7 @@ namespace ASCOM.DriverAccess
         ///<exception cref = " System.Exception">Must throw an exception if Setup dialog is unavailable.</exception>
         public void SetupDialog()
         {
-            _memberFactory.CallMember(3, "SetupDialog", new Type[] {}, new object[] {});
+            _memberFactory.CallMember(3, "SetupDialog", new Type[] { }, new object[] { });
         }
 
         /// <summary>
@@ -117,7 +119,7 @@ namespace ASCOM.DriverAccess
         /// <returns>Prog ID for chosen Switch or null for none</returns>
         public static string Choose(string switchId)
         {
-            var oChooser = new Chooser {DeviceType = "Switch"};
+            var oChooser = new Chooser { DeviceType = "Switch" };
             return oChooser.Choose(switchId);
         }
         #endregion
@@ -128,7 +130,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="ID">The switch number to return</param>
         /// <returns>True or false</returns>
-        public bool GetSwitch(short ID) 
+        public bool GetSwitch(short ID)
         {
             return (bool)_memberFactory.CallMember(3, "GetSwitch", new Type[] { typeof(short) }, new object[] { ID });
         }
@@ -151,6 +153,8 @@ namespace ASCOM.DriverAccess
             get { return (short)_memberFactory.CallMember(1, "MaxSwitch", new Type[] { }, new object[] { }); }
         }
 
+        public ArrayList SwitchCollection => throw new System.NotImplementedException();
+
         /// <summary>
         /// Sets a switch to the specified state
         /// </summary>
@@ -171,7 +175,7 @@ namespace ASCOM.DriverAccess
             _memberFactory.CallMember(3, "SetSwitchName", new Type[] { typeof(short), typeof(string) }, new object[] { ID, State });
         }
     }
-        #endregion
+    #endregion
 
     #endregion
 }

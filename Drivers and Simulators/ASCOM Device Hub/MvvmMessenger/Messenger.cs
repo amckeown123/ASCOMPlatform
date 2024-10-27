@@ -580,7 +580,7 @@ namespace ASCOM.DeviceHub.MvvmMessenger
             {
                 Action cleanupAction = Cleanup;
 
-                Dispatcher.CreateDefault().BeginInvoke(cleanupAction, DispatcherPriority.ApplicationIdle, null);
+                Dispatcher.CreateDefault().InvokeAsync(cleanupAction);
                 _isCleanupRegistered = true;
             }
         }

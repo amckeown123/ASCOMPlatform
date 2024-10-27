@@ -13,18 +13,42 @@ Class DeviceSafetyMonitor
 
 #Region "ISafetyMonitor Implementation"
 
-	''' <summary>
-	''' Indicates whether the monitored state is safe for use.
-	''' </summary>
-	''' <value>True if the state is safe, False if it is unsafe.</value>
-	Public ReadOnly Property IsSafe() As Boolean Implements ISafetyMonitor.IsSafe
-		Get
-			TL.LogMessage("IsSafe Get", "True")
-			Return True
-		End Get
-	End Property
+    ''' <summary>
+    ''' Indicates whether the monitored state is safe for use.
+    ''' </summary>
+    ''' <value>True if the state is safe, False if it is unsafe.</value>
+    Public ReadOnly Property IsSafe() As Boolean Implements ISafetyMonitor.IsSafe
+        Get
+            TL.LogMessage("IsSafe Get", "True")
+            Return True
+        End Get
+    End Property
+
+    Public ReadOnly Property CanEmergencyShutdown As Boolean Implements ISafetyMonitor.CanEmergencyShutdown
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+    End Property
+
+    Public ReadOnly Property CanIsGood As Boolean Implements ISafetyMonitor.CanIsGood
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+    End Property
+
+    Public ReadOnly Property EmergencyShutdown As Boolean Implements ISafetyMonitor.EmergencyShutdown
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+    End Property
+
+    Public ReadOnly Property IsGood As Boolean Implements ISafetyMonitor.IsGood
+        Get
+            Throw New System.NotImplementedException()
+        End Get
+    End Property
 
 #End Region
 
-	'//ENDOFINSERTEDFILE
+    '//ENDOFINSERTEDFILE
 End Class

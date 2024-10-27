@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using EnvDTE;
 using System.IO;
 using ASCOM.Utilities;
+using Microsoft.VisualStudio.TemplateWizard;
 
 namespace ASCOM.Setup
 {

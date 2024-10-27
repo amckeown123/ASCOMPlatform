@@ -5,23 +5,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using ASCOM.DeviceInterface;
+using ASCOM.Interface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
 namespace ASCOM.DriverAccess
 {
 
-	#region Telescope Wrapper
-	/// <summary>
+    #region Telescope Wrapper
+    /// <summary>
     /// Implements a telescope class to access any registered ASCOM telescope
     /// </summary>
-    public class Telescope : Telescope, IDisposable 
+    public class Telescope : ITelescope, IDisposable
     {
         private TraceLogger TL;
         //object objScopeLateBound;
-		//ASCOM.Interface.ITelescope ITelescope;
-		//Type objTypeScope;
+        //ASCOM.Interface.ITelescope ITelescope;
+        //Type objTypeScope;
         private MemberFactory _memberFactory;
         private readonly bool _isPlatform6Telescope;
         private readonly bool _isPlatform5Telescope;
@@ -33,7 +33,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         /// <param name="telescopeId">The ProgID for the telescope</param>
         public Telescope(string telescopeId)
-		{
+        {
             TL = new TraceLogger("", "DriverAccessTelescope")
             {
                 Enabled = GetBool(DRIVERACCESS_TRACE, DRIVERACCESS_TRACE_DEFAULT)
@@ -42,10 +42,10 @@ namespace ASCOM.DriverAccess
 
             foreach (Type objInterface in _memberFactory.GetInterfaces)
             {
-                if (objInterface.Equals(typeof(DeviceInterface.ITelescopeV3))) _isPlatform6Telescope = true; //If the type matches the V2 type flag this
+                if (objInterface.Equals(typeof(ITelescope))) _isPlatform6Telescope = true; //If the type matches the V2 type flag this
                 if (objInterface.Equals(typeof(ITelescope))) _isPlatform5Telescope = true; //If the type matches the PIA type flag this
             }
-		}
+        }
 
         /// <summary>
         /// The Choose() method returns the DriverID of the selected driver.
@@ -63,7 +63,7 @@ namespace ASCOM.DriverAccess
             };
             return oChooser.Choose(telescopeId);
         }
-        
+
         #endregion
 
         #region ITelescope Members
@@ -127,15 +127,15 @@ namespace ASCOM.DriverAccess
             get { return (bool)_memberFactory.CallMember(1, "AtPark", new Type[] { }, new object[] { }); }
         }
 
-	    /// <summary>
-	    /// Determine the rates at which the telescope may be moved about the specified axis by the MoveAxis() method.
-	    /// See the description of MoveAxis() for more information. This method must return an empty collection if MoveAxis is not supported. 
-	    /// </summary>
-	    /// <param name="axis">The axis about which rate information is desired (TelescopeAxes value)</param>
-	    /// <exception cref="System.NotImplementedException"></exception>
-	    /// <exception cref="System.NotImplementedException"></exception>
-	    /// <returns>Collection of Axis Rates</returns>
-	    public IAxisRates AxisRates(TelescopeAxes axis)
+        /// <summary>
+        /// Determine the rates at which the telescope may be moved about the specified axis by the MoveAxis() method.
+        /// See the description of MoveAxis() for more information. This method must return an empty collection if MoveAxis is not supported. 
+        /// </summary>
+        /// <param name="axis">The axis about which rate information is desired (TelescopeAxes value)</param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.NotImplementedException"></exception>
+        /// <returns>Collection of Axis Rates</returns>
+        public IAxisRates AxisRates(TelescopeAxes axis)
         {
             var returnValue = new AxisRates();
 
@@ -162,7 +162,7 @@ namespace ASCOM.DriverAccess
                 return returnValue;
             }
 
-	        return new _AxisRates(axis, _memberFactory.GetObjType, _memberFactory.GetLateBoundObject);
+            return new _AxisRates(axis, _memberFactory.GetObjType, _memberFactory.GetLateBoundObject);
         }
         /// <summary>
         /// The azimuth at the local horizon of the telescope's current position (degrees, North-referenced, positive East/clockwise).
@@ -377,7 +377,7 @@ namespace ASCOM.DriverAccess
             return (bool)_memberFactory.CallMember(3, "CommandBool", new[] { typeof(string), typeof(bool) }, new object[] { command, raw });
         }
 
-       /// <summary>
+        /// <summary>
         /// Send a string comand to the telescope, returning a string response
         /// If the optional Raw parameter is set True, the driver must not insert or append any delimiters;
         /// this must send the unmodified raw string directly to the device.
@@ -815,7 +815,7 @@ namespace ASCOM.DriverAccess
         {
             get { return Convert.ToDouble(_memberFactory.CallMember(1, "SiderealTime", new Type[] { }, new object[] { })); }
         }
-        
+
         /// <summary>
         /// The elevation above mean sea level (meters) of the site at which the telescope is located
         /// Setting this property will raise an error if the given value is outside the range -300 through +10000 metres.
@@ -1109,12 +1109,12 @@ namespace ASCOM.DriverAccess
         #endregion
 
         #region IDisposable Members
-		/// <summary>
-		/// Dispose the late-bound interface, if needed. Will release it via COM
-		/// if it is a COM object, else if native .NET will just dereference it
-		/// for GC.
-		/// </summary>
-		public void Dispose()
+        /// <summary>
+        /// Dispose the late-bound interface, if needed. Will release it via COM
+        /// if it is a COM object, else if native .NET will just dereference it
+        /// for GC.
+        /// </summary>
+        public void Dispose()
         {
             if (_memberFactory != null)
             {
@@ -1130,251 +1130,251 @@ namespace ASCOM.DriverAccess
         }
 
         #endregion
-	}
-	#endregion
+    }
+    #endregion
 
-	#region Rate wrapper
-	//
-	// Late bound Rate implementation
-	//
-	/// <summary>
-	/// Describes a range of rates supported by the MoveAxis() method (degrees/per second)
-	/// These are contained within the AxisRates collection. They serve to describe one or more supported ranges of rates of motion about a mechanical axis. 
-	/// It is possible that the Rate.Maximum and Rate.Minimum properties will be equal. In this case, the Rate object expresses a single discrete rate. 
-	/// Both the Rate.Maximum and Rate.Minimum properties are always expressed in units of degrees per second. 
-	/// </summary>
-	class _Rate : IRate
-	{
-	    readonly Type _objTypeRate;
-		object _objRateLateBound;
+    #region Rate wrapper
+    //
+    // Late bound Rate implementation
+    //
+    /// <summary>
+    /// Describes a range of rates supported by the MoveAxis() method (degrees/per second)
+    /// These are contained within the AxisRates collection. They serve to describe one or more supported ranges of rates of motion about a mechanical axis. 
+    /// It is possible that the Rate.Maximum and Rate.Minimum properties will be equal. In this case, the Rate object expresses a single discrete rate. 
+    /// Both the Rate.Maximum and Rate.Minimum properties are always expressed in units of degrees per second. 
+    /// </summary>
+    class _Rate : IRate
+    {
+        readonly Type _objTypeRate;
+        object _objRateLateBound;
 
-		public _Rate(int index, Type objTypeAxisRates, object objAxisRatesLateBound)
-		{
-			_objRateLateBound = objTypeAxisRates.InvokeMember("Item",
-						BindingFlags.Default | BindingFlags.GetProperty,
-						null, objAxisRatesLateBound, new object[] { index });
-			_objTypeRate = _objRateLateBound.GetType();
-		}
+        public _Rate(int index, Type objTypeAxisRates, object objAxisRatesLateBound)
+        {
+            _objRateLateBound = objTypeAxisRates.InvokeMember("Item",
+                        BindingFlags.Default | BindingFlags.GetProperty,
+                        null, objAxisRatesLateBound, new object[] { index });
+            _objTypeRate = _objRateLateBound.GetType();
+        }
 
-		public _Rate(object objRateLateBound)
-		{
-			_objRateLateBound = objRateLateBound;
-			_objTypeRate = objRateLateBound.GetType();
-		}
+        public _Rate(object objRateLateBound)
+        {
+            _objRateLateBound = objRateLateBound;
+            _objTypeRate = objRateLateBound.GetType();
+        }
 
-		/// <summary>
-		/// The maximum rate (degrees per second)
-		/// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
-		/// </summary>
-		public double Maximum
-		{
-			get
-			{
-				return (double)_objTypeRate.InvokeMember("Maximum",
-							BindingFlags.Default | BindingFlags.GetProperty,
-							null, _objRateLateBound, new object[] { });
-			}
-			set
-			{
-				_objTypeRate.InvokeMember("Maximum",
-							BindingFlags.Default | BindingFlags.SetProperty,
-							null, _objRateLateBound, new object[] { value });
-			}
-		}
+        /// <summary>
+        /// The maximum rate (degrees per second)
+        /// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
+        /// </summary>
+        public double Maximum
+        {
+            get
+            {
+                return (double)_objTypeRate.InvokeMember("Maximum",
+                            BindingFlags.Default | BindingFlags.GetProperty,
+                            null, _objRateLateBound, new object[] { });
+            }
+            set
+            {
+                _objTypeRate.InvokeMember("Maximum",
+                            BindingFlags.Default | BindingFlags.SetProperty,
+                            null, _objRateLateBound, new object[] { value });
+            }
+        }
 
-		/// <summary>
-		/// The minimum rate (degrees per second)
-		/// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
-		/// </summary>
-		public double Minimum
-		{
-			get
-			{
-				return (double)_objTypeRate.InvokeMember("Minimum",
-							BindingFlags.Default | BindingFlags.GetProperty,
-							null, _objRateLateBound, new object[] { });
-			}
-			set
-			{
-				_objTypeRate.InvokeMember("Minimum",
-							BindingFlags.Default | BindingFlags.SetProperty,
-							null, _objRateLateBound, new object[] { value });
-			}
-		}
+        /// <summary>
+        /// The minimum rate (degrees per second)
+        /// This must always be a positive number. It indicates the maximum rate in either direction about the axis. 
+        /// </summary>
+        public double Minimum
+        {
+            get
+            {
+                return (double)_objTypeRate.InvokeMember("Minimum",
+                            BindingFlags.Default | BindingFlags.GetProperty,
+                            null, _objRateLateBound, new object[] { });
+            }
+            set
+            {
+                _objTypeRate.InvokeMember("Minimum",
+                            BindingFlags.Default | BindingFlags.SetProperty,
+                            null, _objRateLateBound, new object[] { value });
+            }
+        }
 
-		#region IDisposable Members
+        #region IDisposable Members
 
-		public void Dispose()
-		{
-			if (_objRateLateBound != null)
-			{
-				_objRateLateBound = null;
-			}
-		}
+        public void Dispose()
+        {
+            if (_objRateLateBound != null)
+            {
+                _objRateLateBound = null;
+            }
+        }
 
-		#endregion
-	}
-	#endregion
-	
-	#region Internal strongly typed collection wrappers
-	//
-	// Strongly typed enumerator for late bound Rate
-	// objects being enumarated
-	//
-	class _RateEnumerator : IEnumerator, IDisposable
-	{
-		IEnumerator _objEnumerator;
-		Type _objTypeAxisRates;
-		object _objAxisRatesLateBound;
+        #endregion
+    }
+    #endregion
 
-		public _RateEnumerator(Type objTypeAxisRates, object objAxisRatesLateBound)
-		{
-			_objTypeAxisRates = objTypeAxisRates;
-			_objAxisRatesLateBound = objAxisRatesLateBound;
-			_objEnumerator = (IEnumerator)objTypeAxisRates.InvokeMember("GetEnumerator",
-						BindingFlags.Default | BindingFlags.InvokeMethod,
-						null, objAxisRatesLateBound, new object[] { });
-		}
+    #region Internal strongly typed collection wrappers
+    //
+    // Strongly typed enumerator for late bound Rate
+    // objects being enumarated
+    //
+    class _RateEnumerator : IEnumerator, IDisposable
+    {
+        IEnumerator _objEnumerator;
+        Type _objTypeAxisRates;
+        object _objAxisRatesLateBound;
 
-		public void Reset()
-		{
-			_objEnumerator.Reset();
-		}
+        public _RateEnumerator(Type objTypeAxisRates, object objAxisRatesLateBound)
+        {
+            _objTypeAxisRates = objTypeAxisRates;
+            _objAxisRatesLateBound = objAxisRatesLateBound;
+            _objEnumerator = (IEnumerator)objTypeAxisRates.InvokeMember("GetEnumerator",
+                        BindingFlags.Default | BindingFlags.InvokeMethod,
+                        null, objAxisRatesLateBound, new object[] { });
+        }
 
-		public bool MoveNext()
-		{
-			return _objEnumerator.MoveNext();
-		}
+        public void Reset()
+        {
+            _objEnumerator.Reset();
+        }
 
-		public Object Current
-		{
-			get
-			{
-				return new _Rate(_objEnumerator.Current);
-			} 
-		}
+        public bool MoveNext()
+        {
+            return _objEnumerator.MoveNext();
+        }
 
-		#region IDisposable Members
+        public Object Current
+        {
+            get
+            {
+                return new _Rate(_objEnumerator.Current);
+            }
+        }
 
-		public void Dispose()
-		{
-			if (_objEnumerator != null)
-			{
-				_objEnumerator = null;
-			}
-		}
+        #region IDisposable Members
 
-		#endregion
-	}
+        public void Dispose()
+        {
+            if (_objEnumerator != null)
+            {
+                _objEnumerator = null;
+            }
+        }
 
-	//
-	// Late bound Axis Rates implementation.
-	//
-	class _AxisRates : IAxisRates
-	{
-	    readonly Type _objTypeAxisRates;
-		object _objAxisRatesLateBound;
+        #endregion
+    }
 
-		public _AxisRates(TelescopeAxes Axis, Type objTypeScope, object objScopeLateBound)
-		{
-			_objAxisRatesLateBound = objTypeScope.InvokeMember("AxisRates",
-						BindingFlags.Default | BindingFlags.InvokeMethod,
-						null, objScopeLateBound, new object[] { (int)Axis });
-			_objTypeAxisRates = _objAxisRatesLateBound.GetType();
-		}
+    //
+    // Late bound Axis Rates implementation.
+    //
+    class _AxisRates : IAxisRates
+    {
+        readonly Type _objTypeAxisRates;
+        object _objAxisRatesLateBound;
 
-		public IRate this[int index]
-		{
-			get 
-			{
-				return new _Rate(index, _objTypeAxisRates, _objAxisRatesLateBound);
-			}
-		}
+        public _AxisRates(TelescopeAxes Axis, Type objTypeScope, object objScopeLateBound)
+        {
+            _objAxisRatesLateBound = objTypeScope.InvokeMember("AxisRates",
+                        BindingFlags.Default | BindingFlags.InvokeMethod,
+                        null, objScopeLateBound, new object[] { (int)Axis });
+            _objTypeAxisRates = _objAxisRatesLateBound.GetType();
+        }
 
-		public IEnumerator GetEnumerator()
-		{
-			return new _RateEnumerator(_objTypeAxisRates, _objAxisRatesLateBound);
-		}
+        public IRate this[int index]
+        {
+            get
+            {
+                return new _Rate(index, _objTypeAxisRates, _objAxisRatesLateBound);
+            }
+        }
 
-		public int Count
-		{
-			get 
-			{
-				return (int)_objTypeAxisRates.InvokeMember("Count",
-							BindingFlags.Default | BindingFlags.GetProperty,
-							null, _objAxisRatesLateBound, new object[] { });
-			}
-		}
+        public IEnumerator GetEnumerator()
+        {
+            return new _RateEnumerator(_objTypeAxisRates, _objAxisRatesLateBound);
+        }
 
-		#region IDisposable Members
+        public int Count
+        {
+            get
+            {
+                return (int)_objTypeAxisRates.InvokeMember("Count",
+                            BindingFlags.Default | BindingFlags.GetProperty,
+                            null, _objAxisRatesLateBound, new object[] { });
+            }
+        }
 
-		public void Dispose()
-		{
-			if (_objAxisRatesLateBound != null)
-			{
-				_objAxisRatesLateBound = null;
-			}
-		}
+        #region IDisposable Members
 
-		#endregion
-	}
+        public void Dispose()
+        {
+            if (_objAxisRatesLateBound != null)
+            {
+                _objAxisRatesLateBound = null;
+            }
+        }
 
-	//
-	// Late bound TrackingRates implementation
-	//
-	class _TrackingRates : ITrackingRates
-	{
-	    readonly Type _objTypeTrackingRates;
-		object _objTrackingRatesLateBound;
+        #endregion
+    }
 
-		public _TrackingRates(Type objTypeScope, object objScopeLateBound)
-		{
-			_objTrackingRatesLateBound = objTypeScope.InvokeMember("TrackingRates",
-						BindingFlags.Default | BindingFlags.GetProperty,
-						null, objScopeLateBound, new object[] { });
-			_objTypeTrackingRates = _objTrackingRatesLateBound.GetType();
-		}
+    //
+    // Late bound TrackingRates implementation
+    //
+    class _TrackingRates : ITrackingRates
+    {
+        readonly Type _objTypeTrackingRates;
+        object _objTrackingRatesLateBound;
 
-		public DriveRates this[int index]
-		{
-			get 
-			{
-				return (DriveRates)_objTypeTrackingRates.InvokeMember("Item",
-							BindingFlags.Default | BindingFlags.GetProperty,
-							null, _objTrackingRatesLateBound, new object[] { index });
-			}
-		}
+        public _TrackingRates(Type objTypeScope, object objScopeLateBound)
+        {
+            _objTrackingRatesLateBound = objTypeScope.InvokeMember("TrackingRates",
+                        BindingFlags.Default | BindingFlags.GetProperty,
+                        null, objScopeLateBound, new object[] { });
+            _objTypeTrackingRates = _objTrackingRatesLateBound.GetType();
+        }
 
-		public IEnumerator GetEnumerator()
-		{
-			return (IEnumerator)_objTypeTrackingRates.InvokeMember("GetEnumerator",
-						BindingFlags.Default | BindingFlags.InvokeMethod,
-						null, _objTrackingRatesLateBound, new object[] { });
-		}
+        public DriveRates this[int index]
+        {
+            get
+            {
+                return (DriveRates)_objTypeTrackingRates.InvokeMember("Item",
+                            BindingFlags.Default | BindingFlags.GetProperty,
+                            null, _objTrackingRatesLateBound, new object[] { index });
+            }
+        }
 
-		public int Count
-		{
-			get 
-			{
-				return (int)_objTypeTrackingRates.InvokeMember("Count",
-							BindingFlags.Default | BindingFlags.GetProperty,
-							null, _objTrackingRatesLateBound, new object[] { });
-			}
-		}
+        public IEnumerator GetEnumerator()
+        {
+            return (IEnumerator)_objTypeTrackingRates.InvokeMember("GetEnumerator",
+                        BindingFlags.Default | BindingFlags.InvokeMethod,
+                        null, _objTrackingRatesLateBound, new object[] { });
+        }
 
-		#region IDisposable Members
+        public int Count
+        {
+            get
+            {
+                return (int)_objTypeTrackingRates.InvokeMember("Count",
+                            BindingFlags.Default | BindingFlags.GetProperty,
+                            null, _objTrackingRatesLateBound, new object[] { });
+            }
+        }
 
-		public void Dispose()
-		{
-			if (this._objTrackingRatesLateBound != null)
-			{
-				_objTrackingRatesLateBound = null;
-			}
-		}
+        #region IDisposable Members
 
-		#endregion
-	}
-	#endregion
+        public void Dispose()
+        {
+            if (this._objTrackingRatesLateBound != null)
+            {
+                _objTrackingRatesLateBound = null;
+            }
+        }
+
+        #endregion
+    }
+    #endregion
 
     //<summary>
     // Axis Rates implementation.
@@ -1385,7 +1385,7 @@ namespace ASCOM.DriverAccess
     /// It is possible that the Rate.Maximum and Rate.Minimum properties will be equal. In this case, the Rate object expresses a single discrete rate. 
     /// Both the Rate.Maximum and Rate.Minimum properties are always expressed in units of degrees per second. 
     /// </summary>
-    public class AxisRates :IAxisRates
+    public class AxisRates : IAxisRates
     {
         //ASCOM.Interface.TelescopeAxes m_Axis;
         List<Rate> m_Rates = new List<Rate>();        //' Empty array, but an array nonetheless
@@ -1482,7 +1482,7 @@ namespace ASCOM.DriverAccess
             get { return _mDMinimumR; }
             set { _mDMinimumR = value; }
         }
-        
+
         /// <summary>
         /// DIsposes of any external resources acquired by the object
         /// </summary>

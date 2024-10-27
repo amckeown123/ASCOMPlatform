@@ -5,6 +5,7 @@ using EnvDTE;
 using System.IO;
 using ProjectItem = EnvDTE.ProjectItem;
 using Project = EnvDTE.Project;
+using Microsoft.VisualStudio.TemplateWizard;
 
 namespace ASCOM.Setup
 {

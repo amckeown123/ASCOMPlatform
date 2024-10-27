@@ -23,6 +23,11 @@
     <StartProgram>
     </StartProgram>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <StartArguments>/register</StartArguments>
+    <StartAction>Project</StartAction>
+    <StartProgram />
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <StartArguments>/register</StartArguments>
   </PropertyGroup>

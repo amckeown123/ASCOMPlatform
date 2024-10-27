@@ -2,9 +2,10 @@
 // 10-Jul-08	rbd		1.0.5 - Release COM on Dispose().
 //
 using System;
+using System.Collections;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using ASCOM.Interface;
+using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 
 namespace ASCOM.DriverAccess
@@ -13,10 +14,10 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to SafetyMonitor drivers
     /// </summary>
-    public class SafetyMonitor : ASCOM.Interface.ISafetyMonitor, IDisposable
+    public class SafetyMonitor : ISafetyMonitor, IDisposable
     {
         object objSafetyMonitorLateBound;
-        ASCOM.Interface.ISafetyMonitor ISafetyMonitor;
+        ISafetyMonitor ISafetyMonitor;
         Type objTypeSafetyMonitor;
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace ASCOM.DriverAccess
             // Try to see if this driver has an ASCOM.SafetyMonitor interface
             try
             {
-                ISafetyMonitor = (ASCOM.Interface.ISafetyMonitor)objSafetyMonitorLateBound;
+                ISafetyMonitor = (ISafetyMonitor)objSafetyMonitorLateBound;
             }
             catch (Exception)
             {
@@ -212,7 +213,13 @@ namespace ASCOM.DriverAccess
             }
         }
 
- 
+        public short InterfaceVersion => throw new System.NotImplementedException();
+
+        public string Name => throw new System.NotImplementedException();
+
+        public ArrayList SupportedActions => throw new System.NotImplementedException();
+
+
         ///<summary>
         ///Launches a configuration dialog box for the driver.  The call will not return
         ///until the user clicks OK or cancel manually.
@@ -245,6 +252,26 @@ namespace ASCOM.DriverAccess
                 catch (Exception) { }
                 objSafetyMonitorLateBound = null;
             }
+        }
+
+        public string Action(string ActionName, string ActionParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CommandBlind(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CommandBool(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string CommandString(string Command, bool Raw = false)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

@@ -75,6 +75,14 @@ namespace ASCOM.DriverAccess
             get { return (bool)_memberFactory.CallMember(1, "IsSafe", new Type[] { }, new object[] { }); }
         }
 
+        public bool CanEmergencyShutdown => throw new System.NotImplementedException();
+
+        public bool CanIsGood => throw new System.NotImplementedException();
+
+        public bool EmergencyShutdown => throw new System.NotImplementedException();
+
+        public bool IsGood => throw new System.NotImplementedException();
+
         #endregion
 
     }

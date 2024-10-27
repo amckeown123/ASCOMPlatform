@@ -12,7 +12,8 @@
     <Product>ASCOM.AlpacaDynamicClientManager</Product>
     <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
     <AssemblyVersion>7.0.0.0</AssemblyVersion>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Platforms>AnyCPU;x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
     <PropertyGroup>
@@ -47,4 +48,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&#xD;&#xA;&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

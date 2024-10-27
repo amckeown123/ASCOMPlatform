@@ -18,6 +18,7 @@ This package is only of use in application and driver build environments requiri
 THE EXECUTABLES IN THIS PACKAGE SHOULD NEVER BE DISTRIBUTED AS PART OF A DRIVER OR APPLICATION .		</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeReferencedProjects>true</IncludeReferencedProjects>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\ASCOM.Exceptions\ASCOMBoarderless.png">
@@ -52,6 +53,7 @@ THE EXECUTABLES IN THIS PACKAGE SHOULD NEVER BE DISTRIBUTED AS PART OF A DRIVER 
     <Company>The ASCOM Initiative</Company>
     <PackageReadmeFile>package.md</PackageReadmeFile>
     <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
     <ItemGroup>
@@ -64,5 +66,8 @@ THE EXECUTABLES IN THIS PACKAGE SHOULD NEVER BE DISTRIBUTED AS PART OF A DRIVER 
       <!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
       <BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
     </ItemGroup>
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&#xD;&#xA;&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
   </Target>
 </Project>

@@ -1,11 +1,19 @@
-﻿namespace ASCOM.Simulator
+﻿
+
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+
+namespace ASCOM.Simulator
 {
     partial class CoolerSetupForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -28,51 +36,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new Series();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoolerSetupForm));
-            this.NumAmbientTemperature = new System.Windows.Forms.NumericUpDown();
-            this.NumCCDSetPoint = new System.Windows.Forms.NumericUpDown();
-            this.NumCoolerDeltaTMax = new System.Windows.Forms.NumericUpDown();
-            this.cmbCoolerModes = new System.Windows.Forms.ComboBox();
-            this.NumTimeToSetPoint = new System.Windows.Forms.NumericUpDown();
-            this.LblAmbientTemperature = new System.Windows.Forms.Label();
-            this.LblCCDSetPoint = new System.Windows.Forms.Label();
-            this.LblCoolerDeltaTMax = new System.Windows.Forms.Label();
-            this.LblTimeToSetPoint = new System.Windows.Forms.Label();
-            this.BtnOK = new System.Windows.Forms.Button();
-            this.ChkResetToAmbientOnConnect = new System.Windows.Forms.CheckBox();
-            this.CoolingHelp = new System.Windows.Forms.HelpProvider();
-            this.NumFluctuations = new System.Windows.Forms.NumericUpDown();
-            this.NumOvershoot = new System.Windows.Forms.NumericUpDown();
-            this.ChkPowerUpState = new System.Windows.Forms.CheckBox();
-            this.NumUnderDampedCycles = new System.Windows.Forms.NumericUpDown();
-            this.NumSetpointMinimum = new System.Windows.Forms.NumericUpDown();
-            this.ChkFitCurveToScreen = new System.Windows.Forms.CheckBox();
-            this.LblHelpText = new System.Windows.Forms.Label();
-            this.BackgroundPictureBox = new System.Windows.Forms.PictureBox();
-            this.LblFluctuations = new System.Windows.Forms.Label();
-            this.LblOvershoot = new System.Windows.Forms.Label();
-            this.BtnCancel = new System.Windows.Forms.Button();
-            this.LblOvershootCycles = new System.Windows.Forms.Label();
-            this.CoolingChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.LblSetpointMinimum = new System.Windows.Forms.Label();
-            this.LblGraph = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            ((System.ComponentModel.ISupportInitialize)(this.NumAmbientTemperature)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumCCDSetPoint)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumCoolerDeltaTMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumTimeToSetPoint)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumFluctuations)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumOvershoot)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumUnderDampedCycles)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumSetpointMinimum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BackgroundPictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CoolingChart)).BeginInit();
+            ChartArea chartArea1 = new ChartArea();
+            Series series1 = new Series();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(CoolerSetupForm));
+            this.NumAmbientTemperature = new NumericUpDown();
+            this.NumCCDSetPoint = new NumericUpDown();
+            this.NumCoolerDeltaTMax = new NumericUpDown();
+            this.cmbCoolerModes = new ComboBox();
+            this.NumTimeToSetPoint = new NumericUpDown();
+            this.LblAmbientTemperature = new Label();
+            this.LblCCDSetPoint = new Label();
+            this.LblCoolerDeltaTMax = new Label();
+            this.LblTimeToSetPoint = new Label();
+            this.BtnOK = new Button();
+            this.ChkResetToAmbientOnConnect = new CheckBox();
+            this.CoolingHelp = new HelpProvider();
+            this.NumFluctuations = new NumericUpDown();
+            this.NumOvershoot = new NumericUpDown();
+            this.ChkPowerUpState = new CheckBox();
+            this.NumUnderDampedCycles = new NumericUpDown();
+            this.NumSetpointMinimum = new NumericUpDown();
+            this.ChkFitCurveToScreen = new CheckBox();
+            this.LblHelpText = new Label();
+            this.BackgroundPictureBox = new PictureBox();
+            this.LblFluctuations = new Label();
+            this.LblOvershoot = new Label();
+            this.BtnCancel = new Button();
+            this.LblOvershootCycles = new Label();
+            this.CoolingChart = new Chart();
+            this.LblSetpointMinimum = new Label();
+            this.LblGraph = new Label();
+            this.groupBox1 = new GroupBox();
+            this.groupBox2 = new GroupBox();
+            this.groupBox3 = new GroupBox();
+            this.groupBox4 = new GroupBox();
+            this.groupBox5 = new GroupBox();
+            ((ISupportInitialize)(this.NumAmbientTemperature)).BeginInit();
+            ((ISupportInitialize)(this.NumCCDSetPoint)).BeginInit();
+            ((ISupportInitialize)(this.NumCoolerDeltaTMax)).BeginInit();
+            ((ISupportInitialize)(this.NumTimeToSetPoint)).BeginInit();
+            ((ISupportInitialize)(this.NumFluctuations)).BeginInit();
+            ((ISupportInitialize)(this.NumOvershoot)).BeginInit();
+            ((ISupportInitialize)(this.NumUnderDampedCycles)).BeginInit();
+            ((ISupportInitialize)(this.NumSetpointMinimum)).BeginInit();
+            ((ISupportInitialize)(this.BackgroundPictureBox)).BeginInit();
+            ((ISupportInitialize)(this.CoolingChart)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -83,26 +91,26 @@
             // NumAmbientTemperature
             // 
             this.NumAmbientTemperature.DecimalPlaces = 1;
-            this.NumAmbientTemperature.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NumAmbientTemperature.Font = new Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CoolingHelp.SetHelpString(this.NumAmbientTemperature, "");
             this.NumAmbientTemperature.Location = new System.Drawing.Point(18, 19);
             this.NumAmbientTemperature.Name = "NumAmbientTemperature";
             this.CoolingHelp.SetShowHelp(this.NumAmbientTemperature, true);
-            this.NumAmbientTemperature.Size = new System.Drawing.Size(55, 20);
+            this.NumAmbientTemperature.Size = new Size(55, 20);
             this.NumAmbientTemperature.TabIndex = 21;
-            this.NumAmbientTemperature.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.NumAmbientTemperature.TextAlign = HorizontalAlignment.Right;
             // 
             // NumCCDSetPoint
             // 
             this.NumCCDSetPoint.DecimalPlaces = 1;
-            this.NumCCDSetPoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NumCCDSetPoint.Font = new Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CoolingHelp.SetHelpString(this.NumCCDSetPoint, "");
             this.NumCCDSetPoint.Location = new System.Drawing.Point(19, 45);
             this.NumCCDSetPoint.Name = "NumCCDSetPoint";
             this.CoolingHelp.SetShowHelp(this.NumCCDSetPoint, true);
             this.NumCCDSetPoint.Size = new System.Drawing.Size(55, 20);
             this.NumCCDSetPoint.TabIndex = 23;
-            this.NumCCDSetPoint.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.NumCCDSetPoint.TextAlign = HorizontalAlignment.Right;
             // 
             // NumCoolerDeltaTMax
             // 
@@ -326,7 +334,7 @@
             this.BtnCancel.TabIndex = 53;
             this.BtnCancel.Text = "Cancel";
             this.BtnCancel.UseVisualStyleBackColor = true;
-            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
+            this.BtnCancel.Click += new EventHandler(this.BtnCancel_Click);
             // 
             // LblOvershootCycles
             // 
@@ -345,7 +353,7 @@
             this.CoolingChart.Location = new System.Drawing.Point(22, 19);
             this.CoolingChart.Name = "CoolingChart";
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.ChartType = SeriesChartType.Line;
             series1.Name = "CoolingCurve";
             this.CoolingChart.Series.Add(series1);
             this.CoolingChart.Size = new System.Drawing.Size(438, 352);
@@ -468,7 +476,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cooler Configuration";
-            this.Load += new System.EventHandler(this.CoolerSetupForm_Load);
+            this.Load += new EventHandler(this.CoolerSetupForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.NumAmbientTemperature)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumCCDSetPoint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumCoolerDeltaTMax)).EndInit();
@@ -516,7 +524,7 @@
         internal System.Windows.Forms.CheckBox ChkPowerUpState;
         internal System.Windows.Forms.NumericUpDown NumUnderDampedCycles;
         private System.Windows.Forms.Label LblOvershootCycles;
-        private System.Windows.Forms.DataVisualization.Charting.Chart CoolingChart;
+        private Chart CoolingChart;
         internal System.Windows.Forms.NumericUpDown NumSetpointMinimum;
         private System.Windows.Forms.Label LblSetpointMinimum;
         internal System.Windows.Forms.CheckBox ChkFitCurveToScreen;

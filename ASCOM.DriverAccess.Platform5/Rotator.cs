@@ -5,6 +5,7 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
+using ASCOM.Interface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
@@ -17,7 +18,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to Rotator drivers
     /// </summary>
-    public class Rotator : Rotator, IDisposable
+    public class Rotator : IRotator, IDisposable
     {
         private TraceLogger TL;
         #region IRotator constructors
@@ -46,7 +47,7 @@ namespace ASCOM.DriverAccess
         {
             try
             {
-                var oChooser = new Chooser {DeviceType = "Rotator"};
+                var oChooser = new Chooser { DeviceType = "Rotator" };
                 return oChooser.Choose(rotatorId);
             }
             catch
@@ -80,7 +81,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanReverse
         {
-            get { return (bool) _memberFactory.CallMember(1, "CanReverse", new Type[] {}, new object[] {}); }
+            get { return (bool)_memberFactory.CallMember(1, "CanReverse", new Type[] { }, new object[] { }); }
         }
 
         /// <summary>
@@ -90,8 +91,8 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool Connected
         {
-            get { return (bool) _memberFactory.CallMember(1, "Connected", new Type[] {}, new object[] {}); }
-            set { _memberFactory.CallMember(2, "Connected", new Type[] {}, new object[] {value}); }
+            get { return (bool)_memberFactory.CallMember(1, "Connected", new Type[] { }, new object[] { }); }
+            set { _memberFactory.CallMember(2, "Connected", new Type[] { }, new object[] { value }); }
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void Halt()
         {
-            _memberFactory.CallMember(3, "Halt", new Type[] {}, new object[] {});
+            _memberFactory.CallMember(3, "Halt", new Type[] { }, new object[] { });
         }
 
         /// <summary>
@@ -107,7 +108,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool IsMoving
         {
-            get { return (bool) _memberFactory.CallMember(1, "IsMoving", new Type[] {}, new object[] {}); }
+            get { return (bool)_memberFactory.CallMember(1, "IsMoving", new Type[] { }, new object[] { }); }
         }
 
         /// <summary>
@@ -116,7 +117,7 @@ namespace ASCOM.DriverAccess
         /// <param name="position">Relative position to move in degrees from current Position.</param>
         public void Move(float position)
         {
-            _memberFactory.CallMember(3, "Move", new[] {typeof (float)}, new object[] {position});
+            _memberFactory.CallMember(3, "Move", new[] { typeof(float) }, new object[] { position });
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace ASCOM.DriverAccess
         /// <param name="position">absolute position in degrees.</param>
         public void MoveAbsolute(float position)
         {
-            _memberFactory.CallMember(3, "MoveAbsolute", new[] {typeof (float)}, new object[] {position});
+            _memberFactory.CallMember(3, "MoveAbsolute", new[] { typeof(float) }, new object[] { position });
         }
 
         /// <summary>
@@ -133,7 +134,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public float Position
         {
-            get { return (float) _memberFactory.CallMember(1, "Position", new Type[] {}, new object[] {}); }
+            get { return (float)_memberFactory.CallMember(1, "Position", new Type[] { }, new object[] { }); }
         }
 
         /// <summary>
@@ -141,8 +142,8 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool Reverse
         {
-            get { return (bool) _memberFactory.CallMember(1, "Reverse", new Type[] {}, new object[] {}); }
-            set { _memberFactory.CallMember(2, "Reverse", new Type[] {}, new object[] {value}); }
+            get { return (bool)_memberFactory.CallMember(1, "Reverse", new Type[] { }, new object[] { }); }
+            set { _memberFactory.CallMember(2, "Reverse", new Type[] { }, new object[] { value }); }
         }
 
         /// <summary>
@@ -150,7 +151,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void SetupDialog()
         {
-            _memberFactory.CallMember(3, "SetupDialog", new Type[] {}, new object[] {});
+            _memberFactory.CallMember(3, "SetupDialog", new Type[] { }, new object[] { });
         }
 
         /// <summary>
@@ -158,7 +159,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public float StepSize
         {
-            get { return (float) _memberFactory.CallMember(1, "StepSize", new Type[] {}, new object[] {}); }
+            get { return (float)_memberFactory.CallMember(1, "StepSize", new Type[] { }, new object[] { }); }
         }
 
         /// <summary>
@@ -166,7 +167,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public float TargetPosition
         {
-            get { return (float) _memberFactory.CallMember(1, "TargetPosition", new Type[] {}, new object[] {}); }
+            get { return (float)_memberFactory.CallMember(1, "TargetPosition", new Type[] { }, new object[] { }); }
         }
 
         #endregion
