@@ -21,27 +21,25 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>..\..\..\Ascom.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Update="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Net" />
+  </ItemGroup>
+ 
   <ItemGroup>
     <Content Include="ASCOM.ico" />
     <Content Include="ReadMe.htm" />
   </ItemGroup>
-
+ 
   <ItemGroup>
     <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
@@ -51,10 +49,18 @@
   </ItemGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <PlatformTarget>x64</PlatformTarget>
-    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
+    <PostBuildEvent>
+      copy "$(TargetPath)" "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Server\$(OutDir)$(TargetFileName)"
+      copy "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Driver\$(OutDir)ASCOM.OCH.ObservingConditions.pdb" "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Server\$(OutDir)ASCOM.OCH.ObservingConditions.pdb"
+      copy "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Driver\$(OutDir)ASCOM.OCH.ObservingConditions.dll.config" "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Server\$(OutDir)ASCOM.OCH.ObservingConditions.dll.config"
+    </PostBuildEvent>
+    <AssemblyTitle>ASCOM ObservingConditions Hub Driver</AssemblyTitle>
+    <Description>ASCOM Observing Conditions Hub Driver</Description>
+    <Company>ASCOM Initiative</Company>
+    <Product>ASCOM Observing Conditions Hub</Product>
+    <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
+    <AssemblyVersion>7.0.0.0</AssemblyVersion>
+    <SupportedOSPlatformVersion>10.0.18362.0</SupportedOSPlatformVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&#xD;&#xA;&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
-  </Target>
 </Project>

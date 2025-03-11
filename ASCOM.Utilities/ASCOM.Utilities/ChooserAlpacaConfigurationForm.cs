@@ -4,7 +4,7 @@ using static ASCOM.Utilities.Global;
 
 namespace ASCOM.Utilities
 {
-    public partial class ChooserAlpacaConfigurationForm
+    public partial class ChooserAlpacaConfigurationForm : Form
     {
         private ChooserForm chooserForm;
 

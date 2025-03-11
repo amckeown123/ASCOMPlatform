@@ -2,32 +2,10 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-
-[assembly: AssemblyTitle("ASCOM Utilities")]
-[assembly: AssemblyDescription("ASCOM Utilities")]
-[assembly: AssemblyCompany("ASCOM Initiative")]
-[assembly: AssemblyProduct("ASCOM Utilities")]
-[assembly: AssemblyCopyright("Copyright © ASCOM Initiative 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: CLSCompliant(true)]
-
-// Version information for an assembly consists of the following four values:
-
-// Major version
-// Minor Version
-// Build Number
-// Revision
-
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("6.0.0.0")]
 
 [assembly: ComVisible(false)]
 [assembly: Guid("EC785106-0F00-4e7f-90BA-7CCC9E9740E1")]

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Collections;
-
-
+using ASCOM.Utilities;
 
 namespace ASCOM.DeviceInterface
 {

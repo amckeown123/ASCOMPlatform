@@ -8,12 +8,6 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("ASCOM.TEMPLATEDEVICENAME Test")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("ASCOM Initiative")> 
-<Assembly: AssemblyProduct("TEMPLATEDEVICENAME")> 
-<Assembly: AssemblyCopyright("Copyright © ASCOM Initiative 2011")> 
-<Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 

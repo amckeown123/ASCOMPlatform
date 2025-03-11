@@ -1,22 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ProjectGuid>{97967194-9DD9-44DF-846C-E2D8D504DF2E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ASCOM.DynamicRemoteClients</RootNamespace>
     <AssemblyName>ASCOM.AlpacaDynamicClientManager</AssemblyName>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>Alpaca Dynamic Client Manager</AssemblyTitle>
     <Product>ASCOM.AlpacaDynamicClientManager</Product>
-    <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
+    <Copyright>Copyright � ASCOM Initiative 2024</Copyright>
     <AssemblyVersion>7.0.0.0</AssemblyVersion>
-    <Platforms>AnyCPU;x64</Platforms>
-    <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-    <PropertyGroup>
+  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
@@ -31,24 +28,16 @@
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="app.manifest">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
   <ItemGroup>
     <Content Include="ASCOM.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ASCOM.Com.Components" Version="2.0.5" />
-    <PackageReference Include="ASCOM.Tools" Version="2.0.5" />
+    <PackageReference Include="ASCOM.Com.Components" Version="2.0.9" />
+    <PackageReference Include="ASCOM.Tools" Version="2.0.9" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&#xD;&#xA;&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
-  </Target>
 </Project>

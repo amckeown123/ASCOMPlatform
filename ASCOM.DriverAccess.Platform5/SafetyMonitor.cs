@@ -2,7 +2,6 @@
 // 10-Jul-08	rbd		1.0.5 - Release COM on Dispose().
 //
 using System;
-using System.Collections;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using ASCOM.DeviceInterface;
@@ -213,13 +212,7 @@ namespace ASCOM.DriverAccess
             }
         }
 
-        public short InterfaceVersion => throw new System.NotImplementedException();
-
-        public string Name => throw new System.NotImplementedException();
-
-        public ArrayList SupportedActions => throw new System.NotImplementedException();
-
-
+ 
         ///<summary>
         ///Launches a configuration dialog box for the driver.  The call will not return
         ///until the user clicks OK or cancel manually.
@@ -252,26 +245,6 @@ namespace ASCOM.DriverAccess
                 catch (Exception) { }
                 objSafetyMonitorLateBound = null;
             }
-        }
-
-        public string Action(string ActionName, string ActionParameters)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void CommandBlind(string Command, bool Raw = false)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool CommandBool(string Command, bool Raw = false)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public string CommandString(string Command, bool Raw = false)
-        {
-            throw new System.NotImplementedException();
         }
 
         #endregion

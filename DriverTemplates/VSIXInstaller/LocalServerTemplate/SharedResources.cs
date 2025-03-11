@@ -29,7 +29,7 @@ namespace ASCOM.LocalServer
         private static readonly object lockObject = new object();
 
         // Shared serial port. This will allow multiple drivers to use one single serial port.
-        private static Serial sharedSerial = new Serial();      // Shared serial port
+        private static SerialPort sharedSerial = new SerialPort();      // Shared serial port
         private static int serialConnectionCount = 0;     // counter for the number of connections to the serial port
 
         // Public access to shared resources
@@ -75,7 +75,7 @@ namespace ASCOM.LocalServer
         /// <summary>
         /// Shared serial port
         /// </summary>
-        public static Serial SharedSerial
+        public static SerialPort SharedSerial
         {
             get
             {

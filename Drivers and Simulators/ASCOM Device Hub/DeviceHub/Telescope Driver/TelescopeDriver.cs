@@ -58,6 +58,7 @@ namespace ASCOM.DeviceHub
         #region Private Fields and Properties
 
         private TelescopeManager TelescopeManager => TelescopeManager.Instance;
+        private DomeManager DomeManager => DomeManager.Instance;
 
         /// <summary>
         /// Returns true if there is a valid connection to the driver hardware
@@ -84,6 +85,8 @@ namespace ASCOM.DeviceHub
             _driverDescription = GetDriverDescriptionFromAttribute();
 
             _logger = new TraceLogger("", "DeviceHubTelescope");
+            _logger.UnicodeEnabled = true; // Enable Unicode support
+
             ReadProfile(); // Read device configuration from the ASCOM Profile store
 
             LogMessage("Telescope", "Starting initialization");
@@ -506,7 +509,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.Altitude;
+                    retval = TelescopeManager.Service.Altitude;
                     msg += $"{Utilities.DegreesToDMS(retval)}{_done}";
                 }
                 catch (Exception ex)
@@ -603,7 +606,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.AtHome;
+                    retval = TelescopeManager.Service.AtHome;
                     msg += $"{retval}{_done}";
                 }
                 catch (Exception ex)
@@ -632,7 +635,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    atPark = TelescopeManager.AtPark;
+                    atPark = TelescopeManager.Service.AtPark;
                     msg += $"{atPark}{_done}";
                 }
                 catch (Exception ex)
@@ -685,7 +688,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.Azimuth;
+                    retval = TelescopeManager.Service.Azimuth;
                     msg += $"{Utilities.DegreesToDMS(retval)}{_done}";
                 }
                 catch (Exception ex)
@@ -1298,7 +1301,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.Declination;
+                    retval = TelescopeManager.Service.Declination;
                     msg += $"{Utilities.DegreesToDMS(retval)}{_done}";
                 }
                 catch (Exception ex)
@@ -1441,7 +1444,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     TelescopeManager.DoesRefraction = value;
-                    string outcome = AttemptToSet(() => TelescopeManager.Parameters.DoesRefraction= value);
+                    string outcome = AttemptToSet(() => TelescopeManager.Parameters.DoesRefraction = value);
                     msg += $"{value}{_done} {outcome}";
                 }
                 catch (Exception)
@@ -1687,7 +1690,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.IsPulseGuiding;
+                    retval = TelescopeManager.Service.IsPulseGuiding;
                     msg += $"{retval}{_done}";
                 }
                 catch (Exception ex)
@@ -1822,7 +1825,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.RightAscension;
+                    retval = TelescopeManager.Service.RightAscension;
                     msg += $"{Utilities.HoursToHMS(retval)}{_done}";
                 }
                 catch (Exception ex)
@@ -1941,7 +1944,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.SideOfPier;
+                    retval = TelescopeManager.Service.SideOfPier;
                     msg += $"{retval}{_done}";
                 }
                 catch (Exception ex)
@@ -1995,7 +1998,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    siderealTime = TelescopeManager.SiderealTime;
+                    siderealTime = TelescopeManager.Service.SiderealTime;
                     msg += $"{siderealTime:F5}{_done}";
                 }
                 catch (Exception ex)
@@ -2051,7 +2054,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     TelescopeManager.SiteElevation = value;
-                    string outcome= AttemptToSet(() => TelescopeManager.Parameters.SiteElevation = value);
+                    string outcome = AttemptToSet(() => TelescopeManager.Parameters.SiteElevation = value);
                     msg += $"{_done} {outcome}";
                 }
                 catch (Exception)
@@ -2216,7 +2219,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     TelescopeManager.SlewSettleTime = value;
-                    string outcome = AttemptToSet(() => TelescopeManager.Parameters.SlewSettleTime= value);
+                    string outcome = AttemptToSet(() => TelescopeManager.Parameters.SlewSettleTime = value);
                     msg += $"{_done} {outcome}";
                 }
                 catch (Exception)
@@ -2235,12 +2238,15 @@ namespace ASCOM.DeviceHub
         public void SlewToAltAz(double azimuth, double altitude)
         {
             string name = "SlewToAltAz:";
+            LogMessage(name, $"Method entered");
+
             CheckCapabilityForMethod(name, "CanSlewAltAz", TelescopeManager.Capabilities.CanSlewAltAz);
             CheckParked(name, TelescopeManager.Status.AtPark);
             CheckParkingStatus(name, TelescopeManager.Status.ParkingState, ParkingStateEnum.Unparked);
             CheckTracking(name, false);
             CheckRange(name, azimuth, 0, 360);
             CheckRange(name, altitude, -90, 90);
+            LogMessage(name, $"Execution checks completed, starting slew");
 
             string msg = $"Altitude = {altitude:F5}, Azimuth = {azimuth:F5}";
 
@@ -2259,17 +2265,21 @@ namespace ASCOM.DeviceHub
             {
                 LogMessage(name, msg);
             }
+            LogMessage(name, $"Method exited");
         }
 
         public void SlewToAltAzAsync(double azimuth, double altitude)
         {
             string name = "SlewToAltAzAsync:";
             CheckCapabilityForMethod(name, "CanSlewAltAzAzsync", TelescopeManager.Capabilities.CanSlewAltAzAsync);
+            LogMessage(name, $"Method entered");
+
             CheckParked(name, TelescopeManager.Status.AtPark);
             CheckParkingStatus(name, TelescopeManager.Status.ParkingState, ParkingStateEnum.Unparked);
             CheckTracking(name, false);
             CheckRange(name, azimuth, 0, 360);
             CheckRange(name, altitude, -90, 90);
+            LogMessage(name, $"Execution checks completed, starting slew");
 
             string msg = $"Altitude = {altitude:f5}, Azimuth = {azimuth:f5}";
 
@@ -2287,17 +2297,21 @@ namespace ASCOM.DeviceHub
             {
                 LogMessage(name, msg);
             }
+            LogMessage(name, $"Method exited");
         }
 
         public void SlewToCoordinates(double rightAscension, double declination)
         {
             string name = "SlewToCoordinates:";
+            LogMessage(name, $"Method entered");
+
             CheckCapabilityForMethod(name, "CanSlew", TelescopeManager.Capabilities.CanSlew);
             CheckRange(name, rightAscension, 0.0, 24.0);
             CheckRange(name, declination, -90.0, 90.0);
             CheckParked(name, TelescopeManager.Status.AtPark);
             CheckParkingStatus(name, TelescopeManager.Status.ParkingState, ParkingStateEnum.Unparked);
             CheckTracking(name, true);
+            LogMessage(name, $"Execution checks completed, starting slew");
 
             string msg = "";
             try
@@ -2317,11 +2331,14 @@ namespace ASCOM.DeviceHub
             {
                 LogMessage(name, msg);
             }
+            LogMessage(name, $"Method exited");
         }
 
         public void SlewToCoordinatesAsync(double rightAscension, double declination)
         {
             string name = "SlewToCoordinatesAsync:";
+            LogMessage(name, $"Method entered");
+
             CheckCapabilityForMethod(name, "CanSlew", TelescopeManager.Capabilities.CanSlew);
             CheckCapabilityForMethod(name, "CanSlewAsync", TelescopeManager.Capabilities.CanSlewAsync);
             CheckRange(name, rightAscension, 0.0, 24.0);
@@ -2329,12 +2346,14 @@ namespace ASCOM.DeviceHub
             CheckParked(name, TelescopeManager.Status.AtPark);
             CheckParkingStatus(name, TelescopeManager.Status.ParkingState, ParkingStateEnum.Unparked);
             CheckTracking(name, true);
+            LogMessage(name, $"Execution checks completed, starting slew");
 
             string msg = $"RightAscension = {rightAscension:f5}, Declination = {declination:f5}";
 
             try
             {
                 TelescopeManager.BeginSlewToCoordinatesAsync(rightAscension, declination);
+                LogMessage(name, $"Slew initiated OK");
             }
             catch (Exception)
             {
@@ -2346,17 +2365,21 @@ namespace ASCOM.DeviceHub
             {
                 LogMessage(name, msg);
             }
+            LogMessage(name, $"Method exited");
         }
 
         public void SlewToTarget()
         {
             string name = "SlewToTarget:";
+            LogMessage(name, $"Method entered");
+
             CheckCapabilityForMethod(name, "CanSlew", TelescopeManager.Capabilities.CanSlew);
             CheckRange(name, TelescopeManager.TargetRightAscension, 0.0, 24.0);
             CheckRange(name, TelescopeManager.TargetDeclination, -90.0, 90.0);
             CheckParked(name, TelescopeManager.Status.AtPark);
             CheckParkingStatus(name, TelescopeManager.Status.ParkingState, ParkingStateEnum.Unparked);
             CheckTracking(name, true);
+            LogMessage(name, $"Execution checks completed, starting slew");
 
             string msg = "";
 
@@ -2375,11 +2398,14 @@ namespace ASCOM.DeviceHub
             {
                 LogMessage(name, msg);
             }
+            LogMessage(name, $"Method exited");
         }
 
         public void SlewToTargetAsync()
         {
             string name = "SlewToTargetAsync:";
+            LogMessage(name, $"Method entered");
+
             CheckCapabilityForMethod(name, "CanSlew", TelescopeManager.Capabilities.CanSlew);
             CheckCapabilityForMethod(name, "CanSlewAsync", TelescopeManager.Capabilities.CanSlew);
             CheckRange(name, TelescopeManager.TargetRightAscension, 0.0, 24.0);
@@ -2387,12 +2413,14 @@ namespace ASCOM.DeviceHub
             CheckParked(name, TelescopeManager.Status.AtPark);
             CheckParkingStatus(name, TelescopeManager.Status.ParkingState, ParkingStateEnum.Unparked);
             CheckTracking(name, true);
+            LogMessage(name, $"Execution checks completed, starting slew");
 
             string msg = "";
 
             try
             {
                 TelescopeManager.BeginSlewToTargetAsync();
+                LogMessage(name, $"Slew initiated OK");
             }
             catch (Exception)
             {
@@ -2404,6 +2432,7 @@ namespace ASCOM.DeviceHub
             {
                 LogMessage(name, msg);
             }
+            LogMessage(name, $"Method exited");
         }
 
         public bool Slewing
@@ -2419,7 +2448,13 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.Slewing;
+                    // Get the telescope slewing state
+                    retval = TelescopeManager.Service.Slewing;
+
+                    // Create a composite slewing state if the dome is slaved and composite slewing is configured
+                    if (Globals.IsDomeSlaved & Globals.UseCompositeSlewingFlag)
+                        retval = retval || DomeManager.Service.Slewing;
+
                     msg += $"{retval}{_done}";
                 }
                 catch (Exception ex)
@@ -2662,7 +2697,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.Tracking;
+                    retval = TelescopeManager.Service.Tracking;
                     msg += $"{retval}{_done}";
                 }
                 catch (Exception ex)
@@ -2738,7 +2773,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     TelescopeManager.TrackingRate = value;
-                    string outcome = AttemptToSet(() => TelescopeManager.Status.TrackingRate= value);
+                    string outcome = AttemptToSet(() => TelescopeManager.Status.TrackingRate = value);
                     msg += $"{_done} {outcome}";
                 }
                 catch (Exception)
@@ -2799,7 +2834,7 @@ namespace ASCOM.DeviceHub
 
                 try
                 {
-                    retval = TelescopeManager.UTCDate;
+                    retval = TelescopeManager.Service.UTCDate;
                     msg += $"{retval:MM/dd/yy HH:mm:ss}{_done}";
                 }
                 catch (Exception ex)

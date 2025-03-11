@@ -1,7 +1,6 @@
 Option Strict Off
 Option Explicit On
 Imports System.Collections
-Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports ASCOM.Utilities.Interfaces
 
@@ -329,7 +328,7 @@ Friend Class ChooserForm
         SetName(TRACE_TRANSFORM, MenuTransformTraceEnabled.Checked.ToString)
     End Sub
 
-
+   
     Private Sub MenuIncludeSerialTraceDebugInformation_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MenuIncludeSerialTraceDebugInformation.Click
         MenuIncludeSerialTraceDebugInformation.Checked = Not MenuIncludeSerialTraceDebugInformation.Checked 'Invert selection
         SetName(SERIAL_TRACE_DEBUG, MenuIncludeSerialTraceDebugInformation.Checked.ToString)

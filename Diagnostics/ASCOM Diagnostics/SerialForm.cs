@@ -14,7 +14,7 @@ namespace ASCOM.Utilities
         }
         private void SerialForm_Load(object sender, EventArgs e)
         {
-            var SerPort = new Serial();
+            var SerPort = new SerialPort();
             string[] Ports;
             Ports = SerPort.AvailableCOMPorts;
             SerPort.Dispose();

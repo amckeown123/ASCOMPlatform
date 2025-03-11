@@ -15,7 +15,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// A factory class to access any registered driver members
     /// </summary>
-    public partial class MemberFactory : IDisposable
+    internal class MemberFactory : IDisposable
     {
         #region MemberFactory
 
@@ -30,7 +30,7 @@ namespace ASCOM.DriverAccess
         /// <param name="ascomDriverTraceLogger">The supplied TraceLogger instance in which to log activity</param>
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")]
-        public MemberFactory(string progId, TraceLogger ascomDriverTraceLogger)
+        internal MemberFactory(string progId, TraceLogger ascomDriverTraceLogger)
         {
             // Save the supplied TraceLogger object for use in method calls
             TL = ascomDriverTraceLogger;
@@ -222,7 +222,7 @@ namespace ASCOM.DriverAccess
         /// <exception cref="PropertyNotImplementedException"></exception>
         /// <exception cref="MethodNotImplementedException"></exception>
         /// <returns>object</returns>
-        public object CallMember(int memberCode, string memberName, Type[] parameterTypes, params object[] parms)
+        internal object CallMember(int memberCode, string memberName, Type[] parameterTypes, params object[] parms)
         {
             TL.BlankLine();
             switch (memberCode)

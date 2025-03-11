@@ -213,9 +213,5 @@ namespace ASCOM.DeviceInterface
 		/// <p style="color:red;margin-bottom:0"><b>Must be implemented and must not throw a PropertyNotImplementedException. </b></p>
 		/// </remarks>
 		bool IsSafe { get; }
-        bool CanEmergencyShutdown { get; }
-        bool CanIsGood { get; }
-        bool EmergencyShutdown { get; }
-        bool IsGood { get; }
     }
 }

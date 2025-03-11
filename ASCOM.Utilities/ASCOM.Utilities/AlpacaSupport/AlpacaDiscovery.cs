@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using ASCOM.Utilities.Interfaces;
 using Nancy.Json;
-//using Newtonsoft.Json;
 
 namespace ASCOM.Utilities
 {

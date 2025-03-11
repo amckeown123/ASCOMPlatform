@@ -5,7 +5,6 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 //
 using System;
-
 using ASCOM.Interface;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
@@ -45,7 +44,7 @@ namespace ASCOM.DriverAccess
         /// <returns>The Prog ID of the Dome chosen, or Null if no dome is chose, or the dialog is canceled.</returns>
         public static string Choose(string domeId)
         {
-            var oChooser = new Chooser { DeviceType = "Dome" };
+            var oChooser = new Chooser {DeviceType = "Dome"};
             return oChooser.Choose(domeId);
         }
 
@@ -76,7 +75,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void AbortSlew()
         {
-            _memberFactory.CallMember(3, "AbortSlew", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "AbortSlew", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -86,7 +85,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public double Altitude
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Altitude", new Type[] { }, new object[] { })); }
+            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Altitude", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool AtHome
         {
-            get { return (bool)_memberFactory.CallMember(1, "AtHome", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "AtHome", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -106,7 +105,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool AtPark
         {
-            get { return (bool)_memberFactory.CallMember(1, "AtPark", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "AtPark", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public double Azimuth
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Azimuth", new Type[] { }, new object[] { })); }
+            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Azimuth", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -122,7 +121,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanFindHome
         {
-            get { return (bool)_memberFactory.CallMember(1, "CanFindHome", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "CanFindHome", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -130,7 +129,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanPark
         {
-            get { return (bool)_memberFactory.CallMember(1, "CanPark", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "CanPark", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -138,7 +137,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanSetAltitude
         {
-            get { return (bool)_memberFactory.CallMember(1, "CanSetAltitude", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "CanSetAltitude", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanSetAzimuth
         {
-            get { return (bool)_memberFactory.CallMember(1, "CanSetAzimuth", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "CanSetAzimuth", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -154,7 +153,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanSetPark
         {
-            get { return (bool)_memberFactory.CallMember(1, "CanSetPark", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "CanSetPark", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -162,7 +161,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanSetShutter
         {
-            get { return (bool)_memberFactory.CallMember(1, "CanSetShutter", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "CanSetShutter", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -170,7 +169,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanSlave
         {
-            get { return (bool)_memberFactory.CallMember(1, "CanSlave", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "CanSlave", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -178,7 +177,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool CanSyncAzimuth
         {
-            get { return (bool)_memberFactory.CallMember(1, "CanSyncAzimuth", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "CanSyncAzimuth", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -186,7 +185,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void CloseShutter()
         {
-            _memberFactory.CallMember(3, "CloseShutter", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "CloseShutter", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -196,7 +195,7 @@ namespace ASCOM.DriverAccess
         /// <param name="command"></param>
         public void CommandBlind(string command)
         {
-            _memberFactory.CallMember(3, "CommandBlind", new[] { typeof(string) }, new object[] { command });
+            _memberFactory.CallMember(3, "CommandBlind", new[] {typeof (string)}, new object[] {command});
         }
 
 
@@ -208,7 +207,7 @@ namespace ASCOM.DriverAccess
         /// <returns>True if the response indicated True or success, else False.</returns>
         public bool CommandBool(string command)
         {
-            return (bool)_memberFactory.CallMember(3, "CommandBool", new[] { typeof(string) }, new object[] { command });
+            return (bool) _memberFactory.CallMember(3, "CommandBool", new[] {typeof (string)}, new object[] {command});
         }
 
         /// <summary>
@@ -220,7 +219,7 @@ namespace ASCOM.DriverAccess
         public string CommandString(string command)
         {
             return
-                (string)_memberFactory.CallMember(3, "CommandString", new[] { typeof(string) }, new object[] { command });
+                (string) _memberFactory.CallMember(3, "CommandString", new[] {typeof (string)}, new object[] {command});
         }
 
         /// <summary>
@@ -278,8 +277,8 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool Connected
         {
-            get { return (bool)_memberFactory.CallMember(1, "Connected", new Type[] { }, new object[] { }); }
-            set { _memberFactory.CallMember(2, "Connected", new Type[] { }, new object[] { value }); }
+            get { return (bool) _memberFactory.CallMember(1, "Connected", new Type[] {}, new object[] {}); }
+            set { _memberFactory.CallMember(2, "Connected", new Type[] {}, new object[] {value}); }
         }
 
         /// <summary>
@@ -287,7 +286,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public string Description
         {
-            get { return (string)_memberFactory.CallMember(1, "Description", new[] { typeof(string) }, new object[] { }); }
+            get { return (string) _memberFactory.CallMember(1, "Description", new[] {typeof (string)}, new object[] {}); }
         }
 
         /// <summary>
@@ -295,7 +294,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public string DriverInfo
         {
-            get { return (string)_memberFactory.CallMember(1, "DriverInfo", new[] { typeof(string) }, new object[] { }); }
+            get { return (string) _memberFactory.CallMember(1, "DriverInfo", new[] {typeof (string)}, new object[] {}); }
         }
 
         /// <summary>
@@ -303,7 +302,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void FindHome()
         {
-            _memberFactory.CallMember(3, "FindHome", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "FindHome", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -312,7 +311,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public short InterfaceVersion
         {
-            get { return Convert.ToInt16(_memberFactory.CallMember(1, "InterfaceVersion", new Type[] { }, new object[] { })); }
+            get { return Convert.ToInt16(_memberFactory.CallMember(1, "InterfaceVersion", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -320,7 +319,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public string Name
         {
-            get { return (string)_memberFactory.CallMember(1, "Name", new[] { typeof(string) }, new object[] { }); }
+            get { return (string) _memberFactory.CallMember(1, "Name", new[] {typeof (string)}, new object[] {}); }
         }
 
         /// <summary>
@@ -329,7 +328,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void OpenShutter()
         {
-            _memberFactory.CallMember(3, "OpenShutter", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "OpenShutter", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -339,7 +338,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void Park()
         {
-            _memberFactory.CallMember(3, "Park", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "Park", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -348,7 +347,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void SetPark()
         {
-            _memberFactory.CallMember(3, "SetPark", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "SetPark", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -356,7 +355,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void SetupDialog()
         {
-            _memberFactory.CallMember(3, "SetupDialog", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "SetupDialog", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -367,7 +366,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public ShutterState ShutterStatus
         {
-            get { return (ShutterState)_memberFactory.CallMember(1, "ShutterStatus", new Type[] { }, new object[] { }); }
+            get { return (ShutterState) _memberFactory.CallMember(1, "ShutterStatus", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -379,8 +378,8 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool Slaved
         {
-            get { return (bool)(_memberFactory.CallMember(1, "Slaved", new Type[] { }, new object[] { })); }
-            set { _memberFactory.CallMember(2, "Slaved", new Type[] { }, new object[] { value }); }
+            get { return (bool) (_memberFactory.CallMember(1, "Slaved", new Type[] {}, new object[] {})); }
+            set { _memberFactory.CallMember(2, "Slaved", new Type[] {}, new object[] {value}); }
         }
 
         /// <summary>
@@ -391,7 +390,7 @@ namespace ASCOM.DriverAccess
         /// <param name="altitude">Target dome altitude (degrees, horizon zero and increasing positive to 90 zenith)</param>
         public void SlewToAltitude(double altitude)
         {
-            _memberFactory.CallMember(3, "SlewToAltitude", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "SlewToAltitude", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -402,7 +401,7 @@ namespace ASCOM.DriverAccess
         /// <param name="azimuth">Target azimuth (degrees, North zero and increasing clockwise. i.e., 90 East, 180 South, 270 West)</param>
         public void SlewToAzimuth(double azimuth)
         {
-            _memberFactory.CallMember(3, "SlewToAzimuth", new[] { typeof(double) }, new object[] { azimuth });
+            _memberFactory.CallMember(3, "SlewToAzimuth", new[] {typeof (double)}, new object[] {azimuth});
         }
 
         /// <summary>
@@ -412,7 +411,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool Slewing
         {
-            get { return (bool)(_memberFactory.CallMember(1, "Slewing", new Type[] { }, new object[] { })); }
+            get { return (bool) (_memberFactory.CallMember(1, "Slewing", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -422,7 +421,7 @@ namespace ASCOM.DriverAccess
         /// <param name="azimuth">Target azimuth (degrees, North zero and increasing clockwise. i.e., 90 East, 180 South, 270 West)</param>
         public void SyncToAzimuth(double azimuth)
         {
-            _memberFactory.CallMember(3, "SyncToAzimuth", new[] { typeof(double) }, new object[] { azimuth });
+            _memberFactory.CallMember(3, "SyncToAzimuth", new[] {typeof (double)}, new object[] {azimuth});
         }
 
         #endregion

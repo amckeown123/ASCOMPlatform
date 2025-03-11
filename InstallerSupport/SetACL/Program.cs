@@ -6,7 +6,6 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using ASCOM.Utilities;
 
-
 namespace SetACL
 {
     class Program

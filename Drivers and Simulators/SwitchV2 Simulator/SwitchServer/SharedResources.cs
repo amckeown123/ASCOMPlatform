@@ -14,6 +14,7 @@
 // Modified by Chris Rowland and Peter Simpson to hamdle multiple hardware devices March 2011
 //
 using System.Collections.Generic;
+using System.IO.Ports;
 
 namespace ASCOM.Simulator
 {
@@ -31,7 +32,7 @@ namespace ASCOM.Simulator
         private static readonly object lockObject = new object();
 
         // Shared serial port. This will allow multiple drivers to use one single serial port.
-        private static ASCOM.Utilities.Serial s_sharedSerial = new ASCOM.Utilities.Serial();		// Shared serial port
+        private static SerialPort s_sharedSerial = new SerialPort();		// Shared serial port
         private static int s_z = 0;     // counter for the number of connections to the serial port
 
         //
@@ -56,7 +57,7 @@ namespace ASCOM.Simulator
         /// <summary>
         /// Shared serial port
         /// </summary>
-        public static ASCOM.Utilities.Serial SharedSerial { get { return s_sharedSerial; } }
+        public static SerialPort SharedSerial { get { return s_sharedSerial; } }
 
         /// <summary>
         /// number of connections to the shared serial port
@@ -75,9 +76,9 @@ namespace ASCOM.Simulator
         {
             lock (lockObject)
             {
-                SharedSerial.Transmit(message);
+                SharedSerial.Write(message);
                 // TODO replace this with your requirements
-                return SharedSerial.ReceiveTerminated("#");
+                return "#";
             }
         }
 

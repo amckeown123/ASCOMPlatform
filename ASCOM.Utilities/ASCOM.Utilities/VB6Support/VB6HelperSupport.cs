@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.IO.Ports;
 using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
 using static ASCOM.Utilities.Global;

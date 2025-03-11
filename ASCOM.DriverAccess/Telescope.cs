@@ -5,12 +5,11 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
-using ASCOM.DeviceInterface;
-using ASCOM.Utilities;
 using System.Collections;
 using System.Reflection;
 using System.Globalization;
-using TraceLogger = ASCOM.Utilities.TraceLogger;
+using ASCOM.DeviceInterface;
+using ASCOM.Utilities;
 
 namespace ASCOM.DriverAccess
 {
@@ -19,7 +18,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Implements a telescope class to access any registered ASCOM telescope
     /// </summary>
-    public class Telescope : AscomDriver, ITelescopeV3, ITelescopeV4
+    public class Telescope : AscomDriver, ITelescopeV4, ITelescopeV3
     {
         internal MemberFactory memberFactory;
         internal bool isPlatform7Telescope = false;
@@ -198,7 +197,7 @@ namespace ASCOM.DriverAccess
 
                     try
                     {
-                        IAxisRates AxisRatesP5 = (IAxisRates)ReturnValue;
+                        ASCOM.Interface.IAxisRates AxisRatesP5 = (ASCOM.Interface.IAxisRates)ReturnValue;
                         AxisRatesP6 = new AxisRates(AxisRatesP5, TL); //Create a new P6 compliant shell that presents the P5 object
                         TL.LogMessage("AxisRates", "Number of returned AxisRates: " + AxisRatesP5.Count);
 
@@ -412,7 +411,7 @@ namespace ASCOM.DriverAccess
         /// <inheritdoc/>
         public double GuideRateRightAscension
         {
-            get { return (float)Convert.ToDouble(memberFactory.CallMember(1, "GuideRateRightAscension", new Type[] { }, new object[] { })); }
+            get { return Convert.ToDouble(memberFactory.CallMember(1, "GuideRateRightAscension", new Type[] { }, new object[] { })); }
             set { memberFactory.CallMember(2, "GuideRateRightAscension", new Type[] { }, new object[] { value }); }
         }
 
@@ -969,7 +968,7 @@ namespace ASCOM.DriverAccess
         TraceLogger TL;
         int CurrentPosition;
 
-        AxisRates AxisRatesP5;
+        ASCOM.Interface.IAxisRates AxisRatesP5;
 
         /// <summary>
         /// Creates an empty AxisRates object
@@ -980,12 +979,12 @@ namespace ASCOM.DriverAccess
             TL = null;
         }
 
-        internal AxisRates(IAxisRates AxisRates, TraceLogger traceLogger)
+        internal AxisRates(ASCOM.Interface.IAxisRates AxisRates, TraceLogger traceLogger)
         {
             TL = traceLogger;
-            AxisRatesP5 = (AxisRates)AxisRates;
+            AxisRatesP5 = AxisRates;
             this.Reset();
-            foreach (IRate Rate in AxisRates)
+            foreach (ASCOM.Interface.IRate Rate in AxisRates)
             {
                 if (!(TL == null)) TL.LogMessage("AxisRates Class P5 New", "Adding rate: - Minimum: " + Rate.Minimum + ", Maximum: " + Rate.Maximum);
                 //m_Rates.Add(new Rate(Rate.Minimum, Rate.Maximum));

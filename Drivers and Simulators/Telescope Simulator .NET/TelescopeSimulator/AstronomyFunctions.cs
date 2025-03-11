@@ -287,7 +287,7 @@ namespace ASCOM.Simulator
         /// <param name="declination"></param>
         /// <param name="latitude"></param>
         /// <returns></returns>
-        public static Vector2 CalculateAltAzm(double rightAscension, double declination, double latitude)
+        public static Vector CalculateAltAzm(double rightAscension, double declination, double latitude)
         {
 
             double lst = TelescopeHardware.SiderealTime;      // Hours
@@ -307,7 +307,7 @@ namespace ASCOM.Simulator
             double z = (ch * cd * cl) + (sd * sl);
             double r = Math.Sqrt((x * x) + (y * y));
 
-            return new Vector2((float)RangeAzimuth(Math.Atan2(y, x) * RAD_DEG), (float)RangeAlt(Math.Atan2(z, r) * RAD_DEG));
+            return new Vector(RangeAzimuth(Math.Atan2(y, x) * RAD_DEG), RangeAlt(Math.Atan2(z, r) * RAD_DEG));
         }
 
         /// <summary>
@@ -384,15 +384,15 @@ namespace ASCOM.Simulator
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
         /// <returns>RA/Dec vector in degrees</returns>
-        internal static Vector2 CalculateRaDec(Vector2 targetAltAzm, double latitude)
+        internal static Vector CalculateRaDec(Vector targetAltAzm, double latitude)
         {
-            Vector2 raDec = new Vector2();
+            Vector raDec = new Vector();
             double ra = AstronomyFunctions.CalculateRA(targetAltAzm.Y, targetAltAzm.X, latitude);  // Returned hour angle is in sidereal hours
 
             // Convert RA in sidereal hours to degrees
-            raDec.X = (float)(ra * HOURS_TO_DEGREES); // Degrees per SI second
+            raDec.X = ra * HOURS_TO_DEGREES; // Degrees per SI second
 
-            raDec.Y = (float)AstronomyFunctions.CalculateDec(targetAltAzm.Y, targetAltAzm.X, latitude);
+            raDec.Y = AstronomyFunctions.CalculateDec(targetAltAzm.Y, targetAltAzm.X, latitude);
             return raDec;
         }
 
@@ -403,14 +403,14 @@ namespace ASCOM.Simulator
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
         /// <returns>HA/Dec vector in degrees</returns>
-        internal static Vector2 CalculateHaDec(Vector2 targetAltAzm, double latitude, double longitude)
+        internal static Vector CalculateHaDec(Vector targetAltAzm, double latitude, double longitude)
         {
-            Vector2 raDec = new Vector2();
+            Vector raDec = new Vector();
             double ra = AstronomyFunctions.CalculateRA(targetAltAzm.Y, targetAltAzm.X, latitude);
 
-            raDec.X = (float)(AstronomyFunctions.HourAngle(ra, longitude) * HOURS_TO_DEGREES * SIDEREAL_SECONDS_TO_SI_SECONDS);
+            raDec.X = AstronomyFunctions.HourAngle(ra, longitude) * HOURS_TO_DEGREES * SIDEREAL_SECONDS_TO_SI_SECONDS;
 
-            raDec.Y = (float)AstronomyFunctions.CalculateDec(targetAltAzm.Y, targetAltAzm.X, latitude);
+            raDec.Y = AstronomyFunctions.CalculateDec(targetAltAzm.Y, targetAltAzm.X, latitude);
             return raDec;
         }
     }

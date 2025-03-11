@@ -44,7 +44,7 @@ namespace ASCOM.DriverAccess
         /// <returns>Prog ID for chosen focuser or null for none</returns>
         public static string Choose(string focuserId)
         {
-            var oChooser = new Chooser { DeviceType = "Focuser" };
+            var oChooser = new Chooser {DeviceType = "Focuser"};
             return oChooser.Choose(focuserId);
         }
 
@@ -73,7 +73,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool Absolute
         {
-            get { return (bool)_memberFactory.CallMember(1, "Absolute", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "Absolute", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void Halt()
         {
-            _memberFactory.CallMember(3, "Halt", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "Halt", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool IsMoving
         {
-            get { return (bool)_memberFactory.CallMember(1, "IsMoving", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "IsMoving", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool Link
         {
-            get { return (bool)_memberFactory.CallMember(1, "Link", new Type[] { }, new object[] { }); }
-            set { _memberFactory.CallMember(2, "Link", new Type[] { }, new object[] { value }); }
+            get { return (bool) _memberFactory.CallMember(1, "Link", new Type[] {}, new object[] {}); }
+            set { _memberFactory.CallMember(2, "Link", new Type[] {}, new object[] {value}); }
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public int MaxIncrement
         {
-            get { return Convert.ToInt32(_memberFactory.CallMember(1, "MaxIncrement", new Type[] { }, new object[] { })); }
+            get { return Convert.ToInt32(_memberFactory.CallMember(1, "MaxIncrement", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public int MaxStep
         {
-            get { return Convert.ToInt32(_memberFactory.CallMember(1, "MaxStep", new Type[] { }, new object[] { })); }
+            get { return Convert.ToInt32(_memberFactory.CallMember(1, "MaxStep", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace ASCOM.DriverAccess
         /// <param name="val"></param>
         public void Move(int val)
         {
-            _memberFactory.CallMember(3, "Move", new[] { typeof(int) }, new object[] { val });
+            _memberFactory.CallMember(3, "Move", new[] {typeof (int)}, new object[] {val});
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public int Position
         {
-            get { return Convert.ToInt32(_memberFactory.CallMember(1, "Position", new Type[] { }, new object[] { })); }
+            get { return Convert.ToInt32(_memberFactory.CallMember(1, "Position", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public void SetupDialog()
         {
-            _memberFactory.CallMember(3, "SetupDialog", new Type[] { }, new object[] { });
+            _memberFactory.CallMember(3, "SetupDialog", new Type[] {}, new object[] {});
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public double StepSize
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "StepSize", new Type[] { }, new object[] { })); }
+            get { return Convert.ToDouble(_memberFactory.CallMember(1, "StepSize", new Type[] {}, new object[] {})); }
         }
 
         /// <summary>
@@ -178,8 +178,8 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool TempComp
         {
-            get { return (bool)_memberFactory.CallMember(1, "TempComp", new Type[] { }, new object[] { }); }
-            set { _memberFactory.CallMember(2, "TempComp", new Type[] { }, new object[] { value }); }
+            get { return (bool) _memberFactory.CallMember(1, "TempComp", new Type[] {}, new object[] {}); }
+            set { _memberFactory.CallMember(2, "TempComp", new Type[] {}, new object[] {value}); }
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public bool TempCompAvailable
         {
-            get { return (bool)_memberFactory.CallMember(1, "TempCompAvailable", new Type[] { }, new object[] { }); }
+            get { return (bool) _memberFactory.CallMember(1, "TempCompAvailable", new Type[] {}, new object[] {}); }
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace ASCOM.DriverAccess
         /// </summary>
         public double Temperature
         {
-            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Temperature", new Type[] { }, new object[] { })); }
+            get { return Convert.ToDouble(_memberFactory.CallMember(1, "Temperature", new Type[] {}, new object[] {})); }
         }
 
         #endregion

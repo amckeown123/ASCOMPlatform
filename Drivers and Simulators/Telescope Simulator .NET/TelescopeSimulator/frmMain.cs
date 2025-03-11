@@ -274,7 +274,7 @@ namespace ASCOM.Simulator
             {
                 TelescopeHardware.GuideRateDeclination = guideRateDec;
                 TelescopeHardware.isPulseGuidingDec = true;
-                TelescopeHardware.guideDuration.Y = (float)GuideDuration();
+                TelescopeHardware.guideDuration.Y = GuideDuration();
             }
             else
             {
@@ -284,7 +284,7 @@ namespace ASCOM.Simulator
                 }
                 TelescopeHardware.GuideRateRightAscension = guideRateRa;
                 TelescopeHardware.isPulseGuidingRa = true;
-                TelescopeHardware.guideDuration.X = (float)GuideDuration();
+                TelescopeHardware.guideDuration.X = GuideDuration();
             }
         }
 

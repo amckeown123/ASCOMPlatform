@@ -6,7 +6,6 @@ using System.IO;
 using System.Reflection;
 using ASCOM.Utilities;
 
-
 namespace RemoveOldTemplates
 {
     /// <summary>

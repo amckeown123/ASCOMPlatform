@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Diagnostics;
-using System.IO.Ports;
 using System.Runtime.InteropServices;
 using System.Threading;
 using static System.Threading.Thread;
@@ -10,6 +9,7 @@ using ASCOM.Utilities.Interfaces;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using static ASCOM.Utilities.Global;
+using System.IO.Ports;
 
 namespace ASCOM.Utilities
 {

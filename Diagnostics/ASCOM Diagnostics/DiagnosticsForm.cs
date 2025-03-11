@@ -1,19 +1,6 @@
 ﻿// Uncomment to debug this code, otherwise leave false!
 //#define DEBUG_TRACE
 
-
-using ASCOM.Astrometry;
-using ASCOM.Astrometry.Exceptions;
-using ASCOM.DeviceInterface;
-using ASCOM.Internal;
-using ASCOM.Utilities.Exceptions;
-using ASCOM.Utilities.Video;
-using Microsoft.CSharp.RuntimeBinder;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-using Microsoft.Win32;
-using PlatformUpdateChecker;
-using Semver;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +8,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.IO.Ports;
 using System.Linq;
 using System.Management;
 using System.Reflection;
@@ -33,9 +19,21 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ASCOM.Astrometry;
+using ASCOM.Astrometry.Exceptions;
+using ASCOM.DeviceInterface;
+using ASCOM.Internal;
+using ASCOM.Utilities.Exceptions;
+using Microsoft.CSharp.RuntimeBinder;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Win32;
+using PlatformUpdateChecker;
+using Semver;
+
+
+//using Semver;
 using static ASCOM.Utilities.Global;
-using static ASCOM.Utilities.RegistryAccess;
-using static ASCOM.Utilities.Serial;
 
 namespace ASCOM.Utilities
 {
@@ -261,6 +259,7 @@ namespace ASCOM.Utilities
 
                 RefreshTraceItems(); // Get current values for the trace menu settings
                 MenuAutoViewLog.Checked = Utilities.Global.GetBool(OPTIONS_AUTOVIEW_REGISTRYKEY, OPTIONS_AUTOVIEW_REGISTRYKEY_DEFAULT); // Get the auto view log setting
+                DisplayUnicodeInTraceLoggerMenuItem.Checked= Utilities.Global.GetBool(OPTIONS_DISPLAY_UNICODE_CHARACTERS_IN_TRACELOGGER, OPTIONS_DISPLAY_UNICODE_CHARACTERS_IN_TRACELOGGER_DEFAULT); // Get the TraceLogger display Unicode state
 
                 // Define the update checker task
                 LogInternal("Load", "About to define update task");
@@ -6991,23 +6990,23 @@ namespace ASCOM.Utilities
                 CompareLongInteger("VideoUtilsTests", "GetMonochromePixelsFromBitmap G CheckSum", CheckSum2DFrame(frameOut2), 8427336832L);
                 CompareLongInteger("VideoUtilsTests", "ByteArray G CheckSum", CheckSumByteArray(byteArray), 154312224338L);
 
-                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, LumaConversionMode.B, Video.FlipMode.None, out byteArray);
+                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, Video.LumaConversionMode.B, Video.FlipMode.None, out byteArray);
                 CompareLongInteger("VideoUtilsTests", "GetMonochromePixelsFromBitmap B CheckSum", CheckSum2DFrame(frameOut2), 16836541447L);
                 CompareLongInteger("VideoUtilsTests", "ByteArray B CheckSum", CheckSumByteArray(byteArray), 306852460868L);
 
-                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, LumaConversionMode.GrayScale, Video.FlipMode.None, out byteArray);
+                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, Video.LumaConversionMode.GrayScale, Video.FlipMode.None, out byteArray);
                 CompareLongInteger("VideoUtilsTests", "GetMonochromePixelsFromBitmap GrayScale CheckSum", CheckSum2DFrame(frameOut2), 11900843419L);
                 CompareLongInteger("VideoUtilsTests", "ByteArray GrayScale CheckSum", CheckSumByteArray(byteArray), 217653761783L);
 
-                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, LumaConversionMode.R, Video.FlipMode.FlipHorizontally, out byteArray);
+                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, Video.LumaConversionMode.R, Video.FlipMode.FlipHorizontally, out byteArray);
                 CompareLongInteger("VideoUtilsTests", "GetMonochromePixelsFromBitmap FlipHorizontally CheckSum", CheckSum2DFrame(frameOut2), 16912983912L);
                 CompareLongInteger("VideoUtilsTests", "ByteArray FlipHorizontally CheckSum", CheckSumByteArray(byteArray), 311587913189L);
 
-                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, LumaConversionMode.R, Video.FlipMode.FlipVertically, out byteArray);
+                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, Video.LumaConversionMode.R, Video.FlipMode.FlipVertically, out byteArray);
                 CompareLongInteger("VideoUtilsTests", "GetMonochromePixelsFromBitmap FlipVertically CheckSum", CheckSum2DFrame(frameOut2), 17104549605L);
                 CompareLongInteger("VideoUtilsTests", "ByteArray FlipVertically CheckSum", CheckSumByteArray(byteArray), 311496655781L);
 
-                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, LumaConversionMode.R, Video.FlipMode.FlipBoth, out byteArray);
+                frameOut2 = (int[,])NH.GetMonochromePixelsFromBitmap(bitmap, Video.LumaConversionMode.R, Video.FlipMode.FlipBoth, out byteArray);
                 CompareLongInteger("VideoUtilsTests", "GetMonochromePixelsFromBitmap FlipBoth CheckSum", CheckSum2DFrame(frameOut2), 17082845076L);
                 CompareLongInteger("VideoUtilsTests", "ByteArray FlipBoth CheckSum", CheckSumByteArray(byteArray), 311564273177L);
 
@@ -10640,9 +10639,9 @@ namespace ASCOM.Utilities
             {
                 // First list out the ports we can see through .NET
                 Status("Scanning Serial Ports");
-                if (SerialPort.GetPortNames().Length > 0)
+                if (System.IO.Ports.SerialPort.GetPortNames().Length > 0)
                 {
-                    foreach (string Port in SerialPort.GetPortNames())
+                    foreach (string Port in System.IO.Ports.SerialPort.GetPortNames())
                         TL.LogMessage("Serial Ports (.NET)", Port);
                 }
                 else
@@ -11497,6 +11496,17 @@ namespace ASCOM.Utilities
         #region Other menu event handlers
 
         /// <summary>
+        /// Toggle display of Unicode characters in TraceLogger files vs displaying them as hex codes [XX].
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayUnicodeInTraceLoggerMenuItem_Click(object sender, EventArgs e)
+        {
+            DisplayUnicodeInTraceLoggerMenuItem.Checked = !DisplayUnicodeInTraceLoggerMenuItem.Checked;
+            Utilities.Global.SetName(OPTIONS_DISPLAY_UNICODE_CHARACTERS_IN_TRACELOGGER, DisplayUnicodeInTraceLoggerMenuItem.Checked.ToString()); // Set the new value in the registry
+        }
+
+        /// <summary>
         /// Refresh the trace menu items based on current values stored in the user's registry
         /// </summary>
         /// <param name="sender"></param>
@@ -11578,17 +11588,17 @@ namespace ASCOM.Utilities
             MenuWaitTypeWaitForSingleObject.Checked = false;
             switch (TypeOfWait)
             {
-                case Serial.WaitType.ManualResetEvent:
+                case SerialPort.WaitType.ManualResetEvent:
                     {
                         MenuWaitTypeManualResetEvent.Checked = true;
                         break;
                     }
-                case Serial.WaitType.Sleep:
+                case SerialPort.WaitType.Sleep:
                     {
                         MenuWaitTypeSleep.Checked = true;
                         break;
                     }
-                case Serial.WaitType.WaitForSingleObject:
+                case SerialPort.WaitType.WaitForSingleObject:
                     {
                         MenuWaitTypeWaitForSingleObject.Checked = true;
                         break;
@@ -11777,7 +11787,7 @@ namespace ASCOM.Utilities
             MenuWaitTypeManualResetEvent.Checked = true;
             MenuWaitTypeSleep.Checked = false;
             MenuWaitTypeWaitForSingleObject.Checked = false;
-            Utilities.Global.SetName(Utilities.Global.SERIAL_WAIT_TYPE, Serial.WaitType.ManualResetEvent.ToString());
+            Utilities.Global.SetName(Utilities.Global.SERIAL_WAIT_TYPE, SerialPort.WaitType.ManualResetEvent.ToString());
         }
 
         private void MenuWaitTypeSleep_Click(object sender, EventArgs e)
@@ -11785,7 +11795,7 @@ namespace ASCOM.Utilities
             MenuWaitTypeManualResetEvent.Checked = false;
             MenuWaitTypeSleep.Checked = true;
             MenuWaitTypeWaitForSingleObject.Checked = false;
-            Utilities.Global.SetName(Utilities.Global.SERIAL_WAIT_TYPE, Serial.WaitType.Sleep.ToString());
+            Utilities.Global.SetName(Utilities.Global.SERIAL_WAIT_TYPE, SerialPort.WaitType.Sleep.ToString());
         }
 
         private void MenuWaitTypeWaitForSingleObject_Click(object sender, EventArgs e)
@@ -11793,7 +11803,7 @@ namespace ASCOM.Utilities
             MenuWaitTypeManualResetEvent.Checked = false;
             MenuWaitTypeSleep.Checked = false;
             MenuWaitTypeWaitForSingleObject.Checked = true;
-            Utilities.Global.SetName(Utilities.Global.SERIAL_WAIT_TYPE, Serial.WaitType.WaitForSingleObject.ToString());
+            Utilities.Global.SetName(Utilities.Global.SERIAL_WAIT_TYPE, SerialPort.WaitType.WaitForSingleObject.ToString());
         }
 
         private void MenuAutoViewLog_Click(object sender, EventArgs e)
@@ -11974,7 +11984,7 @@ namespace ASCOM.Utilities
 
                     // Check for updates, running the ShowUpdateAvailable method if an update is available. 
                     // The CheckForUpdates relaseAction parameter is a one parameter action but the parameter is only used by the PlatformUpdateChecker executable and not by the Diagnostics form
-                    UpdateCheck.CheckForUpdates((x) => ShowUpdateAvailable(new SemVersion(0)), tlInternal);
+                    PlatformUpdateChecker.UpdateCheck.CheckForUpdates((x) => ShowUpdateAvailable(new SemVersion(0)), tlInternal);
 
                     LogInternal("DiagnosticsUpdateCheck", $"Update check complete");
                     LogInternal(" ", $" ");

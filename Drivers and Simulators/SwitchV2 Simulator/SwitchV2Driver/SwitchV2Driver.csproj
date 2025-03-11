@@ -21,32 +21,37 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
-    <PlatformTarget>x64</PlatformTarget>
-    <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyTitle>ASCOM.Simulator.Switch</AssemblyTitle>
+    <Description>ASCOM Switch driver for Simulator</Description>
+    <Company>The ASCOM Initiative</Company>
+    <Product>ASCOM Switch driver for Simulator</Product>
+    <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
+    <AssemblyVersion>7.0.0.0</AssemblyVersion>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-    <ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Update="System.Core">
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\..\..\ASCOM.snk">
       <Link>ASCOM.snk</Link>
     </None>
     <Content Include="ASCOM.ico" />
     <Content Include="ReadMe.htm" />
   </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-    <ProjectReference Include="..\..\..\InstallerSupport\SetACL\SetACL.csproj" />
     <ProjectReference Include="..\SwitchServer\SwitchServer.csproj" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&#xD;&#xA;&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
-  </Target>
 </Project>

@@ -1,0 +1,7 @@
+﻿IF (ClearCache.Checked = True)  THEN  Components.Visible := False;
+IF (ClearCache.Checked = False)  THEN  Components.Visible := True;
+IF (StartedFromControlPanel.Caption = TRUE)  THEN  ClearCache.Visible := False;
+IF (ClearCache.Checked = False)  THEN  Next.Caption := &Install;
+IF (ClearCache.Checked = True)  THEN  Next.Caption := &Clear Cache;
+IF (ClearCache.Checked = True)  THEN  ClearCacheText.Visible := True;
+IF (ClearCache.Checked = False)  THEN  ClearCacheText.Visible := False;

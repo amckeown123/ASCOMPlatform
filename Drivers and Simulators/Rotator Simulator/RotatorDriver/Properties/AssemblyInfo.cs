@@ -1,15 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
-
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-// TODO - Add your authorship information here
-[assembly: AssemblyTitle("RotatorSimulator Rotator Driver")]
-[assembly: AssemblyDescription("ASCOM Rotator Driver for RotatorSimulator")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCopyright("Copyright © ASCOM Initiative 2024")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -19,6 +9,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("18458B04-7057-4169-B755-B6DB2405C0B0")]
-
-// AssemblyFileVersion is set globally (do not add an AssemblyFileVersion here).
-[assembly: AssemblyVersion("7.0.0.0")]

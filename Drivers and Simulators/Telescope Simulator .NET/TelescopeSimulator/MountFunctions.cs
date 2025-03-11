@@ -22,9 +22,9 @@ namespace ASCOM.Simulator
         /// <param name="raDec"></param>
         /// <param name="preserveSop">used for sync</param>
         /// <returns></returns>
-        internal static Vector2 ConvertRaDecToAxes(Vector2 raDec, bool preserveSop = false)
+        internal Vector ConvertRaDecToAxes(Vector raDec, bool preserveSop = false)
         {
-            Vector2 axes = new Vector2();
+            Vector axes = new Vector();
             switch (TelescopeHardware.AlignmentMode)
             {
                 case ASCOM.DeviceInterface.AlignmentModes.algAltAz:
@@ -34,9 +34,9 @@ namespace ASCOM.Simulator
                 case ASCOM.DeviceInterface.AlignmentModes.algGermanPolar:
                     PierSide sop = TelescopeHardware.SideOfPier;
 
-                    axes.X = (float)((TelescopeHardware.SiderealTime - raDec.X) * HOURS_TO_DEGREES);
+                    axes.X = (TelescopeHardware.SiderealTime - raDec.X) * HOURS_TO_DEGREES;
                     axes.Y = (TelescopeHardware.Latitude >= 0) ? raDec.Y : -raDec.Y;
-                    axes.X = (float)RangeAzm(axes.X);
+                    axes.X = RangeAzm(axes.X);
                     if (axes.X > 180.0 || axes.X < 0)
                     {
                         // adjust the targets to be through the pole
@@ -57,16 +57,16 @@ namespace ASCOM.Simulator
                     break;
 
                 case ASCOM.DeviceInterface.AlignmentModes.algPolar:
-                    axes.X = (float)((TelescopeHardware.SiderealTime - raDec.X) * HOURS_TO_DEGREES);
+                    axes.X = (TelescopeHardware.SiderealTime - raDec.X) * HOURS_TO_DEGREES;
                     axes.Y = (TelescopeHardware.Latitude >= 0) ? raDec.Y : -raDec.Y;
                     break;
             }
             return RangeAxes(axes);
         }
 
-        internal static Vector2 ConvertAltAzmToAxes(Vector2 altAz)
+        internal  Vector ConvertAltAzmToAxes(Vector altAz)
         {
-            Vector2 axes = altAz;
+            Vector axes = altAz;
             switch (TelescopeHardware.AlignmentMode)
             {
                 case ASCOM.DeviceInterface.AlignmentModes.algAltAz:
@@ -99,15 +99,15 @@ namespace ASCOM.Simulator
             return RangeAxes(axes);
         }
 
-        internal static Vector2 ConvertAxesToRaDec(Vector2 axes)
+        internal  Vector ConvertAxesToRaDec(Vector axes)
         {
-            Vector2 raDec = new Vector2();
+            Vector raDec = new Vector();
             switch (TelescopeHardware.AlignmentMode)
             {
                 case ASCOM.DeviceInterface.AlignmentModes.algAltAz:
                     raDec = AstronomyFunctions.CalculateRaDec(axes, TelescopeHardware.Latitude);
                     //raDec.X /= 15.0; // Convert RA in degrees to hours - Added by Peter 4th August 2018 to fix the hand box RA displayed value when in Alt/Az mode
-                    raDec.X = (float)(raDec.X * DEGREES_TO_HOURS);
+                    raDec.X = raDec.X * DEGREES_TO_HOURS;
                     break;
 
                 case ASCOM.DeviceInterface.AlignmentModes.algGermanPolar:
@@ -115,11 +115,11 @@ namespace ASCOM.Simulator
                     // undo through the pole
                     if (axes.Y > 90)
                     {
-                        axes.X += 180.0f;
+                        axes.X += 180.0;
                         axes.Y = 180 - axes.Y;
                         axes = RangeAltAzm(axes);
                     }
-                    raDec.X = (float)(TelescopeHardware.SiderealTime - axes.X * DEGREES_TO_HOURS);
+                    raDec.X = TelescopeHardware.SiderealTime - axes.X * DEGREES_TO_HOURS;
                     raDec.Y = (TelescopeHardware.Latitude >= 0) ? axes.Y : -axes.Y;
                     break;
             }
@@ -127,9 +127,9 @@ namespace ASCOM.Simulator
             return RangeRaDec(raDec);
         }
 
-        internal static Vector2 ConvertAxesToAltAzm(Vector2 axes)
+        internal  Vector ConvertAxesToAltAzm(Vector axes)
         {
-            Vector2 altAzm = axes;
+            Vector altAzm = axes;
             switch (TelescopeHardware.AlignmentMode)
             {
                 case ASCOM.DeviceInterface.AlignmentModes.algAltAz:
@@ -165,27 +165,27 @@ namespace ASCOM.Simulator
         /// forces a ra dec value to the range 0 to 24.0 and -90 to 90
         /// </summary>
         /// <param name="raDec">The ra dec.</param>
-        private static Vector2 RangeRaDec(Vector2 raDec)
+        private  Vector RangeRaDec(Vector raDec)
         {
-            return new Vector2((float)RangeHa(raDec.X), (float)RangeDec(raDec.Y));
+            return new Vector(RangeHa(raDec.X), RangeDec(raDec.Y));
         }
 
         /// <summary>
         /// forces an altz value the the range 0 to 360 for azimuth and -90 to 90 for altitude
         /// </summary>
         /// <param name="altAzm"></param>
-        private static Vector2 RangeAltAzm(Vector2 altAzm)
+        private  Vector RangeAltAzm(Vector altAzm)
         {
-            return new Vector2((float)RangeAzm(altAzm.X), (float)RangeDec(altAzm.Y));
+            return new Vector(RangeAzm(altAzm.X), RangeDec(altAzm.Y));
         }
 
         /// <summary>
         /// forces axis values to the range 0 to 360 and -90 to 270
         /// </summary>
         /// <param name="axes"></param>
-        private static Vector2 RangeAxes(Vector2 axes)
+        private Vector RangeAxes(Vector axes)
         {
-            return new Vector2((float)RangeAzm(axes.X), (float)RangeDecx(axes.Y));
+            return new Vector(RangeAzm(axes.X), RangeDecx(axes.Y));
         }
 
         /// <summary>

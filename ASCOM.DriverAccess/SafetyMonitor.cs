@@ -12,7 +12,7 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to SafetyMonitor drivers
     /// </summary>
-    public class SafetyMonitor : AscomDriver, ISafetyMonitor, ISafetyMonitorV3
+    public class SafetyMonitor : AscomDriver, ISafetyMonitorV3, ISafetyMonitor
     {
         private readonly MemberFactory _memberFactory;
 
@@ -74,14 +74,6 @@ namespace ASCOM.DriverAccess
         {
             get { return (bool)_memberFactory.CallMember(1, "IsSafe", new Type[] { }, new object[] { }); }
         }
-
-        public bool CanEmergencyShutdown => throw new System.NotImplementedException();
-
-        public bool CanIsGood => throw new System.NotImplementedException();
-
-        public bool EmergencyShutdown => throw new System.NotImplementedException();
-
-        public bool IsGood => throw new System.NotImplementedException();
 
         #endregion
 

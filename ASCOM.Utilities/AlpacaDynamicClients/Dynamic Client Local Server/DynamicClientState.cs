@@ -1,6 +1,7 @@
 ﻿using ASCOM.Com;
 using ASCOM.Common;
 using ASCOM.Common.Alpaca;
+using ASCOM.Utilities;
 using System;
 
 namespace ASCOM.DynamicClients

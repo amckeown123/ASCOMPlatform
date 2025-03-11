@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ASCOM.Utilities
 {
-    public static class SimulatorManager
+    internal static class SimulatorManager
     {
         const string COM_SIMULATORS_VALUE_NAME = "COMSimulators";
         const string OMNI_SIMULATORS_NAME = "OmniSimulators";
@@ -78,7 +78,7 @@ namespace ASCOM.Utilities
         /// <summary>
         /// Restore the Platform 6 COM ProgIDs to point at their Platform 6 values
         /// </summary>
-        public static void SetPlatform6Simulators(bool respectExisting, TraceLogger TL)
+        internal static void SetPlatform6Simulators(bool respectExisting, TraceLogger TL)
         {
             LogMessage("", " ", TL);
             // Check whether we need to respect any existing setting
@@ -118,7 +118,7 @@ namespace ASCOM.Utilities
         /// <summary>
         /// Hijack the Platform 6 ProgIDs and point them to the Omni Simulator devices
         /// </summary>
-        public static void SetOmniSimulators(bool respectExisting, TraceLogger TL)
+        internal static void SetOmniSimulators(bool respectExisting, TraceLogger TL)
         {
             LogMessage("", " ", TL);
             // Check whether we need to respect any existing setting
@@ -155,7 +155,7 @@ namespace ASCOM.Utilities
             LogMessage("", " ", TL);
         }
 
-        public static bool IsUsingOmniSimulators(TraceLogger TL)
+        internal static bool IsUsingOmniSimulators(TraceLogger TL)
         {
             try
             {
@@ -199,7 +199,7 @@ namespace ASCOM.Utilities
             }
         }
 
-        public static void SetOriginalSimulatorNames(TraceLogger TL)
+        internal static void SetOriginalSimulatorNames(TraceLogger TL)
         {
             foreach (KeyValuePair<string, string> simulator in originalSimulatorNames)
             {
@@ -208,7 +208,7 @@ namespace ASCOM.Utilities
 
         }
 
-        public static void SetStandardSimulatorNames(TraceLogger TL)
+        internal static void SetStandardSimulatorNames(TraceLogger TL)
         {
             foreach (KeyValuePair<string, string> simulator in standardSimulatorNames)
             {

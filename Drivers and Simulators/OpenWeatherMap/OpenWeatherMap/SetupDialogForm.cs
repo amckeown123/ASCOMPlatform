@@ -1,10 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Net;
 using ASCOM.Utilities;
+using System.Net;
 using Nancy.Json;
-
 
 
 namespace ASCOM.OpenWeatherMap
@@ -12,7 +11,7 @@ namespace ASCOM.OpenWeatherMap
     [ComVisible(false)]					// Form not registered for COM!
     public partial class SetupDialogForm : Form
     {
-        private Util util = new Util();
+        private Util util = new Utilities.Util();
 
         public SetupDialogForm()
         {
