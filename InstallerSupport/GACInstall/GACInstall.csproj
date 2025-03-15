@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -14,19 +14,14 @@
   <ItemGroup>
     <Content Include="ASCOM.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-  </ItemGroup>
+ 
   <PropertyGroup>
-    <PostBuildEvent>
-      call "$(DevEnvDir)..\Tools\VsDevCmd.bat"
-      signtool sign /a /fd SHA256 /n "Peter Simpson" /tr http://rfc3161timestamp.globalsign.com/advanced /td SHA256 "$(TargetPath)"
-    </PostBuildEvent>
-    <AssemblyTitle>GACInstall</AssemblyTitle>
-    <Description>Install assemblies into the GAC. Based on code by Mauricio Rojas orellabac%40gmail.com mrojas%40artinsoft.com</Description>
-    <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
-    <AssemblyVersion>7.0.0.0</AssemblyVersion>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>C:\Users\a-mck\source\repos\ASCOMPlatform\ASCOM.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+ 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

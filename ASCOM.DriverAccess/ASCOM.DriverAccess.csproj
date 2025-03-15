@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -24,6 +24,8 @@
     <TargetFrameworkProfile />
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWindowsForms>True</UseWindowsForms>
+    <UseWPF>True</UseWPF>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
@@ -32,44 +34,47 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ASCOM.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\Interfaces\Master Interfaces\ASCOM.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Windows.Forms" />
+    <None Remove="ASCOM.DeviceInterfaces.xml" />
+    <None Remove="oldvbproject" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj">
-      <Project>{350a73bd-60d1-03e4-2edc-a617d2d79ce3}</Project>
-      <Name>ASCOM.DeviceInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
-      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
-      <Name>ASCOM.Exceptions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
-      <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
-      <Name>ASCOM.Utilities</Name>
-    </ProjectReference>
+  
+  <!-- NOTE PrivateAssets=All prevents the Utilities / Tools dependencies from being included as package dependencies in the output DeviceInterface package. 
+		 NOTE The dependencies are only required in order to support links to utility methods within the XML help text. 
+		 NOTE The links are only required to work when the Help files are built at compile time and are not required to work at runtime. -->
+
+  <!-- Select the correct reference depending on which framework is being built -->
+  <PropertyGroup>
+    <IncludeReference>true</IncludeReference>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35' And '$(IncludeReference)'=='true'">
+    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472' And '$(IncludeReference)'=='true'">
+    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
   <ItemGroup>
-    <None Include="..\ASCOM.snk">
-      <Link>ASCOM.snk</Link>
+    <None Include="..\ASCOM Art\Bug 300 Borderless.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
-      <Link>CustomDictionary.xml</Link>
-    </CodeAnalysisDictionary>
+    <ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
+    <ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
+    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Content Include="LicenseExceptions.txt" />
+    <None Include="ReadMe.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="TaskParallelLibrary">
-      <Version>1.0.2856</Version>
-    </PackageReference>
-  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
+
 </Project>

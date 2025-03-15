@@ -4,7 +4,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using ASCOM.DeviceInterface;
+using ASCOM.Interface;
 using ASCOM.Utilities;
 
 namespace ASCOM.DriverAccess
@@ -13,10 +13,10 @@ namespace ASCOM.DriverAccess
     /// <summary>
     /// Provides universal access to SafetyMonitor drivers
     /// </summary>
-    public class SafetyMonitor : ISafetyMonitor, IDisposable
+    public class SafetyMonitor : ASCOM.Interface.ISafetyMonitor, IDisposable
     {
         object objSafetyMonitorLateBound;
-        ISafetyMonitor ISafetyMonitor;
+        ASCOM.Interface.ISafetyMonitor ISafetyMonitor;
         Type objTypeSafetyMonitor;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace ASCOM.DriverAccess
             // Try to see if this driver has an ASCOM.SafetyMonitor interface
             try
             {
-                ISafetyMonitor = (ISafetyMonitor)objSafetyMonitorLateBound;
+                ISafetyMonitor = (ASCOM.Interface.ISafetyMonitor)objSafetyMonitorLateBound;
             }
             catch (Exception)
             {

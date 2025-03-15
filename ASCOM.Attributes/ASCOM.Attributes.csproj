@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <OutputType>Library</OutputType>
@@ -28,7 +28,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Update="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -36,4 +36,7 @@
       <Link>ASCOM.snk</Link>
     </None>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

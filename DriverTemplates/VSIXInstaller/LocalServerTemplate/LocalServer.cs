@@ -23,6 +23,7 @@ using System.Threading;
 using System.Security.Principal;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ASCOM.Attributes;
 
 namespace ASCOM.LocalServer
 {

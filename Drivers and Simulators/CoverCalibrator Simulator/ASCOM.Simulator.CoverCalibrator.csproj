@@ -25,23 +25,6 @@
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Update="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ASCOM.ico" />
-    <Content Include="ReadMe.htm" />
-  </ItemGroup>
-   <ItemGroup>
-    <ProjectReference Include="..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
-    <ProjectReference Include="..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
-    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-  </ItemGroup>
   <PropertyGroup>
     <AssemblyTitle>ASCOM.Simulator.CoverCalibrator</AssemblyTitle>
     <Description>ASCOM CoverCalibrator Simulator</Description>
@@ -50,5 +33,58 @@
     <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
     <AssemblyVersion>7.0.0.0</AssemblyVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWPF>True</UseWPF>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization.Design">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.DataVisualization.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ASCOM.png" />
+    <None Include="ASCOMDriverTemplate.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="ASCOM.ico" />
+    <Content Include="ReadMe.htm" />
+    <None Include="Resources\ASCOM.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj">
+      <Project>{350a73bd-60d1-03e4-2edc-a617d2d79ce3}</Project>
+      <Name>ASCOM.DeviceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj">
+      <Project>{3b6c23f5-c590-4385-86bb-98b604b565ba}</Project>
+      <Name>ASCOM.DriverAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
+      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
+      <Name>ASCOM.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
+      <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
+      <Name>ASCOM.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
+
 </Project>

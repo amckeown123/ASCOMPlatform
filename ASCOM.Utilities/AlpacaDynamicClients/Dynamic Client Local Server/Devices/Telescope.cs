@@ -582,10 +582,9 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
-                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
+                    LogMessage("DeviceState", $"Received {client.TelescopeState} values");
 
-                    return new StateValueCollection(deviceState.ToPlatformStateValue());
+                    return (IStateValueCollection)client.TelescopeState;
                 }
                 catch (Exception ex)
                 {
@@ -593,6 +592,7 @@ namespace ASCOM.DynamicClients
                     throw;
                 }
             }
+
         }
 
         #endregion

@@ -24,27 +24,66 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWPF>True</UseWPF>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Update="System.Core">
-    </Reference>
+    <PackageReference Include="ASCOM.Com.Components">
+      <Version>2.0.9</Version>
+    </PackageReference>
+    <PackageReference Include="Octokit">
+      <Version>14.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="TaskScheduler">
+      <Version>2.12.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ASCOM.png" />
+    <None Include="ASCOMDriverTemplate.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <Content Include="ASCOM.ico" />
+    <None Include="Resources\ASCOM.bmp" />
     <Content Include="Resources\simulator.pix">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
-    <ProjectReference Include="..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
-    <ProjectReference Include="..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
-    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-    <ProjectReference Include="..\..\ASCOM.SettingsProvider\ASCOM.SettingsProvider\ASCOM.SettingsProvider.csproj" />
-    <ProjectReference Include="..\..\ASCOM.Utilities.Video\ASCOM.Utilities.Video.csproj" />
-    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-    <ProjectReference Include="..\OpenWeatherMap\OpenWeatherMap\OpenWeatherMap.csproj" />
+    <ProjectReference Include="..\..\ASCOM.Attributes\ASCOM.Attributes.csproj">
+      <Project>{2c40fad9-de75-4360-a0ad-911c4d24d98c}</Project>
+      <Name>ASCOM.Attributes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj">
+      <Project>{350a73bd-60d1-03e4-2edc-a617d2d79ce3}</Project>
+      <Name>ASCOM.DeviceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj">
+      <Project>{3b6c23f5-c590-4385-86bb-98b604b565ba}</Project>
+      <Name>ASCOM.DriverAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
+      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
+      <Name>ASCOM.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.SettingsProvider\ASCOM.SettingsProvider\ASCOM.SettingsProvider.csproj">
+      <Project>{4fffd202-81d4-4549-880b-09b640d72c1d}</Project>
+      <Name>ASCOM.SettingsProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.Utilities.Video\ASCOM.Utilities.Video.csproj">
+      <Project>{CE1C4CD1-E730-4F08-A839-F181E414E5A0}</Project>
+      <Name>ASCOM.Utilities.Video</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
+      <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
+      <Name>ASCOM.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
+
 </Project>

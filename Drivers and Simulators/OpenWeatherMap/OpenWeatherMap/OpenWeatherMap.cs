@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 using System.Net;
+using Nancy.Json;
 using ASCOM.Utilities;
 using System.Globalization;
-using Nancy.Json;
 
 namespace ASCOM.OpenWeatherMap
 {

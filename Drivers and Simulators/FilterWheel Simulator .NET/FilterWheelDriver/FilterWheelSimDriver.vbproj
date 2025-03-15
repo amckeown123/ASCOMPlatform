@@ -5,7 +5,7 @@
     <RootNamespace>ASCOM.Simulator</RootNamespace>
     <AssemblyName>ASCOM.Simulator.FilterWheel</AssemblyName>
     <AssemblyOriginatorKeyFile>..\..\..\ASCOM.snk</AssemblyOriginatorKeyFile>
-    <MyType>Windows</MyType>
+    <MyType>WindowsForms</MyType>
     <OptionStrict>On</OptionStrict>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -25,24 +25,13 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
-  <ItemGroup>
-    <Import Include="ASCOM" />
-    <Import Include="ASCOM.DeviceInterface" />
-    <Import Include="System.Runtime.InteropServices" />
-    <Import Include="System.Text" />
-    <Import Include="System.Windows.Forms" />
-  </ItemGroup>
+ 
   <ItemGroup>
     <None Include="..\..\..\ASCOM.snk">
       <Link>ASCOM.snk</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <None Update="My Project\Application.myapp">
-      <Generator>MyApplicationCodeGenerator</Generator>
-      <LastGenOutput>Application.Designer.vb</LastGenOutput>
-    </None>
-  </ItemGroup>
+ 
   <ItemGroup>
     <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
     <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
@@ -51,8 +40,50 @@
     <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
     <ProjectReference Include="..\FilterWheelServer\FilterWheelSimServer.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="My Project\Application.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Import Include="ASCOM.Attributes" />
+    <Import Include="ASCOM.DeviceInterface" />
+    <Import Include="ASCOM.FilterWheelSim" />
+    <Import Include="ASCOM.Utilities" />
+  </ItemGroup>
+  
+  
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Drivers and Simulators\FilterWheel Simulator .NET\FilterWheelServer\bin\x86\$(ConfigurationName)\$(TargetFileName)"</PostBuildEvent>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <ImportedNamespaces>ASCOM.Attributes=False,ASCOM.DeviceInterface=False,ASCOM.FilterWheelSim=False,ASCOM.Utilities=False,Microsoft.VisualBasic=True,System=True,System.Collections=True,System.Collections.Generic=True,System.Diagnostics=True,System.Linq=True,System.Xml.Linq=True,System.Threading.Tasks=True,FilterWheelSimDriver=True</ImportedNamespaces>
+    <UseWPF>True</UseWPF>
+    <StartupObject>ASCOM.Simulator.My.MyApplication</StartupObject>
   </PropertyGroup>
+  
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineDebug>True</DefineDebug>
+    <RegisterForComInterop>False</RegisterForComInterop>
+  </PropertyGroup>
+  
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineDebug>False</DefineDebug>
+    <RegisterForComInterop>False</RegisterForComInterop>
+  </PropertyGroup>
+  
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

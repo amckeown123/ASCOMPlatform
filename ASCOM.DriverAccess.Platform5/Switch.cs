@@ -8,6 +8,7 @@ using System;
 using ASCOM.Utilities;
 using static ASCOM.Utilities.Global;
 
+
 namespace ASCOM.DriverAccess
 {
 

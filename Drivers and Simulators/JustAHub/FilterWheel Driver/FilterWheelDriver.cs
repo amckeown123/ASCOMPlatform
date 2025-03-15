@@ -1,4 +1,5 @@
-﻿using ASCOM.DeviceInterface;
+﻿using ASCOM.Attributes;
+using ASCOM.DeviceInterface;
 using ASCOM.LocalServer;
 using ASCOM.Utilities;
 using System;

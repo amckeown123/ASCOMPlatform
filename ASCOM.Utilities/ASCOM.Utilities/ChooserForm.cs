@@ -193,11 +193,11 @@ namespace ASCOM.Utilities
 
         public ChooserForm() : base()
         {
-            PopulateDriverComboBoxDelegate = PopulateDriverComboBoxDelegate;
-            SetStateNoAlpacaDelegate = SetStateNoAlpacaDelegate;
-            SetStateAlpacaDiscoveringDelegate = SetStateAlpacaDiscoveringDelegate;
-            SetStateAlpacaDiscoveryCompleteFoundDevicesDelegate = SetStateAlpacaDiscoveryCompleteFoundDevicesDelegate;
-            SetStateAlpacaDiscoveryCompleteNoDevicesDelegate = SetStateAlpacaDiscoveryCompleteNoDevicesDelegate;
+            PopulateDriverComboBoxDelegate = PopulateDriverComboBox;
+            SetStateNoAlpacaDelegate = SetStateNoAlpaca;
+            SetStateAlpacaDiscoveringDelegate = SetStateAlpacaDiscovering;
+            SetStateAlpacaDiscoveryCompleteFoundDevicesDelegate = SetStateAlpacaDiscoveryCompleteFoundDevices;
+            SetStateAlpacaDiscoveryCompleteNoDevicesDelegate = SetStateAlpacaDiscoveryCompleteNoDevices;
             displayCreateAlpacDeviceTooltip = new NoParameterDelegate(DisplayAlpacaDeviceToolTip);
             InitializeComponent();
 

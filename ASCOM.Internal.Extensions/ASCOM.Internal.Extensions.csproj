@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <OutputType>Library</OutputType>
@@ -22,17 +22,12 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>ASCOM.Internal.Extensions</AssemblyTitle>
     <Description>Extension Methods %28internal use only%29.</Description>
-    <Copyright>Copyright © 2009 Timothy P. Long and TiGra Astronomy. Copyright © ASCOM Initiative 2024</Copyright>
+    <Copyright>Copyright � 2009 Timothy P. Long and TiGra Astronomy. Copyright � ASCOM Initiative 2024</Copyright>
     <AssemblyVersion>6.0.0.0</AssemblyVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Update="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Update="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyVersionInfo.cs">
@@ -50,4 +45,7 @@
   <ItemGroup>
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

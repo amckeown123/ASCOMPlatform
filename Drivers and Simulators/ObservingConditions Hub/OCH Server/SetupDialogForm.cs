@@ -1,4 +1,13 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+
 using System.Windows.Forms;
+using ASCOM.Utilities;
+using KeyValuePair = ASCOM.Utilities.KeyValuePair;
 
 namespace ASCOM.Simulator
 {

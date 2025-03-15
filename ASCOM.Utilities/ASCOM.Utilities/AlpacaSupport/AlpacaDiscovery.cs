@@ -5,8 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
-using ASCOM.Utilities.Interfaces;
 using Nancy.Json;
+using ASCOM.Utilities.Interfaces;
+//using Newtonsoft.Json;
 
 namespace ASCOM.Utilities
 {

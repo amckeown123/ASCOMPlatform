@@ -20,12 +20,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using ASCOM.Attributes;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using ASCOM.DriverAccess;
 
 namespace ASCOM.Simulator
 {

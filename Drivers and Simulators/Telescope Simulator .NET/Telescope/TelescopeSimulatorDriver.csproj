@@ -90,7 +90,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)installercopy.cmd" "$(SolutionDir)" "$(TargetDir)$(TargetName).*"
     </PostBuildEvent>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>

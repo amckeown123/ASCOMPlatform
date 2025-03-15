@@ -27,6 +27,11 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="ASCOM.png" />
     <Content Include="ReadMe.htm" />
   </ItemGroup>
@@ -34,14 +39,26 @@
     <None Include="..\..\..\ASCOM.snk">
       <Link>ASCOM.snk</Link>
     </None>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
+    <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj">
+      <Project>{2C40FAD9-DE75-4360-A0AD-911C4D24D98C}</Project>
+      <Name>ASCOM.Attributes</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
+      <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
+      <Name>ASCOM.Utilities</Name>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

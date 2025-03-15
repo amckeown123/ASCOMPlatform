@@ -17,9 +17,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ASCOM.Astrometry\ASCOM.Astrometry\ASCOM.Astrometry.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
+    <ProjectReference Include="..\TeleSimTester\TeleSimTester.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

@@ -27,6 +27,9 @@
   <ItemGroup>
     <Content Include="ASCOM.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
+  </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
       "$(SolutionDir)installercopy.cmd" "$(SolutionDir)" "$(TargetDir)$(TargetName).*"

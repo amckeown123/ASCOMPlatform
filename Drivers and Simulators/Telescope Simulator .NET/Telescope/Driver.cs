@@ -30,8 +30,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
+using ASCOM.Attributes;
 using static ASCOM.Utilities.Global;
-using ASCOM.DriverAccess;
 using System.Collections.Generic;
 
 namespace ASCOM.Simulator

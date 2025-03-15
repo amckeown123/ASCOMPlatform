@@ -1,5 +1,17 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+// TODO - Add your authorship information here
+[assembly: AssemblyTitle("ASCOM.Simulator.Switch")]
+[assembly: AssemblyDescription("ASCOM Switch driver for Simulator")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("The ASCOM Initiative")]
+[assembly: AssemblyProduct("ASCOM Switch driver for Simulator")]
+[assembly: AssemblyCopyright("Copyright © ASCOM Initiative 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -10,4 +22,17 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("ef68f42f-d9c6-4475-8910-619e1a77dce5")]
+
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+//
+
+[assembly: AssemblyVersion("7.0.0.0")]
 

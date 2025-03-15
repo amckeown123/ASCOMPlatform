@@ -15,11 +15,43 @@
     <AssemblyOriginatorKeyFile>..\..\ASCOM.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\ASCOM.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
     <ApplicationIcon>ASCOM.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Diagnostics" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
+  <ItemGroup>
+    <import Include="System" />
+    <import Include="System.Diagnostics" />
+    <import Include="System.Core" />
+    <import Include="System.Management" />
+    <import Include="System.Windows.Forms" />
+    <import Include="System.Xml.Linq" />
+    <import Include="System.Data.DataSetExtensions" />
+    <import Include="System.Data" />
+    <import Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="9.0.2" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.3" />
+    <PackageReference Include="System.Management" Version="9.0.3" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.2" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Include="app.config" />
     <None Include="..\..\ASCOM.snk" />
@@ -31,10 +63,24 @@
     <PostBuildEvent>
       "$(SolutionDir)installercopy.cmd" "$(SolutionDir)" "$(TargetDir)$(TargetName).*"
     </PostBuildEvent>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <UseWindowsForms>True</UseWindowsForms>
+    <UseWPF>True</UseWPF>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="9.0.3" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.3" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
+  </ItemGroup>
+
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

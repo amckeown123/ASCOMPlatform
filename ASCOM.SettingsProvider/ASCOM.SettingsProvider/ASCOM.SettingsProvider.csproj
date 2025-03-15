@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <OutputType>Library</OutputType>
@@ -31,16 +31,10 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>ASCOM.SettingsProvider</AssemblyTitle>
     <Description>Integrates ASCOM.Utilities.Profile and the Visual Studio settings designer.</Description>
-    <Copyright>Copyright © 2009 Timothy P. Long and TiGra Astronomy</Copyright>
+    <Copyright>Copyright � 2009 Timothy P. Long and TiGra Astronomy</Copyright>
     <AssemblyVersion>7.0.0.0</AssemblyVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.configuration" />
-    <Reference Update="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
     <None Include="..\..\ASCOM.snk">
       <Link>ASCOM.snk</Link>
@@ -54,4 +48,7 @@
     <ProjectReference Include="..\..\ASCOM.Internal.Extensions\ASCOM.Internal.Extensions.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

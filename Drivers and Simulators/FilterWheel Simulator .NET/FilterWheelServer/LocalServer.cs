@@ -437,7 +437,7 @@ namespace ASCOM.Simulator
                     assy = type.Assembly;
                     // Pull the display name from the ServedClassName attribute.
                     attr = Attribute.GetCustomAttribute(type, typeof(ServedClassNameAttribute)); //PWGS Changed to search type for attribute rather than assembly
-                    string chooserName = ((ServedClassNameAttribute)attr).DisplayName ?? "MultiServer";
+                    string chooserName = ((ServedClassNameAttribute)attr).ServedClassName ?? "MultiServer";
                     using (Profile P = new Profile())
                     {
                         P.DeviceType = deviceType;

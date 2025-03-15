@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <ProjectType>Local</ProjectType>
@@ -33,26 +33,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Update="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Update="System.Core">
-    </Reference>
-    <Reference Update="System.Drawing">
-      <Name>System.Drawing</Name>
-    </Reference>
-    <Reference Include="System.Web.Extensions" />
-  </ItemGroup>
-  <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Diagnostics" />
-    <Import Include="System.Drawing" />
-    <Import Include="System.Linq" />
-    <Import Include="System.Windows.Forms" />
-  </ItemGroup>
+  
   <ItemGroup>
     <Content Include="NamespaceDocumentation.xml">
       <SubType>Designer</SubType>
@@ -64,7 +45,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
     <PackageReference Include="Nancy" Version="2.0.0" />
-    <PackageReference Include="System.IO.Ports" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="My Project\Resources.resx" />
@@ -74,8 +55,11 @@
     <Description>ASCOM Utilities</Description>
     <Company>ASCOM Initiative</Company>
     <Product>ASCOM Utilities</Product>
-    <Copyright>Copyright © ASCOM Initiative 2024</Copyright>
+    <Copyright>Copyright � ASCOM Initiative 2024</Copyright>
     <AssemblyVersion>7.0.0.0</AssemblyVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

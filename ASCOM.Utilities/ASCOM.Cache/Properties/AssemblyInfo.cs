@@ -1,6 +1,16 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+// General Information about an assembly is controlled through the following
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("ASCOM Cache")]
+[assembly: AssemblyDescription("Cacheing component for ASCOM Platform applications and drivers")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("ASCOM Initiative")]
+[assembly: AssemblyProduct("ASCOM Cache")]
+[assembly: AssemblyCopyright("Copyright © ASCOM Initiative 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -11,6 +21,18 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("e1fcce89-bd43-4625-83ab-44c9a5adb826")]
+
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Build and Revision Numbers
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("6.0.0.0")]
 
 [assembly: InternalsVisibleToAttribute("ASCOM Diagnostics, PublicKey= " +
 "0024000004800000940000000602000000240000525341310004000001000100afa2def19e73b7" +

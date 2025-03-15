@@ -11,6 +11,7 @@ using System.Windows;
 
 using Microsoft.Win32;
 
+using ASCOM.Attributes;
 using ASCOM.DeviceHub.MvvmMessenger;
 using ASCOM.Utilities;
 

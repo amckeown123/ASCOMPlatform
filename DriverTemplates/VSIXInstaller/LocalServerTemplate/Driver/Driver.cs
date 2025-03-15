@@ -11,12 +11,10 @@
 using System;
 using System.Runtime.InteropServices;
 using ASCOM.LocalServer;
-using ASCOM;
+using ASCOM.Attributes;
 using ASCOM.Utilities;
 using System.Collections;
 using System.Windows.Forms;
-using ASCOM.DeviceInterface;
-using System.Collections.Generic;
 
 namespace TEMPLATENAMESPACE
 {
@@ -582,7 +580,7 @@ namespace TEMPLATENAMESPACE
         {
             if (!connectedState)
             {
-                throw new NotConnectedException($"{DriverDescription} ({DriverProgId}) is not connected: {message}");
+                throw new ASCOM.NotConnectedException($"{DriverDescription} ({DriverProgId}) is not connected: {message}");
             }
         }
 

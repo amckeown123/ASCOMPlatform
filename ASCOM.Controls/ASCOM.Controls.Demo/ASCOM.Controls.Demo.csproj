@@ -29,7 +29,8 @@
     <Exec Command="&#xD;&#xA;&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
   </Target>
   <ItemGroup>
-    <PackageReference Include="System.IO.Ports" Version="9.0.2" />
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.2" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="9.0.3" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.3" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.3" />
   </ItemGroup>
 </Project>

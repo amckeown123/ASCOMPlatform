@@ -19,6 +19,7 @@
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseWindowsForms>True</UseWindowsForms>
     <UseApplicationTrust>false</UseApplicationTrust>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
   </PropertyGroup>
@@ -28,6 +29,7 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\..\ASCOM.snk</AssemblyOriginatorKeyFile>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWPF>False</UseWPF>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
@@ -37,14 +39,38 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.DataVisualization">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.UI,Controls.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.DataVisualization" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Forms.DataVisualization">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization.Charting" />
+    <Reference Include="System.Collections" />
+    <Reference Include="System.Collections.Generic" />
+    <Reference Include="System.Diagnostics" />
+    <Reference Include="System.Windows.Forms.DataVisualization.Design">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.DataVisualization.Design.dll</HintPath>
+    </Reference>
+
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <import Include="System.Drawing" />
+    <import Include="System.ServiceProcess" />
+    <import Include="System.Windows.Forms.DataVisualization.Charting" />
+
+    <import Include="System.Windows.Forms" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\ASCOM.snk">
@@ -56,6 +82,12 @@
     <CodeAnalysisDictionary Include="..\..\..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
     <Content Include="ASCOM.png" />
     <Content Include="favicon.ico" />
     <Content Include="m42-800x600.jpg">
@@ -85,6 +117,10 @@
       <Name>ASCOM.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
+
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

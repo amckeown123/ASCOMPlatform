@@ -17,11 +17,19 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>ASCOM.snk</AssemblyOriginatorKeyFile>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="PresentationFramework.Aero">
-      <Private>True</Private>
-    </Reference>
+    <None Include="ASCOM.snk" />
+    <None Include="TelescopeControlClasses.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icon down arrow.png" />
@@ -34,21 +42,36 @@
     <Resource Include="Images\Stop.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ASCOM.Astrometry\ASCOM.Astrometry\ASCOM.Astrometry.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-    <ProjectReference Include="..\MvvmMessenger\MvvmMessenger.csproj" />
+    <ProjectReference Include="..\..\..\ASCOM.Astrometry\ASCOM.Astrometry\ASCOM.Astrometry.csproj">
+      <Project>{0EC4FAEB-5265-0C28-3C03-9AAF43433A73}</Project>
+      <Name>ASCOM.Astrometry</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj">
+      <Project>{2c40fad9-de75-4360-a0ad-911c4d24d98c}</Project>
+      <Name>ASCOM.Attributes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj">
+      <Project>{350a73bd-60d1-03e4-2edc-a617d2d79ce3}</Project>
+      <Name>ASCOM.DeviceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj">
+      <Project>{3b6c23f5-c590-4385-86bb-98b604b565ba}</Project>
+      <Name>ASCOM.DriverAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
+      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
+      <Name>ASCOM.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
+      <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
+      <Name>ASCOM.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvvmMessenger\MvvmMessenger.csproj">
+      <Project>{3c199a36-99a6-4c99-bab3-e37a81505111}</Project>
+      <Name>MvvmMessenger</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-  </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>copy /b /Y "$(ProjectDir)..\Documents\ASCOM Device Hub User and Technical Information.pdf" "$(TargetDir)"</PostBuildEvent>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

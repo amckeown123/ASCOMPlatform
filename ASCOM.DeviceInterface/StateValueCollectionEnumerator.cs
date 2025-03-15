@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Collections;
+
+#if NETSTANDARD2_0
+//using ASCOM.Tools;
+#else
 using ASCOM.Utilities;
+#endif
 
 namespace ASCOM.DeviceInterface
 {

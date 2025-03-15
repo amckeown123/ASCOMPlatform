@@ -1,12 +1,15 @@
 ﻿using ASCOM.Alpaca.Clients;
 using ASCOM.DeviceInterface;
-using ASCOM.Tools;
+using ASCOM.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using ASCOM.Tools;
+using System.Threading;
+using System.Diagnostics;
 
 namespace ASCOM.DynamicClients
 {
@@ -16,7 +19,7 @@ namespace ASCOM.DynamicClients
     public class Switch : ReferenceCountedObjectBase, ISwitchV3, IDisposable
     {
         // Set the device type of this device
-        private const Common.DeviceTypes deviceType = Common.DeviceTypes.Switch;
+        private const DeviceTypes deviceType = DeviceTypes.Switch;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaSwitch client;
@@ -569,10 +572,9 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
-                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
+                    LogMessage("DeviceState", $"Received {client.DeviceState} values");
 
-                    return new StateValueCollection(deviceState.ToPlatformStateValue());
+                    return (IStateValueCollection)client.DeviceState;
                 }
                 catch (Exception ex)
                 {

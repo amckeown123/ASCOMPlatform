@@ -1,13 +1,11 @@
-﻿using ASCOM.Alpaca.Clients;
-using ASCOM.DeviceInterface;
-using ASCOM.Common.Interfaces;
-using ASCOM.Tools;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using ASCOM.Alpaca.Clients;
+using ASCOM.DeviceInterface;
+using ASCOM.Tools;
+using System.Collections.Generic;
+using ASCOM.Common.DeviceStateClasses;
 
 namespace ASCOM.DynamicClients
 {
@@ -60,7 +58,7 @@ namespace ASCOM.DynamicClients
                     Enabled = state.TraceState
                 };
                 if (state.DebugTraceState)
-                    TL.SetMinimumLoggingLevel(LogLevel.Debug);
+                    TL.SetMinimumLoggingLevel(Common.Interfaces.LogLevel.Debug);
 
                 LogMessage(deviceType.ToString(), $"Starting driver initialisation for ProgID: {driverProgId}, Description: {driverDisplayName}");
 
@@ -169,14 +167,14 @@ namespace ASCOM.DynamicClients
 
         /// <summary>Returns the list of custom action names supported by this driver.</summary>
         /// <value>An ArrayList of strings (SafeArray collection) containing the names of supported actions.</value>
-        public ArrayList SupportedActions
+        public System.Collections.ArrayList SupportedActions
         {
             get
             {
                 try
                 {
                     CheckConnected($"SupportedActions");
-                    ArrayList actions = new ArrayList(client.SupportedActions.ToList<string>());
+                    System.Collections.ArrayList actions = new System.Collections.ArrayList((System.Collections.ICollection)client.SupportedActions);
                     LogMessage("SupportedActions", $"Returning {actions.Count} actions.");
                     return actions;
                 }
@@ -572,10 +570,9 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
-                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
+                    LogMessage("DeviceState", $"Received {client.FocuserState} values");
 
-                    return new StateValueCollection(deviceState.ToPlatformStateValue());
+                    return (IStateValueCollection)client.FocuserState;
                 }
                 catch (Exception ex)
                 {
@@ -583,6 +580,7 @@ namespace ASCOM.DynamicClients
                     throw;
                 }
             }
+
         }
 
         #endregion

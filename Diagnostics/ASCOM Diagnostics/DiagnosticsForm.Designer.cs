@@ -29,6 +29,18 @@ namespace ASCOM.Utilities
         // Required by the Windows Form Designer
         private System.ComponentModel.IContainer components = null;
 
+
+        private ToolStripMenuItem traceLoggerMenuItem;
+
+
+        private void DisplayUnicodeInTraceLoggerMenuItem_Click(object sender, EventArgs e)
+        {
+            // Display Unicode characters in a message box
+            string unicodeMessage = "Here are some Unicode characters: \u263A \u2665 \u03A9";
+            MessageBox.Show(unicodeMessage, "Unicode Characters", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+
         // NOTE: The following procedure is required by the Windows Form Designer
         // It can be modified using the Windows Form Designer.  
         // Do not modify it using the code editor.
@@ -511,7 +523,7 @@ namespace ASCOM.Utilities
             this.DisplayUnicodeInTraceLoggerMenuItem.Name = "DisplayUnicodeInTraceLoggerMenuItem";
             this.DisplayUnicodeInTraceLoggerMenuItem.Size = new System.Drawing.Size(321, 22);
             this.DisplayUnicodeInTraceLoggerMenuItem.Text = "Display Unicode characters in TraceLogger files";
-            this.DisplayUnicodeInTraceLoggerMenuItem.Click += new System.EventHandler(this.DisplayUnicodeInTraceLoggerMenuItem_Click);
+            this.DisplayUnicodeInTraceLoggerMenuItem.Click += new EventHandler(DisplayUnicodeInTraceLoggerMenuItem_Click);
             // 
             // DiagnosticsForm
             // 

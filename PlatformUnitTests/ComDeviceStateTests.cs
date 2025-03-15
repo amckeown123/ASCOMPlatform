@@ -19,8 +19,7 @@ namespace PlatformUnitTests
 
 
 
-        [Fact]
-        public void StateCollection_ForEach()
+        public void StateCollection_ForEach(StateValueCollection stateValueCollection)
         {
             const string STATE_NAME_0 = "State name 1";
             const string STATE_NAME_1 = "State name 2";

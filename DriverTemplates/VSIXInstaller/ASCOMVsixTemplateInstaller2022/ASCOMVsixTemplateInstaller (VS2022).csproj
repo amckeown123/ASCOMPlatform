@@ -26,8 +26,9 @@
     <AssemblyVersion>7.0.0.0</AssemblyVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
+  
   <ItemGroup>
-    <None Update="source.extension.vsixmanifest">
+    <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -80,11 +81,35 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ASCOM.Setup.TemplateWizard2022\ASCOM.Setup.VsixWizard %28VS2022%29.csproj" />
-    <ProjectReference Include="..\LocalServerTemplate\LocalServerTemplate.csproj" />
-    <ProjectReference Include="..\TestConsoleApp%28CS%29\TestConsoleApp%28CS%29.csproj" />
-    <ProjectReference Include="..\TestFormsApp%28CS%29\TestFormsApp%28CS%29.csproj" />
+    <ProjectReference Include="..\ASCOM.Setup.TemplateWizard2022\ASCOM.Setup.VsixWizard %28VS2022%29.csproj">
+      <Project>{c809cc68-5e97-4c8e-9959-cf7cdea70e6f}</Project>
+      <Name>ASCOM.Setup.VsixWizard %28VS2022%29</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
+    <ProjectReference Include="..\LocalServerTemplate\LocalServerTemplate.csproj">
+      <Project>{F17A065B-EAD3-40D1-B6E4-5AC30BAC886F}</Project>
+      <Name>LocalServerTemplate</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\TestConsoleApp%28CS%29\TestConsoleApp%28CS%29.csproj">
+      <Project>{1D704121-F745-4734-B8B1-CD6866AF3AFA}</Project>
+      <Name>TestConsoleApp%28CS%29</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\TestFormsApp%28CS%29\TestFormsApp%28CS%29.csproj">
+      <Project>{DB7501D8-D922-49DA-B6AA-393E2CE03976}</Project>
+      <Name>TestFormsApp%28CS%29</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
   </ItemGroup>
+
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">

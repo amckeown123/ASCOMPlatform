@@ -33,18 +33,31 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Interfaces\Master Interfaces\ASCOM.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
-    <ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
+    <ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj">
+      <Project>{350a73bd-60d1-03e4-2edc-a617d2d79ce3}</Project>
+      <Name>ASCOM.DeviceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
+      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
+      <Name>ASCOM.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ASCOM.Utilities\AlpacaDynamicClients\Dynamic Client Local Server\Dynamic Client Local Server.csproj" />
+    <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
+      <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
+      <Name>ASCOM.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\ASCOM.snk">
       <Link>ASCOM.snk</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="SafetyMonitor.cs" />
-  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

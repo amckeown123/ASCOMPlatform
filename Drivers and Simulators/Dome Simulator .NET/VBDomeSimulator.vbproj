@@ -4,7 +4,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>ASCOM.Simulator</RootNamespace>
     <AssemblyName>ASCOM.Simulator.Dome</AssemblyName>
-    <MyType>Windows</MyType>
+    <MyType>WindowsForms</MyType>
     <AssemblyOriginatorKeyFile>vbdomesimulator.snk</AssemblyOriginatorKeyFile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -21,9 +21,15 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        
+
     <UseWindowsForms>true</UseWindowsForms>
+    <UseWindowsForms>True</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWPF>True</UseWPF>
+    <ImportedNamespaces>ASCOM=False,System.Runtime.InteropServices=False,System.Text=False,System.Windows=False,System.Windows.Forms=False,Microsoft.VisualBasic=True,System=True,System.Collections=True,System.Collections.Generic=True,System.Diagnostics=True,System.Linq=True,System.Xml.Linq=True,System.Threading.Tasks=True,VBDomeSimulator=True</ImportedNamespaces>
+    <StartupObject>ASCOM.Simulator.My.MyApplication</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,9 +38,19 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
     <Import Include="ASCOM" />
     <Import Include="System.Runtime.InteropServices" />
     <Import Include="System.Text" />
+    <Import Include="System.Windows" />
+    <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <None Update="My Project\Application.myapp">
@@ -51,4 +67,14 @@
     <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="My Project\Application.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

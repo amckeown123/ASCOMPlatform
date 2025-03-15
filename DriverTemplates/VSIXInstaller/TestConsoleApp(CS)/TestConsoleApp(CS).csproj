@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ASCOM.TEMPLATEDEVICENAME</RootNamespace>
     <AssemblyName>ASCOM.TEMPLATEDEVICENAME.Test</AssemblyName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <AssemblyTitle>TestConsoleApp%28CS%29</AssemblyTitle>
     <Company>Peter Simpson</Company>
     <Product>TestConsoleApp%28CS%29</Product>

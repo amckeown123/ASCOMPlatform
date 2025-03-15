@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ReferencePath>C:\Users\Tim\Visual Studio Projects\ASCOM Platform 5.1\Drivers and Simulators\Platform Dependencies\</ReferencePath>
@@ -21,10 +21,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <StartAction>Program</StartAction>
     <StartProgram>C:\Users\Chris\Documents\Visual Studio 2010\Projects\domeconsole\bin\Debug\ASCOM.test.Test.exe</StartProgram>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <StartProgram>C:\Users\Chris\Documents\Visual Studio 2010\Projects\domeconsole\bin\Debug\ASCOM.test.Test.exe</StartProgram>
-    <StartAction>Program</StartAction>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="HandboxForm.vb">

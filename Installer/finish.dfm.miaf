@@ -1,1 +1,0 @@
-﻿IF (Success.Caption = REBOOT)  THEN  RebootNow.Visible := True;

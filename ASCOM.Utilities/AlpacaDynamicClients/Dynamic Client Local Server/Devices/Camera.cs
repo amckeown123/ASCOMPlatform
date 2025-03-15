@@ -1,13 +1,15 @@
 ﻿using ASCOM.Alpaca.Clients;
 using ASCOM.DeviceInterface;
-using ASCOM.Common.Interfaces;
-using ASCOM.Tools;
+using ASCOM.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using ASCOM.Tools;
+using System.Threading;
+using System.Diagnostics;
 
 namespace ASCOM.DynamicClients
 {
@@ -17,7 +19,7 @@ namespace ASCOM.DynamicClients
     public class Camera : ReferenceCountedObjectBase, ICameraV4, IDisposable
     {
         // Set the device type of this device
-        private const Common.DeviceTypes deviceType = Common.DeviceTypes.Camera;
+        private const DeviceTypes deviceType = DeviceTypes.Switch;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaCamera client;
@@ -59,8 +61,6 @@ namespace ASCOM.DynamicClients
                 {
                     Enabled = state.TraceState
                 };
-                if (state.DebugTraceState)
-                    TL.SetMinimumLoggingLevel(LogLevel.Debug);
 
                 LogMessage(deviceType.ToString(), $"Starting driver initialisation for ProgID: {driverProgId}, Description: {driverDisplayName}");
 
@@ -76,7 +76,7 @@ namespace ASCOM.DynamicClients
             catch (Exception ex)
             {
                 LogMessage(deviceType.ToString(), $"Initialisation exception: {ex}");
-                MessageBox.Show($"{ex.Message}", "Exception creating ASCOM.AlpacaSim.SafetyMonitor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{ex.Message}", "Exception creating ASCOM.AlpacaSim.Camera", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -138,6 +138,9 @@ namespace ASCOM.DynamicClients
         }
 
         #endregion
+        #region Initialisation and Dispose
+
+        #endregion
 
         #region Common properties and methods.
 
@@ -176,7 +179,8 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     CheckConnected($"SupportedActions");
-                    ArrayList actions = new ArrayList(client.SupportedActions.ToList<string>());
+                    ArrayList actions = new ArrayList((ICollection)client.SupportedActions);
+
                     LogMessage("SupportedActions", $"Returning {actions.Count} actions.");
                     return actions;
                 }
@@ -572,10 +576,9 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
-                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
+                    LogMessage("DeviceState", $"Received {client.CameraState} values");
 
-                    return new StateValueCollection(deviceState.ToPlatformStateValue());
+                    return (IStateValueCollection)client.DeviceState;
                 }
                 catch (Exception ex)
                 {
@@ -1015,7 +1018,7 @@ namespace ASCOM.DynamicClients
         {
             get
             {
-                List<string> gains = client.Gains.ToList<string>();
+                System.Collections.Generic.List<string> gains = (System.Collections.Generic.List<string>)client.Gains;
                 LogMessage("Gains", string.Format("Returning {0} gains", gains.Count));
 
                 ArrayList returnValues = new ArrayList();
@@ -1054,7 +1057,7 @@ namespace ASCOM.DynamicClients
         {
             get
             {
-                List<string> modes = client.ReadoutModes.ToList<string>();
+                System.Collections.Generic.List<string> modes = (System.Collections.Generic.List<string>)client.ReadoutModes;
                 LogMessage("ReadoutModes", string.Format("Returning {0} modes", modes.Count));
 
                 ArrayList returnValues = new ArrayList();
@@ -1121,7 +1124,7 @@ namespace ASCOM.DynamicClients
         {
             get
             {
-                List<string> offsets = client.Offsets.ToList<string>();
+                System.Collections.Generic.List<string> offsets = (System.Collections.Generic.List<string>)client.Offsets;
                 LogMessage("Offsets", string.Format("Returning {0} Offsets", offsets.Count));
 
                 ArrayList returnValues = new ArrayList();

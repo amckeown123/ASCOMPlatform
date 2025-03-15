@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Reflection;
+using ASCOM.Attributes;
 using ASCOM.Internal;
 using ASCOM.Utilities;
 using ASCOM.Utilities.Interfaces;

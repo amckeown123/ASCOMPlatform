@@ -50,6 +50,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+  </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)installercopy.cmd" "$(SolutionDir)" "$(TargetDir)$(TargetName).*"</PostBuildEvent>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>

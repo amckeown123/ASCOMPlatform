@@ -1,13 +1,16 @@
 ﻿using ASCOM.Alpaca.Clients;
 using ASCOM.DeviceInterface;
-using ASCOM.Common.Interfaces;
-using ASCOM.Tools;
+using ASCOM.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using ASCOM.Tools;
+using System.Threading;
+using System.Diagnostics;
+
 
 namespace ASCOM.DynamicClients
 {
@@ -17,7 +20,7 @@ namespace ASCOM.DynamicClients
     public class CoverCalibrator : ReferenceCountedObjectBase, ICoverCalibratorV2, IDisposable
     {
         // Set the device type of this device
-        private const Common.DeviceTypes deviceType = Common.DeviceTypes.CoverCalibrator;
+        private const DeviceTypes deviceType = DeviceTypes.CoverCalibrator;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaCoverCalibrator client;
@@ -60,7 +63,7 @@ namespace ASCOM.DynamicClients
                     Enabled = state.TraceState
                 };
                 if (state.DebugTraceState)
-                    TL.SetMinimumLoggingLevel(LogLevel.Debug);
+                    TL.SetMinimumLoggingLevel(Common.Interfaces.LogLevel.Debug);
 
                 LogMessage(deviceType.ToString(), $"Starting driver initialisation for ProgID: {driverProgId}, Description: {driverDisplayName}");
 
@@ -572,22 +575,22 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
-                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
+                    LogMessage("DeviceState", $"Received {client.CoverState} values");
 
-                    return new StateValueCollection(deviceState.ToPlatformStateValue());
+                    return (IStateValueCollection)client.CoverCalibratorState;
                 }
                 catch (Exception ex)
                 {
                     LogMessage("DeviceState", $"Threw an exception: {ex.Message}\r\n{ex}");
                     throw;
+
                 }
             }
         }
 
         #endregion
 
-        #region ICoverCalibratorV1 Implementation
+                #region ICoverCalibratorV1 Implementation
 
         public DeviceInterface.CoverStatus CoverState
         {

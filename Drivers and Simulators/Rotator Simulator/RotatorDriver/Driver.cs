@@ -20,6 +20,7 @@ using System.Collections;
 using System;
 using ASCOM.DriverAccess;
 using System.Collections.Generic;
+using ASCOM.Attributes;
 
 namespace ASCOM.Simulator
 {

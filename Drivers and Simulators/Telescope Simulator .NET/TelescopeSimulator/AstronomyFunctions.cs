@@ -17,7 +17,6 @@
 //
 
 using System;
-using System.Numerics;
 using System.Windows;
 
 namespace ASCOM.Simulator

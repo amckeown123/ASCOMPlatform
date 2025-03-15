@@ -7,17 +7,3 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 //
 // TODO - Add your authorship information here
-
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components. Do not set this to TRUE because it will stop the driver from registering correctly. 
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-

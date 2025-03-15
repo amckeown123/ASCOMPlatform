@@ -1,5 +1,13 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("FusionLib")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCopyright("Copyright © ASCOM Initiative 2024")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -9,3 +17,6 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("cc3bdb91-8048-4d1e-8e10-e35858594154")]
+
+// AssemblyFileVersion is set globally (do not add an AssemblyFileVersion here).
+[assembly: AssemblyVersion("7.0.0.0")]

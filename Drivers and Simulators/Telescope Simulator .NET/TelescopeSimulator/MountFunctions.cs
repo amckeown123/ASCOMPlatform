@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using System.Windows;
+﻿using System.Windows;
 using ASCOM.DeviceInterface;
 
 namespace ASCOM.Simulator
@@ -22,7 +21,7 @@ namespace ASCOM.Simulator
         /// <param name="raDec"></param>
         /// <param name="preserveSop">used for sync</param>
         /// <returns></returns>
-        internal Vector ConvertRaDecToAxes(Vector raDec, bool preserveSop = false)
+        internal static Vector ConvertRaDecToAxes(Vector raDec, bool preserveSop = false)
         {
             Vector axes = new Vector();
             switch (TelescopeHardware.AlignmentMode)
@@ -64,7 +63,7 @@ namespace ASCOM.Simulator
             return RangeAxes(axes);
         }
 
-        internal  Vector ConvertAltAzmToAxes(Vector altAz)
+        internal static Vector ConvertAltAzmToAxes(Vector altAz)
         {
             Vector axes = altAz;
             switch (TelescopeHardware.AlignmentMode)
@@ -99,7 +98,7 @@ namespace ASCOM.Simulator
             return RangeAxes(axes);
         }
 
-        internal  Vector ConvertAxesToRaDec(Vector axes)
+        internal static Vector ConvertAxesToRaDec(Vector axes)
         {
             Vector raDec = new Vector();
             switch (TelescopeHardware.AlignmentMode)
@@ -127,7 +126,7 @@ namespace ASCOM.Simulator
             return RangeRaDec(raDec);
         }
 
-        internal  Vector ConvertAxesToAltAzm(Vector axes)
+        internal static Vector ConvertAxesToAltAzm(Vector axes)
         {
             Vector altAzm = axes;
             switch (TelescopeHardware.AlignmentMode)
@@ -165,7 +164,7 @@ namespace ASCOM.Simulator
         /// forces a ra dec value to the range 0 to 24.0 and -90 to 90
         /// </summary>
         /// <param name="raDec">The ra dec.</param>
-        private  Vector RangeRaDec(Vector raDec)
+        private static Vector RangeRaDec(Vector raDec)
         {
             return new Vector(RangeHa(raDec.X), RangeDec(raDec.Y));
         }
@@ -174,7 +173,7 @@ namespace ASCOM.Simulator
         /// forces an altz value the the range 0 to 360 for azimuth and -90 to 90 for altitude
         /// </summary>
         /// <param name="altAzm"></param>
-        private  Vector RangeAltAzm(Vector altAzm)
+        private static Vector RangeAltAzm(Vector altAzm)
         {
             return new Vector(RangeAzm(altAzm.X), RangeDec(altAzm.Y));
         }
@@ -183,7 +182,7 @@ namespace ASCOM.Simulator
         /// forces axis values to the range 0 to 360 and -90 to 270
         /// </summary>
         /// <param name="axes"></param>
-        private Vector RangeAxes(Vector axes)
+        private static Vector RangeAxes(Vector axes)
         {
             return new Vector(RangeAzm(axes.X), RangeDecx(axes.Y));
         }

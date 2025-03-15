@@ -39,21 +39,32 @@
     <Content Include="ASCOM.ico" />
     <Content Include="ReadMe.htm" />
   </ItemGroup>
- 
+
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
-    <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
-    <ProjectReference Include="..\OCH Server\OCH Server.csproj" />
+    <ProjectReference Include="..\..\..\ASCOM.Attributes\ASCOM.Attributes.csproj">
+      <Project>{2c40fad9-de75-4360-a0ad-911c4d24d98c}</Project>
+      <Name>ASCOM.Attributes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj">
+      <Project>{350a73bd-60d1-03e4-2edc-a617d2d79ce3}</Project>
+      <Name>ASCOM.DeviceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj">
+      <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
+      <Name>ASCOM.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
+      <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
+      <Name>ASCOM.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OCH Server\OCH Server.csproj">
+      <Project>{3689a2cb-94c5-4012-a5cf-7e7d1dd27143}</Project>
+      <Name>OCH Server</Name>
+    </ProjectReference>
   </ItemGroup>
+
   <PropertyGroup />
   <PropertyGroup>
-    <PostBuildEvent>
-      copy "$(TargetPath)" "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Server\$(OutDir)$(TargetFileName)"
-      copy "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Driver\$(OutDir)ASCOM.OCH.ObservingConditions.pdb" "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Server\$(OutDir)ASCOM.OCH.ObservingConditions.pdb"
-      copy "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Driver\$(OutDir)ASCOM.OCH.ObservingConditions.dll.config" "$(SolutionDir)Drivers and Simulators\ObservingConditions Hub\OCH Server\$(OutDir)ASCOM.OCH.ObservingConditions.dll.config"
-    </PostBuildEvent>
     <AssemblyTitle>ASCOM ObservingConditions Hub Driver</AssemblyTitle>
     <Description>ASCOM Observing Conditions Hub Driver</Description>
     <Company>ASCOM Initiative</Company>
@@ -63,4 +74,7 @@
     <SupportedOSPlatformVersion>10.0.18362.0</SupportedOSPlatformVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
+  </Target>
 </Project>

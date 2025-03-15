@@ -1,7 +1,6 @@
 ﻿// (c) 2019 Daniel Van Noord
 // This code is licensed under MIT license (see License.txt for details)
 
-using Nancy.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -9,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Nancy.Json;
 //using Newtonsoft.Json;
 
 namespace ASCOM.Utilities

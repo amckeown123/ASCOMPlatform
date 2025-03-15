@@ -1,6 +1,6 @@
 ﻿using ASCOM.Alpaca.Clients;
+using ASCOM.Common;
 using ASCOM.DeviceInterface;
-using ASCOM.Common.Interfaces;
 using ASCOM.Tools;
 using System;
 using System.Collections;
@@ -60,7 +60,7 @@ namespace ASCOM.DynamicClients
                     Enabled = state.TraceState
                 };
                 if (state.DebugTraceState)
-                    TL.SetMinimumLoggingLevel(LogLevel.Debug);
+                    TL.SetMinimumLoggingLevel(Common.Interfaces.LogLevel.Debug);
 
                 LogMessage(deviceType.ToString(), $"Starting driver initialisation for ProgID: {driverProgId}, Description: {driverDisplayName}");
 
@@ -572,10 +572,9 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
-                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
+                    LogMessage("DeviceState", $"Received {client.RotatorState} values");
 
-                    return new StateValueCollection(deviceState.ToPlatformStateValue());
+                    return (IStateValueCollection)client.RotatorState;
                 }
                 catch (Exception ex)
                 {

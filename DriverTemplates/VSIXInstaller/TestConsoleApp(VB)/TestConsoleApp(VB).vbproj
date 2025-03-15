@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>TestConsoleApp_VB_</RootNamespace>
     <AssemblyName>TestConsoleApp%28VB%29</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
@@ -22,6 +23,7 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseApplicationFramework>True</UseApplicationFramework>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>

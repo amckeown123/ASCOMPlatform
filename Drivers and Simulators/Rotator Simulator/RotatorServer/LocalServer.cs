@@ -25,6 +25,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using ASCOM.Utilities;
+using ASCOM.Attributes;
 
 namespace ASCOM.Simulator
 {
