@@ -27,7 +27,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using ASCOM.Attributes;
+
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 
@@ -470,7 +470,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     retval = DomeManager.Service.Altitude;
-                    msg += $"{Utilities.DegreesToDMS(retval)}{_done}";
+                    msg += $"{retval.ToDMS()}{_done}";
                 }
                 catch (Exception ex)
                 {
@@ -557,7 +557,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     retval = DomeManager.Service.Azimuth;
-                    msg += $"{Utilities.DegreesToDMS(retval)}{_done}";
+                    msg += $"{retval.ToDMS()}{_done}";
                 }
                 catch (Exception ex)
                 {

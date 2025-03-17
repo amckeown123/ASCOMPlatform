@@ -15,7 +15,7 @@ namespace ASCOM.JustAHub
     [ComVisible(true)]
     [Guid("CDE29007-89B1-4163-9E63-F374264CD2EC")]
     [ProgId("ASCOM.JustAHub.FilterWheel")]
-    [ServedClassName("ASCOM JustAHub Filter Wheel")] // Driver description that appears in the Chooser, customise as required
+    [ServedClassName("JustAHub Filter Wheel")] // Driver description that appears in the Chooser, customise as required
     [ClassInterface(ClassInterfaceType.None)]
     public class FilterWheel : ReferenceCountedObjectBase, IFilterWheelV3, IDisposable
     {
@@ -30,12 +30,17 @@ namespace ASCOM.JustAHub
         {
             // Pull the ProgID from the ProgID class attribute.
             Attribute attr = Attribute.GetCustomAttribute(typeof(FilterWheel), typeof(ProgIdAttribute));
-            ProgId = ((ProgIdAttribute)attr).Value ?? "PROGID NOT SET!";  // Get the driver ProgIDfrom the ProgID attribute.
-                                                                                // Pull the display name from the ServedClassName class attribute.
-            attr = Attribute.GetCustomAttribute(typeof(FilterWheel), typeof(ServedClassNameAttribute));
-            ChooserDescription = ((ServedClassNameAttribute)attr).DisplayName ?? "DISPLAY NAME NOT SET!";  // Get the driver description that displays in the ASCOM Chooser from the ServedClassName attribute.
 
+            // Get the driver ProgIDfrom the ProgID attribute.
+            ProgId = ((ProgIdAttribute)attr).Value ?? "PROGID NOT SET!";
+            
+            // Pull the display name from the ServedClassName class attribute.
+            attr = Attribute.GetCustomAttribute(typeof(FilterWheel), typeof(ServedClassNameAttribute));
+
+            // Get the driver description that displays in the ASCOM Chooser from the ServedClassName attribute.
+            ChooserDescription = ((ServedClassNameAttribute)attr).DisplayName ?? "DISPLAY NAME NOT SET!";
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ASCOM.FilterWheel"/> class. Must be public to successfully register for COM.
         /// </summary>
@@ -47,11 +52,13 @@ namespace ASCOM.JustAHub
                 // By default all driver logging will appear in Hardware log file
                 // If you would like each instance of the driver to have its own log file as well, uncomment the lines below
 
-                tl = new TraceLogger("", "JustAHub.FilterWheel.Driver"); // Remove the leading ASCOM. from the ProgId because this will be added back by TraceLogger.
-                tl.Enabled = Settings.FilterWheelDriverLogging;
+                tl = new TraceLogger("", "JustAHub.FilterWheel.Driver")
+                {
+                    Enabled = Settings.FilterWheelDriverLogging
+                };
 
                 // Initialise the hardware if required
-                FilterWheelHardware.InitialiseFilterWheel();
+                FilterWheelHardware.Initialise();
 
                 LogMessage("FilterWheel", "Starting driver initialisation");
                 LogMessage("FilterWheel", $"ProgID: {ProgId}, Description: {ChooserDescription}");
@@ -193,7 +200,7 @@ namespace ASCOM.JustAHub
             try
             {
                 CheckConnected($"Action {actionName} - {actionParameters}");
-                LogMessage("", $"Calling Action: {actionName} with parameters: {actionParameters}");
+                LogMessage("Action", $"Calling Action: {actionName} with parameters: {actionParameters}");
                 string actionResponse = FilterWheelHardware.Action(actionName, actionParameters);
                 LogMessage("Action", $"Completed.");
                 return actionResponse;
@@ -247,9 +254,9 @@ namespace ASCOM.JustAHub
             try
             {
                 CheckConnected($"CommandBool: {command}, Raw: {raw}");
-                LogMessage("CommandBlind", $"Calling method - Command: {command}, Raw: {raw}");
+                LogMessage("CommandBool", $"Calling method - Command: {command}, Raw: {raw}");
                 bool commandBoolResponse = FilterWheelHardware.CommandBool(command, raw);
-                LogMessage("CommandBlind", $"Returning: {commandBoolResponse}.");
+                LogMessage("CommandBool", $"Returning: {commandBoolResponse}.");
                 return commandBoolResponse;
             }
             catch (Exception ex)
@@ -318,12 +325,12 @@ namespace ASCOM.JustAHub
                     if (value) // Request to connect
                     {
                         LogMessage("Connected Set", "Connecting to device");
-                        FilterWheelHardware.Connect(uniqueId, FilterWheelHardware.ConnectType.Connected);
+                        FilterWheelHardware.Connect(uniqueId, ConnectType.Connected);
                     }
                     else // Request to disconnect
                     {
                         LogMessage("Connected Set", "Disconnecting from device");
-                        FilterWheelHardware.Disconnect(uniqueId, FilterWheelHardware.ConnectType.Connected);
+                        FilterWheelHardware.Disconnect(uniqueId, ConnectType.Connected);
                     }
                 }
                 catch (Exception ex)
@@ -462,7 +469,7 @@ namespace ASCOM.JustAHub
                 else
                 {
                     LogMessage("FocusOffsets Get", $"Received {focusOffsets.Length} offsets.");
-                    foreach ( int i in focusOffsets )
+                    foreach (int i in focusOffsets)
                     {
                         LogMessage("FocusOffsets Get", $"Received offset: {i}.");
                     }
@@ -543,10 +550,7 @@ namespace ASCOM.JustAHub
             // This code is currently set to write messages to an individual driver log AND to the shared hardware log.
 
             // Write to the individual log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            if (tl != null)
-            {
-                tl.LogMessageCrLf(identifier, message); // Write to the individual driver log
-            }
+            tl?.LogMessageCrLf(identifier, message); // Write to the individual driver log
 
             // Write to the common hardware log shared by all running instances of the driver.
             FilterWheelHardware.LogMessage(identifier, message); // Write to the local server logger
@@ -567,7 +571,7 @@ namespace ASCOM.JustAHub
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(Common.DeviceTypes.FilterWheel, FilterWheelHardware.GetInterfaceVersion())) // Platform 7 or later device so Connect
             {
                 LogMessage("Connect", "Issuing Connect command");
-                FilterWheelHardware.Connect(uniqueId, FilterWheelHardware.ConnectType.Connect_Disconnect);
+                FilterWheelHardware.Connect(uniqueId, ConnectType.Connect_Disconnect);
                 return;
             }
 
@@ -585,7 +589,7 @@ namespace ASCOM.JustAHub
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(Common.DeviceTypes.FilterWheel, FilterWheelHardware.GetInterfaceVersion())) // Platform 7 or later device so Disconnect
             {
                 LogMessage("Disconnect", "Issuing Disconnect command");
-                FilterWheelHardware.Disconnect(uniqueId, FilterWheelHardware.ConnectType.Connect_Disconnect);
+                FilterWheelHardware.Disconnect(uniqueId, ConnectType.Connect_Disconnect);
                 return;
             }
 

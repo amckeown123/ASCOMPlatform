@@ -3,7 +3,6 @@ using ASCOM.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -15,22 +14,13 @@ namespace ASCOM.JustAHub
     [HardwareClass()] // Attribute to flag this as a device hardware class that needs to be disposed by the local server when it exits.
     internal static class FilterWheelHardware
     {
-        /// <summary>
-        /// Type of connection Connect/Disconnect or Connecting=
-        /// </summary>
-        internal enum ConnectType
-        {
-            Connect_Disconnect,
-            Connected
-        }
-
 #if DEBUG
-        private static DriverAccess.FilterWheel filterWheelDevice; // Filter wheel device being hosted
+        private static DriverAccess.FilterWheel device; // Filter wheel device being hosted
 #else
-        private static dynamic filterWheelDevice; // Filter wheel device being hosted
+        private static dynamic device; // Filter wheel device being hosted
 #endif
 
-        private static List<Guid> uniqueIds = new List<Guid>(); // List of driver instance unique IDs
+        private static readonly List<Guid> uniqueIds = new List<Guid>(); // List of driver instance unique IDs
 
         private static bool runOnce = false; // Flag to enable "one-off" activities only to run once.
         internal static Util utilities; // ASCOM Utilities object for use as required
@@ -58,7 +48,7 @@ namespace ASCOM.JustAHub
             catch (Exception ex)
             {
                 try { LogMessage("FilterWheelHardware", $"Initialisation exception: {ex}"); } catch { }
-                MessageBox.Show($"{ex.Message}", "Exception creating ASCOM.JustAHub.FilterWheel", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{ex.Message}", $"Exception creating {FilterWheel.ChooserDescription} ({FilterWheel.ProgId})", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
         }
@@ -67,32 +57,36 @@ namespace ASCOM.JustAHub
         /// Place device initialisation code here
         /// </summary>
         /// <remarks>Called every time a new instance of the driver is created.</remarks>
-        internal static void InitialiseFilterWheel()
+        internal static void Initialise()
         {
             // This method will be called every time a new ASCOM client loads your driver
-            LogMessage("InitialiseFilterWheel", $"Start.");
+            LogMessage("Initialise", $"Start.");
 
             // Make sure that "one off" activities are only undertaken once
-            if (runOnce == false)
+            if (!runOnce)
             {
-                LogMessage("InitialiseFilterWheel", $"Starting one-off initialisation.");
-
-                LogMessage("InitialiseFilterWheel", $"ProgID: {FilterWheel.ProgId}, Description: {FilterWheel.ChooserDescription}");
-
-                utilities = new Util(); //Initialise ASCOM Utilities object
-
-                LogMessage("InitialiseFilterWheel", "Completed basic initialisation");
-
-                // Add your own "one off" device initialisation here e.g. validating existence of hardware and setting up communications
-
-                CreateFilterWheelInstance();
+                LogMessage("Initialise", $"Starting one-off initialisation.");
 
                 if (string.IsNullOrEmpty(Settings.FilterWheelHostedProgId))
-                    throw new InvalidValueException("The filter wheel ProgID is null or empty");
+                    throw new InvalidValueException("The configured filter wheel ProgID is null or empty");
 
-                LogMessage("InitialiseFilterWheel", $"One-off initialisation complete.");
-                runOnce = true; // Set the flag to ensure that this code is not run again
+                LogMessage("Initialise", $"Hosted ProgID: {Settings.FilterWheelHostedProgId}");
+
+                //Initialise ASCOM Utilities object
+                utilities = new Util();
+
+                CreateInstance();
+                LogMessage("Initialise", "Completed one-off initialisation");
+
+                // Set the flag to ensure that this code is not run again
+                runOnce = true;
             }
+            else
+            {
+                LogMessage("Initialise", "One-off initialisation has already run.");
+            }
+
+            LogMessage("Initialise", $"Complete.");
         }
 
         /// <summary>
@@ -118,20 +112,20 @@ namespace ASCOM.JustAHub
             // Driver instance not yet connected
 
             // Test whether the filter wheel is already connected
-            if (!filterWheelDevice.Connected) // Filter wheel hardware is not connected so connect
+            if (!device.Connected) // Filter wheel hardware is not connected so connect
             {
                 LogMessage("Connect", $"First connection request - Connecting to hardware...");
 
                 switch (connectType)
                 {
                     case ConnectType.Connected:
-                        filterWheelDevice.Connected = true;
+                        device.Connected = true;
                         LogMessage("Connect", $"Filter wheel connected OK.");
                         break;
 
                     case ConnectType.Connect_Disconnect:
-                        filterWheelDevice.Connect();
-                        LogMessage("Connect", $"Connect completed OK - Connecting: {filterWheelDevice.Connecting}.");
+                        device.Connect();
+                        LogMessage("Connect", $"Connect completed OK - Connecting: {device.Connecting}.");
                         break;
 
                     default:
@@ -185,13 +179,13 @@ namespace ASCOM.JustAHub
                 switch (connectType)
                 {
                     case ConnectType.Connected:
-                        filterWheelDevice.Connected = false;
+                        device.Connected = false;
                         LogMessage("Disconnect", $"Filter wheel disconnected OK.");
                         break;
 
                     case ConnectType.Connect_Disconnect:
-                        filterWheelDevice.Disconnect();
-                        LogMessage("Disconnect", $"Disconnect completed OK - Connecting: {filterWheelDevice.Connecting}.");
+                        device.Disconnect();
+                        LogMessage("Disconnect", $"Disconnect completed OK - Connecting: {device.Connecting}.");
                         break;
 
                     default:
@@ -219,7 +213,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                return filterWheelDevice.Connecting;
+                return device.Connecting;
             }
         }
 
@@ -230,7 +224,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                return filterWheelDevice.DeviceState;
+                return device.DeviceState;
             }
         }
 
@@ -244,14 +238,14 @@ namespace ASCOM.JustAHub
             return uniqueIds.Contains(uniqueId);
         }
 
-        public static void CreateFilterWheelInstance()
+        public static void CreateInstance()
         {
             // Remove any current instance and replace with a new one
-            if (!(filterWheelDevice is null)) // There is an existing instance
+            if (!(device is null)) // There is an existing instance
             {
-                try { filterWheelDevice.Connected = false; } catch { }
+                try { device.Connected = false; } catch { }
 
-                try { filterWheelDevice.Dispose(); } catch { }
+                try { device.Dispose(); } catch { }
 
                 try
                 {
@@ -259,15 +253,15 @@ namespace ASCOM.JustAHub
 
                     do
                     {
-                        remainingCount = Marshal.ReleaseComObject(filterWheelDevice);
-                        LogMessage("CreateFilterWheelInstance", $"Released COM object wrapper, remaining count: {remainingCount}.");
+                        remainingCount = Marshal.ReleaseComObject(device);
+                        LogMessage("CreateInstance", $"Released COM object wrapper, remaining count: {remainingCount}.");
                     } while (remainingCount > 0);
                 }
                 catch { }
 
-                filterWheelDevice = null;
+                device = null;
 
-                // ALlow some time to dispose of the driver
+                // Allow some time to dispose of the driver
                 System.Threading.Thread.Sleep(1000);
             }
             try
@@ -276,15 +270,15 @@ namespace ASCOM.JustAHub
                 try
                 {
 #if DEBUG
-                    LogMessage("CreateFilterWheelInstance", $"Creating DriverAccess FilterWheel device.");
-                    filterWheelDevice = new DriverAccess.FilterWheel(hostedFilterWheelProgId);
+                    LogMessage("CreateInstance", $"Creating DriverAccess FilterWheel device.");
+                    device = new DriverAccess.FilterWheel(Settings.FilterWheelHostedProgId);
 #else
                     // Get the Type of this ProgID
                     Type filterWheelType = Type.GetTypeFromProgID(Settings.FilterWheelHostedProgId);
-                    LogMessage("CreateFilterWheelInstance", $"Created Type for ProgID: {Settings.FilterWheelHostedProgId} OK.");
-                    filterWheelDevice = Activator.CreateInstance(filterWheelType);
+                    LogMessage("CreateInstance", $"Created Type for ProgID: {Settings.FilterWheelHostedProgId} OK.");
+                    device = Activator.CreateInstance(filterWheelType);
 #endif
-                    LogMessage("CreateFilterWheelInstance", $"Created COM object for ProgID: {Settings.FilterWheelHostedProgId} OK.");
+                    LogMessage("CreateInstance", $"Created COM object for ProgID: {Settings.FilterWheelHostedProgId} OK.");
                 }
                 catch (Exception ex1)
                 {
@@ -307,7 +301,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                ArrayList actions = filterWheelDevice.SupportedActions;
+                ArrayList actions = device.SupportedActions;
                 LogMessage("SupportedActions Get", $"Returning ArrayList of length: {actions.Count}");
                 return actions;
             }
@@ -322,7 +316,7 @@ namespace ASCOM.JustAHub
         /// </returns>
         public static string Action(string actionName, string actionParameters)
         {
-            return filterWheelDevice.Action(actionName, actionParameters);
+            return device.Action(actionName, actionParameters);
         }
 
         /// <summary>
@@ -337,7 +331,7 @@ namespace ASCOM.JustAHub
         public static void CommandBlind(string command, bool raw)
         {
             CheckConnected("CommandBlind");
-            filterWheelDevice.CommandBlind(command, raw);
+            device.CommandBlind(command, raw);
         }
 
         /// <summary>
@@ -355,7 +349,7 @@ namespace ASCOM.JustAHub
         public static bool CommandBool(string command, bool raw)
         {
             CheckConnected("CommandBool");
-            return filterWheelDevice.CommandBool(command, raw);
+            return device.CommandBool(command, raw);
         }
 
         /// <summary>
@@ -373,7 +367,7 @@ namespace ASCOM.JustAHub
         public static string CommandString(string command, bool raw)
         {
             CheckConnected("CommandString");
-            return filterWheelDevice.CommandString(command, raw);
+            return device.CommandString(command, raw);
         }
 
         /// <summary>
@@ -397,16 +391,16 @@ namespace ASCOM.JustAHub
         {
             try { LogMessage("FilterWheelHardware.Dispose", $"Disposing of assets and closing down."); } catch { }
 
-            if (!(filterWheelDevice is null))
+            if (!(device is null))
             {
 #if DEBUG
-                try { filterWheelDevice.Dispose(); } catch (Exception) { }
+                try { device.Dispose(); } catch (Exception) { }
                 try { LogMessage("FilterWheelHardware.Dispose", $"Disposed DriverAccess filter wheel object."); } catch { }
-                try { filterWheelDevice = null; } catch (Exception) { }
+                try { device = null; } catch (Exception) { }
 #else
-                try { Marshal.ReleaseComObject(filterWheelDevice); } catch (Exception) { }
+                try { Marshal.ReleaseComObject(device); } catch (Exception) { }
                 try { LogMessage("FilterWheelHardware.Dispose", $"Released filter wheel COM object."); } catch { }
-                try { filterWheelDevice = null; } catch (Exception) { }
+                try { device = null; } catch (Exception) { }
 #endif
             }
 
@@ -436,7 +430,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                string description = filterWheelDevice.Description;
+                string description = device.Description;
                 LogMessage("Description Get", description);
                 return description;
             }
@@ -449,7 +443,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                string driverInfo = filterWheelDevice.DriverInfo;
+                string driverInfo = device.DriverInfo;
                 LogMessage("DriverInfo Get", driverInfo);
                 return driverInfo;
             }
@@ -462,7 +456,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                string driverVersion = filterWheelDevice.DriverVersion;
+                string driverVersion = device.DriverVersion;
                 LogMessage("DriverVersion Get", driverVersion);
                 return driverVersion;
             }
@@ -475,7 +469,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                short interfaceVersion = filterWheelDevice.InterfaceVersion;
+                short interfaceVersion = device.InterfaceVersion;
                 LogMessage("InterfaceVersion Get", interfaceVersion.ToString());
                 return interfaceVersion;
             }
@@ -488,7 +482,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                string name = filterWheelDevice.Name;
+                string name = device.Name;
                 LogMessage("Name Get", name);
                 return name;
             }
@@ -502,7 +496,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                int[] focusOffsets = filterWheelDevice.FocusOffsets;
+                int[] focusOffsets = device.FocusOffsets;
                 if (focusOffsets == null)
                 {
                     LogMessage("FocusOffsets Get", $"Received a null value.");
@@ -520,7 +514,7 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                string[] names= filterWheelDevice.Names;
+                string[] names= device.Names;
                 if (names == null)
                 {
                     LogMessage("Names Get", $"Received a null value.");
@@ -538,14 +532,14 @@ namespace ASCOM.JustAHub
         {
             get
             {
-                short position = filterWheelDevice.Position;
+                short position = device.Position;
                 LogMessage("Position Get", position.ToString());
                 return position;
             }
 
             set
             {
-                filterWheelDevice.Position = value;
+                device.Position = value;
                 LogMessage("Position Set", value.ToString());
             }
         }
@@ -555,22 +549,12 @@ namespace ASCOM.JustAHub
         #region Private properties and methods
 
         /// <summary>
-        /// Release memory allocated to the large arrays on the large object heap.
-        /// </summary>
-        private static void ReleaseArrayMemory()
-        {
-            // Clear out any previous memory allocations
-            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-            GC.Collect(2, GCCollectionMode.Forced, true, true);
-        }
-
-        /// <summary>
         /// Use this function to throw an exception if we aren't connected to the hardware
         /// </summary>
         /// <param name="message"></param>
         private static void CheckConnected(string message)
         {
-            if (!filterWheelDevice.Connected)
+            if (!device.Connected)
             {
                 throw new NotConnectedException(message);
             }
@@ -613,10 +597,10 @@ namespace ASCOM.JustAHub
             // We don't have the interface version so get it from the device but only store it if we are connected because it may change when connected
 
             // Get the interface version
-            int iVersion = filterWheelDevice.InterfaceVersion;
+            int iVersion = device.InterfaceVersion;
 
             // Check whether the device is connected
-            if (filterWheelDevice.Connected) // Filter wheel is connected so save the value for future use
+            if (device.Connected) // Filter wheel is connected so save the value for future use
             {
                 interfaceVersion = InterfaceVersion;
                 return interfaceVersion.Value;

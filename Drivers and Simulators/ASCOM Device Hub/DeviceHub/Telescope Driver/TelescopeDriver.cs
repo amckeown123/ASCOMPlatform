@@ -30,7 +30,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using ASCOM.Attributes;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 
@@ -511,7 +510,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     retval = TelescopeManager.Service.Altitude;
-                    msg += $"{Utilities.DegreesToDMS(retval)}{_done}";
+                    msg += $"{retval.ToDMS()}{_done}";
                 }
                 catch (Exception ex)
                 {
@@ -690,7 +689,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     retval = TelescopeManager.Service.Azimuth;
-                    msg += $"{Utilities.DegreesToDMS(retval)}{_done}";
+                    msg += $"{retval.ToDMS()}{_done}";
                 }
                 catch (Exception ex)
                 {
@@ -1303,7 +1302,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     retval = TelescopeManager.Service.Declination;
-                    msg += $"{Utilities.DegreesToDMS(retval)}{_done}";
+                    msg += $"{retval.ToDMS()}{_done}";
                 }
                 catch (Exception ex)
                 {
@@ -1827,7 +1826,7 @@ namespace ASCOM.DeviceHub
                 try
                 {
                     retval = TelescopeManager.Service.RightAscension;
-                    msg += $"{Utilities.HoursToHMS(retval)}{_done}";
+                    msg += $"{retval.ToHMS()}{_done}";
                 }
                 catch (Exception ex)
                 {

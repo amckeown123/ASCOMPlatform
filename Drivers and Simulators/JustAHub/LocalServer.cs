@@ -1,23 +1,9 @@
-//
-// ASCOM.JustAHub.Camera Local COM Server
-//
-// This is the core of a managed COM Local Server, capable of serving
-// multiple instances of multiple interfaces, within a single
-// executable. This implements the equivalent functionality of VB6
-// which has been extensively used in ASCOM for drivers that provide
-// multiple interfaces to multiple clients (e.g. Meade Telescope
-// and Focuser) as well as hubs (e.g., POTH).
-//
-// Written by: Robert B. Denny (Version 1.0.1, 29-May-2007)
-// Modified by Chris Rowland and Peter Simpson to allow use with multiple devices of the same type March 2011
-//
-//
-using ASCOM.Attributes;
 using ASCOM.JustAHub;
 using ASCOM.Utilities;
 using Microsoft.Win32;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -40,7 +26,7 @@ namespace ASCOM.LocalServer
         private static int serverLockCount; // Keeps a lock count on this application.
         private static ArrayList driverTypes; // Served COM object types
         private static ArrayList classFactories; // Served COM object class factories
-        private static string localServerAppId = "{89ce45d9-d25a-4cf7-bc06-fb8adcbf4bdd}"; // Our AppId
+        private static readonly string localServerAppId = "{89ce45d9-d25a-4cf7-bc06-fb8adcbf4bdd}"; // Our AppId
         private static readonly Object lockObject = new object(); // Counter lock object
         internal static TraceLogger TL; // TraceLogger for the local server (not the served driver, which has its own) - primarily to help debug local server issues
         private static Task GCTask; // The garbage collection task
@@ -113,48 +99,32 @@ namespace ASCOM.LocalServer
                 // No new connections are now possible and the local server is irretrievably shutting down, so release resources in the Hardware classes
                 try
                 {
-                    // Get all types in the local server assembly
-                    Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+                    TL.LogMessage("Main", $"Disposing of resources in Hardware classes.");
+
+                    // Get the hardware types in the local server assembly
+                    List<Type> hardwareTypes = GetHardwareTypes();
 
                     // Iterate over the types looking for hardware classes that need to be disposed
-                    foreach (Type type in types)
+                    foreach (Type type in hardwareTypes)
                     {
                         try
                         {
                             TL.LogMessage("Main", $"Hardware disposal - Found type: {type.Name}");
 
-                            // Get the HardwareClassAttribute attribute if present on this type
-                            object[] attrbutes = type.GetCustomAttributes(typeof(HardwareClassAttribute), false);
+                            MethodInfo disposeMethod = type.GetMethod("Dispose");
 
-                            // Check to see if this type has the HardwareClass attribute, which indicates that this is a hardware class.
-                            if (attrbutes.Length > 0) // There is a HardwareClass attribute so call its Dispose() method
+                            // If the method is found call it
+                            if (disposeMethod != null) // a public Dispose() method was found
                             {
-                                TL.LogMessage("Main", $"  {type.Name} is a hardware class");
+                                TL.LogMessage("Main", $"  Calling method {disposeMethod.Name} in static class {type.Name}...");
 
-                                // Only process static classes that don't have instances here.
-                                if (type.IsAbstract & type.IsSealed) // This type is a static class
-                                {
-                                    // Lookup the method
-                                    MethodInfo disposeMethod = type.GetMethod("Dispose");
-
-                                    // If the method is found call it
-                                    if (disposeMethod != null) // a public Dispose() method was found
-                                    {
-                                        TL.LogMessage("Main", $"  Calling method {disposeMethod.Name} in static class {type.Name}...");
-
-                                        // Now call Dispose()
-                                        disposeMethod.Invoke(null, null);
-                                        TL.LogMessage("Main", $"  {disposeMethod.Name} method called OK.");
-                                    }
-                                    else // No public Dispose method was found
-                                    {
-                                        TL.LogMessage("Main", $"  The {disposeMethod.Name} method does not contain a public Dispose() method.");
-                                    }
-                                }
-                                else
-                                {
-                                    TL.LogMessage("Main", $"  Ignoring type {type.Name} because it is not static.");
-                                }
+                                // Now call Dispose()
+                                disposeMethod.Invoke(null, null);
+                                TL.LogMessage("Main", $"  {disposeMethod.Name} method called OK.");
+                            }
+                            else // No public Dispose method was found
+                            {
+                                TL.LogMessage("Main", $"  The {disposeMethod.Name} method does not contain a public Dispose() method.");
                             }
                         }
                         catch (Exception ex)
@@ -175,7 +145,58 @@ namespace ASCOM.LocalServer
 
             TL.LogMessage("Main", $"Local server closing");
             TL.Dispose();
+        }
 
+        static List<Type> GetHardwareTypes()
+        {
+            List<Type> hardwareClasses = new List<Type>();
+
+            // No new connections are now possible and the local server is irretrievably shutting down, so release resources in the Hardware classes
+            try
+            {
+                TL.LogMessage("GetHardwareTypes", $"  Getting hardware types...");
+
+                // Get all types in the local server assembly
+                Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+
+                // Iterate over the types looking for hardware classes that need to be disposed
+                foreach (Type type in types)
+                {
+                    try
+                    {
+                        //TL.LogMessage("GetHardwareTypes", $"Found type: {type.Name}");
+
+                        // Get the HardwareClassAttribute attribute if present on this type
+                        object[] attrbutes = type.GetCustomAttributes(typeof(HardwareClassAttribute), false);
+
+                        // Check to see if this type has the HardwareClass attribute, which indicates that this is a hardware class.
+                        if (attrbutes.Length > 0) // There is a HardwareClass attribute so call its Dispose() method
+                        {
+                            // Only process static classes that don't have instances here.
+                            if (type.IsAbstract & type.IsSealed) // This type is a static class
+                            {
+                                hardwareClasses.Add(type);
+                                TL.LogMessage("GetHardwareTypes", $"  Added {type.Name} to the hardware class list.");
+                            }
+                            else
+                            {
+                                TL.LogMessage("GetHardwareTypes", $"  {type.Name} is a Hardware class - Ignoring it because it is not static.");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TL.LogMessageCrLf("GetHardwareTypes", $"Exception (inner) when getting hardware types.\r\n{ex}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TL.LogMessageCrLf("GetHardwareTypes", $"Exception (outer) when getting hardware types.\r\n{ex}");
+            }
+
+            TL.LogMessage("GetHardwareTypes", $"  Returning {hardwareClasses.Count} hardware types.");
+            return hardwareClasses;
         }
 
         #endregion
@@ -190,17 +211,55 @@ namespace ASCOM.LocalServer
         /// </summary>
         public static void SetupDialog(string deviceType)
         {
-            using (JustAHub.SetupDialogForm F = new JustAHub.SetupDialogForm(TL, deviceType))
+            using (SetupDialogForm F = new SetupDialogForm(TL, deviceType))
             {
                 var result = F.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    // Persist device configuration values to the ASCOM Profile store
-                    Settings.SaveSettings();
+                    // Kill the current instance and create a new one for each hardware class  in case the configuration has changed
+                    try
+                    {
+                        // Persist device configuration values to the ASCOM Profile store
+                        TL.LogMessage("SetupDialog", $"Saving settings for {deviceType}.");
+                        Settings.SaveSettings();
+                        TL.LogMessage("SetupDialog", $"Settings saved OK for {deviceType}.");
 
-                    // Kill the current instance and create a new once in case the configuration has changed
-                    CameraHardware.CreateCameraInstance();
-                    FilterWheelHardware.CreateFilterWheelInstance();
+                        TL.LogMessage("SetupDialog", $"Creating new device objects.");
+
+                        // Get the hardware types in the local server assembly
+                        List<Type> hardwareTypes = GetHardwareTypes();
+
+                        // Iterate over the types looking for hardware classes that need to be disposed
+                        foreach (Type hardwareType in hardwareTypes)
+                        {
+                            try
+                            {
+                                MethodInfo createInstanceMethod = hardwareType.GetMethod("CreateInstance");
+
+                                // If the method is found call it
+                                if (createInstanceMethod != null) // a public Dispose() method was found
+                                {
+                                    TL.LogMessage("SetupDialog", $"Calling method {createInstanceMethod.Name} in static class {hardwareType.Name}...");
+
+                                    // Now call CreateInstance()
+                                    createInstanceMethod.Invoke(null, null);
+                                    TL.LogMessage("SetupDialog", $"{createInstanceMethod.Name} method called OK.");
+                                }
+                                else // No public CreateInstance method was found
+                                {
+                                    TL.LogMessage("SetupDialog", $"The {createInstanceMethod.Name} method does not contain a public CreateInstance() method.");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                TL.LogMessageCrLf("SetupDialog", $"Exception (inner) when creating new instance.\r\n{ex}");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TL.LogMessageCrLf("SetupDialog", $"Exception (outer) when creating new instance.\r\n{ex}");
+                    }
                 }
             }
         }
@@ -236,7 +295,7 @@ namespace ASCOM.LocalServer
         }
 
         /// <summary>
-        /// Performs a thread-safe decrementation the objects count.
+        /// Performs a thread-safe decrement of the objects count.
         /// </summary>
         /// <returns></returns>
         public static int DecrementObjectCount()
@@ -274,7 +333,7 @@ namespace ASCOM.LocalServer
         }
 
         /// <summary>
-        /// Performs a thread-safe decrementation the server lock count.
+        /// Performs a thread-safe decrement of the server lock count.
         /// </summary>
         /// <returns></returns>
         public static int DecrementServerLockLock()
@@ -331,7 +390,7 @@ namespace ASCOM.LocalServer
                 // Iterate over the types identifying those which are drivers
                 foreach (Type type in types)
                 {
-                    TL.LogMessage("PopulateListOfAscomDrivers", $"Found type: {type.Name}");
+                    //TL.LogMessage("PopulateListOfAscomDrivers", $"Found type: {type.Name}");
 
                     // Check to see if this type has the ServedClassName attribute, which indicates that this is a driver class.
                     object[] attrbutes = type.GetCustomAttributes(typeof(ServedClassNameAttribute), false);
@@ -369,7 +428,7 @@ namespace ASCOM.LocalServer
         /// Register drivers contained in this local server. (Must run as Administrator.)
         /// </summary>
         /// <remarks>
-        /// Do everything to register this for COM. Never use REGASM on this exe assembly! It would create InProcServer32 entries which would prevent proper activation!
+        /// Do everything to register this for COM. Never use REGASM on this EXE assembly! It would create InProcServer32 entries which would prevent proper activation!
         /// Using the list of COM object types generated during dynamic assembly loading, this method registers each driver for COM and registers it for ASCOM. 
         /// It also adds DCOM info for the local server itself, so it can be activated via an outbound connection from TheSky.
         /// </remarks>
@@ -415,7 +474,7 @@ namespace ASCOM.LocalServer
             catch (Exception ex)
             {
                 TL.LogMessageCrLf("RegisterObjects", $"Setting AppID exception: {ex}");
-                MessageBox.Show("Error while registering the server:\n" + ex.ToString(), "ASCOM.JustAHub.Camera", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Error while registering the server:\n" + ex.ToString(), "ASCOM.JustAHub", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
 
@@ -492,7 +551,7 @@ namespace ASCOM.LocalServer
                 catch (Exception ex)
                 {
                     TL.LogMessageCrLf("RegisterObjects", $"Driver registration exception: {ex}");
-                    MessageBox.Show("Error while registering the server:\n" + ex.ToString(), "ASCOM.JustAHub.Camera", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    MessageBox.Show("Error while registering the server:\n" + ex.ToString(), "ASCOM.JustAHub", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     bFail = true;
                 }
 
@@ -611,13 +670,13 @@ namespace ASCOM.LocalServer
             }
             catch (System.ComponentModel.Win32Exception)
             {
-                TL.LogMessage("IsAdministrator", $"The ASCOM.JustAHub.Camera was not " + (argument == "/register" ? "registered" : "unregistered because you did not allow it."));
-                MessageBox.Show("The ASCOM.JustAHub.Camera was not " + (argument == "/register" ? "registered" : "unregistered because you did not allow it.", "ASCOM.JustAHub.Camera", MessageBoxButtons.OK, MessageBoxIcon.Warning));
+                TL.LogMessage("IsAdministrator", $"ASCOM.JustAHub was not " + (argument == "/register" ? "registered" : "unregistered because you did not allow it."));
+                MessageBox.Show("The ASCOM.JustAHub was not " + (argument == "/register" ? "registered" : "unregistered because you did not allow it.", "ASCOM.JustAHub", MessageBoxButtons.OK, MessageBoxIcon.Warning));
             }
             catch (Exception ex)
             {
                 TL.LogMessageCrLf("IsAdministrator", $"Exception: {ex}");
-                MessageBox.Show(ex.ToString(), "ASCOM.JustAHub.Camera", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(ex.ToString(), "ASCOM.JustAHub", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
             return;
         }
@@ -645,7 +704,7 @@ namespace ASCOM.LocalServer
                 if (!factory.RegisterClassObject())
                 {
                     TL.LogMessage("RegisterClassFactories", $"  Failed to register class factory for " + driverType.Name);
-                    MessageBox.Show("Failed to register class factory for " + driverType.Name, "ASCOM.JustAHub.Camera", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    MessageBox.Show("Failed to register class factory for " + driverType.Name, "ASCOM.JustAHub", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return false;
                 }
                 TL.LogMessage("RegisterClassFactories", $"  Registered class factory OK for: {driverType.Name}");
@@ -715,7 +774,7 @@ namespace ASCOM.LocalServer
 
                     default:
                         TL.LogMessage("ProcessArguments", $"Unknown argument: {args[0]}");
-                        MessageBox.Show("Unknown argument: " + args[0] + "\nValid are : -register, -unregister and -embedding", "ASCOM.JustAHub.Camera", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("Unknown argument: " + args[0] + "\nValid are : -register, -unregister and -embedding", "ASCOM.JustAHub", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         break;
                 }
             }
@@ -753,7 +812,6 @@ namespace ASCOM.LocalServer
         /// <summary>
         /// Stop the garbage collection task by sending it the cancellation token and wait for the task to complete
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "The program is ending at this point so the synchronous wait is justified to ensure that it completes.")]
         private static void StopGarbageCollection()
         {
             // Signal the garbage collector thread to stop

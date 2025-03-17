@@ -15,7 +15,7 @@ namespace ASCOM.JustAHub
     [ComVisible(true)]
     [Guid("559600B3-D579-440F-996C-6BB0748E8812")]
     [ProgId("ASCOM.JustAHub.Camera")]
-    [ServedClassName("ASCOM JustAHub Camera")] // Driver description that appears in the Chooser, customise as required
+    [ServedClassName("JustAHub Camera")] // Driver description that appears in the Chooser, customise as required
     [ClassInterface(ClassInterfaceType.None)]
     public class Camera : ReferenceCountedObjectBase, ICameraV4, IDisposable
     {
@@ -30,10 +30,15 @@ namespace ASCOM.JustAHub
         {
             // Pull the ProgID from the ProgID class attribute.
             Attribute attr = Attribute.GetCustomAttribute(typeof(Camera), typeof(ProgIdAttribute));
-            ProgId = ((ProgIdAttribute)attr).Value ?? "PROGID NOT SET!";  // Get the driver ProgIDfrom the ProgID attribute.
-                                                                                // Pull the display name from the ServedClassName class attribute.
+
+            // Get the driver ProgIDfrom the ProgID attribute.
+            ProgId = ((ProgIdAttribute)attr).Value ?? "PROGID NOT SET!";
+            
+            // Pull the display name from the ServedClassName class attribute.
             attr = Attribute.GetCustomAttribute(typeof(Camera), typeof(ServedClassNameAttribute));
-            ChooserDescription = ((ServedClassNameAttribute)attr).DisplayName ?? "DISPLAY NAME NOT SET!";  // Get the driver description that displays in the ASCOM Chooser from the ServedClassName attribute.
+
+            // Get the driver description that displays in the ASCOM Chooser from the ServedClassName attribute.
+            ChooserDescription = ((ServedClassNameAttribute)attr).DisplayName ?? "DISPLAY NAME NOT SET!";
         }
 
         /// <summary>
@@ -43,15 +48,13 @@ namespace ASCOM.JustAHub
         {
             try
             {
-                // LOGGING CONFIGURATION
-                // By default all driver logging will appear in Hardware log file
-                // If you would like each instance of the driver to have its own log file as well, uncomment the lines below
-
-                tl = new TraceLogger("", "JustAHub.Camera.Driver"); // Remove the leading ASCOM. from the ProgId because this will be added back by TraceLogger.
-                tl.Enabled = Settings.CameraDriverLogging;
+                tl = new TraceLogger("", "JustAHub.Camera.Driver")
+                {
+                    Enabled = Settings.CameraDriverLogging
+                };
 
                 // Initialise the hardware if required
-                CameraHardware.InitialiseCamera();
+                CameraHardware.Initialise();
 
                 LogMessage("Camera", "Starting driver initialisation");
                 LogMessage("Camera", $"ProgID: {ProgId}, Description: {ChooserDescription}");
@@ -170,7 +173,7 @@ namespace ASCOM.JustAHub
         {
             Server.SetupDialog("Camera");
             // Update the trace setting in case it was changed
-            tl.Enabled= Settings.CameraDriverLogging;
+            tl.Enabled = Settings.CameraDriverLogging;
         }
 
         /// <summary>Returns the list of custom action names supported by this driver.</summary>
@@ -206,7 +209,7 @@ namespace ASCOM.JustAHub
             try
             {
                 CheckConnected($"Action {actionName} - {actionParameters}");
-                LogMessage("", $"Calling Action: {actionName} with parameters: {actionParameters}");
+                LogMessage("Action", $"Calling Action: {actionName} with parameters: {actionParameters}");
                 string actionResponse = CameraHardware.Action(actionName, actionParameters);
                 LogMessage("Action", $"Completed.");
                 return actionResponse;
@@ -260,9 +263,9 @@ namespace ASCOM.JustAHub
             try
             {
                 CheckConnected($"CommandBool: {command}, Raw: {raw}");
-                LogMessage("CommandBlind", $"Calling method - Command: {command}, Raw: {raw}");
+                LogMessage("CommandBool", $"Calling method - Command: {command}, Raw: {raw}");
                 bool commandBoolResponse = CameraHardware.CommandBool(command, raw);
-                LogMessage("CommandBlind", $"Returning: {commandBoolResponse}.");
+                LogMessage("CommandBool", $"Returning: {commandBoolResponse}.");
                 return commandBoolResponse;
             }
             catch (Exception ex)
@@ -331,12 +334,12 @@ namespace ASCOM.JustAHub
                     if (value) // Request to connect
                     {
                         LogMessage("Connected Set", "Connecting to device");
-                        CameraHardware.Connect(uniqueId, CameraHardware.ConnectType.Connected);
+                        CameraHardware.Connect(uniqueId, ConnectType.Connected);
                     }
                     else // Request to disconnect
                     {
                         LogMessage("Connected Set", "Disconnecting from device");
-                        CameraHardware.Disconnect(uniqueId, CameraHardware.ConnectType.Connected);
+                        CameraHardware.Disconnect(uniqueId, ConnectType.Connected);
                     }
                 }
                 catch (Exception ex)
@@ -491,9 +494,9 @@ namespace ASCOM.JustAHub
             {
                 try
                 {
-                    CheckConnected("AbortExposure");
+                    CheckConnected("BayerOffsetX");
                     short bayerOffsetX = CameraHardware.BayerOffsetX;
-                    LogMessage("AbortExposure", bayerOffsetX.ToString());
+                    LogMessage("BayerOffsetX", bayerOffsetX.ToString());
                     return bayerOffsetX;
                 }
                 catch (Exception ex)
@@ -2035,10 +2038,7 @@ namespace ASCOM.JustAHub
             // This code is currently set to write messages to an individual driver log AND to the shared hardware log.
 
             // Write to the individual log for this specific instance (if enabled by the driver having a TraceLogger instance)
-            if (tl != null)
-            {
-                tl.LogMessageCrLf(identifier, message); // Write to the individual driver log
-            }
+            tl?.LogMessageCrLf(identifier, message); // Write to the individual driver log
 
             // Write to the common hardware log shared by all running instances of the driver.
             CameraHardware.LogMessage(identifier, message); // Write to the local server logger
@@ -2059,7 +2059,7 @@ namespace ASCOM.JustAHub
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(Common.DeviceTypes.Camera, CameraHardware.GetInterfaceVersion())) // Platform 7 or later device so Connect
             {
                 LogMessage("Connect", "Issuing Connect command");
-                CameraHardware.Connect(uniqueId, CameraHardware.ConnectType.Connect_Disconnect);
+                CameraHardware.Connect(uniqueId, ConnectType.Connect_Disconnect);
                 return;
             }
 
@@ -2077,7 +2077,7 @@ namespace ASCOM.JustAHub
             if (Common.DeviceInterfaces.DeviceCapabilities.HasConnectAndDeviceState(Common.DeviceTypes.Camera, CameraHardware.GetInterfaceVersion())) // Platform 7 or later device so Disconnect
             {
                 LogMessage("Disconnect", "Issuing Disconnect command");
-                CameraHardware.Disconnect(uniqueId, CameraHardware.ConnectType.Connect_Disconnect);
+                CameraHardware.Disconnect(uniqueId, ConnectType.Connect_Disconnect);
                 return;
             }
 
