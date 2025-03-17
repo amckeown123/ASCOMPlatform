@@ -59,7 +59,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>6odmK27wt4M35j23MlHxdCTXcmY5kwGpOLqgU6Er5xQ=</dsig:DigestValue>
+      <dsig:DigestValue>wBSCQkzXPpG2R3p6JNMAc8JweHvjf1N4rzN0qhGeZqg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="ASCOM.DriverAccess.dll" size="111616">
@@ -68,7 +68,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>7nkg96Ni5OxJ+nTBqCgGA7yAb10X0PLffxDQEUCFvqo=</dsig:DigestValue>
+      <dsig:DigestValue>WyXeloX2tgKAaf30JOCrXgS+PmTDgKeCWgY+O40iHCQ=</dsig:DigestValue>
     </hash>
   </file>
   <file name="ASCOM.Exceptions.dll" size="13824">
@@ -77,7 +77,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>YZHm8bPEYVixtGw+I5TzytFsKMR+G4EFkD7bi5pMpNI=</dsig:DigestValue>
+      <dsig:DigestValue>rwqw+cd/s0yG5IImmUaWfD/Z6KFLREZjwTzRnsZ+OcY=</dsig:DigestValue>
     </hash>
   </file>
   <file name="ASCOM.Utilities.dll" size="1202176">
@@ -86,7 +86,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>dnKBiQvjGC1L/Qy9vtce3BB3/ps6EwSrbwEmwaL3vKY=</dsig:DigestValue>
+      <dsig:DigestValue>QflrCqt6dkbsO4cDoWRQd5X+UsT5syX/84Rr92IV+c8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="CameraTest.dll" size="60928">
@@ -95,7 +95,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>kv2yo5qAoHFV895arC8Ix0UZnO3bt1u3lV8jFNhIpLQ=</dsig:DigestValue>
+      <dsig:DigestValue>8wxtORjpTQwAdHzabv6lcDdn+QPUll7Hvr2/PsWcyG0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="CameraTest.dll.config" size="1603">
