@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1cff238c-4522-4730-ae94-a82f9666654e" revisionNumber="1">
+
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction address="Intro710">
+      <para>
+        In line with previous Platform installers, Platform 7.1 is a cumulative release that contains all enhancements and fixes from previous Platform releases and service packs. The Platform
+        environment pre-requisites are listed here <link xlink:href="7d9253c2-fdfd-4c0d-8225-a96bddb49731#PreReqs70">Platform Prerequisites</link>.
+      </para>
+    </introduction>
+
+    <section address="Changes710">
+      <title>Changes in 7.1 - For Everyone</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            JustAHub has the following new features:
+            <list class="bullet">
+              <listItem>The 32bit version now supports all ASCOM device types including SafetyMonitor, CoverCalibrator, Focuser, ObservingConditions, Rotator and Switch.</listItem>
+              <listItem>A new 64bit version has been added to host 64bit in-process DLL drivers for all device types and enable them to be used by 32bit clients.</listItem>
+            </list>
+          </listItem>
+          <listItem>
+            Device Hub has the following new features:
+            <list class="bullet">
+              <listItem>A new dome synchronisation algorithm from Patrick Wallace that adds support for L mount and more complex mount types.</listItem>
+              <listItem>
+                Dome synchronisation support for mounts with multiple observing telescopes. Device Hub can now store offsets for up to 5 telescopes, mounted in different positions, and
+                the dome will slew to the appropriate position depending on the configured offsets for the selected telescope. The selected telescope can be changed in real time without needing to
+                disconnect the telescope or dome devices.
+              </listItem>
+              <listItem>
+                A wider range of telescope axis movement rates in the Direct Slew tab drop-down including: the minimum available rate, the maximum available rate, minimum + 25% of range,
+                minimum + 50% of range and minimum + 75% of range.
+              </listItem>
+              <listItem>
+                The user guide has been expanded to include full instructions on setting up dome synchronisation for multiple mount types and telescope configurations.
+              </listItem>
+            </list>
+          </listItem>
+          <listItem>
+            The Omni-Simulators have the following new features:
+            <list class="bullet">
+              <listItem>A tray icon is now provided to enable the console to be shown or hidden and the web UI to be launched.</listItem>
+              <listItem>The generated ASCOM API swagger documentation has been greatly improved.</listItem>
+              <listItem>Individual device configuration can be changed programmatically through a new JSON API to support test requirements. Further information is provided in the developer changes section.</listItem>
+              <listItem>
+                The Dome, FilterWheel, Focuser, Rotator, and Safety Monitor devices have been completely rewritten (the remaining device types will be updated in a future release). This provides several new features:
+                <list class="bullet">
+                  <listItem>Each device type now supports multiple instances.</listItem>
+                  <listItem>The interface version can be set so that each device can simulate behavior for different ASCOM interface versions.</listItem>
+                  <listItem>Each device's configuration can be changed through a new JSON API, see developer changes for more information.</listItem>
+                  <listItem>Each device instance now creates its own log file whose log level can be set independently.</listItem>
+                  <listItem>Asynchronous connects now take a short time to complete enabling asynchronous connect code to be tested more effectively.</listItem>
+                </list>
+              </listItem>
+            </list>
+          </listItem>
+          <listItem>Diagnostics has a new feature to log and report use of .NET 3.5 based components by clients and drivers. This is enabled through the Diagnostics / Tools menu.</listItem>
+          <listItem>Links to both 32bit and 64bit connection testers have been added to the Start/ASCOM Platform menu.</listItem>
+          <listItem>Installation speed has been improved by omitting NGEN optimisation by default. This can be enabled through the installer UI if required by older, less performant, PCs.</listItem>
+          <listItem>The built-in Delta UT predictions have been updated to January 2027.</listItem>
+        </list>
+      </content>
+    </section>
+
+    <section address="IssuesFixedPlatform710">
+      <title>Issues Fixed in 7.1 - Platform</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            Installer
+            <list class="bullet">
+              <listItem>The VB6 support DLLs are now registered by the installer as well as being installed.</listItem>
+              <listItem>The error message when installing on a non-supported OS has been improved.</listItem>
+              <listItem>An issue that listed only the last error encountered rather than all errors encountered has been fixed.</listItem>
+              <listItem>Ensure that all required PlatformUpdateChecker DLL files are installed.</listItem>
+              <listItem>An unnecessary message box has been removed when uninstalling the Platform update checker.</listItem>
+            </list>
+          </listItem>
+          <listItem>
+            Device Hub
+            <list class="bullet">
+              <listItem>Only one app log file is created rather than two.</listItem>
+              <listItem>Telescope.Slewing and Dome.Slewing are polled more frequently to ensure that accurate values are returned by Device Hub.</listItem>
+              <listItem>Fixed an issue that sometimes prevented Device hub from responding to a telescope slew when dome synchronisation was enabled.</listItem>
+            </list>
+          </listItem>
+          <listItem>
+            Dynamic Clients
+            <list class="bullet">
+              <listItem>Fixed an issue where multiple ? characters were sent in GET calls that have parameters.</listItem>
+              <listItem>Fixed an issue where Dynamic Drivers created under Platform 6 fail after update to Platform 7.</listItem>
+              <listItem>The Action method once again supports strings in excess of 65,535 characters as it does in Platform 6.</listItem>
+            </list>
+          </listItem>
+          <listItem>Chooser - Devices that are not registered correctly, and that have missing CLSID values, are now handled cleanly.</listItem>
+          <listItem>Diagnostics - Diagnostics can now handle values stored in multi-string correctly.</listItem>
+          <listItem>Astrometry - Fixed an "Unknown update type value" error message from the DeltaT function when earth rotation parameter updates are configured as "manual internet update".</listItem>
+        </list>
+      </content>
+    </section>
+
+    <section address="ChangesDeveloper710">
+      <title>Changes in 7.1 For Developers</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            Each Omni-Simulator device configuration can be changed programmatically through a new JSON API that enables the simulators to be configured to support a variety of client testing requirements.
+            <list class="bullet">
+              <listItem>
+                This Omni-Simulator specific API can be explored by clicking the "View Swagger docs and interactive queries" link on the main page of the Omni-Simulator browser interface and
+                selecting the "OmniSim only endpoints" definition from the drop-down selector at the top of the page.
+              </listItem>
+              <listItem>Please note that the API may be refined in future and that some implementations and capabilities could change.</listItem>
+            </list>
+          </listItem>
+          <listItem>
+            Driver Templates
+            <list class="bullet">
+              <listItem>The hardware class comments have been improved to aid implementation.</listItem>
+              <listItem>The main form has been removed because it was not adding any value and appeared as a minimised Window.</listItem>
+            </list>
+          </listItem>
+          <listItem>TraceLogger.LogMessage now accepts null strings for the test name and message fields, which are now treated as empty strings rather than throwing exceptions.</listItem>
+        </list>
+      </content>
+    </section>
+
+    <section address="IssuesFixedDeveloper710">
+      <title>Issues Fixed in 7.1 - For Developers</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            Driver Templates
+            <list class="bullet">
+              <listItem>Fixed logic and messaging errors in the Disconnect() method.</listItem>
+              <listItem>Fixed an issue causing the generated hardware class to have two dots separating the file name and the file extension. e.g. CoverCalibratorHardware..cs</listItem>
+              <listItem>Fixed an issue in the hardware class SetupDialog method where unnecessary error messages were displayed when the device was already connected.</listItem>
+            </list>
+          </listItem>
+        </list>
+      </content>
+    </section>
+
+    <section address="BreakingChanges710">
+      <title>Breaking Changes (For Developers) in Platform 7.1</title>
+      <content>
+        <list class="bullet">
+          <listItem>None.</listItem>
+        </list>
+      </content>
+    </section>
+
+    <section address="KnownIssuesDevelopment710">
+      <title>Known Limitations - Developers</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            The components in the Astrometry.NOVAS namespace are fully usable from .NET languages but are not fully
+            accessible through COM from scripting languages because a number of parameters are passed by reference or use
+            structures that do not pass across the COM interface. Two work rounds are available:
+            <list class="ordered">
+              <listItem>Use the Transform component in the ASCOM.Astrometry.Transform namespace, it is fully COM compatible.</listItem>
+              <listItem>
+                Create your own COM presentation component that encapsulates the SOFA or NOVAS 3.1 functions that you require
+                and presents them in a COM compatible fashion to suit your needs. This component can them be consumed by your
+                scripting application.
+              </listItem>
+            </list>
+          </listItem>
+        </list>
+      </content>
+    </section>
+    <bibliography></bibliography>
+    <relatedTopics></relatedTopics>
+  </developerConceptualDocument>
+
+</topic>
