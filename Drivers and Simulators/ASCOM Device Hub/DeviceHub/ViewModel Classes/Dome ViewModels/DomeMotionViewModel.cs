@@ -15,7 +15,11 @@ namespace ASCOM.DeviceHub
 
         private const string REGISTRY_PATH = @"SOFTWARE\ASCOM\DeviceHub";
         private const string REGISTRY_PATH_POTH = @"UsePOTHSlaveCalculation";
+<<<<<<< HEAD
         private const string REGISTRY_PATH_REVISED = @"UseRevisedDomeSlaveCalculation";
+=======
+        private const string REGISTRY_PATH_ONE_AXIS = @"UseOneAxisDomeSlaveCalculation";
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 
         #endregion Constants
 
@@ -67,8 +71,13 @@ namespace ASCOM.DeviceHub
             RegisterStatusUpdateMessage(true);
 
             // Initialize the properties that can change
+<<<<<<< HEAD
             UsePOTHSlaveCalculation = GetRegistryValue(REGISTRY_PATH_POTH);
             UseRevisedSlaveCalculation = GetRegistryValue(REGISTRY_PATH_REVISED);
+=======
+            UsePOTHSlaveCalculation = GetRegistryValueDefaultFalse(REGISTRY_PATH_POTH);
+            UseOneAxisSlaveCalculation = GetRegistryValueDefaultFalse(REGISTRY_PATH_ONE_AXIS);
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 
             // Update the current layout settings
             DomeSettings domeSettings = DomeSettings.FromProfile();
@@ -274,6 +283,7 @@ namespace ASCOM.DeviceHub
             }
         }
 
+<<<<<<< HEAD
         public bool UseRevisedSlaveCalculation
         {
             get { return Globals.UseRevisedDomeSlaveCalculation; }
@@ -287,6 +297,21 @@ namespace ASCOM.DeviceHub
 
                     // Save the value in the registry
                     SetRegistryValue(REGISTRY_PATH_REVISED, value);
+=======
+        public bool UseOneAxisSlaveCalculation
+        {
+            get { return Globals.UseOneAxisDomeSlaveCalculation; }
+            set
+            {
+                if (value != Globals.UseOneAxisDomeSlaveCalculation)
+                {
+                    // Update the global Revised setting 
+                    LogAppMessage($"Setting UseOneAxisDomeSlaveCalculation to {value}");
+                    Globals.UseOneAxisDomeSlaveCalculation = value;
+
+                    // Save the value in the registry
+                    SetRegistryValue(REGISTRY_PATH_ONE_AXIS, value);
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 
                     OnPropertyChanged();
                 }
@@ -354,7 +379,40 @@ namespace ASCOM.DeviceHub
 
         #region Helper Methods
 
+<<<<<<< HEAD
         private bool GetRegistryValue(string key)
+=======
+        /// <summary>
+        /// Retrieves the value of the specified registry key, returning <see langword="false"/> if the key does not exist.
+        /// </summary>
+        /// <param name="key">The name of the registry key to retrieve.</param>
+        /// <returns>The value of the registry key and <see langword="false"/> if it does not.</returns>
+        private bool GetRegistryValueDefaultFalse(string key)
+        {
+            return GetRegistryValue(key, false);
+        }
+
+        /// <summary>
+        /// Retrieves the value of the specified registry key, returning <see langword="true"/> if the key does not exist.
+        /// </summary>
+        /// <param name="key">The name of the registry key to retrieve.</param>
+        /// <returns>The value of the registry key and <see langword="true"/> if it does not.</returns>
+        private bool GetRegistryValueDefaultTrue(string key)
+        {
+            return GetRegistryValue(key, true);
+        }
+
+        /// <summary>
+        /// Retrieves a boolean value from the registry for the specified key. If the key does not exist, the specified
+        /// default value is used, and the key is created with this value.
+        /// </summary>
+        /// <remarks>This method accesses the registry under the current user's hive at the predefined
+        /// path. If the key is not found, it creates the key with the specified default value.</remarks>
+        /// <param name="key">The name of the registry key to retrieve.</param>
+        /// <param name="defaultValue">The default value to use and set if the key does not exist.</param>
+        /// <returns><see langword="true"/> if the registry value exists and is set to 1; otherwise, the specified default value.</returns>
+        private bool GetRegistryValue(string key, bool defaultValue)
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         {
             using (var regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH))
             {
@@ -368,8 +426,14 @@ namespace ASCOM.DeviceHub
                 }
             }
 
+<<<<<<< HEAD
             SetRegistryValue(key, false); // Default to false if not found
             return false;
+=======
+            // Set to default value and return this if not found
+            SetRegistryValue(key, defaultValue);
+            return defaultValue;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         }
 
         private void SetRegistryValue(string key, bool value)

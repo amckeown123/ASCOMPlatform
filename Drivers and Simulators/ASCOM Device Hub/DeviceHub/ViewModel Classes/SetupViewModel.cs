@@ -238,6 +238,7 @@ namespace ASCOM.DeviceHub
             DomeSetupVm.InitializeLayout(Globals.DomeLayoutSettings);
             DomeSetupVm.FastUpdatePeriod = fastUpdatePeriod;
             IsDomeActive = DomeManager.Instance.IsConnected;
+<<<<<<< HEAD
 
             DomeOffsetsVm.InitializeLayout(Globals.DomeLayoutSettings);
         }
@@ -263,6 +264,32 @@ namespace ASCOM.DeviceHub
             SaveFocuserSettings();
         }
 
+=======
+            DomeOffsetsVm.InitializeLayout(Globals.DomeLayoutSettings);
+        }
+
+        public void InitializeCurrentFocuser(string focuserID, double fastUpdatePeriod)
+        {
+            FocuserID = focuserID;
+            FocuserSetupVm.FocuserID = focuserID;
+            FocuserSetupVm.Initialize(Globals.FocuserTemperatureOffset);
+            FocuserSetupVm.FastUpdatePeriod = fastUpdatePeriod;
+            IsFocuserActive = FocuserManager.Instance.IsConnected;
+        }
+
+        #endregion Public Methods
+
+        #region Helper Methods
+
+        private void SaveSettings()
+        {
+            SaveApplicationSettings();
+            SaveTelescopeSettings();
+            SaveDomeSettings();
+            SaveFocuserSettings();
+        }
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         private void SaveApplicationSettings()
         {
             Globals.SuppressTrayBubble = SuppressTrayBubble;
@@ -358,6 +385,7 @@ namespace ASCOM.DeviceHub
                 // Get the current dome offsets from the offsets tab.
                 DomeLayoutSettings domeOffsets = DomeOffsetsVm.GetDomeOffsets();
 
+<<<<<<< HEAD
                 // Update the offsets in the dome layout settings.
                 domeLayoutSettings.SupportMultipleTelescopes = domeOffsets.SupportMultipleTelescopes;
                 domeLayoutSettings.ProfileIndex = domeOffsets.ProfileIndex; // Must include this because it is mastered on the dome offsets dialogue
@@ -413,6 +441,65 @@ namespace ASCOM.DeviceHub
                     FocuserManager.SetFocuserID(FocuserID);
                 }
 
+=======
+                // Update with current values
+                domeLayoutSettings.SupportMultipleTelescopes = domeOffsets.SupportMultipleTelescopes;
+
+                // Update the offsets in the dome layout settings.
+                domeLayoutSettings.ProfileIndex = domeOffsets.ProfileIndex; // Must include this because it is mastered on the dome offsets dialogue
+
+                domeLayoutSettings.GemAxisOffset0 = domeOffsets.GemAxisOffset0;
+                domeLayoutSettings.GemAxisOffset1 = domeOffsets.GemAxisOffset1;
+                domeLayoutSettings.GemAxisOffset2 = domeOffsets.GemAxisOffset2;
+                domeLayoutSettings.GemAxisOffset3 = domeOffsets.GemAxisOffset3;
+                domeLayoutSettings.GemAxisOffset4 = domeOffsets.GemAxisOffset4;
+
+                domeLayoutSettings.OpticalOffset0 = domeOffsets.OpticalOffset0;
+                domeLayoutSettings.OpticalOffset1 = domeOffsets.OpticalOffset1;
+                domeLayoutSettings.OpticalOffset2 = domeOffsets.OpticalOffset2;
+                domeLayoutSettings.OpticalOffset3 = domeOffsets.OpticalOffset3;
+                domeLayoutSettings.OpticalOffset4 = domeOffsets.OpticalOffset4;
+
+                domeLayoutSettings.TelescopeName0 = domeOffsets.TelescopeName0;
+                domeLayoutSettings.TelescopeName1 = domeOffsets.TelescopeName1;
+                domeLayoutSettings.TelescopeName2 = domeOffsets.TelescopeName2;
+                domeLayoutSettings.TelescopeName3 = domeOffsets.TelescopeName3;
+                domeLayoutSettings.TelescopeName4 = domeOffsets.TelescopeName4;
+
+                // Update current offsets if multiple telescopes are supported
+                if (domeOffsets.SupportMultipleTelescopes) // Multiple telescope support is enabled
+                {
+                    // Create a list of TelescopeOffsets based on the latest settings from the setup dialogue.
+                    List<TelescopeOffsets> offsets = new List<TelescopeOffsets>
+                    {
+                        new TelescopeOffsets(domeLayoutSettings.TelescopeName0, domeLayoutSettings.GemAxisOffset0, domeLayoutSettings.OpticalOffset0),
+                        new TelescopeOffsets(domeLayoutSettings.TelescopeName1, domeLayoutSettings.GemAxisOffset1, domeLayoutSettings.OpticalOffset1),
+                        new TelescopeOffsets(domeLayoutSettings.TelescopeName2, domeLayoutSettings.GemAxisOffset2, domeLayoutSettings.OpticalOffset2),
+                        new TelescopeOffsets(domeLayoutSettings.TelescopeName3, domeLayoutSettings.GemAxisOffset3, domeLayoutSettings.OpticalOffset3),
+                        new TelescopeOffsets(domeLayoutSettings.TelescopeName4, domeLayoutSettings.GemAxisOffset4, domeLayoutSettings.OpticalOffset4)
+                    };
+
+                    // Update the current offset settings in case the user changed the values in the setup dialogue.
+                    domeLayoutSettings.GemAxisOffset = offsets[domeLayoutSettings.ProfileIndex].OffsetFromAxisIntersection;
+                    domeLayoutSettings.OpticalOffset = offsets[domeLayoutSettings.ProfileIndex].OffsetFromDecAltAxis;
+                }
+
+                // Save the composite dome layout settings.
+                Globals.DomeLayoutSettings = domeLayoutSettings;
+
+                // Notify the main UI that the dome layout settings have changed.
+                Messenger.Default.Send(new DomeLayoutSettingsChangedMessage(domeLayoutSettings.Clone()));
+            }
+
+            if (!IsFocuserActive)
+            {
+                if (FocuserID != FocuserSetupVm.FocuserID)
+                {
+                    FocuserID = FocuserSetupVm.FocuserID;
+                    FocuserManager.SetFocuserID(FocuserID);
+                }
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                 FocuserManager.Instance.SetFastUpdatePeriod(FocuserSetupVm.FastUpdatePeriod);
             }
 

@@ -59,8 +59,8 @@
     <Content Include="ASCOM.ico" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>call "$(DevEnvDir)..\Tools\VsDevCmd.bat"
-signtool sign /a /fd SHA256 /n "Peter Simpson" /tr http://rfc3161timestamp.globalsign.com/advanced /td SHA256 "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <None Update="appsettings.json">

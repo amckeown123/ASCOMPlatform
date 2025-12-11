@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 ﻿using System;
+=======
+﻿using ASCOM.DeviceHub.MvvmMessenger;
+using System;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -14,6 +19,11 @@ namespace ASCOM.DeviceHub
         {
             _fastUpdateMinimum = Globals.DOME_FAST_UPDATE_MIN;
             _fastUpdateMaximum = Globals.DOME_FAST_UPDATE_MAX;
+<<<<<<< HEAD
+=======
+            _slewDelayMinimum = Globals.DOME_SLEW_DELAY_MIN;
+            _slewDelayMaximum = Globals.DOME_SLEW_DELAY_MAX;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         }
 
         #endregion Constructor
@@ -33,6 +43,12 @@ namespace ASCOM.DeviceHub
         private double _fastUpdatePeriod;
         private double _fastUpdateMinimum;
         private double _fastUpdateMaximum;
+<<<<<<< HEAD
+=======
+        private int _slewDelay;
+        private int _slewDelayMinimum;
+        private int _slewDelayMaximum;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 
         #endregion Backing fields for Public Properties
 
@@ -40,6 +56,7 @@ namespace ASCOM.DeviceHub
 
         public string DomeName { get; private set; }
 
+<<<<<<< HEAD
         #endregion Public Properties
 
         #region Public Methods
@@ -102,11 +119,64 @@ namespace ASCOM.DeviceHub
                 if (value != _scopeOffsetEWX)
                 {
                     _scopeOffsetEWX = value;
+=======
+        public string FastUpdateTooltip { get => Globals.DOME_FAST_UPDATE_TOOLTIP; }
+
+        public string SlewDelayTooltip { get => Globals.DOME_SLEW_DELAY_TOOLTIP; }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public void InitializeLayout(DomeLayoutSettings settings)
+        {
+            _domeRadius = settings.DomeRadius;
+            _gemAxisOffset = settings.GemAxisOffset;
+            _scopeOffsetEWX = (int)settings.DomeScopeOffset.X;
+            _scopeOffsetNSY = (int)settings.DomeScopeOffset.Y;
+            _scopeOffsetUDZ = (int)settings.DomeScopeOffset.Z;
+            _azimuthAccuracy = settings.AzimuthAccuracy;
+            _slaveInterval = settings.SlaveInterval;
+            _opticalOffset = settings.OpticalOffset;
+            _supportMultipleTelescopes = settings.SupportMultipleTelescopes;
+            _slewDelay = settings.SlewDelay;
+        }
+
+        public void RefreshDialogue()
+        {
+            OnPropertyChanged(nameof(SupportSingleTelescope));
+            OnPropertyChanged(nameof(SupportMultipleTelescopes));
+        }
+
+        #endregion Public Methods
+
+        #region Change Notification Properties
+
+        public bool SupportSingleTelescope
+        {
+            get { return !Globals.LatestSupportMultipleTelescopesState; }
+        }
+
+        public bool SupportMultipleTelescopes
+        {
+            get { return Globals.LatestSupportMultipleTelescopesState; }
+        }
+
+        public string DomeID
+        {
+            get { return _domeID; }
+            set
+            {
+                if (value != _domeID)
+                {
+                    _domeID = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     OnPropertyChanged();
                 }
             }
         }
 
+<<<<<<< HEAD
         // This property holds a measurement of the Y-direction (north-south) offset from the center of the dome
         // to the intersection of the RA and Dec axes on the mount. The units are millimeters and the sign is 
         // positive in the northward direction.
@@ -119,11 +189,83 @@ namespace ASCOM.DeviceHub
                 if (value != _scopeOffsetNSY)
                 {
                     _scopeOffsetNSY = value;
+=======
+        // This property holds a measurement of the X-direction (east-west) offset from the center of the dome
+        // to the intersection of the RA and Dec axes on the mount. The units are millimeters and the sign is 
+        // positive in the eastward direction.
+
+        public int ScopeOffsetEWX
+        {
+            get { return _scopeOffsetEWX; }
+            set
+            {
+                if (value != _scopeOffsetEWX)
+                {
+                    _scopeOffsetEWX = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     OnPropertyChanged();
                 }
             }
         }
 
+<<<<<<< HEAD
+        // This property holds a measurement of the Z-direction (up-down) offset from the center of the dome
+        // to the intersection of the RA and Dec axes on the mount. The units are millimeters and the sign is 
+        // positive in the upward direction.
+
+        public int ScopeOffsetUDZ
+        {
+            get { return _scopeOffsetUDZ; }
+            set
+            {
+                if (value != _scopeOffsetUDZ)
+                {
+                    _scopeOffsetUDZ = value;
+=======
+        // This property holds a measurement of the Y-direction (north-south) offset from the center of the dome
+        // to the intersection of the RA and Dec axes on the mount. The units are millimeters and the sign is 
+        // positive in the northward direction.
+
+        public int ScopeOffsetNSY
+        {
+            get { return _scopeOffsetNSY; }
+            set
+            {
+                if (value != _scopeOffsetNSY)
+                {
+                    _scopeOffsetNSY = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+<<<<<<< HEAD
+        public int DomeRadius
+        {
+            get { return _domeRadius; }
+            set
+            {
+                if (value != _domeRadius)
+                {
+                    _domeRadius = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // This property holds a measurement of the distance from the intersection of the RA and Dec axes on the mount 
+        // to the centerline of the telescope. The units are millimeters.
+
+        public int GemAxisOffset
+        {
+            get { return _gemAxisOffset; }
+            set
+            {
+                if (value != _gemAxisOffset)
+                {
+                    _gemAxisOffset = value;
+=======
         // This property holds a measurement of the Z-direction (up-down) offset from the center of the dome
         // to the intersection of the RA and Dec axes on the mount. The units are millimeters and the sign is 
         // positive in the upward direction.
@@ -149,27 +291,13 @@ namespace ASCOM.DeviceHub
                 if (value != _domeRadius)
                 {
                     _domeRadius = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     OnPropertyChanged();
                 }
             }
         }
 
-        // This property holds a measurement of the distance from the intersection of the RA and Dec axes on the mount 
-        // to the centerline of the telescope. The units are millimeters.
-
-        public int GemAxisOffset
-        {
-            get { return _gemAxisOffset; }
-            set
-            {
-                if (value != _gemAxisOffset)
-                {
-                    _gemAxisOffset = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
+<<<<<<< HEAD
         // This property holds a measurement of the offset distance of the optical axis from the declination / altitude axis 
         // The units are millimeters.
 
@@ -181,11 +309,25 @@ namespace ASCOM.DeviceHub
                 if (value != _opticalOffset)
                 {
                     _opticalOffset = value;
+=======
+        // This property holds a measurement of the distance from the intersection of the RA and Dec axes on the mount 
+        // to the center-line of the telescope. The units are millimeters.
+
+        public int GemAxisOffset
+        {
+            get { return _gemAxisOffset; }
+            set
+            {
+                if (value != _gemAxisOffset)
+                {
+                    _gemAxisOffset = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     OnPropertyChanged();
                 }
             }
         }
 
+<<<<<<< HEAD
         // This is the allowed slop in the azimuth position, in degrees.
         public int AzimuthAccuracy
         {
@@ -209,11 +351,25 @@ namespace ASCOM.DeviceHub
                 if (value != _slaveInterval)
                 {
                     _slaveInterval = value;
+=======
+        // This property holds a measurement of the offset distance of the optical axis from the declination / altitude axis 
+        // The units are millimeters.
+
+        public int OpticalOffset
+        {
+            get { return _opticalOffset; }
+            set
+            {
+                if (value != _opticalOffset)
+                {
+                    _opticalOffset = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     OnPropertyChanged();
                 }
             }
         }
 
+<<<<<<< HEAD
         public double FastUpdatePeriod
         {
             get { return _fastUpdatePeriod; }
@@ -222,11 +378,23 @@ namespace ASCOM.DeviceHub
                 if (value != _fastUpdatePeriod)
                 {
                     _fastUpdatePeriod = value;
+=======
+        // This is the allowed slop in the azimuth position, in degrees.
+        public int AzimuthAccuracy
+        {
+            get { return _azimuthAccuracy; }
+            set
+            {
+                if (value != _azimuthAccuracy)
+                {
+                    _azimuthAccuracy = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     OnPropertyChanged();
                 }
             }
         }
 
+<<<<<<< HEAD
         public double FastUpdateMinimum
         {
             get { return _fastUpdateMinimum; }
@@ -235,11 +403,23 @@ namespace ASCOM.DeviceHub
                 if (value != _fastUpdateMinimum)
                 {
                     _fastUpdateMinimum = value;
+=======
+        // This is the time interval, in seconds, for checking and adjusting the azimuth position of the dome.
+        public int SlaveInterval
+        {
+            get { return _slaveInterval; }
+            set
+            {
+                if (value != _slaveInterval)
+                {
+                    _slaveInterval = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     OnPropertyChanged();
                 }
             }
         }
 
+<<<<<<< HEAD
         public double FastUpdateMaximum
         {
             get { return _fastUpdateMaximum; }
@@ -248,11 +428,22 @@ namespace ASCOM.DeviceHub
                 if (value != _fastUpdateMaximum)
                 {
                     _fastUpdateMaximum = value;
+=======
+        public double FastUpdatePeriod
+        {
+            get { return _fastUpdatePeriod; }
+            set
+            {
+                if (value != _fastUpdatePeriod)
+                {
+                    _fastUpdatePeriod = value;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     OnPropertyChanged();
                 }
             }
         }
 
+<<<<<<< HEAD
         #endregion Change Notification Properties
 
         #region Public Methods
@@ -298,6 +489,120 @@ namespace ASCOM.DeviceHub
                 offset = values[0];
             }
 
+=======
+        public double FastUpdateMinimum
+        {
+            get { return _fastUpdateMinimum; }
+            set
+            {
+                if (value != _fastUpdateMinimum)
+                {
+                    _fastUpdateMinimum = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public double FastUpdateMaximum
+        {
+            get { return _fastUpdateMaximum; }
+            set
+            {
+                if (value != _fastUpdateMaximum)
+                {
+                    _fastUpdateMaximum = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int SlewDelay
+        {
+            get { return _slewDelay; }
+            set
+            {
+                if (value != _slewDelay)
+                {
+                    _slewDelay = value;
+
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int SlewDelayMinimum
+        {
+            get { return _slewDelayMinimum; }
+            set
+            {
+                if (value != _slewDelayMinimum)
+                {
+                    _slewDelayMinimum = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int SlewDelayMaximum
+        {
+            get { return _slewDelayMaximum; }
+            set
+            {
+                if (value != _slewDelayMaximum)
+                {
+                    _slewDelayMaximum = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        #endregion Change Notification Properties
+
+        #region Public Methods
+
+        public DomeLayoutSettings GetDomeLayoutSettings()
+        {
+            DomeLayoutSettings settings = new DomeLayoutSettings
+            {
+                DomeRadius = _domeRadius,
+                GemAxisOffset = _gemAxisOffset,
+                DomeScopeOffset = new Point3D((double)_scopeOffsetEWX, (double)_scopeOffsetNSY, (double)_scopeOffsetUDZ),
+                AzimuthAccuracy = _azimuthAccuracy,
+                SlaveInterval = _slaveInterval,
+                OpticalOffset = _opticalOffset,
+                SlewDelay = _slewDelay
+            };
+
+            return settings;
+        }
+
+        #endregion Public Methods
+
+        #region Helper Methods
+
+        private int EditTheOffset(int offset, string negativeText, string positiveText)
+        {
+            string directions = $"{positiveText}/{negativeText}";
+
+            ScopeDomeOffsetViewModel vm = new ScopeDomeOffsetViewModel(directions)
+            {
+                NegativeText = negativeText,
+                PositiveText = positiveText
+            };
+
+            vm.InitializeValues(new int[1] { offset });
+
+            IDialogService svc = ServiceContainer.Instance.GetService<IDialogService>();
+            bool? result = svc.ShowDialog(vm);
+
+            if (result.HasValue && result.Value)
+            {
+                int[] values = vm.GetValues();
+
+                offset = values[0];
+            }
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
             vm.Dispose();
             return offset;
         }

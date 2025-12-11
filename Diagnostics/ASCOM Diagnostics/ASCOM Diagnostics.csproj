@@ -76,7 +76,13 @@
       <HintPath>DotnetSignedSemverDll\Semver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+<<<<<<< HEAD
     <Reference Include="System.Core"/>
+=======
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
@@ -95,6 +101,85 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <Compile Include="..\..\PlatformUpdateChecker\ExtensionMethods.cs">
+      <Link>ExtensionMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\PlatformUpdateChecker\UpdateCheck.cs">
+      <Link>UpdateCheck.cs</Link>
+    </Compile>
+    <Compile Include="ApplicationEvents.cs" />
+    <Compile Include="ConnectForm.Designer.cs">
+      <DependentUpon>ConnectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DiagnosticsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DiagnosticsForm.Designer.cs">
+      <DependentUpon>DiagnosticsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EarthRotationDataForm.Designer.cs">
+      <DependentUpon>EarthRotationDataForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EarthRotationDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Net35CompopnentUseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Net35CompopnentUseForm.Designer.cs">
+      <DependentUpon>Net35CompopnentUseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\AssemblyVersionInfo.cs">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="SerialForm.Designer.cs">
+      <DependentUpon>SerialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SerialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimulatorDescriptor.cs" />
+    <Compile Include="SimulatorManager.cs" />
+    <Compile Include="VersionForm.Designer.cs">
+      <DependentUpon>VersionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VersionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConnectForm.resx">
+      <DependentUpon>ConnectForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DiagnosticsForm.resx">
+      <DependentUpon>DiagnosticsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EarthRotationDataForm.resx">
+      <DependentUpon>EarthRotationDataForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Net35CompopnentUseForm.resx">
+      <DependentUpon>Net35CompopnentUseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialForm.resx">
+      <DependentUpon>SerialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VersionForm.resx">
+      <DependentUpon>VersionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <None Include="app.manifest" />
     <None Include="Ceres.chby">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

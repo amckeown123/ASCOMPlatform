@@ -103,10 +103,13 @@
       <Project>{7b9b8be0-9517-0548-11d2-27b6261ab180}</Project>
       <Name>ASCOM.Utilities</Name>
     </ProjectReference>
+<<<<<<< HEAD
   </ItemGroup>
     <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
   </ItemGroup>
 </Project>

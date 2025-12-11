@@ -93,6 +93,120 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <Compile Include="GetDeviceDescriptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetDeviceDescriptionForm.Designer.cs">
+      <DependentUpon>GetDeviceDescriptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Devices.cs" />
+    <Compile Include="AscomDeviceTypes.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="My Project\MyNamespace.Static.1.Designer.cs" />
+    <Compile Include="AllUsersFileSystemProvider.cs" />
+    <Compile Include="AlpacaSupport\Entity Classes\AlpacaDeviceDescription.cs" />
+    <Compile Include="AlpacaSupport\JSON Response Classes\AlpacaConfiguredDevicesResponse.cs" />
+    <Compile Include="AlpacaSupport\JSON Response Classes\AlpacaDescriptionResponse.cs" />
+    <Compile Include="AlpacaSupport\Entity Classes\AlpacaDevice.cs" />
+    <Compile Include="AlpacaSupport\AlpacaDiscovery.cs" />
+    <Compile Include="AlpacaSupport\JSON Response Classes\AlpacaDiscoveryResponse.cs" />
+    <Compile Include="AlpacaSupport\Entity Classes\AscomDevice.cs" />
+    <Compile Include="AlpacaSupport\Entity Classes\ConfiguredDevice.cs" />
+    <Compile Include="AlpacaSupport\Constants.cs" />
+    <Compile Include="AlpacaSupport\Entity Classes\DnsResponse.cs" />
+    <Compile Include="AlpacaSupport\Finder.cs" />
+    <Compile Include="AlpacaSupport\JSON Response Classes\IntArray1DResponse.cs" />
+    <Compile Include="AlpacaSupport\JSON Response Classes\RestResponseBase.cs" />
+    <Compile Include="AlpacaSupport\WebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ASCOMProfile.cs" />
+    <Compile Include="CheckedMessageBox.Designer.cs">
+      <DependentUpon>CheckedMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheckedMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooserAlpacaConfigurationForm.Designer.cs">
+      <DependentUpon>ChooserAlpacaConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChooserAlpacaConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooserCustomToolStripRenderer.cs" />
+    <Compile Include="ChooserItem.cs" />
+    <Compile Include="Net35Use.cs" />
+    <Compile Include="Units.cs" />
+    <Compile Include="My Project\AssemblyInfo.cs" />
+    <Compile Include="..\..\AssemblyVersionInfo.cs">
+      <Link>My Project\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Chooser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ChooserForm.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>ChooserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChooserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeyValuePair.cs" />
+    <Compile Include="PEReader.cs" />
+    <Compile Include="RegistryAccess.cs" />
+    <Compile Include="VB6Support\VB6COMErrors.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="UtilitiesSettings.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="VB6Support\VB6HelperSupport.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Profile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serial.cs">
+    </Compile>
+    <Compile Include="Timer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TraceLogger.cs" />
+    <Compile Include="Util.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="XMLAccess.cs" />
+    <EmbeddedResource Include="CheckedMessageBox.resx">
+      <DependentUpon>CheckedMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooserAlpacaConfigurationForm.resx">
+      <DependentUpon>ChooserAlpacaConfigurationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooserForm.resX">
+      <DependentUpon>ChooserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetDeviceDescriptionForm.resx">
+      <DependentUpon>GetDeviceDescriptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
+      <CustomToolNamespace>ASCOM.Utilities.My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <None Include="..\..\ASCOM.snk">
       <Link>ASCOM.snk</Link>
     </None>

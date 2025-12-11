@@ -456,27 +456,82 @@ namespace ASCOM.DeviceHub
 
             while (!taskCancelled)
             {
-                DateTime wakeupTime = DateTime.Now;
-
-                previousPollingPeriod = PollingPeriod;
-                PollingPeriod = POLLING_INTERVAL_NORMAL;
-                int fastPollingMilliseconds = Convert.ToInt32(FastPollingPeriod * 1000.0);
-
-                if (Service.DeviceAvailable)
+                try
                 {
-                    UpdateDomeStatusTask();
+                    // LogActivityLine(ActivityMessageTypes.Commands, $"* Start of PollDomeTask, polling period: {PollingPeriod}");
+                    DateTime wakeupTime = DateTime.Now;
 
+<<<<<<< HEAD
                     bool domeSlewing = Service.Slewing;
                     // LogActivityLine(ActivityMessageTypes.Status, $"Get Slewing: {domeSlewing} (PollDomeTask)");
+=======
+                    previousPollingPeriod = PollingPeriod;
+                    PollingPeriod = POLLING_INTERVAL_NORMAL;
+                    int fastPollingMilliseconds = Convert.ToInt32(FastPollingPeriod * 1000.0);
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 
-                    if (!domeSlewing | ForceSlavedUpdate)
+                    if (Service.DeviceAvailable)
                     {
-                        if (SlewTheSlavedDome(ref nextSlaveAdjustmentTime))
+                        UpdateDomeStatusTask();
+
+                        bool domeSlewing = Service.Slewing;
+
+                        if (!domeSlewing | ForceSlavedUpdate)
                         {
-                            UpdateDomeStatusTask();
+                            if (SlewTheSlavedDome(ref nextSlaveAdjustmentTime))
+                            {
+                                UpdateDomeStatusTask();
+                            }
+                        }
+
+                        // Determine whether the dome is moving, allowing for the possibility that the property is not implemented. In this case report an error state to indicate that the shutter is not moving.
+                        ShutterState shutterStatus = ShutterState.shutterError;
+                        try
+                        {
+                            shutterStatus = Service.ShutterStatus;
+                        }
+                        catch { }
+
+                        bool domeIsMoving = domeSlewing || (shutterStatus == ShutterState.shutterOpening) || (shutterStatus == ShutterState.shutterClosing);
+                        LogActivityLine(ActivityMessageTypes.Commands, $"* PollDomeTask - Slewing: {TelescopeSlewState.IsSlewInProgress}, DomeIsMoving: {domeIsMoving}, DomeIsSlewing: {domeSlewing}, Shutter: {shutterStatus}, Target RA: {TelescopeSlewState.RightAscension.ToHMS()}, Declination: {TelescopeSlewState.Declination.ToDMS()}");
+
+                        if (domeIsMoving)
+                        {
+                            // We are moving, so use the fast polling rate.
+
+                            PollingPeriod = fastPollingMilliseconds;
+                        }
+                        else if (previousDomeMovingStatus)
+                        {
+                            // We stopped moving, so start the timer to return to normal polling.
+
+                            returnToNormalPollingTime = DateTime.Now + fastPollExtension;
+                            PollingPeriod = fastPollingMilliseconds;
+                        }
+                        else if (DateTime.Now < returnToNormalPollingTime)
+                        {
+                            // Continue fast polling.
+
+                            PollingPeriod = fastPollingMilliseconds;
+                        }
+                        else
+                        {
+                            // Return to normal polling.
+
+                            returnToNormalPollingTime = DateTime.MinValue;
+                        }
+
+                        // Remember our state for the next time through this loop.
+
+                        previousDomeMovingStatus = domeIsMoving;
+
+                        if (PollingPeriod == POLLING_INTERVAL_NORMAL && previousPollingPeriod != POLLING_INTERVAL_NORMAL)
+                        {
+                            LogActivityLine(ActivityMessageTypes.Commands, $"* Returning to normal polling every {PollingPeriod} ms.");
                         }
                     }
 
+<<<<<<< HEAD
                     ShutterState shutterStatus = Service.ShutterStatus;
                     // LogActivityLine(ActivityMessageTypes.Status, $"Get ShutterStatus: {shutterStatus} (PollDomeTask)");
 
@@ -484,80 +539,52 @@ namespace ASCOM.DeviceHub
                     LogActivityLine(ActivityMessageTypes.Other, $"PollDomeTask - Slewing: {TelescopeSlewState.IsSlewInProgress}, DomeIsMoving: {domeIsMoving}, DomeIsSlewing: {domeSlewing}, Shutter: {shutterStatus}, Target RA: {TelescopeSlewState.RightAscension.ToHMS()}, Declination: {TelescopeSlewState.Declination.ToDMS()}");
 
                     if (domeIsMoving)
-                    {
-                        // We are moving, so use the fast polling rate.
+=======
+                    TimeSpan waitInterval = wakeupTime.AddMilliseconds((double)PollingPeriod) - DateTime.Now;
+                    waitInterval -= TimeSpan.FromMilliseconds(overhead);
 
-                        PollingPeriod = fastPollingMilliseconds;
-                    }
-                    else if (previousDomeMovingStatus)
+                    if (waitInterval.TotalMilliseconds < 0)
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                     {
-                        // We stopped moving, so start the timer to return to normal polling.
-
-                        returnToNormalPollingTime = DateTime.Now + fastPollExtension;
-                        PollingPeriod = fastPollingMilliseconds;
-                    }
-                    else if (DateTime.Now < returnToNormalPollingTime)
-                    {
-                        // Continue fast polling.
-
-                        PollingPeriod = fastPollingMilliseconds;
-                    }
-                    else
-                    {
-                        // Return to normal polling.
-
-                        returnToNormalPollingTime = DateTime.MinValue;
+                        waitInterval = TimeSpan.FromMilliseconds(0);
                     }
 
-                    // Remember our state for the next time through this loop.
+                    // Wait until the polling interval has expired, we have been cancelled, or we have been
+                    // awakened early because the polling interval has been changed.
 
-                    previousDomeMovingStatus = domeIsMoving;
+                    watch.Start();
+                    int index = WaitHandle.WaitAny(waitHandles, waitInterval);
+                    watch.Stop();
 
-                    if (PollingPeriod == POLLING_INTERVAL_NORMAL && previousPollingPeriod != POLLING_INTERVAL_NORMAL)
+                    // overhead is how much time it took us to get control back, in excess of the waitInterval.
+
+                    overhead = Convert.ToDouble(watch.ElapsedMilliseconds) - waitInterval.TotalMilliseconds;
+                    watch.Reset();
+
+                    if (index == 0)
                     {
-                        LogActivityLine(ActivityMessageTypes.Commands, $"Returning to normal polling every {PollingPeriod} ms.");
+                        taskCancelled = true;
+
+                    }
+                    else if (index == 1)
+                    {
+                        // We have been awakened externally; presumably to change the polling interval or in response
+                        // to the scope being slewed.
+
+                        PollingChange.Reset();
+
+                        // Reset the overhead value since we were awakened early.
+
+                        overhead = 0.0;
+                    }
+                    else if (index == WaitHandle.WaitTimeout)
+                    {
+                        // The polling interval has expired.
                     }
                 }
-
-                TimeSpan waitInterval = wakeupTime.AddMilliseconds((double)PollingPeriod) - DateTime.Now;
-                waitInterval -= TimeSpan.FromMilliseconds(overhead);
-
-                if (waitInterval.TotalMilliseconds < 0)
+                catch (Exception ex)
                 {
-                    waitInterval = TimeSpan.FromMilliseconds(0);
-                }
-
-                // Wait until the polling interval has expired, we have been cancelled, or we have been
-                // awakened early because the polling interval has been changed.
-
-                watch.Start();
-                int index = WaitHandle.WaitAny(waitHandles, waitInterval);
-                watch.Stop();
-
-                // overhead is how much time it took us to get control back, in excess of the waitInterval.
-
-                overhead = Convert.ToDouble(watch.ElapsedMilliseconds) - waitInterval.TotalMilliseconds;
-                watch.Reset();
-
-                if (index == 0)
-                {
-                    taskCancelled = true;
-
-                }
-                else if (index == 1)
-                {
-                    // We have been awakened externally; presumably to change the polling interval or in response
-                    // to the scope being slewed.
-
-                    PollingChange.Reset();
-
-                    // Reset the overhead value since we were awakened early.
-
-                    overhead = 0.0;
-                }
-                else if (index == WaitHandle.WaitTimeout)
-                {
-                    // The polling interval has expired.
+                    LogActivityLine(ActivityMessageTypes.Commands, $"* Unhandled exception in PollDomeTask - Please report this on the groups.io ASCOM Talk Forum: {ex.Message}\r\n{ex}");
                 }
             }
 
@@ -930,9 +957,15 @@ namespace ASCOM.DeviceHub
         /// <returns>Point struct containing the azimuth and altitude of the dome</returns>
         private Point GetDomeCoord(Point scopePosition, double hourAngle, PierSide sideOfPier)
         {
+<<<<<<< HEAD
             Point domePoth= new Point(0,0), domeHub = new Point(0, 0), domeRevised = new Point(0, 0), domePosition = new Point(0, 0);
 
             LogActivityLine(ActivityMessageTypes.Other, $"  Use POTH: {Globals.UsePOTHDomeSlaveCalculation}, Use Revised: {Globals.UseRevisedDomeSlaveCalculation}");
+=======
+            Point domePoth = new Point(0, 0), domeHub = new Point(0, 0), domeRevised = new Point(0, 0), domePosition = new Point(0, 0);
+
+            LogActivityLine(ActivityMessageTypes.Other, $"  Use POTH: {Globals.UsePOTHDomeSlaveCalculation}, Use one-axis model: {Globals.UseOneAxisDomeSlaveCalculation}");
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
             try
             {
                 // Calculate the dome position using the POTH method.
@@ -971,17 +1004,29 @@ namespace ASCOM.DeviceHub
             LogActivityLine(ActivityMessageTypes.Other, $"  Dome Position - Hub 2: {domeRevised.X.ToDMS()}, {domeRevised.Y.ToDMS()} ({(domeHub.X - domeRevised.X).ToDMS()} {(domeHub.Y - domeRevised.Y).ToDMS()}) ({domeRevised.X:0.0}, {domeRevised.Y:0.0})");
 
             // Select the appropriate dome position based on the configuration setting
+<<<<<<< HEAD
             if (Globals.UseRevisedDomeSlaveCalculation) // Revised calculation
             {
                 domePosition = domeRevised;
+=======
+            if (Globals.UseOneAxisDomeSlaveCalculation) // Original Device Hub calculation
+            {
+                domePosition = domeHub;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
             }
             else if (Globals.UsePOTHDomeSlaveCalculation) // POTH calculation
             {
                 domePosition = domePoth;
             }
+<<<<<<< HEAD
             else // Original Device Hub calculation
             {
                 domePosition = domeHub;
+=======
+            else // Use the new 2-axis offset model 
+            {
+                domePosition = domeRevised;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
             }
 
             LogActivityLine(ActivityMessageTypes.Other, $"  Dome Position - Using:  {domePosition.X.ToDMS()}, {domePosition.Y.ToDMS()} ({domePosition.X:0.0}, {domePosition.Y:0.0})");

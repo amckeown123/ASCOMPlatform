@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<?xml version="1.0" encoding="utf-8"?>
  <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
@@ -7,13 +8,22 @@
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
+=======
+﻿<Project Sdk="Microsoft.NET.Sdk">
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <ProjectGuid>{C708E487-E3A9-4073-A545-294B88674225}</ProjectGuid>
+<<<<<<< HEAD
     <RootNamespace>ASCOM.LocalServer.Server</RootNamespace>
     <AssemblyName>ASCOM.JustAHub</AssemblyName>
+=======
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ASCOM.LocalServer.Server</RootNamespace>
+    <AssemblyName>ASCOM.JustAHub</AssemblyName>
+    <TargetFramework>net48</TargetFramework>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <AssemblyTitle>ASCOM JustAHub 32bit</AssemblyTitle>
     <Company>The ASCOM Initiative</Company>
     <Product>ASCOM JustAHub 32bit</Product>
@@ -21,11 +31,16 @@
     <Copyright>Copyright © The ASCOM Initiative 2025</Copyright>
     <AssemblyVersion>7.0.0.0</AssemblyVersion>
     <FileVersion>7.0.0.0</FileVersion>
+<<<<<<< HEAD
+=======
+    <OutputPath>bin\$(Configuration)\$(Platform)</OutputPath>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <Prefer32Bit>true</Prefer32Bit>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>LocalServer.snk</AssemblyOriginatorKeyFile>
     <ApplicationIcon>ASCOM.ico</ApplicationIcon>
     <StartupObject>ASCOM.LocalServer.Server</StartupObject>
+<<<<<<< HEAD
   </PropertyGroup>
 
 
@@ -52,11 +67,66 @@
 </PropertyGroup> 
 
 
+=======
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugType>embedded</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>BUILD64</DefineConstants>
+    <AssemblyName>ASCOM.JustAHub64</AssemblyName>
+    <AssemblyTitle>ASCOM JustAHub 64bit</AssemblyTitle>
+    <Product>ASCOM JustAHub 64bit</Product>
+    <Description>ASCOM Local Server for JustAHub 64bit</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>embedded</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DebugType>embedded</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>BUILD64</DefineConstants>
+    <AssemblyName>ASCOM.JustAHub64</AssemblyName>
+    <AssemblyTitle>ASCOM JustAHub 64bit</AssemblyTitle>
+    <Product>ASCOM JustAHub 64bit</Product>
+    <Description>ASCOM Local Server for JustAHub 64bit</Description>
+  </PropertyGroup>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <Compile Update="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="frmMain.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Update="Hub\SetupDialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Hub\SetupDialogForm.designer.cs">
+      <DependentUpon>SetupDialogForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Hub\SetupDialogForm.resx">
+      <DependentUpon>SetupDialogForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <Content Include="ASCOM.ico" />
     <Content Include="ASCOM.png" />
   </ItemGroup>
@@ -65,7 +135,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ASCOM.Attributes\ASCOM.Attributes.csproj" />
+<<<<<<< HEAD
     <ProjectReference Include="..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <ProjectReference Include="..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
     <ProjectReference Include="..\..\ASCOM.Exceptions\ASCOM.Exceptions.csproj" />
     <ProjectReference Include="..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
@@ -73,9 +146,12 @@
   <ItemGroup>
     <PackageReference Include="ASCOM.Common.Components" Version="2.2.0" />
   </ItemGroup>
+<<<<<<< HEAD
    <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 </Project>

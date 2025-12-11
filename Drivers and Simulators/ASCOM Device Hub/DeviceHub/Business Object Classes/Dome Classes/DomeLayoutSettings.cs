@@ -13,6 +13,7 @@ namespace ASCOM.DeviceHub
         private int _azimuthAccuracy;
 
         private bool _supportMultipleTelescopes;
+<<<<<<< HEAD
 
         private int _profileIndex;
 
@@ -48,9 +49,95 @@ namespace ASCOM.DeviceHub
             this._domeRadius = other._domeRadius;
             this._azimuthAccuracy = other._azimuthAccuracy;
             this._slaveInterval = other._slaveInterval;
+=======
+        private int _slewDelay;
+        private int _profileIndex;
+
+        private int _gemAxisOffset;
+        private int _gemAxisOffset0;
+        private int _gemAxisOffset1;
+        private int _gemAxisOffset2;
+        private int _gemAxisOffset3;
+        private int _gemAxisOffset4;
+
+        private int _opticalOffset;
+        private int _opticalOffset0;
+        private int _opticalOffset1;
+        private int _opticalOffset2;
+        private int _opticalOffset3;
+        private int _opticalOffset4;
+
+        private string _telescopeName0;
+        private string _telescopeName1;
+        private string _telescopeName2;
+        private string _telescopeName3;
+        private string _telescopeName4;
+
+        #endregion
+
+        #region Constructors
+
+        public DomeLayoutSettings() { }
+
+        public DomeLayoutSettings(DomeLayoutSettings other)
+        {
+            this._domeScopeOffset = other._domeScopeOffset;
+            this._domeRadius = other._domeRadius;
+            this._azimuthAccuracy = other._azimuthAccuracy;
+            this._slaveInterval = other._slaveInterval;
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 
             // Copy the multiple telescope supported flag
             this._supportMultipleTelescopes = other._supportMultipleTelescopes;
+
+<<<<<<< HEAD
+            this._profileIndex = other._profileIndex;
+
+            // Copy the offsets for the GEM axis
+            this._gemAxisOffset = other._gemAxisOffset;
+            this._gemAxisOffset0 = other._gemAxisOffset0;
+            this._gemAxisOffset1 = other._gemAxisOffset1;
+            this._gemAxisOffset2 = other._gemAxisOffset2;
+            this._gemAxisOffset3 = other._gemAxisOffset3;
+            this._gemAxisOffset4 = other._gemAxisOffset4;
+
+            // Copy the optical offsets
+            this._opticalOffset = other._opticalOffset;
+            this._opticalOffset0 = other._opticalOffset0;
+            this._opticalOffset1 = other._opticalOffset1;
+            this._opticalOffset2 = other._opticalOffset2;
+            this._opticalOffset3 = other._opticalOffset3;
+            this._opticalOffset4 = other._opticalOffset4;
+
+            // Copy the telescope names
+            this._telescopeName0 = other._telescopeName0;
+            this._telescopeName1 = other._telescopeName1;
+            this._telescopeName2 = other._telescopeName2;
+            this._telescopeName3 = other._telescopeName3;
+            this._telescopeName4 = other._telescopeName4;
+        }
+
+        #endregion Constructors
+
+        #region Change Notification Properties
+
+        public Point3D DomeScopeOffset
+        {
+            get { return _domeScopeOffset; }
+            set
+            {
+                if (value != _domeScopeOffset)
+                {
+                    _domeScopeOffset = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+=======
+            // Copy the slew delay value
+            this._slewDelay = other._slewDelay;
 
             this._profileIndex = other._profileIndex;
 
@@ -95,6 +182,7 @@ namespace ASCOM.DeviceHub
             }
         }
 
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         public int DomeRadius
         {
             get { return _domeRadius; }
@@ -147,6 +235,22 @@ namespace ASCOM.DeviceHub
             }
         }
 
+<<<<<<< HEAD
+=======
+        public int SlewDelay
+        {
+            get { return _slewDelay; }
+            set
+            {
+                if (value != _slewDelay)
+                {
+                    _slewDelay= value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         public int ProfileIndex
         {
             get { return _profileIndex; }

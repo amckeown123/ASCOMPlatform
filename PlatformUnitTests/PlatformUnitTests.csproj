@@ -52,7 +52,16 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
+<<<<<<< HEAD
   
+=======
+  <ItemGroup>
+    <Compile Include="ComDeviceStateTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SwitchAsync.cs" />
+    <Compile Include="Utilities.Util EdgeCaseTests.cs" />
+  </ItemGroup>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp">
       <Version>4.7.0</Version>
@@ -99,4 +108,9 @@
   <ItemGroup>
     <Compile Include="Utilities.Util Tests.cs" />
   </ItemGroup>
+<<<<<<< HEAD
+=======
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 </Project>

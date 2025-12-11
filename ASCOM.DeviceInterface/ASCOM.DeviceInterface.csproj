@@ -12,6 +12,11 @@
 		<ProjectGuid>{350A73BD-60D1-03E4-2EDC-A617D2D79CE3}</ProjectGuid>
 		<RootNamespace>ASCOM.DeviceInterface</RootNamespace>
 		<AssemblyName>ASCOM.DeviceInterfaces</AssemblyName>
+<<<<<<< HEAD
+=======
+		<MyType>Windows</MyType>
+		<TargetFrameworks>net35;net472;net481;netstandard2.0</TargetFrameworks>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\ASCOM.snk</AssemblyOriginatorKeyFile>
 		<DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
@@ -41,7 +46,17 @@
 	<PropertyGroup>
 		<IncludeReference>true</IncludeReference>
 	</PropertyGroup>
+<<<<<<< HEAD
   <ItemGroup>
+=======
+	<ItemGroup Condition="'$(TargetFramework)' == 'net35' And '$(IncludeReference)'=='true'">
+		<ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net472' And '$(IncludeReference)'=='true'">
+		<ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
+	</ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net481' And '$(IncludeReference)'=='true'">
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
   </ItemGroup>
 
