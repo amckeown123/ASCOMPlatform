@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Reflection;
+using ASCOM.Utilities;
+
 // NOVAS2COM component implementation
 // This class is an instanciable version of the NOVAS2 shared component because COM cannot see shared classes
 // It is recommended that it only be used from COM clients and that .NET clients use the shared NOVAS2 component
@@ -42,7 +45,14 @@ namespace ASCOM.Astrometry.NOVAS
     [Obsolete("This class will be withdrawn in the next major release, please use the SOFA or NOVAS31 classes instead")]
     public class NOVAS2COM : INOVAS2
     {
-
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static NOVAS2COM()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVAS2COM");
+        }
+        
         #region NOVAS Members
         /// <summary>
         /// Corrects position vector for aberration of light.

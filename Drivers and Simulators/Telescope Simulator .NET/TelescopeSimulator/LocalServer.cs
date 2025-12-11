@@ -22,7 +22,6 @@ using System.Threading;
 using System.Globalization;
 using System.Security.Principal;
 using System.Diagnostics;
-using ASCOM.Attributes;
 using ASCOM.Utilities;
 
 namespace ASCOM.Simulator
@@ -470,7 +469,7 @@ namespace ASCOM.Simulator
 
                     //Modified to pull from the custom Attribute ServedClassName
                     attr = Attribute.GetCustomAttribute(type, typeof(ServedClassNameAttribute));
-                    string chooserName = ((ServedClassNameAttribute)attr).DisplayName ?? "telescope Simulator";
+                    string chooserName = ((ASCOM.ServedClassNameAttribute)attr).DisplayName ?? "telescope Simulator";
 
                     using (var P = new ASCOM.Utilities.Profile())
                     {

@@ -1,15 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ <Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <MyType>Windows</MyType>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{44F1B424-F0FC-4471-8C0B-54E2AAF41032}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCpu</Platform>
     <AssemblyName>ASCOM.Utilities</AssemblyName>
-    <OutputType>Library</OutputType>
     <AssemblyMajorVersion>5</AssemblyMajorVersion>
     <AssemblyMinorVersion>0</AssemblyMinorVersion>
     <AssemblyRevisionNumber>4</AssemblyRevisionNumber>
@@ -17,16 +21,11 @@
     <AssemblyCompanyName>ASCOM Initiative</AssemblyCompanyName>
     <StartWithIE>False</StartWithIE>
     <RootNamespace>ASCOM.Utilities</RootNamespace>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ASCOM.snk</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <OptionStrict>Off</OptionStrict>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -40,97 +39,30 @@
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
-    <DebugSymbols>True</DebugSymbols>
-    <DefineDebug>True</DefineDebug>
-    <DefineTrace>True</DefineTrace>
-    <DefineConstants>
-    </DefineConstants>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
+  
+<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
+    <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <DocumentationFile>bin\$(Configuration)\$(Platform)\ASCOM.Astrometry.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>false</DefineDebug>
-    <DefineTrace>false</DefineTrace>
-    <DefineConstants>
-    </DefineConstants>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>Full</DebugType>
-    <RegisterForComInterop>false</RegisterForComInterop>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+</PropertyGroup>
+<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
+    <PlatformTarget>$(Platform)</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
-    <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
-    <CodeAnalysisLogFile>bin\Debug\ASCOM.Utilities.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>Full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
-    <CodeAnalysisLogFile>bin\Release\ASCOM.Utilities.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
-    <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DocumentationFile>ASCOM.Utilities.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>42017,42018,42019,42032,42036,42353,42354,42355</NoWarn>
-    <DebugType>Full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <WarningsAsErrors>41999,42016,42020,42021,42022</WarningsAsErrors>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Ascom.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DefineConstants>TRACE</DefineConstants>
+</PropertyGroup>  
+
+
   <ItemGroup>
     <Reference Include="System">
       <Name>System</Name>
@@ -152,59 +84,6 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllUsersFileSystemProvider.vb" />
-    <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="..\..\AssemblyVersionInfo.vb">
-      <Link>My Project\AssemblyVersionInfo.cs</Link>
-    </Compile>
-    <Compile Include="Chooser.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ChooserForm.Designer.vb">
-      <SubType>Code</SubType>
-      <DependentUpon>ChooserForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ChooserForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KeyValuePair.vb" />
-    <Compile Include="RegistryAccess.vb" />
-    <Compile Include="Exceptions.vb" />
-    <Compile Include="Interfaces.vb" />
-    <Compile Include="UtilitiesSettings.vb" />
-    <Compile Include="SharedConstantsAndCode.vb" />
-    <Compile Include="CommonConstants.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Profile.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Serial.vb">
-    </Compile>
-    <Compile Include="Timer.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TraceLogger.vb" />
-    <Compile Include="Util.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VB6Support\VB6COMErrors.vb" />
-    <EmbeddedResource Include="ChooserForm.resX">
-      <DependentUpon>ChooserForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
     <None Include="My Project\Settings.settings">
       <CustomToolNamespace>My</CustomToolNamespace>
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -212,31 +91,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
       <Visible>False</Visible>
       <ProductName>SQL Server Compact 3.5 SP2</ProductName>
@@ -244,7 +98,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Resources\ASCOM.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -256,11 +109,5 @@
       <Name>ASCOM.Exceptions</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  
 </Project>

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections;
-using static System.Environment;
-using System.Runtime.InteropServices;
-using ASCOM.Utilities;
+﻿using ASCOM.Utilities;
 using ASCOM.Utilities.Exceptions;
+using System;
+using System.Collections;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using static System.Environment;
 
 namespace ASCOM.Astrometry.NOVAS
 {
@@ -43,6 +44,15 @@ namespace ASCOM.Astrometry.NOVAS
         private TraceLogger TL;
 
         #region New and IDisposable
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static NOVAS3()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVAS3");
+        }
+        
         /// <summary>
         /// Creates a new instance of the NOVAS3 component
         /// </summary>

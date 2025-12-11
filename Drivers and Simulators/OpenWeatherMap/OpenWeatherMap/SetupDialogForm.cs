@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ASCOM.Utilities;
 using System.Net;
-using Nancy.Json;
+using System.Web.Script.Serialization;
 
 
 namespace ASCOM.OpenWeatherMap

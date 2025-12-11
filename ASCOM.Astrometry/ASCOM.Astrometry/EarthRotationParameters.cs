@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ASCOM.Utilities;
+using Microsoft.Win32.TaskScheduler;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.ServiceProcess;
 using System.Windows.Forms;
-using ASCOM.Utilities;
-using Microsoft.Win32.TaskScheduler;
 
 namespace ASCOM.Astrometry
 {
@@ -67,6 +68,15 @@ namespace ASCOM.Astrometry
         #endregion
 
         #region New and IDisposable Support
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static EarthRotationParameters()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "EarthRotationParameters");
+        }
+
         /// <summary>
         /// EarthRotationParameters initiator
         /// </summary>
@@ -643,7 +653,7 @@ namespace ASCOM.Astrometry
             switch (UpdateTypeValue ?? "")
             {
                 case GlobalItems.UPDATE_AUTOMATIC_LEAP_SECONDS_AND_DELTAUT1:
-
+                case GlobalItems.UPDATE_ON_DEMAND_LEAP_SECONDS_AND_DELTAUT1:
                     // Approach: calculate DELTA_T as =  CURRENT_LEAP_SECONDS + TT_TAI_OFFSET - DUT1
                     // Determine whether a downloaded DeltaUT1 value exists for the given UTC Julian date then perform the calculation above
                     // if yes then 
@@ -694,29 +704,29 @@ namespace ASCOM.Astrometry
                     break;
 
                 case GlobalItems.UPDATE_MANUAL_LEAP_SECONDS_MANUAL_DELTAUT1:
-                        // Approach: calculate DELTA_T as =  CURRENT_LEAP_SECONDS + TT_TAI_OFFSET - DUT1
-                        // Determine whether the manual DeltaUT1 value is valid 
-                        // if yes then use this value in the equation above
-                        // if no then fall back to the predicted approach
+                    // Approach: calculate DELTA_T as =  CURRENT_LEAP_SECONDS + TT_TAI_OFFSET - DUT1
+                    // Determine whether the manual DeltaUT1 value is valid 
+                    // if yes then use this value in the equation above
+                    // if no then fall back to the predicted approach
 
-                        if (ManualDeltaUT1Value != GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE) // We have a valid manual delta UT1 value so use it 
-                        {
-                            LogDebugMessage("DeltaT(JD)", string.Format("Manual leap seconds and delta UT1 are required, found a good DeltaUT1 value so returning the calculated DeltaT value for Julian day: {0} ({1})", RequiredDeltaTJulianDateUTC, DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
-                            ReturnValue = LeapSeconds() + GlobalItems.TT_TAI_OFFSET - ManualDeltaUT1Value; // Calculate DeltaT using the valid DeltaUT1 value
-                            LogDebugMessage("DeltaT(JD)", string.Format("Return value: {0} for Julian day: {1} ({2})", ReturnValue, RequiredDeltaTJulianDateUTC, DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
+                    if (ManualDeltaUT1Value != GlobalItems.DOUBLE_VALUE_NOT_AVAILABLE) // We have a valid manual delta UT1 value so use it 
+                    {
+                        LogDebugMessage("DeltaT(JD)", string.Format("Manual leap seconds and delta UT1 are required, found a good DeltaUT1 value so returning the calculated DeltaT value for Julian day: {0} ({1})", RequiredDeltaTJulianDateUTC, DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
+                        ReturnValue = LeapSeconds() + GlobalItems.TT_TAI_OFFSET - ManualDeltaUT1Value; // Calculate DeltaT using the valid DeltaUT1 value
+                        LogDebugMessage("DeltaT(JD)", string.Format("Return value: {0} for Julian day: {1} ({2})", ReturnValue, RequiredDeltaTJulianDateUTC, DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
 
-                            lock (DeltaTLockObject) // Update cache values and return the calculated value
-                            {
-                                LastDeltaTJulianDate = RequiredDeltaTJulianDateUTC;
-                                LastDeltaTValue = ReturnValue;
-                                return ReturnValue;
-                            }
-                        }
-                        else
+                        lock (DeltaTLockObject) // Update cache values and return the calculated value
                         {
-                            LogDebugMessage("DeltaT(JD)", string.Format("Manual leap seconds and manual delta UT1 are required, but the DeltaUT1 value is not available or invalid so falling through to the predicted approach for Julian day: {0} ({1})", RequiredDeltaTJulianDateUTC, DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
+                            LastDeltaTJulianDate = RequiredDeltaTJulianDateUTC;
+                            LastDeltaTValue = ReturnValue;
+                            return ReturnValue;
                         }
-                        break;
+                    }
+                    else
+                    {
+                        LogDebugMessage("DeltaT(JD)", string.Format("Manual leap seconds and manual delta UT1 are required, but the DeltaUT1 value is not available or invalid so falling through to the predicted approach for Julian day: {0} ({1})", RequiredDeltaTJulianDateUTC, DateTime.FromOADate(RequiredDeltaTJulianDateUTC - GlobalItems.OLE_AUTOMATION_JULIAN_DATE_OFFSET).ToString(GlobalItems.DOWNLOAD_TASK_TIME_FORMAT)));
+                    }
+                    break;
 
                 case GlobalItems.UPDATE_MANUAL_LEAP_SECONDS_PREDICTED_DELTAUT1:
                     {
@@ -1121,7 +1131,7 @@ namespace ASCOM.Astrometry
             {
                 ProfileLeapSecondsValueStrings = profile.EnumProfile(GlobalItems.AUTOMATIC_UPDATE_LEAP_SECOND_HISTORY_SUBKEY_NAME);
             }
-            catch (NullReferenceException ) // Key does not exist so supply an empty sorted list
+            catch (NullReferenceException) // Key does not exist so supply an empty sorted list
             {
                 LogDebugMessage("RefreshState", string.Format("Profile key does not exist - there are no downloaded leap second values"));
                 DownloadedLeapSecondValues = new SortedList<double, double>();
@@ -1334,7 +1344,7 @@ namespace ASCOM.Astrometry
                                             taskDefinition.Settings.StartWhenAvailable = true; // ' Requires a V2 task library (XP is only V1)
                                             LogScheduledTaskMessage("ManageScheduledTask", string.Format("Successfully added V2 AllowDemandStart and StartWhenAvailable settings."));
                                         }
-                                        catch (NotV1SupportedException ) // Swallow the not supported exception on XP
+                                        catch (NotV1SupportedException) // Swallow the not supported exception on XP
                                         {
                                             LogScheduledTaskMessage("ManageScheduledTask", string.Format("This machine only has a V1 task scheduler - ignoring V2 AllowDemandStart and StartWhenAvailable settings."));
                                         }
@@ -1464,7 +1474,7 @@ namespace ASCOM.Astrometry
                 {
                     LogScheduledTaskMessage("ManageScheduledTask Exception", ex.ToString());
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                 }
 

@@ -25,10 +25,12 @@
 ' _FilterWheel from being created and used as the [default] interface
 '
 
+Imports ASCOM.DriverAccess
 
-Imports System.Runtime.InteropServices
-
-
+<Guid("F9043C88-F6F2-101A-A3C9-08002B2F49FC")>
+<ServedClassName("Filter Wheel Simulator [.Net]")>
+<ProgId("ASCOM.Simulator.FilterWheel")>
+<ComVisible(True), ClassInterface(ClassInterfaceType.None)>
 Public Class FilterWheel
     '	==========
     Inherits ReferenceCountedObjectBase

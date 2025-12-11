@@ -1,7 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+ <Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
-    <OutputType>Library</OutputType>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{96FE4339-269D-4908-A161-47F8F7DF838B}</ProjectGuid>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ASCOM.DriverAccess</RootNamespace>
     <AssemblyName>ASCOM.DriverAccess</AssemblyName>
     <SignAssembly>true</SignAssembly>
@@ -20,23 +31,42 @@
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AssemblyTitle>ASCOM Client Toolkit</AssemblyTitle>
-    <Description>Provides .NET programs easy access to ASCOM drivers</Description>
-    <Copyright>Copy without restriction</Copyright>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
+ 
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <DocumentationFile>bin\$(Configuration)\$(Platform)\ASCOM.Astrometry.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+</PropertyGroup>
+<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+     <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <CodeAnalysisRuleSet>..\..\Ascom.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DefineConstants>TRACE</DefineConstants>
+</PropertyGroup>  
+
+
+
   <ItemGroup>
     <Reference Include="ASCOM.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Interfaces\Master Interfaces\ASCOM.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Using Include="System" />
+    <Using Include="System.Data" />
+    <Using Include="System.Xml" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj">
       <Project>{350a73bd-60d1-03e4-2edc-a617d2d79ce3}</Project>
@@ -46,7 +76,6 @@
       <Project>{6fd62ea4-8b79-4805-85ec-35178759c405}</Project>
       <Name>ASCOM.Exceptions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ASCOM.Utilities\AlpacaDynamicClients\Dynamic Client Local Server\Dynamic Client Local Server.csproj" />
     <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj">
       <Project>{7B9B8BE0-9517-0548-11D2-27B6261AB180}</Project>
       <Name>ASCOM.Utilities</Name>
@@ -57,7 +86,5 @@
       <Link>ASCOM.snk</Link>
     </None>
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
-  </Target>
-</Project>
+ 
+  </Project>

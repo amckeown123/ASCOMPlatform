@@ -3,9 +3,10 @@
 //-----------------------------------------------------------------------
 // 25-Sept-10  	rem     6.0.0 - Initial draft of the class
 
-using System;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using System;
+using System.Reflection;
 
 namespace ASCOM.DriverAccess
 {
@@ -19,6 +20,14 @@ namespace ASCOM.DriverAccess
         #region SafetyMonitor constructors
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static SafetyMonitor()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "DriverAccess.SafetyMonitor");
+        }
+
+        /// <summary>
         /// Creates a SafetyMonitor object with the given Prog ID
         /// </summary>
         /// <param name="safetyMonitorId">ProgID of the device to be accessed.</param>
@@ -27,9 +36,11 @@ namespace ASCOM.DriverAccess
         {
             _memberFactory = MemberFactory;
         }
+
         #endregion
 
         #region Convenience Members
+
         /// <summary>
         /// Brings up the ASCOM Chooser Dialogue to choose a SafetyMonitor
         /// </summary>

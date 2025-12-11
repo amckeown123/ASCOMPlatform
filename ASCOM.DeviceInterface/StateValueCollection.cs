@@ -3,6 +3,13 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Linq;
+
+#if NETSTANDARD2_0
+//using ASCOM.Tools;
+#else
+using ASCOM.Utilities;
+#endif
 
 namespace ASCOM.DeviceInterface
 {
@@ -19,14 +26,13 @@ namespace ASCOM.DeviceInterface
     {
         // Array to hold the state values
         private IStateValue[] stateValues;
-        private List<StateValue> deviceState;
 
         #region Initialisers
 
         /// <summary>
         /// Create an empty state value collection
         /// </summary>
-        public StateValueCollection(List<StateValue> deviceState)
+        public StateValueCollection()
         {
             stateValues = new IStateValue[0];
         }
@@ -37,17 +43,33 @@ namespace ASCOM.DeviceInterface
         /// <param name="stateValueList">List of objects that implement IStateValue.</param>
         public StateValueCollection(List<IStateValue> stateValueList)
         {
-            IStateValue[] toArray = stateValueList.ToArray();
-            stateValues = toArray;
+            stateValues = stateValueList.ToArray<IStateValue>();
         }
 
-        public StateValueCollection()
+        /// <summary>
+        /// Create a state value collection populated with values a list of StateValue objects
+        /// </summary>
+        /// <param name="stateValueList">List of StateValue objects.</param>
+        public StateValueCollection(List<StateValue> stateValueList)
         {
+            stateValues = new StateValue[stateValueList.Count];
+
+            int index = -1;
+            foreach (StateValue stateValue in stateValueList)
+            {
+                index++;
+                stateValues[index] = stateValue;
+            }
         }
 
-
-
-
+        /// <summary>
+        /// Create a state value collection populated with values from an array of StateValue objects
+        /// </summary>
+        /// <param name="stateValueArray">Array of StateValue objects.</param>
+        public StateValueCollection(StateValue[] stateValueArray)
+        {
+            stateValues = stateValueArray;
+        }
 
         #endregion
 

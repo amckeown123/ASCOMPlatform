@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ASCOM.Utilities.Interfaces;
+using Microsoft.VisualBasic;
+using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using ASCOM.Utilities.Interfaces;
-using Microsoft.VisualBasic;
 using static ASCOM.Utilities.Global;
 
 namespace ASCOM.Utilities
@@ -119,6 +120,15 @@ namespace ASCOM.Utilities
         public event TickEventHandler Tick; // Implements ITimer.Tick ' Declare the tick event
 
         #region New and IDisposable Support
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Timer()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "Timer");
+        }
+
         /// <summary>
         /// Create a new timer component
         /// </summary>

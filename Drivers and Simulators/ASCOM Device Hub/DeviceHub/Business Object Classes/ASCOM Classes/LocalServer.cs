@@ -11,7 +11,6 @@ using System.Windows;
 
 using Microsoft.Win32;
 
-using ASCOM.Attributes;
 using ASCOM.DeviceHub.MvvmMessenger;
 using ASCOM.Utilities;
 
@@ -490,7 +489,7 @@ namespace ASCOM.DeviceHub
             DomeSettings domeSettings = DomeSettings.FromProfile();
             DomeManager.SetDomeID(domeSettings.DomeID);
             DomeManager.Instance.SetFastUpdatePeriod(domeSettings.FastUpdatePeriod);
-            Globals.DomeLayout = domeSettings.DomeLayout;
+            Globals.DomeLayoutSettings = domeSettings.DomeLayoutSettings;
             Globals.DomeAzimuthAdjustment = domeSettings.AzimuthAdjustment;
             Globals.UsePOTHDomeSlaveCalculation = domeSettings.UsePOTHDomeSlaveCalculation;
 

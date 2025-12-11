@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Net;
-using Nancy.Json;
+using System.Web.Script.Serialization;
 using ASCOM.Utilities;
 using System.Globalization;
 

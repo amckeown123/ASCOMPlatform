@@ -62,6 +62,7 @@ namespace ASCOM.Utilities
         internal const bool SUPPRESS_ALPACA_DRIVER_ADMIN_DIALOGUE_DEFAULT = false;
         internal const string PROFILE_MUTEX_NAME = "ASCOMProfileMutex"; // Name and time-out value for the Profile mutex than ensures only one profile action happens at a time
         internal const int PROFILE_MUTEX_TIMEOUT = 5000;
+        internal const string DOTNET35_COMPONENT_USE_LOGGING = "DotNet35 Component Logging"; internal const bool DOTNET35_COMPONENT_USE_LOGGING_DEFAULT = false;
 
         // Trace settings values, these are used to persist trace values on a per user basis
         internal const string TRACE_TRANSFORM = "Trace Transform";
@@ -143,6 +144,9 @@ namespace ASCOM.Utilities
         internal const string TRACE_LOGGER_FILENAME_BASE = @"\Logs "; // Fixed part of TraceLogger file name.  Note: The trailing space must be retained!
         internal const string TRACE_LOGGER_FILE_NAME_DATE_FORMAT = "yyyy-MM-dd";
         internal const string TRACE_LOGGER_SYSTEM_PATH = @"\ASCOM\SystemLogs"; // Location where "System" user logs will be placed
+
+        // .NET 3.5 compatibility constants
+        internal const string NET35_REGISTRY_BASE = ".NET35";
 
         internal enum EventLogErrors : int
         {
@@ -1413,7 +1417,14 @@ namespace ASCOM.Utilities
                                 // Open a 64bit view of the registry
                                 using (RegistryAccess registryAccess = new RegistryAccess(TL))
                                 {
-                                    RK = registryAccess.OpenSubKey3264(Registry.ClassesRoot, $"CLSID\\{clsId}", false, RegistryAccessRights.Wow64_64Key);
+                                    try
+                                    {
+                                        RK = registryAccess.OpenSubKey3264(Registry.ClassesRoot, $"CLSID\\{clsId}", false, RegistryAccessRights.Wow64_64Key);
+                                    }
+                                    catch (ProfilePersistenceException) // The key doesn't exist or can't be opened so ignore it
+                                    {
+                                        RK = null;
+                                    }
                                 }
 
                                 if (RK != null) // Found a CLSID entry

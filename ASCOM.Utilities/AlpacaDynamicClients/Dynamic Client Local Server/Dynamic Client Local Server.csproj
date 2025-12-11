@@ -1,12 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<ProductVersion>8.0.50727</ProductVersion>
-		<OutputType>WinExe</OutputType>
-		<AssemblyName>DynamicClientServer</AssemblyName>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+		<OutputType>Exe</OutputType>
 		<TargetFramework>net472</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
-		<FileUpgradeFlags />
-		<UpgradeBackupLocation />
+	</PropertyGroup>
+	<PropertyGroup>
+	    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+
+		<ProductVersion>8.0.50727</ProductVersion>
+		<AssemblyName>DynamicClientServer</AssemblyName>
 		<IsWebBootstrapper>false</IsWebBootstrapper>
 		<PublishUrl>publish\</PublishUrl>
 		<Install>true</Install>
@@ -29,23 +33,32 @@
 		<Copyright>Copyright © The ASCOM Initiative 2025</Copyright>
 		<AssemblyVersion>7.0.0.0</AssemblyVersion>
 		<FileVersion>7.0.0.0</FileVersion>
-		<PlatformTarget>x86</PlatformTarget>
-		<OutputPath>bin\$(Configuration)\</OutputPath>
-		<PreBuildEvent />
-		<PostBuildEvent />
-		<PreBuildEvent />
-		<PostBuildEvent />
-		<PreBuildEvent />
-		<PostBuildEvent />
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugType>embedded</DebugType>
-		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>embedded</DebugType>
-		<Optimize>False</Optimize>
-	</PropertyGroup>
+
+
+<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <DocumentationFile>bin\$(Configuration)\$(Platform)\ASCOM.Astrometry.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+</PropertyGroup>
+<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+     <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <CodeAnalysisRuleSet>..\..\Ascom.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DefineConstants>TRACE</DefineConstants>
+</PropertyGroup>  
+
+
+
+
 	<PropertyGroup>
 		<SignAssembly>true</SignAssembly>
 	</PropertyGroup>
@@ -57,21 +70,7 @@
 		<PostBuildEvent />
 		<RootNamespace>ASCOM.DynamicClients</RootNamespace>
 	</PropertyGroup>
-	<ItemGroup>
-		<Compile Update="LocalServerForm.cs">
-			<SubType>Form</SubType>
-		</Compile>
-		<Compile Update="LocalServerForm.Designer.cs">
-			<DependentUpon>LocalServerForm.cs</DependentUpon>
-		</Compile>
-		<Compile Update="SetupDialogForm.cs">
-		  <SubType>Form</SubType>
-		</Compile>
-		<EmbeddedResource Update="LocalServerForm.resx">
-			<SubType>Designer</SubType>
-			<DependentUpon>LocalServerForm.cs</DependentUpon>
-		</EmbeddedResource>
-	</ItemGroup>
+	
 	<ItemGroup>
 		<Content Include="ASCOM.ico" />
 		<Content Include="ASCOM.png" />
@@ -80,10 +79,10 @@
 		<None Include="LocalServer.snk" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="ASCOM.Alpaca.Components" Version="2.0.9" />
-	  <PackageReference Include="ASCOM.Com.Components" Version="2.0.9" />
-	  <PackageReference Include="ASCOM.Common.Components" Version="2.0.9" />
-	  <PackageReference Include="ASCOM.Tools" Version="2.0.9" />
+	  <PackageReference Include="ASCOM.Alpaca.Components" Version="2.2.0" />
+	  <PackageReference Include="ASCOM.Com.Components" Version="2.2.0" />
+	  <PackageReference Include="ASCOM.Common.Components" Version="2.2.0" />
+	  <PackageReference Include="ASCOM.Tools" Version="2.2.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
@@ -92,4 +91,9 @@
 	<ItemGroup>
 	  <Reference Include="System.Security" />
 	</ItemGroup>
+	   <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

@@ -1,11 +1,13 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using ASCOM.Alpaca.Clients;
+﻿using ASCOM.Alpaca.Clients;
 using ASCOM.DeviceInterface;
+using ASCOM.Common.Interfaces;
 using ASCOM.Tools;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using ASCOM.Common.DeviceStateClasses;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace ASCOM.DynamicClients
 {
@@ -58,7 +60,7 @@ namespace ASCOM.DynamicClients
                     Enabled = state.TraceState
                 };
                 if (state.DebugTraceState)
-                    TL.SetMinimumLoggingLevel(Common.Interfaces.LogLevel.Debug);
+                    TL.SetMinimumLoggingLevel(LogLevel.Debug);
 
                 LogMessage(deviceType.ToString(), $"Starting driver initialisation for ProgID: {driverProgId}, Description: {driverDisplayName}");
 
@@ -167,14 +169,14 @@ namespace ASCOM.DynamicClients
 
         /// <summary>Returns the list of custom action names supported by this driver.</summary>
         /// <value>An ArrayList of strings (SafeArray collection) containing the names of supported actions.</value>
-        public System.Collections.ArrayList SupportedActions
+        public ArrayList SupportedActions
         {
             get
             {
                 try
                 {
                     CheckConnected($"SupportedActions");
-                    System.Collections.ArrayList actions = new System.Collections.ArrayList((System.Collections.ICollection)client.SupportedActions);
+                    ArrayList actions = new ArrayList(client.SupportedActions.ToList<string>());
                     LogMessage("SupportedActions", $"Returning {actions.Count} actions.");
                     return actions;
                 }
@@ -195,10 +197,22 @@ namespace ASCOM.DynamicClients
         /// </returns>
         public string Action(string actionName, string actionParameters)
         {
+            const int MAX_PARAM_LOG_LENGTH = 80; // Set the maximum length that the parameters string will show in the log file
             try
             {
-                CheckConnected($"Action {actionName} - {actionParameters}");
-                LogMessage("", $"Calling Action: {actionName} with parameters: {actionParameters}");
+                // Create a truncated set of the parameters for logging
+                string truncatedParameters;
+                if (actionParameters.Length > MAX_PARAM_LOG_LENGTH)
+                {
+                    truncatedParameters = $"{actionParameters.Substring(0, MAX_PARAM_LOG_LENGTH)}..., Action parameters length: {actionParameters.Length}";
+                }
+                else
+                {
+                    truncatedParameters = actionParameters;
+                }
+
+                CheckConnected($"Action {actionName} - {truncatedParameters}");
+                LogMessage("", $"Calling Action: {actionName} with parameters: {truncatedParameters}");
                 string actionResponse = client.Action(actionName, actionParameters);
                 LogMessage("Action", $"Completed.");
                 return actionResponse;
@@ -570,9 +584,10 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    LogMessage("DeviceState", $"Received {client.FocuserState} values");
+                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
+                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
 
-                    return (IStateValueCollection)client.FocuserState;
+                    return new StateValueCollection(deviceState.ToPlatformStateValue());
                 }
                 catch (Exception ex)
                 {
@@ -580,7 +595,6 @@ namespace ASCOM.DynamicClients
                     throw;
                 }
             }
-
         }
 
         #endregion

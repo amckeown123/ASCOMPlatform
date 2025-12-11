@@ -1,9 +1,11 @@
-﻿
+﻿using ASCOM.Utilities;
+using Microsoft.Win32;
 using System;
-
-
-using ASCOM.Utilities;
-using TraceLogger = ASCOM.Utilities.TraceLogger;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SetSimulators
 {
@@ -39,7 +41,7 @@ namespace SetSimulators
 
             // If we get here there must be at least one argument so act on it
 
-            using (TraceLogger TL = new("SetSimulators"))
+            using (TraceLogger TL = new TraceLogger("SetSimulators"))
             {
                 try
                 {

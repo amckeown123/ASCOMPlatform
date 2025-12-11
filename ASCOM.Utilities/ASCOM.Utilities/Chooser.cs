@@ -1,9 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using ASCOM.Utilities.Exceptions;
+﻿using ASCOM.Utilities.Exceptions;
 using ASCOM.Utilities.Interfaces;
 using Microsoft.VisualBasic;
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using static ASCOM.Utilities.Global;
 
 namespace ASCOM.Utilities
@@ -50,16 +51,21 @@ namespace ASCOM.Utilities
         private bool disposedValue = false;        // To detect redundant calls
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Chooser()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "Chooser");
+        }
+
+        /// <summary>
         /// Creates a new Chooser object
         /// </summary>
         /// <remarks></remarks>
         public Chooser() : base()
         {
-
             deviceTypeValue = "Telescope"; // Default to Telescope chooser
         }
-
-
 
         // IDisposable
         /// <summary>

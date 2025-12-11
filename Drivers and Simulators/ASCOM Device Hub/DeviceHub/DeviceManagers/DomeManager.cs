@@ -9,7 +9,6 @@ using ASCOM.Astrometry.Transform;
 
 using ASCOM.DeviceHub.MvvmMessenger;
 using System.Diagnostics;
-using ASCOM.Astrometry;
 
 namespace ASCOM.DeviceHub
 {
@@ -468,7 +467,7 @@ namespace ASCOM.DeviceHub
                     UpdateDomeStatusTask();
 
                     bool domeSlewing = Service.Slewing;
-                    LogActivityLine(ActivityMessageTypes.Status, $"Get Slewing: {domeSlewing} (PollDomeTask)");
+                    // LogActivityLine(ActivityMessageTypes.Status, $"Get Slewing: {domeSlewing} (PollDomeTask)");
 
                     if (!domeSlewing | ForceSlavedUpdate)
                     {
@@ -479,10 +478,10 @@ namespace ASCOM.DeviceHub
                     }
 
                     ShutterState shutterStatus = Service.ShutterStatus;
-                    LogActivityLine(ActivityMessageTypes.Status, $"Get ShutterStatus: {shutterStatus} (PollDomeTask)");
+                    // LogActivityLine(ActivityMessageTypes.Status, $"Get ShutterStatus: {shutterStatus} (PollDomeTask)");
 
                     bool domeIsMoving = domeSlewing || (shutterStatus == ShutterState.shutterOpening) || (shutterStatus == ShutterState.shutterClosing);
-                    LogActivityLine(ActivityMessageTypes.Other, $"PollDomeTask - Telescope slew in progress: {TelescopeSlewState.IsSlewInProgress}, Telescope target RA: {TelescopeSlewState.RightAscension.ToHMS()}, Telescope target declination: {TelescopeSlewState.Declination.ToDMS()}, Dome is moving: {domeIsMoving}, Dome is slewing: {domeSlewing}, Dome shutter status: {shutterStatus}");
+                    LogActivityLine(ActivityMessageTypes.Other, $"PollDomeTask - Slewing: {TelescopeSlewState.IsSlewInProgress}, DomeIsMoving: {domeIsMoving}, DomeIsSlewing: {domeSlewing}, Shutter: {shutterStatus}, Target RA: {TelescopeSlewState.RightAscension.ToHMS()}, Declination: {TelescopeSlewState.Declination.ToDMS()}");
 
                     if (domeIsMoving)
                     {
@@ -582,7 +581,7 @@ namespace ASCOM.DeviceHub
 
                 SlewInProgressMessage telescopeSlewState = TelescopeSlewState;
 
-                LogActivityLine(msgType, $"SlewTheSlavedDome - telescopeSlewState {(telescopeSlewState is null?"is null":"has been set")}, Telescope slew in progress: {telescopeSlewState?.IsSlewInProgress}");
+                LogActivityLine(msgType, $"SlewTheSlavedDome - telescopeSlewState {(telescopeSlewState is null ? "is null" : "has been set")}, Telescope slew in progress: {telescopeSlewState?.IsSlewInProgress}");
 
                 // Check whether the telescope is currently slewing
                 if (telescopeSlewState != null && telescopeSlewState.IsSlewInProgress) // The telescope is slewing
@@ -667,16 +666,13 @@ namespace ASCOM.DeviceHub
                     {
                         if (!DomeStatus.Slewing || (TelescopeStatus.Slewing && Globals.UseCompositeSlewingFlag))
                         {
-                            // Here is where we re-slew the dome to adjust for non-slew scope movement such as parking,
-                            // tracking, or jogging.
+                            // Here is where we re-slew the dome to adjust for non-slew scope movement such as parking, tracking or jogging.
 
                             LogActivityLine(ActivityMessageTypes.Commands, "Dome position recalculation due to periodic timer expiration.");
 
-                            Point scopePosition = new Point(TelescopeStatus.Azimuth, TelescopeStatus.Altitude);
-
                             try
                             {
-                                SlaveDomePointing(scopePosition, TelescopeStatus.LocalHourAngle, TelescopeStatus.SideOfPier);
+                                SlaveDomePointing(new Point(TelescopeStatus.Azimuth, TelescopeStatus.Altitude), TelescopeStatus.LocalHourAngle, TelescopeStatus.SideOfPier);
                                 retval = true;
                             }
                             catch (Exception xcp)
@@ -686,7 +682,7 @@ namespace ASCOM.DeviceHub
                             }
                         }
 
-                        TimeSpan syncSpan = new TimeSpan(0, 0, Globals.DomeLayout.SlaveInterval);
+                        TimeSpan syncSpan = new TimeSpan(0, 0, Globals.DomeLayoutSettings.SlaveInterval);
                         returnTime = DateTime.Now + syncSpan;
                     }
                 }
@@ -704,36 +700,51 @@ namespace ASCOM.DeviceHub
             return retval;
         }
 
+        /// <summary>
+        /// Synchronizes the dome's position with the telescope's pointing direction.
+        /// </summary>
+        /// <remarks>This method calculates the appropriate dome azimuth and altitude to align with the
+        /// telescope's pointing direction and moves the dome as needed.  If the calculated azimuth or altitude values
+        /// are invalid (e.g., out of range or <see cref="double.NaN"/>), the method will log an error and abort the
+        /// operation.  The dome's azimuth and altitude are adjusted only if they deviate from the calculated target
+        /// values by more than the configured accuracy thresholds.  If the dome is moved, the dome status is updated,
+        /// and fast polling is enabled to monitor the movement.</remarks>
+        /// <param name="scopePosition">The current position of the telescope in horizontal coordinates, where <c>X</c> represents azimuth and
+        /// <c>Y</c> represents altitude.</param>
+        /// <param name="localHourAngle">The local hour angle of the telescope, in hours. Negative values indicate positions east of the meridian,
+        /// and positive values indicate positions west of the meridian.</param>
+        /// <param name="sideOfPier">The telescope's reported pointing state. If <see cref="PierSide.pierUnknown"/>
+        /// is provided, the method will attempt to calculate the side of the pier based on the local hour angle.</param>
         private void SlaveDomePointing(Point scopePosition, double localHourAngle, PierSide sideOfPier)
         {
             if (sideOfPier == PierSide.pierUnknown)
             {
-                // We don't have side-of-pier from the telescope, so calculate it.
+                // We don't have side-of-pier from the telescope, so calculate it using the ASCOM convention that targets in the east are pierWest and targets in the West are pierEast.
+                sideOfPier = (localHourAngle < 0.0) ? PierSide.pierWest : PierSide.pierEast; // Negative hour angle indicates that the target is in the east so pointing state is pierWest, otherwise pierEast.
 
-                sideOfPier = (localHourAngle < 0.0) ? PierSide.pierWest : PierSide.pierEast;
-
-                LogActivityLine(ActivityMessageTypes.Commands, $"Dome Slaving calculated pier side as {sideOfPier}");
+                LogActivityLine(ActivityMessageTypes.Other, $"Dome Slaving calculated pier side as {sideOfPier}");
             }
 
             if (sideOfPier == PierSide.pierUnknown)
             {
-                LogActivityLine(ActivityMessageTypes.Commands, "Unable to slave the dome; pier side is unknown.");
+                LogActivityLine(ActivityMessageTypes.Other, "Unable to slave the dome; pier side is unknown.");
 
                 return;
             }
 
-            LogActivityLine(ActivityMessageTypes.Commands, $"Slaving the dome to telescope Az: {scopePosition.X.ToDMS()}, Alt: {scopePosition.Y.ToDMS()}, HA: {localHourAngle.ToHMS()}, SOP: {sideOfPier}.");
+            LogActivityLine(ActivityMessageTypes.Other, $"Slaving the dome to telescope Az: {scopePosition.X.ToDMS()}, El: {scopePosition.Y.ToDMS()}, HA: {localHourAngle.ToHMS()}, SOP: {sideOfPier}.");
 
+            // Calculate the dome target Az/El coordinates given the telescope Az/El coordinates, current hour angle and side of pier
             Point domeAltAz = GetDomeCoord(scopePosition, localHourAngle, sideOfPier);
-            double targetAzimuth = domeAltAz.X;
-            double targetAltitude = domeAltAz.Y;
-
-            bool targetsValid = true;
 
             // Validate the calculated azimuth appears sane.
             // If the scope position is NaN or any other input to the slaving calculation is NaN then
             // the resultant targetAlt and targetAz could also be NaN. We do not want to send NaN to
             // the dome, even though it should reject it.
+
+            double targetAzimuth = domeAltAz.X;
+            double targetAltitude = domeAltAz.Y;
+            bool targetsValid = true;
 
             if (Double.IsNaN(targetAzimuth) || targetAzimuth < 0.0 || targetAzimuth > 360.0)
             {
@@ -765,7 +776,7 @@ namespace ASCOM.DeviceHub
             bool moving = false;
 
             // Change the dome azimuth if necessary
-            if (!IsInRange(targetAzimuth, DomeStatus.Azimuth, Globals.DomeLayout.AzimuthAccuracy)) // Change required
+            if (!IsInRange(targetAzimuth, DomeStatus.Azimuth, Globals.DomeLayoutSettings.AzimuthAccuracy)) // Change required
             {
                 LogActivityLine(ActivityMessageTypes.Commands, $"The dome azimuth {DomeStatus.Azimuth.ToDMS()} is away from the target azimuth {targetAzimuth.ToDMS()} - slaving dome to the telescope azimuth.");
 
@@ -919,22 +930,194 @@ namespace ASCOM.DeviceHub
         /// <returns>Point struct containing the azimuth and altitude of the dome</returns>
         private Point GetDomeCoord(Point scopePosition, double hourAngle, PierSide sideOfPier)
         {
-            Point domePosition = new Point(0, 0);
+            Point domePoth= new Point(0,0), domeHub = new Point(0, 0), domeRevised = new Point(0, 0), domePosition = new Point(0, 0);
 
-            if (Globals.UsePOTHDomeSlaveCalculation)
+            LogActivityLine(ActivityMessageTypes.Other, $"  Use POTH: {Globals.UsePOTHDomeSlaveCalculation}, Use Revised: {Globals.UseRevisedDomeSlaveCalculation}");
+            try
             {
-                DomeControl dc = new DomeControl(Globals.DomeLayout, TelescopeParameters.SiteLatitude);
-                domePosition = dc.DomePosition(scopePosition, hourAngle * Globals.HRS_TO_DEG, sideOfPier == PierSide.pierWest);
+                // Calculate the dome position using the POTH method.
+                DomeControl dc = new DomeControl(Globals.DomeLayoutSettings, TelescopeParameters.SiteLatitude);
+                domePoth = dc.DomePosition(scopePosition, hourAngle * Globals.HRS_TO_DEG, sideOfPier == PierSide.pierWest);
             }
-            else
+            catch (Exception ex)
             {
-                DomeSynchronize dsync = new DomeSynchronize(Globals.DomeLayout, TelescopeParameters.SiteLatitude);
-                domePosition = dsync.DomePosition(scopePosition, hourAngle * Globals.HRS_TO_DEG, sideOfPier == PierSide.pierWest);
+                LogActivityLine(ActivityMessageTypes.Other, $"***** GetDomeCoord POTH Error - {ex.Message}");
             }
 
+            try
+            {
+                // Calculate the dome position using the original Device Hub method.
+                DomeSynchronize dsync = new DomeSynchronize(Globals.DomeLayoutSettings, TelescopeParameters.SiteLatitude);
+                domeHub = dsync.DomePosition(scopePosition, hourAngle * Globals.HRS_TO_DEG, sideOfPier == PierSide.pierWest);
+            }
+            catch (Exception ex)
+            {
+                LogActivityLine(ActivityMessageTypes.Other, $"***** GetDomeCoord Hub Error - {ex.Message}");
+            }
+
+            try
+            {
+                // Calculate the dome position using the new Device Hub method.
+                domeRevised = DomePosition(scopePosition, hourAngle, sideOfPier);
+            }
+            catch (Exception ex)
+            {
+                LogActivityLine(ActivityMessageTypes.Other, $"***** GetDomeCoord Hub2 Error - {ex.Message}");
+            }
+
+            // Compare results from the three calculation methods
+            LogActivityLine(ActivityMessageTypes.Other, $"  Dome Position - POTH:  {domePoth.X.ToDMS()}, {domePoth.Y.ToDMS()} ({domePoth.X:0.0}, {domePoth.Y:0.0})");
+            LogActivityLine(ActivityMessageTypes.Other, $"  Dome Position - Hub:    {domeHub.X.ToDMS()}, {domeHub.Y.ToDMS()} ({domeHub.X:0.0}, {domeHub.Y:0.0})");
+            LogActivityLine(ActivityMessageTypes.Other, $"  Dome Position - Hub 2: {domeRevised.X.ToDMS()}, {domeRevised.Y.ToDMS()} ({(domeHub.X - domeRevised.X).ToDMS()} {(domeHub.Y - domeRevised.Y).ToDMS()}) ({domeRevised.X:0.0}, {domeRevised.Y:0.0})");
+
+            // Select the appropriate dome position based on the configuration setting
+            if (Globals.UseRevisedDomeSlaveCalculation) // Revised calculation
+            {
+                domePosition = domeRevised;
+            }
+            else if (Globals.UsePOTHDomeSlaveCalculation) // POTH calculation
+            {
+                domePosition = domePoth;
+            }
+            else // Original Device Hub calculation
+            {
+                domePosition = domeHub;
+            }
+
+            LogActivityLine(ActivityMessageTypes.Other, $"  Dome Position - Using:  {domePosition.X.ToDMS()}, {domePosition.Y.ToDMS()} ({domePosition.X:0.0}, {domePosition.Y:0.0})");
+
+            // Apply any configured azimuth correction and ensure the resulting value is between 0.0 and 359.999...
             domePosition.X += Globals.DomeAzimuthAdjustment;
+            domePosition.X = Globals.Condition0To359(domePosition.X);
 
             return domePosition;
+        }
+
+        /// <summary>
+        /// Calculates the dome's position using the new algorithm based on the telescope's position, hour angle, and pier side.
+        /// </summary>
+        /// <remarks>This method determines the dome's position by synchronizing it with the telescope's
+        /// alignment mode and position.  It supports both Alt/Az and equatorial alignment modes, including German
+        /// equatorial mounts. The calculation accounts  for the telescope's mechanical offsets and the dome's physical
+        /// layout, such as radius and axis offsets. 
+        /// <para> If an error occurs during the calculation, the method returns a default position of (0.0, 0.0) and sets a synchronization error flag. </para>
+        /// </remarks>
+        /// <param name="scopePosition">The current position of the telescope, where <c>X</c> represents the azimuth or right ascension, and <c>Y</c> represents the altitude or declination.</param>
+        /// <param name="hourAngle">The hour angle of the telescope, in hours.</param>
+        /// <param name="sideOfPier">The pointing state of the telescope.</param>
+        /// <returns>A <see cref="Point"/> representing the calculated dome position, where <c>X</c> is the azimuth and <c>Y</c> is the altitude.</returns>
+        private Point DomePosition(Point scopePosition, double hourAngle, PierSide sideOfPier)
+        {
+            Point domeCoordinates = new Point(0.0, 0.0);
+
+            try
+            {
+                // NOTE: The ROLL axis is the Right ascension / Azimuth axis, and the PITCH axis is the Declination / Altitude axis.
+
+                double PHI, scopeRollAngle, scopePitchAngle;
+                switch (TelescopeParameters.AlignmentMode)
+                {
+                    case AlignmentModes.algAltAz: // Altitude/Azimuth alignment
+
+                        // Set the value of PHI to 90 for Alt/Az
+                        PHI = 90.0;
+
+                        // Determine the roll and pitch angles of the scope
+                        scopeRollAngle = 180.0 - scopePosition.X; // Azimuth
+                        scopeRollAngle = Globals.Condition0To359(scopeRollAngle);
+                        scopePitchAngle = scopePosition.Y; // Altitude
+
+                        LogActivityLine(ActivityMessageTypes.Other, $"  Alignment Mode: {TelescopeParameters.AlignmentMode}, HA {hourAngle.ToHMS()}, SideOfPier: {sideOfPier}, ScopePosition X: {scopePosition.X} ({(scopePosition.X).ToDMS()}), ScopePositionX: {scopeRollAngle} ({(scopeRollAngle).ToDMS()})");
+                        LogActivityLine(ActivityMessageTypes.Other, $"  ScopePosition.Y: {scopePosition.Y} ({scopePosition.Y.ToDMS()}), ScopePositionY: {scopePitchAngle} ({scopePitchAngle.ToDMS()})");
+
+                        // Convert angles to radians
+                        scopeRollAngle *= Globals.DEG_TO_RAD;
+                        scopePitchAngle *= Globals.DEG_TO_RAD;
+                        break;
+
+                    case AlignmentModes.algPolar: // Equatorial alignment
+                    case AlignmentModes.algGermanPolar: // German equatorial alignment
+                                                        // Set PHI to the site latitude
+                        PHI = TelescopeParameters.SiteLatitude;
+
+                        // Determine the mechanical hour angle (both hemispheres)
+                        double mechanicalHourAngle = sideOfPier == PierSide.pierEast ? hourAngle : hourAngle + 12.0;
+
+                        // Determine the mechanical declination, which varies by hemisphere
+                        double mechanicalDeclination;
+                        if (PHI >= 0.0) // Northern hemisphere
+                        {
+                            mechanicalDeclination = sideOfPier == PierSide.pierEast ? TelescopeStatus.Declination : 180.0 - TelescopeStatus.Declination;
+                        }
+                        else // Southern hemisphere
+                        {
+                            mechanicalDeclination = sideOfPier == PierSide.pierEast ? TelescopeStatus.Declination : -180.0 - TelescopeStatus.Declination;
+                        }
+
+                        // Determine the roll and pitch angles of the scope
+                        scopeRollAngle = -mechanicalHourAngle;
+                        scopePitchAngle = mechanicalDeclination;
+
+                        LogActivityLine(ActivityMessageTypes.Other, $"  Alignment Mode: {TelescopeParameters.AlignmentMode}, Hour Angle: {hourAngle.ToHMS()}, Mechanical hour angle: {mechanicalHourAngle.ToHMS()}");
+                        LogActivityLine(ActivityMessageTypes.Other, $"  Declination: {TelescopeStatus.Declination.ToDMS()}, Mechanical declination: {mechanicalDeclination.ToDMS()}");
+
+                        LogActivityLine(ActivityMessageTypes.Other, $"  SideOfPier: {sideOfPier}, Roll angle (hours): {scopeRollAngle} ({scopeRollAngle.ToHMS()})");
+                        LogActivityLine(ActivityMessageTypes.Other, $"  Pitch angle (degrees): {scopePitchAngle} ({scopePitchAngle.ToDMS()})");
+
+                        // Convert the scope's mechanical hour angle and declination to radians
+                        scopeRollAngle *= Globals.HRS_TO_RAD;
+                        scopePitchAngle *= Globals.DEG_TO_RAD;
+                        break;
+
+                    default: // All other alignments
+                        throw new DriverException($"Device Hub GetDomeCoord - Unsupported telescope alignment type: {TelescopeParameters.AlignmentMode}");
+                }
+
+                // Calculate the dome position using the DomeSyncWallace class
+                domeCoordinates = DomeSynchromise2.DomePosition(
+                    PHI * Globals.DegRad, // PHI - Site latitude for all equatorial mount types, 90 degrees for alt/az mounts
+                    Globals.DomeLayoutSettings.DomeRadius, // Dome radius (mm)
+                    Globals.DomeLayoutSettings.DomeScopeOffset.X, // xm - East /west offset of the axis intersection from the dome centre (mm)
+                    Globals.DomeLayoutSettings.DomeScopeOffset.Y, // ym - North/south offset of the axis intersection from the dome centre (mm)
+                    Globals.DomeLayoutSettings.DomeScopeOffset.Z, // zm - Up / down offset of the axis intersection from the dome centre (mm)
+                    Globals.DomeLayoutSettings.GemAxisOffset,     // xt - Offset of the optical axis from the roll axis (right ascension or azimuth axis) (mm) 
+                    0.0,                                  // yt - Offset of the pitch (dec/alt) axis from the roll (RA/az) axis. Usually zero in amateur mounts, can be non-zero in some horseshoe designs (mm)
+                    Globals.DomeLayoutSettings.OpticalOffset,     // yo - Offset of the optical axis from the nearest point of approach of the declination / altitude axis (mm)
+                    scopeRollAngle,                       // roll axis angle (ha/az) (radians)
+                    scopePitchAngle);                     // pitch axis angle (dec/alt) (radians)
+
+                SendSyncErrorState(false); // Set the sync error flag to false if the calculation is successful
+
+                LogActivityLine(ActivityMessageTypes.Other, $"  PHI: {PHI}, Dome radius: {Globals.DomeLayoutSettings.DomeRadius}");
+                LogActivityLine(ActivityMessageTypes.Other, $"  X offset: {Globals.DomeLayoutSettings.DomeScopeOffset.X}, Y offset: {Globals.DomeLayoutSettings.DomeScopeOffset.Y}, Z offset: {Globals.DomeLayoutSettings.DomeScopeOffset.Z}");
+                LogActivityLine(ActivityMessageTypes.Other, $"  GEM axis offset: {Globals.DomeLayoutSettings.GemAxisOffset}, Optical offset: {Globals.DomeLayoutSettings.OpticalOffset}");
+            }
+            catch (Exception ex)
+            {
+                LogActivityLine(ActivityMessageTypes.Other, $"***** DomePosition Error - {ex.Message}");
+                domeCoordinates.X = 0.0;
+                domeCoordinates.Y = 0.0;
+                SendSyncErrorState(true);  // Set the sync error flag to true if we have an error calculating the dome position
+            }
+
+            return domeCoordinates;
+        }
+
+        /// <summary>
+        /// Send a update notification message if the dome sync status has changed.
+        /// </summary>
+        /// <param name="state"></param>
+        private void SendSyncErrorState(bool state)
+        {
+            LogActivityLine(ActivityMessageTypes.Other, $"  SendSyncErrorState - New: {state}, Current: {Globals.DomeSyncError} ");
+
+            if (state != Globals.DomeSyncError)
+            {
+                Globals.DomeSyncError = state; // Update the sync error state in the dome status
+
+                Messenger.Default.Send(new DomeSyncErrorStateMessage(state));
+                LogActivityLine(ActivityMessageTypes.Other, $"  SendSyncErrorState - Sent DomeSyncErrorStateMessage({state}");
+            }
         }
 
         private void UpdateTelescopeParameters(TelescopeParametersUpdatedMessage action)

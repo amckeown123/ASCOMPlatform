@@ -38,12 +38,10 @@ namespace ASCOM.JustAHub
             {
                 // Create the hardware trace logger in the static initialiser.
                 // All other initialisation should go in the InitialiseHardware method.
-                TL = new TraceLogger("", "JustAHub.Camera.Proxy")
+                TL = new TraceLogger("", $"JustAHub.Camera{(Environment.Is64BitProcess ? "64" : "")}.Proxy")
                 {
                     Enabled = Settings.CameraHardwareLogging
                 };
-
-                LogMessage("JustAHub", $"Static initialiser completed.");
             }
             catch (Exception ex)
             {
@@ -387,10 +385,10 @@ namespace ASCOM.JustAHub
         /// </remarks>
         public static void Dispose()
         {
-            try { LogMessage("JustAHub.Dispose", $"Disposing of assets and closing down."); } catch { }
-
             if (!(device is null))
             {
+                try { LogMessage("JustAHub.Dispose", $"Disposing of assets and closing down."); } catch { }
+
 #if DEBUG
                 try { device.Dispose(); } catch (Exception) { }
                 try { LogMessage("JustAHub.Dispose", $"Disposed DriverAccess camera object."); } catch { }

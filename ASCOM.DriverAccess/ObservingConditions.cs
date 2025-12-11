@@ -1,6 +1,7 @@
-﻿using System;
-using ASCOM.DeviceInterface;
+﻿using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using System;
+using System.Reflection;
 
 namespace ASCOM.DriverAccess
 {
@@ -23,6 +24,14 @@ namespace ASCOM.DriverAccess
         #region ObservingConditions constructors
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static ObservingConditions()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "DriverAccess.ObservingConditions");
+        }
+
+        /// <summary>
         /// Creates an ObservingConditions object with the given Prog ID
         /// </summary>
         /// <param name="observingConditionsId">ProgID of the device to be accessed.</param>
@@ -31,6 +40,7 @@ namespace ASCOM.DriverAccess
         {
             _memberFactory = MemberFactory;
         }
+
         #endregion
 
         #region Convenience Members

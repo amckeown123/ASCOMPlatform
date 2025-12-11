@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
-using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ASCOM.Simulator
 {
@@ -626,7 +626,7 @@ namespace ASCOM.Simulator
                 Log.LogMessage("DrawCoolingCurve", "Overall time to setpoint: {0:0.0}, Ambient temperature: {1:0.0}, CCD setpoint: {2:0.0}, Cooler constant: {3}", overallTimeToSetpoint, NumAmbientTemperature.Value, NumCCDSetPoint.Value, camera.coolerConstant);
 
                 // Set the type of chart that will be displayed
-                CoolingChart.Series[COOLING_CURVE].ChartType = (System.Windows.Forms.DataVisualization.Charting.SeriesChartType)SeriesChartType.Line;
+                CoolingChart.Series[COOLING_CURVE].ChartType = SeriesChartType.Line;
 
                 // Remove any data already present in the chart control so that only the new configuration data will be shown
                 CoolingChart.Series[COOLING_CURVE].Points.Clear();
@@ -676,11 +676,11 @@ namespace ASCOM.Simulator
                 // Set axis titles and tooltips
                 CoolingChart.ChartAreas[0].AxisX.Title = "Time (seconds)";
                 CoolingChart.ChartAreas[0].AxisX.TitleAlignment = StringAlignment.Center;
-                CoolingChart.ChartAreas[0].AxisX.TextOrientation = (System.Windows.Forms.DataVisualization.Charting.TextOrientation)TextOrientation.Horizontal;
+                CoolingChart.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Horizontal;
 
                 CoolingChart.ChartAreas[0].AxisY.Title = "CCD Temperature (C) ";
                 CoolingChart.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Center;
-                CoolingChart.ChartAreas[0].AxisY.TextOrientation = (System.Windows.Forms.DataVisualization.Charting.TextOrientation)TextOrientation.Rotated270;
+                CoolingChart.ChartAreas[0].AxisY.TextOrientation = TextOrientation.Rotated270;
 
                 CoolingChart.ChartAreas[0].AxisX.ToolTip = "Time through the Cooling cycle";
                 CoolingChart.ChartAreas[0].AxisY.ToolTip = "CCD temperature as the cooling cycle progresses";

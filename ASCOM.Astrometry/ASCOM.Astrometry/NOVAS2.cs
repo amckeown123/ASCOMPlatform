@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ASCOM.Utilities;
+using System;
+using System.Reflection;
+
 // NOVAS2 component implementation
 // This class is a public front that simply calls the relevant 32 or 64bit funciton in compiled C code
 
@@ -50,6 +53,14 @@ namespace ASCOM.Astrometry.NOVAS
         private const string NOVAS32Dll = "NOVAS-C.dll";
         private const string NOVAS64Dll = "NOVAS-C64.dll";
         private const string NOVAS_DLL_LOCATION = @"\ASCOM\Astrometry"; // This is appended to the Common Files path
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static NOVAS2()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVAS2");
+        }
 
         #region Private Structures
         // Version of marshaling required by the DLLs

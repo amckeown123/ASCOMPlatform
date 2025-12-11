@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using Microsoft.Win32;
-using ASCOM.Utilities;
+using Utilities;
 
 namespace SetACL
 {

@@ -2,9 +2,10 @@
 // <summary>Defines the Switch class.</summary>
 //-----------------------------------------------------------------------
 // 17-Sep-13  	cdr     6.0.0   Initial definition
-using System;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using System;
+using System.Reflection;
 
 namespace ASCOM.DriverAccess
 {
@@ -41,6 +42,14 @@ namespace ASCOM.DriverAccess
         private MemberFactory memberFactory;
 
         #region Switch constructors
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Switch()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "DriverAccess.Switch");
+        }
 
         /// <summary>
         /// Creates a Switch object with the given Prog ID

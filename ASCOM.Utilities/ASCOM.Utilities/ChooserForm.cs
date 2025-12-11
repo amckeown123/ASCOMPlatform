@@ -14,7 +14,6 @@ using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using static ASCOM.Utilities.Global;
-using MethodInvoker = System.Windows.Forms.MethodInvoker;
 
 namespace ASCOM.Utilities
 {

@@ -1,7 +1,8 @@
-using System;
-using System.Collections;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using System;
+using System.Collections;
+using System.Reflection;
 
 namespace ASCOM.DriverAccess
 {
@@ -13,6 +14,14 @@ namespace ASCOM.DriverAccess
         private readonly MemberFactory _memberFactory;
 
         #region Camera constructors
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Camera()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "DriverAccess.Camera");
+        }
 
         /// <summary>
         /// Creates an instance of the camera class.

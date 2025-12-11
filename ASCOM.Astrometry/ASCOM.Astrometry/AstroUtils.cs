@@ -1,9 +1,11 @@
-﻿using System;
+﻿using ASCOM.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using static ASCOM.Astrometry.GlobalItems;
-using ASCOM.Utilities;
 
 namespace ASCOM.Astrometry.AstroUtils
 {
@@ -37,6 +39,15 @@ namespace ASCOM.Astrometry.AstroUtils
         }
 
         #region New and IDisposable Support
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static AstroUtils()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "AstroUtils");
+        }
+
         /// <summary>
         /// AstroUtils initiator
         /// </summary>
@@ -319,7 +330,7 @@ namespace ASCOM.Astrometry.AstroUtils
             }
 
             JD = Nov31.JulianDate(Convert.ToInt16(TTDate.Year), Convert.ToInt16(TTDate.Month), Convert.ToInt16(TTDate.Day), TTDate.TimeOfDay.TotalHours);
-            TL.LogMessage("JulianDateTT", "Returning: " + JD + "at TT: " + TTDate.ToString("dddd dd MMMM yyyy HH:mm:ss.fff") + ", at UTC: " + UTCDate.ToString( "dddd dd MMMM yyyy HH:mm:ss.fff"));
+            TL.LogMessage("JulianDateTT", "Returning: " + JD + "at TT: " + TTDate.ToString("dddd dd MMMM yyyy HH:mm:ss.fff") + ", at UTC: " + UTCDate.ToString("dddd dd MMMM yyyy HH:mm:ss.fff"));
 
             return JD;
         }
@@ -623,7 +634,7 @@ namespace ASCOM.Astrometry.AstroUtils
             {
                 TestDate = DateTime.Parse(Month + "/" + Day + "/" + Year, System.Globalization.CultureInfo.InvariantCulture); // Test whether this is a valid date e.g is not the 31st of February
             }
-            catch (FormatException ) // Catch case where day exceeds the maximum number of days in the month
+            catch (FormatException) // Catch case where day exceeds the maximum number of days in the month
             {
                 throw new InvalidValueException("Day or Month", Day.ToString() + " " + Month.ToString() + " " + Year.ToString(), "Day must not exceed the number of days in the month");
             }

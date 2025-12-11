@@ -1,10 +1,11 @@
 ﻿// NOVASCOM component implementation
 
-using System;
-using static System.Math;
-using System.Runtime.InteropServices;
 using ASCOM.Astrometry.Kepler;
 using ASCOM.Astrometry.NOVAS;
+using ASCOM.Utilities;
+using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using static ASCOM.Astrometry.NOVAS.NOVAS2;
 
 namespace ASCOM.Astrometry.NOVASCOM
@@ -38,7 +39,16 @@ namespace ASCOM.Astrometry.NOVASCOM
         private double m_BaryTime, m_MeanOb, m_EquOfEqu, m_NutLong, m_NutObl, m_TrueOb;
         private IEphemeris m_EarthEph;
         private bool m_Valid; // Object has valid values
-        // Private TL As TraceLogger
+                              // Private TL As TraceLogger
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Earth()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVASCOM.Earth");
+        }
+
         /// <summary>
         /// Create a new instance of the Earth object
         /// </summary>
@@ -53,7 +63,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             m_EarthEph.Number = Body.Earth;
             m_EarthEph.Name = "Earth";
             m_Valid = false; // Object is invalid
-            // TL.LogMessage("New", "Initialised")
+                             // TL.LogMessage("New", "Initialised")
         }
 
         /// <summary>
@@ -325,6 +335,14 @@ namespace ASCOM.Astrometry.NOVASCOM
         // Private TL As TraceLogger, Utl As Util
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Planet()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVASCOM.Planet");
+        }
+
+        /// <summary>
         /// Create a new instance of the Plant class
         /// </summary>
         /// <remarks>This assigns default Kepler instances for the Earth and Planet objects so it is
@@ -345,8 +363,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             // TL.LogMessage("New", "Log started")
             // Utl = New Util
 
-            Nov31 = new NOVAS31(); // Create a NOVAS31 object for hanbdling sun and moon calculations
-
+            Nov31 = new NOVAS31(); // Create a NOVAS31 object for handling sun and moon calculations
         }
         /// <summary>
         /// Planet delta-T
@@ -462,7 +479,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                     t3 = tdb - lighttime;
                     iter += 1;
                 }
-                while (Abs(t3 - t2) > 0.000001d & iter < 100);
+                while (Math.Abs(t3 - t2) > 0.000001d & iter < 100);
 
                 //
                 // Finish apparent place computation.
@@ -566,7 +583,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                     t3 = tdb - lighttime;
                     iter += 1;
                 }
-                while (Abs(t3 - t2) > 0.000001d & iter < 100);
+                while (Math.Abs(t3 - t2) > 0.000001d & iter < 100);
 
                 if (iter >= 100)
                     throw new Utilities.Exceptions.HelperException("Planet:GetAstrometricPoition ephemeris_nov did not converge in 100 iterations");
@@ -716,7 +733,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                     t3 = tdb - lighttime;
                     iter += 1;
                 }
-                while (Abs(t3 - t2) > 0.000001d & iter < 100);
+                while (Math.Abs(t3 - t2) > 0.000001d & iter < 100);
 
                 if (iter >= 100)
                     throw new Utilities.Exceptions.HelperException("Planet:GetLocalPoition ephemeris_nov did not converge in 100 iterations");
@@ -884,7 +901,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                     t3 = tdb - lighttime;
                     iter += 1;
                 }
-                while (Abs(t3 - t2) > 0.000001d & iter < 100);
+                while (Math.Abs(t3 - t2) > 0.000001d & iter < 100);
 
                 if (iter >= 100)
                     throw new Utilities.Exceptions.HelperException("Planet:GetTopocentricPoition ephemeris_nov did not converge in 100 iterations");
@@ -901,7 +918,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                 // Calculate equatorial coordinates and distance
                 //
                 Vector2RADec(vec, ref ra, ref dec); // Get topo RA/Dec
-                dist = Sqrt(Pow(vec[0], 2.0d) + Pow(vec[1], 2.0d) + Pow(vec[2], 2.0d)); // And dist
+                dist = Math.Sqrt(Math.Pow(vec[0], 2.0d) + Math.Pow(vec[1], 2.0d) + Math.Pow(vec[2], 2.0d)); // And dist
 
                 //
                 // Refract if requested
@@ -1045,7 +1062,7 @@ namespace ASCOM.Astrometry.NOVASCOM
                     t3 = tdb - lighttime;
                     iter += 1;
                 }
-                while (Abs(t3 - t2) > 0.000001d & iter < 100);
+                while (Math.Abs(t3 - t2) > 0.000001d & iter < 100);
 
                 if (iter >= 100)
                     throw new Utilities.Exceptions.HelperException("Planet:GetVirtualPoition ephemeris_nov did not converge in 100 iterations");
@@ -1152,6 +1169,14 @@ namespace ASCOM.Astrometry.NOVASCOM
         private double[] PosVec = new double[3];
         private double m_RA, m_DEC, m_Dist, m_Light, m_Alt, m_Az;
         private NOVAS31 Nov31 = new();
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static PositionVector()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVASCOM.PositionVector");
+        }
 
         /// <summary>
         /// Create a new, uninitialised position vector
@@ -1456,7 +1481,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             //
             // Compute parameters relating to geodetic to geocentric conversion.
             //
-            df2 = Pow(1.0d - f, 2d);
+            df2 = Math.Pow(1.0d - f, 2d);
             try
             {
                 t = site.Latitude;
@@ -1467,9 +1492,9 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
 
             t = GlobalItems.DEG2RAD * t;
-            sinphi = Sin(t);
-            cosphi = Cos(t);
-            c = 1.0d / Sqrt(Pow(cosphi, 2.0d) + df2 * Pow(sinphi, 2.0d));
+            sinphi = Math.Sin(t);
+            cosphi = Math.Cos(t);
+            c = 1.0d / Math.Sqrt(Math.Pow(cosphi, 2.0d) + df2 * Math.Pow(sinphi, 2.0d));
             s = df2 * c;
 
             try
@@ -1497,8 +1522,8 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
 
             stlocl = (gast * 15.0d + t) * GlobalItems.DEG2RAD;
-            sinst = Sin(stlocl);
-            cosst = Cos(stlocl);
+            sinst = Math.Sin(stlocl);
+            cosst = Math.Cos(stlocl);
 
             //
             // Compute position vector components in AU
@@ -1635,10 +1660,10 @@ namespace ASCOM.Astrometry.NOVASCOM
 
             d = m_DEC * GlobalItems.DEG2RAD; // deg -> rad
 
-            cra = Cos(r);
-            sra = Sin(r);
-            cdc = Cos(d);
-            sdc = Sin(d);
+            cra = Math.Cos(r);
+            sra = Math.Sin(r);
+            cdc = Math.Cos(d);
+            sdc = Math.Sin(d);
 
             PosVec[0] = m_Dist * cdc * cra;
             PosVec[1] = m_Dist * cdc * sra;
@@ -1726,7 +1751,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             if (RADecOk)
                 return; // Equatorial data already OK
             Vector2RADec(PosVec, ref m_RA, ref m_DEC); // Calculate RA/Dec
-            m_Dist = Sqrt(Pow(PosVec[0], 2d) + Pow(PosVec[1], 2d) + Pow(PosVec[2], 2d));
+            m_Dist = Math.Sqrt(Math.Pow(PosVec[0], 2d) + Math.Pow(PosVec[1], 2d) + Math.Pow(PosVec[2], 2d));
             m_Light = m_Dist / GlobalItems.C;
             RADecOk = true;
         }
@@ -1747,6 +1772,14 @@ namespace ASCOM.Astrometry.NOVASCOM
     {
         private double vHeight, vLatitude, vLongitude, vPressure, vTemperature;
         private bool HeightValid, LatitudeValid, LongitudeValid, PressureValid, TemperatureValid;
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Site()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVASCOM.Site");
+        }
 
         /// <summary>
         /// Initialises a new site object
@@ -1911,6 +1944,14 @@ namespace ASCOM.Astrometry.NOVASCOM
         private short hr;
         private double[] m_earthephdisps = new double[5];
         private NOVAS31 Nov31 = new();
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Star()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVASCOM.Star");
+        }
 
         /// <summary>
         /// Initialise a new instance of the star class
@@ -2370,7 +2411,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             // Calculate equatorial coordinates and distance
             //
             Vector2RADec(vec, ref ra, ref dec); // Get topo RA/Dec
-            dist = Sqrt(Pow(vec[0], 2.0d) + Pow(vec[1], 2.0d) + Pow(vec[2], 2.0d)); // And dist
+            dist = Math.Sqrt(Math.Pow(vec[0], 2.0d) + Math.Pow(vec[1], 2.0d) + Math.Pow(vec[2], 2.0d)); // And dist
 
             //
             // Refract if requested
@@ -2715,6 +2756,14 @@ namespace ASCOM.Astrometry.NOVASCOM
         private NOVAS31 Nov31 = new();
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static VelocityVector()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVASCOM.VelocityVector");
+        }
+
+        /// <summary>
         /// Creates a new velocity vector object
         /// </summary>
         /// <remarks> </remarks>
@@ -2795,7 +2844,7 @@ namespace ASCOM.Astrometry.NOVASCOM
             //
             // Compute parameters relating to geodetic to geocentric conversion.
             //
-            df2 = Pow(1.0d - f, 2d);
+            df2 = Math.Pow(1.0d - f, 2d);
             try
             {
                 t = site.Latitude;
@@ -2806,9 +2855,9 @@ namespace ASCOM.Astrometry.NOVASCOM
             }
 
             t *= GlobalItems.DEG2RAD;
-            sinphi = Sin(t);
-            cosphi = Cos(t);
-            c = 1.0d / Sqrt(Pow(cosphi, 2.0d) + df2 * Pow(sinphi, 2.0d));
+            sinphi = Math.Sin(t);
+            cosphi = Math.Cos(t);
+            c = 1.0d / Math.Sqrt(Math.Pow(cosphi, 2.0d) + df2 * Math.Pow(sinphi, 2.0d));
             s = df2 * c;
             try
             {
@@ -2835,8 +2884,8 @@ namespace ASCOM.Astrometry.NOVASCOM
                 throw new Exceptions.ValueNotAvailableException("VelocityVector:SetFromSite Site.Longitude is not available");
             }
             stlocl = (gast * 15.0d + t) * GlobalItems.DEG2RAD;
-            sinst = Sin(stlocl);
-            cosst = Cos(stlocl);
+            sinst = Math.Sin(stlocl);
+            cosst = Math.Cos(stlocl);
 
             //
             // Compute velocity vector components in AU/Day
@@ -2971,10 +3020,10 @@ namespace ASCOM.Astrometry.NOVASCOM
 
             d *= GlobalItems.DEG2RAD;
 
-            cra = Cos(r);
-            sra = Sin(r);
-            cdc = Cos(d);
-            sdc = Sin(d);
+            cra = Math.Cos(r);
+            sra = Math.Sin(r);
+            cdc = Math.Cos(d);
+            sdc = Math.Sin(d);
 
             //
             // Convert proper motion and radial velocity to orthogonal components of
@@ -3094,12 +3143,13 @@ namespace ASCOM.Astrometry.NOVASCOM
             if (m_cv)
                 return; // Equatorial data already OK
             Vector2RADec(m_v, ref m_VRA, ref m_VDec); // Calculate VRA/VDec
-            m_RadVel = Sqrt(Pow(m_v[0], 2d) + Pow(m_v[1], 2d) + Pow(m_v[2], 2d));
+            m_RadVel = Math.Sqrt(Math.Pow(m_v[0], 2d) + Math.Pow(m_v[1], 2d) + Math.Pow(m_v[2], 2d));
             m_cv = true;
         }
         #endregion
 
     }
+
     #endregion
 
     #region Private Utiity code

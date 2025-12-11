@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 
 using System.Windows.Forms;
 using ASCOM.Utilities;
-using KeyValuePair = ASCOM.Utilities.KeyValuePair;
 
 namespace ASCOM.Simulator
 {

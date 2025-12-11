@@ -1,6 +1,7 @@
-﻿using System;
-using ASCOM.DeviceInterface;
+﻿using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using System;
+using System.Reflection;
 
 namespace ASCOM.DriverAccess
 {
@@ -14,6 +15,14 @@ namespace ASCOM.DriverAccess
         #region CoverCalibrator constructors
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static CoverCalibrator()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "DriverAccess.CoverCalibrator");
+        }
+
+        /// <summary>
         /// Creates a CoverCalibrator object with the given ProgID
         /// </summary>
         /// <param name="coverCalibratorId">ProgID of the CoverCalibrator device to be accessed.</param>
@@ -22,6 +31,7 @@ namespace ASCOM.DriverAccess
         {
             memberFactory = base.MemberFactory;
         }
+
         #endregion
 
         #region Convenience Members

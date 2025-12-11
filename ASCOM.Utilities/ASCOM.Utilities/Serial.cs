@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
-using System.IO.Ports;
-using System.Runtime.InteropServices;
-using System.Threading;
-using static System.Threading.Thread;
-using ASCOM.Utilities.Exceptions;
+﻿using ASCOM.Utilities.Exceptions;
 using ASCOM.Utilities.Interfaces;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Collections;
+using System.Diagnostics;
+using System.IO.Ports;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
 using static ASCOM.Utilities.Global;
+using static System.Threading.Thread;
 
 namespace ASCOM.Utilities
 {
@@ -304,6 +305,14 @@ namespace ASCOM.Utilities
         #endregion
 
         #region New and IDisposable Support
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Serial()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "Serial");
+        }
 
         /// <summary>
         /// Serial class

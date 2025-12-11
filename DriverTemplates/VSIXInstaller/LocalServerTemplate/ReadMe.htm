@@ -78,6 +78,26 @@
         This project creates an ASCOM local server executable and a driver class that will support multiple clients. It can also be extended to serve multiple ASCOM devices such
         as a Telescope and a Focuser or multiple devices of the same type such as two focusers.
     </P>
+    <p>
+        <b style="color:blue">BEFORE CONTINUING - Please consider creating a cross-platform Alpaca device instead of a COM local server driver.</b>
+    </p>
+    <p>
+        To ensure longevity of your device, ASCOM now recommends building Alpaca devices rather than COM drivers. The benefits you reap by switching to Alpaca are fully explained here:
+        <a href="https://www.ascom-alpaca.org/">Introduction to ASCOM Alpaca</a>.
+    </p>
+    <p>
+        An Alpaca device's RESTful web API can be used
+        by any desktop or mobile application that can make HTTP requests, running on any operating system. This makes it much more flexible than a local server, whose use is limited
+        to COM clients that run on Windows.
+    </p>
+    <p>
+        You lose nothing by developing an Alpaca device! A growing number of client applications have native Alpaca support while the Platform's built-in Dynamic Clients enable traditional
+        COM clients to use Alpaca devices. In addition the ASCOM Library includes many useful features that make it easy to develop Alpaca devices:
+        <a href="https://ascom-standards.org/library">ASCOM Library</a>. The Library is available as a package on NuGet that you can simply add to your project.
+    </p>
+    <p>
+        You can find more information about developing for Alpaca here: <a href="https://ascom-standards.org/AlpacaDeveloper/Index.htm">Developing for Alpaca</a>.
+    </p>
     <P STYLE="margin-left: 0.42cm; margin-right: 0.42cm; border: 1px solid #000000; padding: 0.21cm">
         <STRONG>
             <SPAN STYLE="background: #ffee88">NOTE:</SPAN>
@@ -226,16 +246,20 @@
     <H3>Notes</H3>
     <UL>
         <LI>
-            <P STYLE="margin-bottom: 0cm">
+            <P>
                 if required, a serial port is already provided (see SharedResources.cs) as <FONT FACE="Lucida Console, Courier New, Courier, monospace">SharedResources.SharedSerial</FONT>.
                 If you don't need the serial port you can remove the public static SharedSerial property, the m_SharedSerial member in the private data region, and the line in main that initializes it.
             </P>
         </LI>
         <LI>
-            <P>
-                You may want to add controls and/or status information to the main form frmMain of the local server. Please resist the temptation to turn the local server's main form into a graphical device control
-                panel. A better approach is to create a separate application that connects to the served driver(s).
-            </P>
+            <p>
+                If you want to control or report status information about devices hosted by the local server the best approach is to create a separate application that connects to the served driver(s).
+            </p>
+        </LI>
+        <LI>
+            <p>
+                If you only want to display status information, a simpler option is to add a form to the local server that uses a timed loop to poll driver(s) and update the status information.
+            </p>
         </LI>
     </UL>
     <H3>

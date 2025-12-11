@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using static ASCOM.Utilities.Global;
@@ -24,12 +25,21 @@ namespace ASCOM.Utilities
         #region New and IDisposable
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static ASCOMProfile()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "ASCOMProfile");
+        }
+
+        /// <summary>
         ///  Create an ASCOM Profile class
         /// </summary>
         public ASCOMProfile()
         {
             Subkey = new SortedList<string, SortedList<string, string>>();
         }
+
         #endregion
 
         /// <summary>

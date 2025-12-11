@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
-using ASCOM.Attributes;
 using ASCOM.DeviceInterface;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace ASCOM.Simulator
 {

@@ -4,9 +4,10 @@
 // 10-Jul-08	rbd		1.0.5 - Release COM on Dispose().
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 //
-using System;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using System;
+using System.Reflection;
 
 namespace ASCOM.DriverAccess
 {
@@ -68,6 +69,14 @@ namespace ASCOM.DriverAccess
         #region Dome constructors
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Dome()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "DriverAccess.Dome");
+        }
+
+        /// <summary>
         /// Constructor for Dome class. Creates a Dome based on the ProgID in the DomeID string.
         /// </summary>
         /// <param name="domeId">The progID of the dome to be instantiated</param>
@@ -76,6 +85,7 @@ namespace ASCOM.DriverAccess
         {
             memberFactory = base.MemberFactory;
         }
+
         #endregion
 
         #region Convenience Members

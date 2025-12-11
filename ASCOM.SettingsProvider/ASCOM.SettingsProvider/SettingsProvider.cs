@@ -2,7 +2,6 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Reflection;
-using ASCOM.Attributes;
 using ASCOM.Internal;
 using ASCOM.Utilities;
 using ASCOM.Utilities.Interfaces;
@@ -21,6 +20,14 @@ namespace ASCOM
     /// </remarks>
     public class SettingsProvider : System.Configuration.SettingsProvider
     {
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static SettingsProvider()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "SettingsProvider");
+        }
+
         /// <summary>
         ///   A reference to an ASCOM profile provider. Normally, this will be the default implementation defined in
         ///   <see cref = "Profile" />, but unit tests can also use dependency injection to provide

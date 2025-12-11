@@ -12,7 +12,6 @@
 
 using System;
 using System.Configuration;
-using ASCOM.Attributes;
 using ASCOM.DeviceInterface;
 using Simulator.VideoCameraImpl;
 
@@ -50,7 +49,7 @@ namespace ASCOM.Simulator.Properties
 	}
 
 	[SettingsProvider(typeof(ASCOM.SettingsProvider))]
-	[DeviceId("ASCOM.Simulator.Video", DeviceName = "Video Camera and Recorder Simulator")]
+	[ASCOM.DeviceId("ASCOM.Simulator.Video", DeviceName = "Video Camera and Recorder Simulator")]
 	internal sealed partial class Settings
 	{
 		protected override void OnSettingChanging(object sender, SettingChangingEventArgs e)

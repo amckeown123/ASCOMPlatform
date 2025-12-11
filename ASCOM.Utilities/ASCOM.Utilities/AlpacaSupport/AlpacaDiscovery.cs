@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Nancy.Json;
+using System.Web.Script.Serialization;
 using ASCOM.Utilities.Interfaces;
 //using Newtonsoft.Json;
 

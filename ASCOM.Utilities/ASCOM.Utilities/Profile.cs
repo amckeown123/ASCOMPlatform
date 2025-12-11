@@ -1,13 +1,14 @@
-﻿using System;
+﻿using ASCOM.Utilities.Interfaces;
+using Microsoft.VisualBasic;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml.Serialization;
-using ASCOM.Utilities.Interfaces;
-using Microsoft.VisualBasic;
 using static ASCOM.Utilities.Global;
 
 namespace ASCOM.Utilities
@@ -46,6 +47,14 @@ namespace ASCOM.Utilities
 
         #region New and IDisposable Support 
         private bool disposedValue = false;        // To detect redundant calls
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Profile()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "Profile");
+        }
 
         /// <summary>
         /// Create a new Profile object

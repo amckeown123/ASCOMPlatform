@@ -1,6 +1,6 @@
 ﻿using ASCOM.Alpaca.Clients;
-using ASCOM.Common;
 using ASCOM.DeviceInterface;
+using ASCOM.Common.Interfaces;
 using ASCOM.Tools;
 using System;
 using System.Collections;
@@ -60,7 +60,7 @@ namespace ASCOM.DynamicClients
                     Enabled = state.TraceState
                 };
                 if (state.DebugTraceState)
-                    TL.SetMinimumLoggingLevel(Common.Interfaces.LogLevel.Debug);
+                    TL.SetMinimumLoggingLevel(LogLevel.Debug);
 
                 LogMessage(deviceType.ToString(), $"Starting driver initialisation for ProgID: {driverProgId}, Description: {driverDisplayName}");
 
@@ -197,10 +197,22 @@ namespace ASCOM.DynamicClients
         /// </returns>
         public string Action(string actionName, string actionParameters)
         {
+            const int MAX_PARAM_LOG_LENGTH = 80; // Set the maximum length that the parameters string will show in the log file
             try
             {
-                CheckConnected($"Action {actionName} - {actionParameters}");
-                LogMessage("", $"Calling Action: {actionName} with parameters: {actionParameters}");
+                // Create a truncated set of the parameters for logging
+                string truncatedParameters;
+                if (actionParameters.Length > MAX_PARAM_LOG_LENGTH)
+                {
+                    truncatedParameters = $"{actionParameters.Substring(0, MAX_PARAM_LOG_LENGTH)}..., Action parameters length: {actionParameters.Length}";
+                }
+                else
+                {
+                    truncatedParameters = actionParameters;
+                }
+
+                CheckConnected($"Action {actionName} - {truncatedParameters}");
+                LogMessage("", $"Calling Action: {actionName} with parameters: {truncatedParameters}");
                 string actionResponse = client.Action(actionName, actionParameters);
                 LogMessage("Action", $"Completed.");
                 return actionResponse;
@@ -572,9 +584,10 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    LogMessage("DeviceState", $"Received {client.RotatorState} values");
+                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
+                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
 
-                    return (IStateValueCollection)client.RotatorState;
+                    return new StateValueCollection(deviceState.ToPlatformStateValue());
                 }
                 catch (Exception ex)
                 {

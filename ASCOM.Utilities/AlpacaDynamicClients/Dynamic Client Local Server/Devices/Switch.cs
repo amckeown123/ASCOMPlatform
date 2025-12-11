@@ -1,15 +1,12 @@
 ﻿using ASCOM.Alpaca.Clients;
 using ASCOM.DeviceInterface;
-using ASCOM.Common;
+using ASCOM.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using ASCOM.Tools;
-using System.Threading;
-using System.Diagnostics;
 
 namespace ASCOM.DynamicClients
 {
@@ -19,7 +16,7 @@ namespace ASCOM.DynamicClients
     public class Switch : ReferenceCountedObjectBase, ISwitchV3, IDisposable
     {
         // Set the device type of this device
-        private const DeviceTypes deviceType = DeviceTypes.Switch;
+        private const Common.DeviceTypes deviceType = Common.DeviceTypes.Switch;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaSwitch client;
@@ -197,10 +194,22 @@ namespace ASCOM.DynamicClients
         /// </returns>
         public string Action(string actionName, string actionParameters)
         {
+            const int MAX_PARAM_LOG_LENGTH = 80; // Set the maximum length that the parameters string will show in the log file
             try
             {
-                CheckConnected($"Action {actionName} - {actionParameters}");
-                LogMessage("", $"Calling Action: {actionName} with parameters: {actionParameters}");
+                // Create a truncated set of the parameters for logging
+                string truncatedParameters;
+                if (actionParameters.Length > MAX_PARAM_LOG_LENGTH)
+                {
+                    truncatedParameters = $"{actionParameters.Substring(0, MAX_PARAM_LOG_LENGTH)}..., Action parameters length: {actionParameters.Length}";
+                }
+                else
+                {
+                    truncatedParameters = actionParameters;
+                }
+
+                CheckConnected($"Action {actionName} - {truncatedParameters}");
+                LogMessage("", $"Calling Action: {actionName} with parameters: {truncatedParameters}");
                 string actionResponse = client.Action(actionName, actionParameters);
                 LogMessage("Action", $"Completed.");
                 return actionResponse;
@@ -572,9 +581,10 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    LogMessage("DeviceState", $"Received {client.DeviceState} values");
+                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
+                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
 
-                    return (IStateValueCollection)client.DeviceState;
+                    return new StateValueCollection(deviceState.ToPlatformStateValue());
                 }
                 catch (Exception ex)
                 {

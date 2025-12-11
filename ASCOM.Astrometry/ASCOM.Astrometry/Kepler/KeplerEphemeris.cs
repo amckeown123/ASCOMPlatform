@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ASCOM.Utilities;
+using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace ASCOM.Astrometry.Kepler
@@ -122,6 +124,15 @@ namespace ASCOM.Astrometry.Kepler
         // gplan variables
         private double[,] ss = new double[19, 32], cc = new double[19, 32];
         private double[] Args = new double[19];
+
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Ephemeris()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "KeplerEphemeris");
+        }
 
         /// <summary>
         /// Create a new Ephemeris component and initialise it

@@ -8,7 +8,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Nancy.Json;
+using System.Web.Script.Serialization;
 //using Newtonsoft.Json;
 
 namespace ASCOM.Utilities

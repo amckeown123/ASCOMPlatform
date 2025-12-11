@@ -4,9 +4,10 @@
 // 10-Jul-08	rbd		1.0.5 - Release COM on Dispose().
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
-using System;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
+using System;
+using System.Reflection;
 
 namespace ASCOM.DriverAccess
 {
@@ -20,6 +21,14 @@ namespace ASCOM.DriverAccess
         #region Rotator constructors
 
         /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Rotator()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "DriverAccess.Rotator");
+        }
+
+        /// <summary>
         /// Creates a rotator object with the given ProgID
         /// </summary>
         /// <param name="rotatorId">ProgID of the rotator to be accessed.</param>
@@ -28,6 +37,7 @@ namespace ASCOM.DriverAccess
         {
             memberFactory = base.MemberFactory;
         }
+
         #endregion
 
         #region Convenience Members

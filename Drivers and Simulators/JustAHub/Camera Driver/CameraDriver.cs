@@ -1,4 +1,3 @@
-using ASCOM.Attributes;
 using ASCOM.DeviceInterface;
 using ASCOM.LocalServer;
 using ASCOM.Utilities;
@@ -13,10 +12,18 @@ namespace ASCOM.JustAHub
     /// ASCOM Camera Driver for JustAHub.
     /// </summary>
     [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.None)]
+#if BUILD64
+    // This is the 64bit version of the driver, so use a unique ProgID and GUID
+    [Guid("382CF241-97D7-4B81-AE76-64AEFE66D160")]
+    [ProgId("ASCOM.JustAHub64.Camera")]
+    [ServedClassName("JustAHub Camera (for 64bit drivers)")] // Driver description that appears in the Chooser, customise as required
+#else
+    // This is the 32bit version of the driver, so use a unique ProgID and GUID
     [Guid("559600B3-D579-440F-996C-6BB0748E8812")]
     [ProgId("ASCOM.JustAHub.Camera")]
-    [ServedClassName("JustAHub Camera")] // Driver description that appears in the Chooser, customise as required
-    [ClassInterface(ClassInterfaceType.None)]
+    [ServedClassName("JustAHub Camera (for 32bit drivers)")] // Driver description that appears in the Chooser, customise as required
+#endif
     public class Camera : ReferenceCountedObjectBase, ICameraV4, IDisposable
     {
         private Guid uniqueId; // A unique ID for this instance of the driver
@@ -33,7 +40,7 @@ namespace ASCOM.JustAHub
 
             // Get the driver ProgIDfrom the ProgID attribute.
             ProgId = ((ProgIdAttribute)attr).Value ?? "PROGID NOT SET!";
-            
+
             // Pull the display name from the ServedClassName class attribute.
             attr = Attribute.GetCustomAttribute(typeof(Camera), typeof(ServedClassNameAttribute));
 
@@ -48,7 +55,7 @@ namespace ASCOM.JustAHub
         {
             try
             {
-                tl = new TraceLogger("", "JustAHub.Camera.Driver")
+                tl = new TraceLogger("", $"JustAHub.Camera{(Environment.Is64BitProcess ? "64" : "")}.Driver")
                 {
                     Enabled = Settings.CameraDriverLogging
                 };

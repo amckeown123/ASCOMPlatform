@@ -1,13 +1,15 @@
-﻿using System;
+﻿using ASCOM.Utilities.Interfaces;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using ASCOM.Utilities.Interfaces;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using static ASCOM.Utilities.Global;
 
 namespace ASCOM.Utilities
@@ -45,6 +47,14 @@ namespace ASCOM.Utilities
 
         #region New and IDisposable Support
         private bool disposedValue = false;        // To detect redundant calls
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Util()
+        {
+            Log.Component(  Assembly.GetExecutingAssembly(), "Util");
+        }
 
         /// <summary>
         /// Create a Utility object

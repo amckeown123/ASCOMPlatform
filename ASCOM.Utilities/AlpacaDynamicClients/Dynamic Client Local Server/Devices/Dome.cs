@@ -1,7 +1,6 @@
-﻿
-using ASCOM.Alpaca.Clients;
-using ASCOM.Common;
+﻿using ASCOM.Alpaca.Clients;
 using ASCOM.DeviceInterface;
+using ASCOM.Common.Interfaces;
 using ASCOM.Tools;
 using System;
 using System.Collections;
@@ -18,7 +17,7 @@ namespace ASCOM.DynamicClients
     public class Dome : ReferenceCountedObjectBase, IDomeV3, IDisposable
     {
         // Set the device type of this device
-        private const DeviceTypes deviceType = DeviceTypes.Dome;
+        private const Common.DeviceTypes deviceType = Common.DeviceTypes.Dome;
 
         // The ASCOM Library Alpaca client that is used to communicate with the Alpaca device.
         private AlpacaDome client;
@@ -61,12 +60,12 @@ namespace ASCOM.DynamicClients
                     Enabled = state.TraceState
                 };
                 if (state.DebugTraceState)
-                    TL.SetMinimumLoggingLevel(Common.Interfaces.LogLevel.Debug);
+                    TL.SetMinimumLoggingLevel(LogLevel.Debug);
 
                 LogMessage(deviceType.ToString(), $"Starting driver initialisation for ProgID: {driverProgId}, Description: {driverDisplayName}");
 
                 // Create a client
-                client = Server.GetClient<Alpaca.Clients.AlpacaDome>(state, TL);
+                client = Server.GetClient<AlpacaDome>(state, TL);
                 LogMessage(deviceType.ToString(), $"Alpaca client created successfully");
 
                 // Initialise connected to false
@@ -150,7 +149,7 @@ namespace ASCOM.DynamicClients
         /// </summary>
         public void SetupDialog()
         {
-            Alpaca.Clients.AlpacaDome newclient = Server.SetupDialogue<Alpaca.Clients.AlpacaDome>(state, TL);
+            AlpacaDome newclient = Server.SetupDialogue<AlpacaDome>(state, TL);
             if (!(newclient is null))
             {
                 // Dispose of the old client
@@ -198,10 +197,22 @@ namespace ASCOM.DynamicClients
         /// </returns>
         public string Action(string actionName, string actionParameters)
         {
+            const int MAX_PARAM_LOG_LENGTH = 80; // Set the maximum length that the parameters string will show in the log file
             try
             {
-                CheckConnected($"Action {actionName} - {actionParameters}");
-                LogMessage("", $"Calling Action: {actionName} with parameters: {actionParameters}");
+                // Create a truncated set of the parameters for logging
+                string truncatedParameters;
+                if (actionParameters.Length > MAX_PARAM_LOG_LENGTH)
+                {
+                    truncatedParameters = $"{actionParameters.Substring(0, MAX_PARAM_LOG_LENGTH)}..., Action parameters length: {actionParameters.Length}";
+                }
+                else
+                {
+                    truncatedParameters = actionParameters;
+                }
+
+                CheckConnected($"Action {actionName} - {truncatedParameters}");
+                LogMessage("", $"Calling Action: {actionName} with parameters: {truncatedParameters}");
                 string actionResponse = client.Action(actionName, actionParameters);
                 LogMessage("Action", $"Completed.");
                 return actionResponse;
@@ -478,7 +489,7 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Call the client's Connect method
-                    client.OpenShutter();
+                    client.Connect();
 
                     // Flag that an asynchronous Connect operation is underway and that the Connected state should be TRUE on completion
                     asyncConnectDisconnect = true;
@@ -504,7 +515,7 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Call the client's Disconnect method
-                    client.CloseShutter();
+                    client.Disconnect();
 
                     // Flag that an asynchronous Disconnect operation is underway and that the Connected state should be FALSE on completion
                     asyncConnectDisconnect = true;
@@ -532,8 +543,7 @@ namespace ASCOM.DynamicClients
                     try
                     {
                         // Get the connecting state from the remote device
-                        _ = client.ShutterStatus;
-                        bool connecting = false;
+                        bool connecting = client.Connecting;
 
                         // If the operation is complete check whether we need to update the local Connected state
                         if (!connecting) // Operation is complete
@@ -574,9 +584,10 @@ namespace ASCOM.DynamicClients
                 try
                 {
                     // Get the device state from the Alpaca device
-                    LogMessage("DeviceState", $"Received {client.DomeState} values");
+                    List<Common.DeviceInterfaces.StateValue> deviceState = client.DeviceState;
+                    LogMessage("DeviceState", $"Received {deviceState.Count} values");
 
-                    return (IStateValueCollection)client.DomeState;
+                    return new StateValueCollection(deviceState.ToPlatformStateValue());
                 }
                 catch (Exception ex)
                 {

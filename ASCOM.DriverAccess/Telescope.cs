@@ -5,11 +5,11 @@
 // 29-May-10  	rem     6.0.0 - Added memberFactory.
 
 using System;
+using ASCOM.DeviceInterface;
+using ASCOM.Utilities;
 using System.Collections;
 using System.Reflection;
 using System.Globalization;
-using ASCOM.DeviceInterface;
-using ASCOM.Utilities;
 
 namespace ASCOM.DriverAccess
 {
@@ -26,6 +26,14 @@ namespace ASCOM.DriverAccess
         internal bool isPlatform5Telescope = false;
 
         #region Telescope constructors
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static Telescope()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "DriverAccess.Telescope");
+        }
 
         /// <summary>
         /// Creates an instance of the telescope class.
@@ -197,7 +205,7 @@ namespace ASCOM.DriverAccess
 
                     try
                     {
-                        IAxisRates AxisRatesP5 = (IAxisRates)ReturnValue;
+                        ASCOM.Interface.IAxisRates AxisRatesP5 = (ASCOM.Interface.IAxisRates)ReturnValue;
                         AxisRatesP6 = new AxisRates(AxisRatesP5, TL); //Create a new P6 compliant shell that presents the P5 object
                         TL.LogMessage("AxisRates", "Number of returned AxisRates: " + AxisRatesP5.Count);
 
@@ -968,7 +976,7 @@ namespace ASCOM.DriverAccess
         TraceLogger TL;
         int CurrentPosition;
 
-        IAxisRates AxisRatesP5;
+        ASCOM.Interface.IAxisRates AxisRatesP5;
 
         /// <summary>
         /// Creates an empty AxisRates object
@@ -979,12 +987,12 @@ namespace ASCOM.DriverAccess
             TL = null;
         }
 
-        internal AxisRates(IAxisRates AxisRates, TraceLogger traceLogger)
+        internal AxisRates(ASCOM.Interface.IAxisRates AxisRates, TraceLogger traceLogger)
         {
             TL = traceLogger;
             AxisRatesP5 = AxisRates;
             this.Reset();
-            foreach (IRate Rate in AxisRates)
+            foreach (ASCOM.Interface.IRate Rate in AxisRates)
             {
                 if (!(TL == null)) TL.LogMessage("AxisRates Class P5 New", "Adding rate: - Minimum: " + Rate.Minimum + ", Maximum: " + Rate.Maximum);
                 //m_Rates.Add(new Rate(Rate.Minimum, Rate.Maximum));

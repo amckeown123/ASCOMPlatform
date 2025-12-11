@@ -1,8 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
+﻿<?xml version="1.0" encoding="utf-8"?>
+ <Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+    <TargetFrameworks>net35;net472;netstandard2.0</TargetFrameworks>
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+</PropertyGroup>
+<PropertyGroup>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<TargetFrameworks>net35;net472;netstandard2.0</TargetFrameworks>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>../ASCOM.snk</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
@@ -18,7 +21,6 @@
 
 	<PropertyGroup>
 		<DocumentationFile>ASCOM.Exceptions.xml</DocumentationFile>
-		<NoWarn>1701;1702;NU5105</NoWarn>
 		<Title>ASCOM Exception Library</Title>
 		<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/ASCOMInitiative/ASCOMPlatform</RepositoryUrl>
@@ -43,7 +45,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(ProjectDir)bin\release\net472\ASCOM.Exceptions.xml" Pack="true" PackagePath="File"></None>
+		<None Include="$(ProjectDir)bin\release\net8.0\ASCOM.Exceptions.xml" Pack="true" PackagePath="File"></None>
 		<None Include="build\ASCOM.Exception.Library.props" Pack="true" PackagePath="build"></None>
 	</ItemGroup>
 
@@ -62,5 +64,4 @@
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="&#xD;&#xA;&quot;$(SolutionDir)installercopy.cmd&quot; &quot;$(SolutionDir)&quot; &quot;$(TargetDir)$(TargetName).*&quot;" />
 	</Target>
-
 </Project>

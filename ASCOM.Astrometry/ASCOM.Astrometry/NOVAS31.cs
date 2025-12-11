@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ASCOM.Utilities;
+using ASCOM.Utilities.Exceptions;
+using System;
 using System.Collections;
-using static System.Environment;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using ASCOM.Utilities;
-using ASCOM.Utilities.Exceptions;
+using static System.Environment;
 
 namespace ASCOM.Astrometry.NOVAS
 {
@@ -49,6 +50,15 @@ namespace ASCOM.Astrometry.NOVAS
         private EarthRotationParameters Parameters;
 
         #region New and IDisposable
+
+        /// <summary>
+        /// Static initialiser called once per AppDomain to log the component name.
+        /// </summary>
+        static NOVAS31()
+        {
+            Log.Component(Assembly.GetExecutingAssembly(), "NOVAS31");
+        }
+
         /// <summary>
         /// Creates a new instance of the NOVAS31 component
         /// </summary>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ASCOM.Utilities
 {
-    public static class SimulatorManager
+    internal static class SimulatorManager
     {
         const string COM_SIMULATORS_VALUE_NAME = "COMSimulators";
         const string OMNI_SIMULATORS_NAME = "OmniSimulators";
@@ -78,7 +78,7 @@ namespace ASCOM.Utilities
         /// <summary>
         /// Restore the Platform 6 COM ProgIDs to point at their Platform 6 values
         /// </summary>
-        public static void SetPlatform6Simulators(bool respectExisting, TraceLogger TL)
+        internal static void SetPlatform6Simulators(bool respectExisting, TraceLogger TL)
         {
             LogMessage("", " ", TL);
             // Check whether we need to respect any existing setting
@@ -118,7 +118,7 @@ namespace ASCOM.Utilities
         /// <summary>
         /// Hijack the Platform 6 ProgIDs and point them to the Omni Simulator devices
         /// </summary>
-        public static void SetOmniSimulators(bool respectExisting, TraceLogger TL)
+        internal static void SetOmniSimulators(bool respectExisting, TraceLogger TL)
         {
             LogMessage("", " ", TL);
             // Check whether we need to respect any existing setting
@@ -161,6 +161,7 @@ namespace ASCOM.Utilities
             {
                 // Assume TRUE and iterate over the well known simulator ProgIDs comparing GUIDs to the OmniSim values. Any mismatch will result in a FALSE return
                 bool omnisimsAreConfigured = true;
+
                 foreach (KeyValuePair<string, string> simulator in omniSimulators)
                 {
                     string guid = (string)RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Default).OpenSubKey($"{simulator.Key}\\CLSID").GetValue(null);
@@ -178,7 +179,7 @@ namespace ASCOM.Utilities
                         }
                         else
                         {
-                            LogMessage("IsUsingOmniSimulators", $"CLSIDs match OK", TL);
+                            LogMessage("IsUsingOmniSimulators", $"CLSIDs match OK - Actual: {guid}, Expected: {simulator.Value}", TL);
                         }
                     }
                 }
@@ -198,7 +199,7 @@ namespace ASCOM.Utilities
             }
         }
 
-        public static void SetOriginalSimulatorNames(TraceLogger TL)
+        internal static void SetOriginalSimulatorNames(TraceLogger TL)
         {
             foreach (KeyValuePair<string, string> simulator in originalSimulatorNames)
             {
@@ -207,7 +208,7 @@ namespace ASCOM.Utilities
 
         }
 
-        public static void SetStandardSimulatorNames(TraceLogger TL)
+        internal static void SetStandardSimulatorNames(TraceLogger TL)
         {
             foreach (KeyValuePair<string, string> simulator in standardSimulatorNames)
             {
@@ -312,11 +313,17 @@ namespace ASCOM.Utilities
                         // Handle Omni-Simulators have been selected
                         case OMNI_SIMULATORS_NAME_UPPERCASE:
                             LogMessage("SimulatorsHaveBeenSet", $"The Omni-Simulators are already selected", TL);
+
+                            // Make sure that the OmniSim GUIDs are in place
+                            SetOmniSimulators(false, TL);
                             return true;
 
                         // Handle Platform 6 Simulators have been selected
                         case PLATFORM6_SIMULATORS_NAME_UPPERCASE:
                             LogMessage("SimulatorsHaveBeenSet", $"The Platform 6 Simulators are already selected", TL);
+
+                            // Make sure that the Platform 6 simulator GUIDs are in place
+                            SetPlatform6Simulators(false, TL);
                             return true;
 
                         // All other values are reported as no simulators have been selected

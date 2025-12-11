@@ -22,7 +22,7 @@ namespace ASCOM.DeviceHub
 				// Before we proceed to start up, make sure that there is not another instance of DeviceHub already running.
 
 				string mutexName = "Global\\" + GetProductGuid();
-				bool createdNew = false;
+				bool createdNew;
 
 				MutexAccessRule allowEveryoneRule = new MutexAccessRule( new SecurityIdentifier( WellKnownSidType.WorldSid, null)
 																							   , MutexRights.FullControl
@@ -30,7 +30,7 @@ namespace ASCOM.DeviceHub
 				MutexSecurity securitySettings = new MutexSecurity();
 				securitySettings.AddAccessRule( allowEveryoneRule );
 
-				using ( Mutex mutex = new Mutex( false, mutexName, out createdNew) )
+				using ( Mutex mutex = new Mutex( false, mutexName, out createdNew, securitySettings ) )
 				{
 					bool hasHandle = false;
 

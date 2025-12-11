@@ -8,6 +8,7 @@ using System.Text;
 using ASCOM.Utilities;
 using ASCOM.Utilities.Exceptions;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace ASCOM.Astrometry.SOFA
 {
@@ -82,18 +83,8 @@ namespace ASCOM.Astrometry.SOFA
             bool rc;
             int LastError;
 
-            /* TODO ERROR: Skipped IfDirectiveTrivia
-            #If DEBUG Then
-            *//* TODO ERROR: Skipped DisabledTextTrivia
-                        ' In the DEBUG environment load the DLL from the application directory where the latest verion will have been copied.
-                        ' This assumes that debugging is only undertaken using 32bit applications
-                        rc = False ' Just to Suppress a compiler warning
-                        SofaDllFile = String.Format("{0}\..\..\..\..\SOFA\Sofa Library\Win32\Debug\{1}", Environment.CurrentDirectory, SOFA32DLL)
-            *//* TODO ERROR: Skipped ElseDirectiveTrivia
-            #Else
-            */            // Find the root location of the common files directory containing the ASCOM support files.
-                          // On a 32bit system this is \Program Files\Common Files
-                          // On a 64bit system this is \Program Files (x86)\Common Files
+            Log.Component(Assembly.GetExecutingAssembly(), "SOFA");
+
             if (Is64Bit()) // 64bit application so find the 32bit folder location
             {
                 rc = SHGetSpecialFolderPath(IntPtr.Zero, ReturnedPath, CSIDL_PROGRAM_FILES_COMMONX86, false);
@@ -103,21 +94,13 @@ namespace ASCOM.Astrometry.SOFA
             {
                 SofaDllFile = GetFolderPath(SpecialFolder.CommonProgramFiles) + SOFA_DLL_LOCATION + SOFA32DLL;
             }
-            /* TODO ERROR: Skipped EndIfDirectiveTrivia
-            #End If
-            */
+
             SofaDllHandle = LoadLibrary(SofaDllFile);
             LastError = Marshal.GetLastWin32Error();
 
-            if (SofaDllHandle != IntPtr.Zero) // Loaded successfully
-            {
-            }
-
-            else // Did not load 
-            {
-                throw new HelperException(string.Format("Error code {0} returned from LoadLibrary when loading SOFA library: {1}  ", LastError.ToString("X8"), SofaDllFile));
-            }
-
+            // Check if the SOFA DLL loaded successfully
+            if (SofaDllHandle == IntPtr.Zero) // Failed to load successfully
+                throw new HelperException($"Error code {LastError:X8} returned from LoadLibrary when loading SOFA library: {SofaDllFile}");
         }
 
         /// <summary>
@@ -143,19 +126,6 @@ namespace ASCOM.Astrometry.SOFA
             var HasBeenUpdated = default(bool);
             DateTime UTCNow;
 
-            /* TODO ERROR: Skipped IfDirectiveTrivia
-            #If DEBUG Then
-            *//* TODO ERROR: Skipped DisabledTextTrivia
-                        ' In the DEBUG environment load the DLL from the application directory where the latest verion will have been copied.
-                        ' This assumes that debugging is only undertaken using 32bit applications
-                        rc = False ' Just to Suppress a compiler warning
-                        SofaDllFile = String.Format("{0}\..\..\..\..\SOFA\Sofa Library\Win32\Debug\{1}", Environment.CurrentDirectory, SOFA32DLL)
-                        TL.LogMessage("New", "DEBUG build")
-            *//* TODO ERROR: Skipped ElseDirectiveTrivia
-            #Else
-            */            // Find the root location of the common files directory containing the ASCOM support files.
-                          // On a 32bit system this is \Program Files\Common Files
-                          // On a 64bit system this is \Program Files (x86)\Common Files
             if (Is64Bit()) // 64bit application so find the 32bit folder location
             {
                 rc = SHGetSpecialFolderPath(IntPtr.Zero, ReturnedPath, CSIDL_PROGRAM_FILES_COMMONX86, false);
@@ -166,9 +136,7 @@ namespace ASCOM.Astrometry.SOFA
                 SofaDllFile = GetFolderPath(SpecialFolder.CommonProgramFiles) + SOFA_DLL_LOCATION + SOFA32DLL;
             }
             TL.LogMessage("New", "PRODUCTION build");
-            /* TODO ERROR: Skipped EndIfDirectiveTrivia
-            #End If
-            */
+ 
             if (!File.Exists(SofaDllFile))
             {
                 TL.LogMessage("New", $"SOFA Initialise - Unable to locate SOFA library DLL: {SofaDllFile}");
@@ -1692,10 +1660,10 @@ namespace ASCOM.Astrometry.SOFA
         private static extern short UpdateLeapSecondData32(LeapSecondDataStruct[] arr);
 
         [DllImport(SOFA32DLL, EntryPoint = "GetLeapSecondData")]
-        private static extern short GetLeapSecondData32([Out()]LeapSecondDataStruct[] arr, ref int HasUpdatedData);
+        private static extern short GetLeapSecondData32([Out()] LeapSecondDataStruct[] arr, ref int HasUpdatedData);
 
         [DllImport(SOFA32DLL, EntryPoint = "GetBuiltInLeapSecondData")]
-        private static extern short GetLeapSecondData32([Out()]LeapSecondDataStruct[] arr);
+        private static extern short GetLeapSecondData32([Out()] LeapSecondDataStruct[] arr);
 
         [DllImport(SOFA32DLL, EntryPoint = "UsingUpdatedData")]
         private static extern short UsingUpdatedData32();
@@ -1828,7 +1796,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <returns>TRUE if successful; otherwise, FALSE.</returns>
         /// <remarks></remarks>
         [DllImport("shell32.dll")]
-        private static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out()]StringBuilder lpszPath, int nFolder, bool fCreate);
+        private static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out()] StringBuilder lpszPath, int nFolder, bool fCreate);
 
         /// <summary>
         /// Loads a library DLL
