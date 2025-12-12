@@ -16,6 +16,9 @@
 =======
 		<MyType>Windows</MyType>
 		<TargetFrameworks>net35;net472;net481;netstandard2.0</TargetFrameworks>
+<<<<<<< HEAD
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\ASCOM.snk</AssemblyOriginatorKeyFile>
@@ -56,6 +59,9 @@
 		<ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
 	</ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net481' And '$(IncludeReference)'=='true'">
+<<<<<<< HEAD
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <ProjectReference Include="..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" PrivateAssets="All" />
   </ItemGroup>

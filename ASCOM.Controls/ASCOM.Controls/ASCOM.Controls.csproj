@@ -104,11 +104,14 @@
       <Name>ASCOM.Utilities</Name>
     </ProjectReference>
 <<<<<<< HEAD
+<<<<<<< HEAD
   </ItemGroup>
     <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
   </ItemGroup>

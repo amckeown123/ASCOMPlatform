@@ -61,6 +61,11 @@ namespace ASCOM.DeviceHub
         private const string _fastUpdateProfileName = "Fast Update Period";
         private static readonly string _fastUpdateDefault = Globals.DOME_FAST_UPDATE_MIN.ToString();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        private const string _slewDelayProfileName = "Slew Delay";
+        private static readonly string _slewDelayDefault = Globals.DOME_SLEW_DELAY_MIN.ToString();
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
         private const string _slewDelayProfileName = "Slew Delay";
         private static readonly string _slewDelayDefault = Globals.DOME_SLEW_DELAY_MIN.ToString();
@@ -107,6 +112,10 @@ namespace ASCOM.DeviceHub
             bool useRevisedCalculation;
             double fastUpdatePeriod;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            int slewDelay;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
             int slewDelay;
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
@@ -127,6 +136,10 @@ namespace ASCOM.DeviceHub
                 useRevisedCalculation = Convert.ToBoolean(profile.GetValue(DriverID, _useRevisedSlavingCalculationProfileName, String.Empty, _useRevisedSlavingCalculationDefault));
                 fastUpdatePeriod = Convert.ToDouble(profile.GetValue(DriverID, _fastUpdateProfileName, String.Empty, _fastUpdateDefault), CultureInfo.InvariantCulture);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                slewDelay = Convert.ToInt32(profile.GetValue(DriverID, _slewDelayProfileName, String.Empty, _slewDelayDefault));
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
                 slewDelay = Convert.ToInt32(profile.GetValue(DriverID, _slewDelayProfileName, String.Empty, _slewDelayDefault));
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
@@ -158,13 +171,19 @@ namespace ASCOM.DeviceHub
 
             // Prevent the user from circumventing the valid fast update by setting the value in the profile store directly.
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             fastUpdatePeriod = Math.Max(Globals.DOME_FAST_UPDATE_MIN, Math.Min(fastUpdatePeriod, Globals.DOME_FAST_UPDATE_MAX));
 =======
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
             fastUpdatePeriod = Math.Max(Globals.DOME_FAST_UPDATE_MIN, Math.Min(fastUpdatePeriod, Globals.DOME_FAST_UPDATE_MAX));
             slewDelay = Math.Max(Globals.DOME_SLEW_DELAY_MIN, Math.Min(slewDelay, Globals.DOME_SLEW_DELAY_MAX));
 
             Globals.SlewDelay = slewDelay;
+<<<<<<< HEAD
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 
             DomeLayoutSettings layoutSettings = new DomeLayoutSettings
@@ -176,6 +195,10 @@ namespace ASCOM.DeviceHub
 
                 SupportMultipleTelescopes = supportMultipleTelescopes,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                SlewDelay = slewDelay,
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
                 SlewDelay = slewDelay,
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
@@ -210,9 +233,15 @@ namespace ASCOM.DeviceHub
                 AzimuthAdjustment = azimuthAdjustment,
                 UsePOTHDomeSlaveCalculation = usePOTHCalculation,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 UseRevisedDomeSlaveCalculation = useRevisedCalculation,
                 IsLoggingEnabled = loggerEnabled,
                 FastUpdatePeriod = fastUpdatePeriod
+=======
+                UseOneAxisDomeSlaveCalculation = useRevisedCalculation,
+                IsLoggingEnabled = loggerEnabled,
+                FastUpdatePeriod = fastUpdatePeriod,
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
                 UseOneAxisDomeSlaveCalculation = useRevisedCalculation,
                 IsLoggingEnabled = loggerEnabled,
@@ -231,7 +260,11 @@ namespace ASCOM.DeviceHub
         public double AzimuthAdjustment { get; set; }
         public bool UsePOTHDomeSlaveCalculation { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public bool UseRevisedDomeSlaveCalculation { get; set; }
+=======
+        public bool UseOneAxisDomeSlaveCalculation { get; set; }
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
         public bool UseOneAxisDomeSlaveCalculation { get; set; }
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
@@ -240,6 +273,11 @@ namespace ASCOM.DeviceHub
         public void ToProfile()
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            Globals.SlewDelay = DomeLayoutSettings.SlewDelay;
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
             Globals.SlewDelay = DomeLayoutSettings.SlewDelay;
 
@@ -258,16 +296,22 @@ namespace ASCOM.DeviceHub
                 profile.WriteValue(DriverID, _traceStateProfileName, IsLoggingEnabled.ToString());
                 profile.WriteValue(DriverID, _usePOTHSlavingCalculationProfileName, UsePOTHDomeSlaveCalculation.ToString());
 <<<<<<< HEAD
+<<<<<<< HEAD
                 profile.WriteValue(DriverID, _useRevisedSlavingCalculationProfileName, UseRevisedDomeSlaveCalculation.ToString());
                 profile.WriteValue(DriverID, _fastUpdateProfileName, FastUpdatePeriod.ToString(CultureInfo.InvariantCulture));
 
                 profile.WriteValue(DriverID, _supportMultipleTelescopesProfileName, DomeLayoutSettings.SupportMultipleTelescopes.ToString(CultureInfo.InvariantCulture));
 =======
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                 profile.WriteValue(DriverID, _useRevisedSlavingCalculationProfileName, UseOneAxisDomeSlaveCalculation.ToString());
                 profile.WriteValue(DriverID, _fastUpdateProfileName, FastUpdatePeriod.ToString(CultureInfo.InvariantCulture));
 
                 profile.WriteValue(DriverID, _supportMultipleTelescopesProfileName, DomeLayoutSettings.SupportMultipleTelescopes.ToString(CultureInfo.InvariantCulture));
                 profile.WriteValue(DriverID, _slewDelayProfileName, DomeLayoutSettings.SlewDelay.ToString(CultureInfo.InvariantCulture));
+<<<<<<< HEAD
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                 profile.WriteValue(DriverID, _profileIndexProfileName, DomeLayoutSettings.ProfileIndex.ToString());
                 profile.WriteValue(DriverID, _gemAxisOffsetProfileName, DomeLayoutSettings.GemAxisOffset.ToString());

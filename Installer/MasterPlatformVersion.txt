@@ -1,11 +1,7 @@
 7
-1
-<<<<<<< HEAD
 0
-=======
-1
->>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
-Release
+3
+4
 
 The first line of this file must contain the major Platform version number
 The second line of this file must contain the minor Platform version number

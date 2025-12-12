@@ -82,6 +82,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+<<<<<<< HEAD
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />

@@ -32,6 +32,7 @@
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
 <<<<<<< HEAD
+<<<<<<< HEAD
         
         <Style x:Key="ObservingScope" TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="8,0,0,0" />
@@ -59,6 +60,9 @@
 
 =======
 
+=======
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         <Style x:Key="ObservingScope" TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="8,0,0,0" />
             <Setter Property="Padding" Value="0" />
@@ -83,6 +87,9 @@
         </Style>
     </UserControl.Resources>
 
+<<<<<<< HEAD
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <Grid Margin="6,4">
         <Grid.RowDefinitions>
@@ -182,7 +189,11 @@
             </Button>
         </Grid>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <GroupBox Grid.Row="1" Grid.Column="1" Header="Dome State" Margin="8,0,4,0" Padding="0" VerticalAlignment="Top" Height="Auto" Width="238" Foreground="{DynamicResource NormalTextBrush}">
+=======
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="Dome State" Margin="16,0,4,0" Padding="0" VerticalAlignment="Top" Height="Auto" Width="238" Foreground="{DynamicResource NormalTextBrush}">
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
         <GroupBox Grid.Row="1" Grid.Column="1" Header="Dome State" Margin="16,0,4,0" Padding="0" VerticalAlignment="Top" Height="Auto" Width="238" Foreground="{DynamicResource NormalTextBrush}">
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
@@ -264,7 +275,11 @@
             </GroupBox>
         </Expander>
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<Expander Name="_otherActionsExpander" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Header="Other Actions" Foreground="{DynamicResource NormalTextBrush}" Margin="6,0"                      
+=======
+        <Expander Name="_otherActionsExpander" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Header="Other Actions" Foreground="{DynamicResource NormalTextBrush}" Margin="6,0"                      
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
         <Expander Name="_otherActionsExpander" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Header="Other Actions" Foreground="{DynamicResource NormalTextBrush}" Margin="6,0"                      
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
@@ -281,8 +296,13 @@
                 </Grid.RowDefinitions>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <CheckBox Grid.Row="0" Content="Use POTH Slaving Calculation" Foreground="{DynamicResource NormalTextBrush}" Margin="4,4,0,0" IsChecked="{Binding UsePOTHSlaveCalculation}"/>
                 <CheckBox Grid.Row="0" Content="Use revised calculation" Foreground="{DynamicResource NormalTextBrush}" Margin="200,4,0,0" IsChecked="{Binding UseRevisedSlaveCalculation}"/>
+=======
+                <CheckBox Grid.Row="0" Content="Use POTH slaving calculation" Foreground="{DynamicResource NormalTextBrush}" Margin="4,4,0,0" IsChecked="{Binding UsePOTHSlaveCalculation}" ToolTip="Uses the POTH calculation which can be unreliable near poles and zenith.&#x0a;&#x0a;Not recommended, the default calculation is considered the most accurate."/>
+                <CheckBox Grid.Row="0" Content="Single offset slaving calculation" Foreground="{DynamicResource NormalTextBrush}" Margin="190,4,0,0" IsChecked="{Binding UseOneAxisSlaveCalculation}" ToolTip="Only uses the Axis intersection offset value and ignores the Dec/alt offset value.&#x0a;&#x0a;Not recommended, the default calculation is considered the most accurate."/>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
                 <CheckBox Grid.Row="0" Content="Use POTH slaving calculation" Foreground="{DynamicResource NormalTextBrush}" Margin="4,4,0,0" IsChecked="{Binding UsePOTHSlaveCalculation}" ToolTip="Uses the POTH calculation which can be unreliable near poles and zenith.&#x0a;&#x0a;Not recommended, the default calculation is considered the most accurate."/>
                 <CheckBox Grid.Row="0" Content="Single offset slaving calculation" Foreground="{DynamicResource NormalTextBrush}" Margin="190,4,0,0" IsChecked="{Binding UseOneAxisSlaveCalculation}" ToolTip="Only uses the Axis intersection offset value and ignores the Dec/alt offset value.&#x0a;&#x0a;Not recommended, the default calculation is considered the most accurate."/>
@@ -312,7 +332,11 @@
             </Grid>
         </Expander>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <TextBlock Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Style="{StaticResource ObservingScope}" Visibility="{Binding SupportMultipleTelescopes, Converter={StaticResource BoolToVis}}">
+=======
+        <TextBlock Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="0,0,0,0" TextAlignment="Right" Style="{StaticResource ObservingScope}" Visibility="{Binding SupportMultipleTelescopes, Converter={StaticResource BoolToVis}}">
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
         <TextBlock Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="0,0,0,0" TextAlignment="Right" Style="{StaticResource ObservingScope}" Visibility="{Binding SupportMultipleTelescopes, Converter={StaticResource BoolToVis}}">
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
@@ -323,7 +347,11 @@
 
         <ComboBox Name="CmbTelescopes" SelectionChanged="CmbTelescopes_SelectionChanged" 
 <<<<<<< HEAD
+<<<<<<< HEAD
                   Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="70,6,0,0" Height="22" Width="180" VerticalAlignment="Top"  HorizontalAlignment="Left"
+=======
+                  Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="60,6,0,0" Height="22" Width="220" VerticalAlignment="Top"  HorizontalAlignment="Left"
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
                   Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="60,6,0,0" Height="22" Width="220" VerticalAlignment="Top"  HorizontalAlignment="Left"
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7

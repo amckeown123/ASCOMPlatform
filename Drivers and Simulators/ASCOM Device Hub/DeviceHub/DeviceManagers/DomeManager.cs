@@ -462,8 +462,14 @@ namespace ASCOM.DeviceHub
                     DateTime wakeupTime = DateTime.Now;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     bool domeSlewing = Service.Slewing;
                     // LogActivityLine(ActivityMessageTypes.Status, $"Get Slewing: {domeSlewing} (PollDomeTask)");
+=======
+                    previousPollingPeriod = PollingPeriod;
+                    PollingPeriod = POLLING_INTERVAL_NORMAL;
+                    int fastPollingMilliseconds = Convert.ToInt32(FastPollingPeriod * 1000.0);
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
                     previousPollingPeriod = PollingPeriod;
                     PollingPeriod = POLLING_INTERVAL_NORMAL;
@@ -532,6 +538,7 @@ namespace ASCOM.DeviceHub
                     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     ShutterState shutterStatus = Service.ShutterStatus;
                     // LogActivityLine(ActivityMessageTypes.Status, $"Get ShutterStatus: {shutterStatus} (PollDomeTask)");
 
@@ -539,6 +546,12 @@ namespace ASCOM.DeviceHub
                     LogActivityLine(ActivityMessageTypes.Other, $"PollDomeTask - Slewing: {TelescopeSlewState.IsSlewInProgress}, DomeIsMoving: {domeIsMoving}, DomeIsSlewing: {domeSlewing}, Shutter: {shutterStatus}, Target RA: {TelescopeSlewState.RightAscension.ToHMS()}, Declination: {TelescopeSlewState.Declination.ToDMS()}");
 
                     if (domeIsMoving)
+=======
+                    TimeSpan waitInterval = wakeupTime.AddMilliseconds((double)PollingPeriod) - DateTime.Now;
+                    waitInterval -= TimeSpan.FromMilliseconds(overhead);
+
+                    if (waitInterval.TotalMilliseconds < 0)
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
                     TimeSpan waitInterval = wakeupTime.AddMilliseconds((double)PollingPeriod) - DateTime.Now;
                     waitInterval -= TimeSpan.FromMilliseconds(overhead);
@@ -958,9 +971,15 @@ namespace ASCOM.DeviceHub
         private Point GetDomeCoord(Point scopePosition, double hourAngle, PierSide sideOfPier)
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             Point domePoth= new Point(0,0), domeHub = new Point(0, 0), domeRevised = new Point(0, 0), domePosition = new Point(0, 0);
 
             LogActivityLine(ActivityMessageTypes.Other, $"  Use POTH: {Globals.UsePOTHDomeSlaveCalculation}, Use Revised: {Globals.UseRevisedDomeSlaveCalculation}");
+=======
+            Point domePoth = new Point(0, 0), domeHub = new Point(0, 0), domeRevised = new Point(0, 0), domePosition = new Point(0, 0);
+
+            LogActivityLine(ActivityMessageTypes.Other, $"  Use POTH: {Globals.UsePOTHDomeSlaveCalculation}, Use one-axis model: {Globals.UseOneAxisDomeSlaveCalculation}");
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
             Point domePoth = new Point(0, 0), domeHub = new Point(0, 0), domeRevised = new Point(0, 0), domePosition = new Point(0, 0);
 
@@ -1005,9 +1024,15 @@ namespace ASCOM.DeviceHub
 
             // Select the appropriate dome position based on the configuration setting
 <<<<<<< HEAD
+<<<<<<< HEAD
             if (Globals.UseRevisedDomeSlaveCalculation) // Revised calculation
             {
                 domePosition = domeRevised;
+=======
+            if (Globals.UseOneAxisDomeSlaveCalculation) // Original Device Hub calculation
+            {
+                domePosition = domeHub;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
             if (Globals.UseOneAxisDomeSlaveCalculation) // Original Device Hub calculation
             {
@@ -1019,9 +1044,15 @@ namespace ASCOM.DeviceHub
                 domePosition = domePoth;
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
             else // Original Device Hub calculation
             {
                 domePosition = domeHub;
+=======
+            else // Use the new 2-axis offset model 
+            {
+                domePosition = domeRevised;
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
             else // Use the new 2-axis offset model 
             {

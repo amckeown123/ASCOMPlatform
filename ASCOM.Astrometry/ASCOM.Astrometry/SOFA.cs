@@ -78,6 +78,7 @@ namespace ASCOM.Astrometry.SOFA
         static SOFA()
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             var ReturnedPath = new StringBuilder(260);
             string SofaDllFile;
@@ -112,6 +113,17 @@ namespace ASCOM.Astrometry.SOFA
 
                 Log.Component(Assembly.GetExecutingAssembly(), "SOFA");
 
+=======
+            try
+            {
+                var ReturnedPath = new StringBuilder(260);
+                string SofaDllFile;
+                bool rc;
+                int LastError;
+
+                Log.Component(Assembly.GetExecutingAssembly(), "SOFA");
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                 if (Is64Bit()) // 64bit application so find the 32bit folder location
                 {
                     rc = SHGetSpecialFolderPath(IntPtr.Zero, ReturnedPath, CSIDL_PROGRAM_FILES_COMMONX86, false);
@@ -140,6 +152,9 @@ namespace ASCOM.Astrometry.SOFA
                 }
                 throw;
             }
+<<<<<<< HEAD
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         }
 
@@ -150,6 +165,7 @@ namespace ASCOM.Astrometry.SOFA
         /// <remarks></remarks>
         public SOFA()
         {
+<<<<<<< HEAD
 <<<<<<< HEAD
             bool rc;
             string SofaDllFile;
@@ -190,11 +206,16 @@ namespace ASCOM.Astrometry.SOFA
 =======
             try
             {
+=======
+            try
+            {
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                 bool rc;
                 string SofaDllFile;
                 var ReturnedPath = new StringBuilder(260);
                 int LastError, Count, NumberOfSOFALeapSecondValues;
                 DateTime JulianDateUtc;
+<<<<<<< HEAD
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 
                 TL = new TraceLogger("", "SOFA");
@@ -207,6 +228,19 @@ namespace ASCOM.Astrometry.SOFA
                 var HasBeenUpdated = default(bool);
                 DateTime UTCNow;
 
+=======
+
+                TL = new TraceLogger("", "SOFA");
+                TL.Enabled = Utilities.Global.GetBool(Utilities.Global.NOVAS_TRACE, Utilities.Global.NOVAS_TRACE_DEFAULT); // Get enabled / disabled state from the user registry
+
+                Utl = new Util();
+
+                var LeapSecondArray = new LeapSecondDataStruct[101];
+                int RecordCount;
+                var HasBeenUpdated = default(bool);
+                DateTime UTCNow;
+
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
                 if (Is64Bit()) // 64bit application so find the 32bit folder location
                 {
                     rc = SHGetSpecialFolderPath(IntPtr.Zero, ReturnedPath, CSIDL_PROGRAM_FILES_COMMONX86, false);

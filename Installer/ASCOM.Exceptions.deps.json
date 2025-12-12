@@ -7,13 +7,10 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "ASCOM.Exceptions/7.1.0": {
-<<<<<<< HEAD
+      "ASCOM.Exceptions/7.0.1": {
         "dependencies": {
           "NETStandard.Library": "2.0.3"
         },
-=======
->>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         "runtime": {
           "ASCOM.Exceptions.dll": {}
         }

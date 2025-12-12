@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
@@ -15,10 +16,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <ProductVersion>9.0.21022</ProductVersion>
     <ProjectGuid>{AC00E557-DB2F-463E-BDAF-448AA7266CF7}</ProjectGuid>
     <RootNamespace>ASCOM.Simulator</RootNamespace>
     <AssemblyName>ASCOM.Simulator.Camera</AssemblyName>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -53,6 +59,14 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
+=======
+    <TargetFramework>net481</TargetFramework>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <RegisterForComInterop>false</RegisterForComInterop>
     <StartAction>Program</StartAction>
@@ -78,7 +92,10 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\AssemblyVersionInfo.cs" Link="Properties\AssemblyVersionInfo.cs" />
@@ -136,7 +153,10 @@
   </ItemGroup>
   <ItemGroup>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ProjectReference Include="..\..\..\ASCOM.DeviceInterface\ASCOM.DeviceInterface.csproj" />
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
     <ProjectReference Include="..\..\..\ASCOM.DriverAccess\ASCOM.DriverAccess.csproj" />
@@ -144,11 +164,14 @@
     <ProjectReference Include="..\..\..\ASCOM.Utilities\ASCOM.Utilities\ASCOM.Utilities.csproj" />
   </ItemGroup>
 <<<<<<< HEAD
+<<<<<<< HEAD
    <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 </Project>

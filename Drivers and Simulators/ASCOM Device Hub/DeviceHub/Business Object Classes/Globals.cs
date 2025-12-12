@@ -49,12 +49,18 @@ namespace ASCOM.DeviceHub
 
         /// <summary>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         /// Current value of the slew delay setting
         /// </summary>
         public static int SlewDelay { get; set; }
 
         /// <summary>
+<<<<<<< HEAD
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
+=======
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
         /// Return the latest state of the SupportMultipleTelescopes flag. (This may not have been persisted yet if user is in the setup dialogue)
         /// </summary>
@@ -102,7 +108,11 @@ namespace ASCOM.DeviceHub
         public static double FocuserTemperatureOffset { get; set; }
         public static bool UsePOTHDomeSlaveCalculation { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public static bool UseRevisedDomeSlaveCalculation { get; set; }
+=======
+        public static bool UseOneAxisDomeSlaveCalculation { get; set; }
+>>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
 =======
         public static bool UseOneAxisDomeSlaveCalculation { get; set; }
 >>>>>>> ac8a1542bad6dc5b3dbe4123f6f2f7b2ff3e7cb7
